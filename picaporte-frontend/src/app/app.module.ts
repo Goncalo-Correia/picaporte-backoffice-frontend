@@ -4,13 +4,22 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+// Import the module from the SDK
+import { AuthModule } from '@auth0/auth0-angular';
+import { Auth0ServiceComponent } from './auth0-service/auth0-service.component';
+
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    Auth0ServiceComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    AuthModule.forRoot({
+      domain: 'REDACTED_AUTH0_DOMAIN_OLD',
+      clientId: 'REDACTED_AUTH0_CLIENT_ID_OLD'
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

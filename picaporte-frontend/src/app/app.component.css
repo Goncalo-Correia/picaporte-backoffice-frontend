@@ -1,0 +1,44 @@
+.app-grid {
+    display: grid;
+    width: 100vw;
+    height: 100vh;
+    grid-template-areas:
+      'header header header header header header'
+      'sidenav main main main main main'
+      'sidenav main main main main main'
+      'sidenav main main main main main'
+      'sidenav main main main main main'
+      'sidenav main main main main main'
+      'sidenav main main main main main'
+      'sidenav main main main main main'
+      'sidenav main main main main main'
+      'sidenav main main main main main'
+      'sidenav main main main main main'
+      'sidenav main main main main main'
+      'sidenav main main main main main'
+      'sidenav main main main main main'
+      'sidenav main main main main main'
+      'sidenav main main main main main'
+      'sidenav main main main main main'
+      'sidenav footer footer footer footer footer';
+}
+
+.header { 
+    grid-area: header;
+    background-color: blue;
+}
+
+.sidenav { 
+    grid-area: sidenav; 
+    background-color: yellow;
+}
+
+.main { 
+    grid-area: main;
+    background-color: orange;
+}
+
+.footer { 
+    grid-area: footer; 
+    background-color: green;
+}

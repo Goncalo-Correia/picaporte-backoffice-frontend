@@ -3,42 +3,23 @@
     width: 100vw;
     height: 100vh;
     grid-template-areas:
-      'header header header header header header'
-      'sidenav main main main main main'
-      'sidenav main main main main main'
-      'sidenav main main main main main'
-      'sidenav main main main main main'
-      'sidenav main main main main main'
-      'sidenav main main main main main'
-      'sidenav main main main main main'
-      'sidenav main main main main main'
-      'sidenav main main main main main'
-      'sidenav main main main main main'
-      'sidenav main main main main main'
-      'sidenav main main main main main'
-      'sidenav main main main main main'
-      'sidenav main main main main main'
-      'sidenav main main main main main'
-      'sidenav main main main main main'
-      'sidenav footer footer footer footer footer';
+      'header header '
+      'sidenav main ';
+    grid-template-rows: auto 1fr;
+    grid-template-columns: 300px 1fr;
 }
 
 .header { 
     grid-area: header;
-    background-color: blue;
+    border-bottom: 2px solid var(--color-body-background);
 }
 
 .sidenav { 
-    grid-area: sidenav; 
-    background-color: yellow;
+    grid-area: sidenav;
+    border-right: 2px solid var(--color-body-background);
 }
 
 .main { 
     grid-area: main;
-    background-color: orange;
-}
-
-.footer { 
-    grid-area: footer; 
-    background-color: green;
+    background-color: var(--color-body-background);
 }

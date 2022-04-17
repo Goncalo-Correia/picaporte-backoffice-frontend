@@ -3,7 +3,17 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  apiUrl: "https://localhost:7036/"
+};
+
+export const apiEndpoints = {
+  queries_customer: {
+    get: "",
+    post: "",
+    put: "",
+    searchAndFilter: "api/Queries_Customers/SearchAndFilter"
+  }
 };
 
 /*

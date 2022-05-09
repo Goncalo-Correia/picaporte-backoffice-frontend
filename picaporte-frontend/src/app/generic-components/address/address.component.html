@@ -1,0 +1,34 @@
+<form>
+  <div class="row">
+    <div class="col mb-3">
+      <label for="street" class="form-label fw-bold">Rua</label>
+      <input type="text" class="form-control" id="street" name="street" [(ngModel)]="address.street" (change)="triggerEvent_updateAddress()">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-6 mb-3">
+      <label for="location" class="form-label fw-bold">Localização</label>
+      <input type="text" class="form-control" id="location" name="lastNalocationme" [(ngModel)]="address.location" (change)="triggerEvent_updateAddress()">
+    </div>
+    <div class="col-6 mb-3">
+      <label for="parish" class="form-label fw-bold">Freguesia</label>
+      <input type="text" class="form-control" id="parish" name="parish" [(ngModel)]="address.parish" (change)="triggerEvent_updateAddress()">
+    </div>
+  </div>
+  <div class="row">
+    <div class="mb-3 col-6">
+      <label for="city" class="form-label fw-bold">Cidade</label>
+      <input type="text" class="form-control" id="city" name="city" [(ngModel)]="address.city" (change)="triggerEvent_updateAddress()">
+    </div>
+    <div class="mb-3 col-6">
+      <label for="island" class="form-label fw-bold">Ilha</label>
+      <input type="text" class="form-control" id="island" name="island" [(ngModel)]="address.island" (change)="triggerEvent_updateAddress()">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col mb-3">
+      <label for="description" class="form-label fw-bold">Descrição</label>
+      <textarea type="text" rows="3" class="form-control" id="description" name="description" [(ngModel)]="address.description" (change)="triggerEvent_updateAddress()"></textarea>
+    </div>
+  </div>  
+</form>

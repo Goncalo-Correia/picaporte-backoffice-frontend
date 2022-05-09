@@ -1,1 +1,56 @@
-<p>dashboard works!</p>
+<div class="p-5 row">
+    <div class="col-12">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Pesquise por um cliente, imóvel ou utilizador"  aria-describedby="button-addon2" [(ngModel)]="searchAndFilterStructure.searchText">
+            <button class="btn btn-picaporte-secondary" type="button" id="button-addon2" (click)="get_dashboardStructure()">Pesquisar</button>
+        </div>
+    </div>
+    <div>
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Nome / Referência</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Atualizado em</th>
+                <th scope="col">Atualizado por</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="isDataFetched; else elseBlock">
+                <tr *ngFor="let item of entityReferenceList" class="table-row">
+                    <td scope="row">
+                      <span *ngIf="item.type == 'Cliente'" [routerLink]="['/Cliente/', item.customerId]" class="col cursor-pointer color-primary fw-bold">{{item.name}}</span>
+                      <span *ngIf="item.type == 'Imóvel'" [routerLink]="['/Imovel/', item.propertyId]" class="col cursor-pointer color-primary fw-bold">{{item.name}}</span>
+                    </td>
+                    <td><span class="col">{{item.type}}</span></td>
+                    <td><span class="col">{{item.lastModifiedOn}}</span></td>
+                    <td><span class="col">{{item.lastModifiedBy}}</span></td>
+                </tr>
+            </tbody>
+            <ng-template #elseBlock>
+                <tbody>
+                    <tr *ngFor="let number of [0,1,2,3,4]" class="placeholder-glow table-row">
+                        <td scope="row"><span class="placeholder col-4"></span></td>
+                        <td><span class="placeholder col-2"></span></td>
+                        <td><span class="placeholder col-2"></span></td>
+                        <td><span class="placeholder col-2"></span></td>
+                    </tr>
+                </tbody>
+            </ng-template>
+          </table>
+    </div>
+    <div *ngIf="entityReferenceList.length == 0 && isDataFetched" class="w-100 p-4 text-center rounded bg-white">
+        Não foram encontrados dados
+    </div>
+    <div *ngIf="isDataFetched">
+        <nav>
+            <ul class="pagination justify-content-end">
+              <li *ngIf="hasPrevious" class="page-item" (click)="previous()">
+                <a class="page-link color-primary">Anterior</a>
+              </li>
+              <li *ngIf="hasNext" class="page-item" (click)="next()">
+                <a class="page-link color-primary">Seguinte</a>
+              </li>
+            </ul>
+          </nav>
+    </div>
+</div>

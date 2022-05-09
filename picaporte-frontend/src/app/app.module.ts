@@ -8,17 +8,28 @@ import { AppComponent } from './app.component';
 
 // Import the module from the SDK
 import { AuthModule } from '@auth0/auth0-angular';
-import { Auth0ServiceComponent } from './auth0-service/auth0-service.component';
+import { Auth0ServiceComponent } from './services/auth0-service/auth0-service.component';
 import { HomeComponent } from './router-components/home/home.component';
 import { HeaderComponent } from './layout-components/header/header.component';
 import { SidenavComponent } from './layout-components/sidenav/sidenav.component';
 import { CustomerComponent } from './customer-components/customer/customer.component';
-import { CustomerAddressComponent } from './customer-components/customer-address/customer-address.component';
 import { CustomerPropertiesComponent } from './customer-components/customer-properties/customer-properties.component';
 import { CustomerBusinesscardsComponent } from './customer-components/customer-businesscards/customer-businesscards.component';
-import { CustomerPreferencesComponent } from './customer-components/customer-preferences/customer-preferences.component';
+import { CustomerPreferencesComponent } from './generic-components/preferences/preferences.component';
 import { CustomerDashboardComponent } from './dashboard-components/customer-dashboard/customer-dashboard.component';
 import { QueriesCustomerService } from './api-service/queries-customer/queries-customer.service';
+import { CustomerDetailComponent } from './customer-components/customer-detail/customer-detail.component';
+import { AddressComponent } from './generic-components/address/address.component';
+import { RouterModule } from '@angular/router';
+import { PropertyDashboardComponent } from './dashboard-components/property-dashboard/property-dashboard.component';
+import { PropertyComponent } from './property-components/property/property.component';
+import { PropertyDetailComponent } from './property-components/property-detail/property-detail.component';
+import { PropertyCaracteristicsComponent } from './property-components/property-caracteristics/property-caracteristics.component';
+import { PropertyDocumentsComponent } from './property-components/property-documents/property-documents.component';
+import { PropertyImagesComponent } from './property-components/property-images/property-images.component';
+import { PropertyAddressComponent } from './property-components/property-address/property-address.component';
+import { PropertyObservationhistoryComponent } from './property-components/property-observationhistory/property-observationhistory.component';
+import { DashboardComponent } from './dashboard-components/dashboard/dashboard.component';
 
 
 @NgModule({
@@ -29,11 +40,21 @@ import { QueriesCustomerService } from './api-service/queries-customer/queries-c
     HeaderComponent,
     SidenavComponent,
     CustomerComponent,
-    CustomerAddressComponent,
     CustomerPropertiesComponent,
     CustomerBusinesscardsComponent,
     CustomerPreferencesComponent,
-    CustomerDashboardComponent
+    CustomerDashboardComponent,
+    CustomerDetailComponent,
+    AddressComponent,
+    PropertyDashboardComponent,
+    PropertyComponent,
+    PropertyDetailComponent,
+    PropertyCaracteristicsComponent,
+    PropertyDocumentsComponent,
+    PropertyImagesComponent,
+    PropertyAddressComponent,
+    PropertyObservationhistoryComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -45,6 +66,7 @@ import { QueriesCustomerService } from './api-service/queries-customer/queries-c
       clientId: 'REDACTED_AUTH0_CLIENT_ID_OLD'
     })
   ],
+  exports: [RouterModule],
   providers: [QueriesCustomerService],
   bootstrap: [AppComponent]
 })

@@ -1,0 +1,62 @@
+<div class="p-5 row">
+    <div class="col">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Pesquise por um cliente"  aria-describedby="button-addon2" [(ngModel)]="searchAndFilterStructure.searchText">
+            <button class="btn btn-picaporte-secondary" type="button" id="button-addon2" (click)="get_propertyDashboardStructure()">Pesquisar</button>
+        </div>
+    </div>
+    <div class="col-3 d-flex justify-content-end mb-3">
+        <button routerLink="/Imovel/0" class="btn btn-picaporte-secondary">Novo imóvel</button>
+    </div>
+    <div>
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Referência</th>
+                <th scope="col">Cliente</th>
+                <th scope="col">Estado do imóvel</th>
+                <th scope="col">Tipo do imóvel</th>
+                <th scope="col">Atualizado em</th>
+                <th scope="col">Atualizado por</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="isDataFetched; else elseBlock">
+                <tr *ngFor="let property of propertyDashboardStructureArray" class="table-row">
+                    <td scope="row"><span [routerLink]="['/Imovel/', property.id]" class="col cursor-pointer color-primary fw-bold">{{property.reference}}</span></td>
+                    <td><span class="col">{{property.customerName}}</span></td>
+                    <td><span class="col">{{property.propertyStatusLabel}}</span></td>
+                    <td><span class="col">{{property.propertyTypeLabel}}</span></td>
+                    <td><span class="col">{{property.lastModifiedOn}}</span></td>
+                    <td><span class="col">{{property.lastModifiedBy}}</span></td>
+                </tr>
+            </tbody>
+            <ng-template #elseBlock>
+                <tbody>
+                    <tr *ngFor="let number of [0,1,2,3,4]" class="placeholder-glow table-row">
+                        <td scope="row"><span class="placeholder col-4"></span></td>
+                        <td><span class="placeholder col-2"></span></td>
+                        <td><span class="placeholder col-2"></span></td>
+                        <td><span class="placeholder col-2"></span></td>
+                        <td><span class="placeholder col-2"></span></td>
+                        <td><span class="placeholder col-2"></span></td>
+                    </tr>
+                </tbody>
+            </ng-template>
+          </table>
+    </div>
+    <div *ngIf="propertyDashboardStructureArray.length == 0 && isDataFetched" class="w-100 p-4 text-center rounded bg-white">
+        Não foram encontrados imóveis
+    </div>
+    <div *ngIf="isDataFetched">
+        <nav>
+            <ul class="pagination justify-content-end">
+              <li *ngIf="hasPrevious" class="page-item" (click)="previous()">
+                <a class="page-link color-primary">Anterior</a>
+              </li>
+              <li *ngIf="hasNext" class="page-item" (click)="next()">
+                <a class="page-link color-primary">Seguinte</a>
+              </li>
+            </ul>
+          </nav>
+    </div>
+</div>

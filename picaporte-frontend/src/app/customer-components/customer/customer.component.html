@@ -1,1 +1,48 @@
-<p>customer works!</p>
+<div class="d-flex h-100">
+    <div class="submenu-container h-100">
+        <div class="submenu-grid">
+            <div *ngFor="let submenu of customerSubmenus" class="submenu-grid-item cursor-pointer" (click)="onClick_selectSubMenu(submenu.enum_customerSubMenu)" [ngClass]="{'selected': submenu.enum_customerSubMenu == selectedCustomerSubMenu}">
+                <div class="px-4 py-4">
+                    <div class="fs-5 fw-bold mb-2">
+                        {{submenu.label}}
+                    </div>
+                    <div class="text-muted fs-6">
+                        {{submenu.description}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="p-5 w-100">
+        <div *ngIf="isOnDetailsSubMenu" class="row">
+            <div class="col-6 px-3">
+                <div class="bg-white p-4 rounded h-100">
+                    <app-customer-detail [customer]="customerStructure.customer" (event_updateCustomerDetails)="eventHandler_updateCustomerDetails($event)"></app-customer-detail>
+                </div>
+            </div>
+            <div class="col-6 px-3">
+                <div class="bg-white p-4 rounded h-100">
+                    <app-address *ngIf="isDataFetched" [address]="customerStructure.customer.address" (event_updateAddress)="eventHandler_updateCustomerAddress($event)"></app-address>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="isOnTasksSubMenu" class="row">
+            
+        </div>
+        <div *ngIf="isOnPreferencesSubMenu" class="row">
+            <div class="col-12">
+                <app-preferences [preferences]="customerStructure.preferences" (event_updatePreferences)="eventHandler_updateCustomerPreferences($event)"></app-preferences>
+            </div>
+        </div>
+        <div *ngIf="isOnPropertiesSubMenu" class="row">
+            <div class="col-12">
+                <app-customer-properties [properties]="customerStructure.properties" (event_updateCustomerProperties)="eventHandler_updateCustomerProperties($event)"></app-customer-properties>
+            </div>
+        </div>
+        <div *ngIf="isOnHistorySubMenu" class="row">
+            <div class="col-12">
+    
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,4 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+    --color-primary: #603d20;
+    --color-primary-light: rgb(96, 61, 32, 0.05);
+    --color-secondary: #F6BC72;
+    --color-body-background: #f3f3f3;
+}
+
 .color-primary {
     color: var(--color-primary);
 }
@@ -12,21 +19,6 @@
 }
 
 /* BOOTSTRAP override */
-:root {
-    --color-primary: #603d20;
-    --color-primary-light: rgb(96, 61, 32, 0.05);
-    --color-secondary: #F6BC72;
-    --color-body-background: #f3f3f3;
-}
-
-.row {
-    --bs-gutter-x: 0;
-}
-
-.row>*{
-    padding-right: 0px;
-    padding-left: 0px;
-}
 
 .btn-picaporte-primary {
     background-color: var(--color-primary);
@@ -44,6 +36,10 @@
 
 .page-link:hover {
     color: var(--color-primary);
+}
+
+.fade:not(.show) {
+    opacity: 1;
 }
 
 
@@ -67,4 +63,28 @@
     border-bottom: none;
     padding: 20px 20px;
     vertical-align: inherit;
+}
+
+/* SUB MENUS */
+.submenu-container {
+    width: fit-content;
+    min-width: 300px;
+    height: 100%;
+    background-color: white;
+}
+
+.submenu-grid {
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: auto;
+}
+
+.submenu-grid-item {
+    border-bottom: 1px solid var(--color-body-background);
+    border-right: 3px solid white;
+}
+
+.submenu-grid-item.selected {
+    color: var(--color-secondary);
+    border-right: 3px solid var(--color-secondary);
 }

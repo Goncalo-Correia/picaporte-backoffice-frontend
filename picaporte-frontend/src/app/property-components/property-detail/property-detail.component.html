@@ -1,0 +1,38 @@
+<form>
+    <div class="row">
+      <div class="col-6 mb-3">
+        <label for="reference" class="form-label fw-bold">Referência</label>
+        <input type="text" class="form-control" id="reference" name="reference" [(ngModel)]="property.reference" (change)="triggerEvent_updatePropertyDetails()">
+      </div>
+      <div class="col-6 mb-3">
+        <label for="price" class="form-label fw-bold">Preço</label>
+        <input type="text" class="form-control" id="price" name="price" [(ngModel)]="property.price" (change)="triggerEvent_updatePropertyDetails()">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col mb-3">
+        <label for="description" class="form-label fw-bold">Descrição</label>
+        <textarea type="text" class="form-control" id="description" rows="3" name="description" [(ngModel)]="property.description" (change)="triggerEvent_updatePropertyDetails()"></textarea>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 mb-3">
+        <label for="bathrooms" class="form-label fw-bold">Nº casa de banho</label>
+        <input type="number" class="form-control" id="bathrooms" name="phoneNumber" [(ngModel)]="property.bathrooms" (change)="triggerEvent_updatePropertyDetails()">
+      </div>
+      <div class="col-6 mb-3">
+        <label for="year" class="form-label fw-bold">Ano de construção</label>
+        <input type="email" class="form-control" id="year" name="year" [(ngModel)]="property.constructionYear" (change)="triggerEvent_updatePropertyDetails()">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 mb-3">
+        <label for="totalarea" class="form-label fw-bold">Área total</label>
+        <input type="text" class="form-control" id="totalarea" name="totalarea" [(ngModel)]="property.totalConstructionArea" (change)="triggerEvent_updatePropertyDetails()">
+      </div>
+      <div class="col-6 mb-3">
+        <label for="constructionarea" class="form-label fw-bold">Área de construção</label>
+        <input type="text" class="form-control" id="constructionarea" name="constructionarea" [(ngModel)]="property.livingArea" (change)="triggerEvent_updatePropertyDetails()">
+      </div>
+    </div>
+  </form>

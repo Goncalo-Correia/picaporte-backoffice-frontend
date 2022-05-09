@@ -1,0 +1,117 @@
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { QueriesPropertyService } from 'src/app/api-service/queries-property/queries-property.service';
+import { Address } from 'src/app/models/address.model';
+import { Property } from 'src/app/models/property.model';
+import { Static_AmenetieType } from 'src/app/models/static/static-amenetieType.model';
+import { PropertyStructure } from 'src/app/structures/property.structure';
+import { Enum_PropertySubMenu, PropertySubMenu, PropertySubMenuFactory } from 'src/app/submenus/property.submenu';
+
+@Component({
+  selector: 'app-property',
+  templateUrl: './property.component.html',
+  styleUrls: ['./property.component.css']
+})
+export class PropertyComponent implements OnInit {
+
+  private propertyId: number = 0;
+
+  propertyStructure: PropertyStructure;
+  propertySubmenus: Array<PropertySubMenu>;
+  selectedPropertySubMenu: Enum_PropertySubMenu = Enum_PropertySubMenu.DETAILS;
+
+  isOnDetailsSubMenu: boolean = true;
+  isOnTasksSubMenu: boolean = false;
+  isOnCaracteristicsSubMenu: boolean = false;
+  isOnDocumentsSubMenu: boolean = false;
+  isOnImagesSubMenu: boolean = false;
+  isOnRentingSubMenu: boolean = false;
+  isOnLocationSubMenu: boolean = false;
+  isOnObservationHistorySubMenu: boolean = false;
+  isOnHistorySubMenu: boolean = false;
+
+  isDataFetched: boolean = false;
+  
+  private propertySubmenuFactory: PropertySubMenuFactory;
+
+  constructor(public queries_propertyService: QueriesPropertyService, private activeRoute: ActivatedRoute) {
+    this.propertyStructure = new PropertyStructure();
+    this.propertySubmenus = new Array<PropertySubMenu>();
+    this.propertySubmenuFactory = new PropertySubMenuFactory();
+  }
+  
+  ngOnInit(): void {
+    this.getActiveRoute();
+    this.get_propertySubmenus();
+    this.get_propertyStructure();
+  }
+
+  onClick_selectSubMenu(enum_selectedCustomerSubMenu: Enum_PropertySubMenu | undefined) {
+    if (enum_selectedCustomerSubMenu != undefined) {
+      this.selectedPropertySubMenu = enum_selectedCustomerSubMenu;
+    }
+    this.checkSelectedSubMenu();
+  }
+
+  eventHandler_updatePropertyDetails(data: any) {
+    this.propertyStructure.property = data;
+  }
+
+  eventHandler_updatePropertyAddress(data: Address) {
+    this.propertyStructure.property.address = data;
+  }
+
+  eventHandler_updatePropertyCaracteristics(data: Array<Static_AmenetieType>) {
+    this.propertyStructure.ameneties = data;
+  }
+
+  eventHandler_updatePropertyDocuments(data: any) {
+
+  }
+
+  eventHandler_updatePropertyImages(data: any) {
+
+  }
+
+  eventHandler_updatePropertyRenting(data: any) {
+
+  }
+
+  eventHandler_updatePropertyLocation(data: any) {
+
+  }
+
+  eventHandler_updatePropertyObservationHistory(data: any) {
+    
+  }
+
+  private get_propertyStructure() {
+    this.queries_propertyService.Get_PropertyStructure(this.propertyId).subscribe((data: {}) => {
+      this.propertyStructure = <PropertyStructure>data;
+      this.isDataFetched = true;
+    });;
+  }
+
+  private get_propertySubmenus() {
+    this.propertySubmenus = this.propertySubmenuFactory.getPropertySubmenus();
+  }
+
+  private getActiveRoute() {
+    this.activeRoute.paramMap.subscribe(res => {
+      this.propertyId = <number><unknown>res.get('id');
+    });  
+  }
+
+  private checkSelectedSubMenu() {
+    this.isOnDetailsSubMenu = this.selectedPropertySubMenu == Enum_PropertySubMenu.DETAILS;
+    this.isOnTasksSubMenu = this.selectedPropertySubMenu == Enum_PropertySubMenu.TASKS;
+    this.isOnCaracteristicsSubMenu = this.selectedPropertySubMenu == Enum_PropertySubMenu.CARACTERISTICS;
+    this.isOnDocumentsSubMenu = this.selectedPropertySubMenu == Enum_PropertySubMenu.DOCUMENTS;
+    this.isOnImagesSubMenu = this.selectedPropertySubMenu == Enum_PropertySubMenu.IMAGES;
+    this.isOnRentingSubMenu = this.selectedPropertySubMenu == Enum_PropertySubMenu.RENTING;
+    this.isOnLocationSubMenu = this.selectedPropertySubMenu == Enum_PropertySubMenu.LOCATION;
+    this.isOnObservationHistorySubMenu = this.selectedPropertySubMenu == Enum_PropertySubMenu.OBSERVATION_HISTORY;
+    this.isOnHistorySubMenu = this.selectedPropertySubMenu == Enum_PropertySubMenu.HISTORY;
+  }
+
+}

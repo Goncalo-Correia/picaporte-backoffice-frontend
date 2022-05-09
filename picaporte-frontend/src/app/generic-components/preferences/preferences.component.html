@@ -1,0 +1,115 @@
+<div class="row mb-5">
+  <div class="col-12 d-flex justify-content-end mb-3">
+    <button type="button" class="btn btn-picaporte-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="onClick_addNew()">
+      Adicionar preferência
+    </button>
+  </div>
+</div>
+<div *ngIf="preferences.length == 0" class="bg-white text-muted p-4 rounded h-100 d-flex flex-column justify-content-center align-items-center">
+  <i class="fa-solid fa-folder-open fa-4x"></i>
+  <span>Não existem preferências para este cliente</span>
+</div>
+<div class="row">
+  <div *ngFor="let preference of preferences; index as i" class="col-4 bg-white rounded p-3 mx-3 position-relative">
+    <div class="position-absolute top-0 end-0 d-flex p-2">
+      <i class="fa fa-edit cursor-pointer preference-remove-icon me-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="onClick_edit(i)"></i>
+      <i class="fa fa-times cursor-pointer preference-remove-icon" (click)="onClick_remove(i)"></i>
+    </div>
+    <div class="mb-3">
+        <div class="mb-2">Preço mínimo: {{preference.preference.minPrice}}</div>
+        <div class="mb-2">Preço máximo: {{preference.preference.maxPrice}}</div>
+        <div class="mb-2">Número de casa de banho: {{preference.preference.numBathrooms}}</div>
+        <div>Ano de construção: {{preference.preference.constructionYear}}</div>
+    </div>
+    <div class="mb-3">
+        <div class="mb-2">Tipo: {{preference.preference.propertyType.label}}</div>
+        <div class="mb-2">Estado: {{preference.preference.propertyStatus.label}}</div>
+        <div class="mb-2">Tipologia: {{preference.preference.propertyTypology.label}}</div>
+    </div>
+    <div>
+        <div *ngFor="let amenetieType of preference.ameneties">
+            <i class="fa fa-icon"></i>
+            <div>{{amenetieType.label}}</div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Registar nova preferência</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="onClick_close()"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="row">
+            <div class="col-6 mb-3">
+            <label for="firstName" class="form-label fw-bold">Preço mínimo</label>
+              <input type="text" class="form-control" id="firstName" name="firstName" [(ngModel)]="selectedPreferenceStructure.preference.minPrice">
+            </div>
+            <div class="col-6 mb-3">
+              <label for="lastName" class="form-label fw-bold">Preço máximo</label>
+              <input type="text" class="form-control" id="lastName" name="lastName" [(ngModel)]="selectedPreferenceStructure.preference.maxPrice">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6 mb-3">
+              <label for="phoneNumber" class="form-label fw-bold">Nº de casa de banho</label>
+              <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" [(ngModel)]="selectedPreferenceStructure.preference.numBathrooms">
+            </div>
+            <div class="col-6 mb-3">
+              <label for="email" class="form-label fw-bold">Ano de construção</label>
+              <input type="email" class="form-control" id="email" name="email" [(ngModel)]="selectedPreferenceStructure.preference.constructionYear">
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="cc" class="form-label fw-bold">Tipo do imóvel</label>
+            <div class="dropdown">
+              <button class="btn btn-picaporte-secondary dropdown-toggle" type="button" id="propertyType" data-bs-toggle="dropdown" aria-expanded="false">
+                {{selectedPropertyTypeLabel}}
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="propertyType">
+                <li *ngFor="let propertyType of staticPropertyTypes">
+                  <a class="dropdown-item" (click)="onClick_selectPropertyType(propertyType, propertyType.label)">{{propertyType.label}}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="nif" class="form-label fw-bold">Estado do imóvel</label>
+            <div class="dropdown">
+              <button class="btn btn-picaporte-secondary dropdown-toggle" type="button" id="propertyType" data-bs-toggle="dropdown" aria-expanded="false">
+                {{selectedPropertyStatusLabel}}
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="propertyType">
+                <li *ngFor="let propertyStatus of staticPropertyStatuses">
+                  <a class="dropdown-item" (click)="onClick_selectPropertyStatus(propertyStatus, propertyStatus.label)">{{propertyStatus.label}}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="nif" class="form-label fw-bold">Tipologia do imóvel</label>
+            <div class="dropdown">
+              <button class="btn btn-picaporte-secondary dropdown-toggle" type="button" id="propertyType" data-bs-toggle="dropdown" aria-expanded="false">
+                {{selectedPropertyTypologyLabel}}
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="propertyType">
+                <li *ngFor="let propertyTypology of staticPropertyTypologies">
+                  <a class="dropdown-item" (click)="onClick_selectPropertyTypology(propertyTypology, propertyTypology.label)">{{propertyTypology.label}}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="onClick_close()">Cancelar</button>
+        <button type="button" class="btn btn-picaporte-primary" data-bs-dismiss="modal" (click)="onClick_submit()">Confirmar</button>
+      </div>
+    </div>
+  </div>
+</div>

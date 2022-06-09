@@ -36,7 +36,8 @@
         </div>
         <div *ngIf="isOnDocumentsSubMenu" class="row">
             <div class="col-12">
-                <!--<app-customer-properties [properties]="customerStructure.properties" (event_updateCustomerProperties)="eventHandler_updatePropertyDocuments($event)"></app-customer-properties>-->
+                <app-property-documents [mainDocuments]="propertyStructure.mainDocuments" [certificateDocuments]="propertyStructure.certificateDocuments" [otherDocuments]="propertyStructure.otherDocuments" 
+                (event_updateMainPropertyDocuments)="eventHandler_updateMainPropertyDocuments($event)" (event_updateCertificatePropertyDocuments)="eventHandler_updateCertificatePropertyDocuments($event)" (event_updateOtherPropertyDocuments)="eventHandler_updateOtherPropertyDocuments($event)"></app-property-documents>
             </div>
         </div>
         <div *ngIf="isOnImagesSubMenu" class="row">

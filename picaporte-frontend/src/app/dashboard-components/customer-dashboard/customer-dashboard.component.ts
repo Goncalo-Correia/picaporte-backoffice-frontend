@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { QueriesCustomerService } from 'src/app/api-service/queries-customer/queries-customer.service';
-import { CustomerDashboardStructure } from 'src/app/structures/customer-dashboard.structure';
-import { SearchAndFilterStructure } from 'src/app/structures/search-and-filter.structure';
+import { CustomerDashboardStructure } from 'src/app/structures/dashboard-structures/customer-dashboard.structure';
+import { SearchAndFilterStructure } from 'src/app/structures/dashboard-structures/search-and-filter.structure';
 
 @Component({
   selector: 'app-customer-dashboard',

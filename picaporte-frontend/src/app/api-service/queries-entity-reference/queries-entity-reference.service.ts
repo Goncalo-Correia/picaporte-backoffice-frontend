@@ -1,8 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, retry, throwError } from 'rxjs';
-import { EntityReferenceStructure } from 'src/app/structures/entity-reference.structure';
-import { SearchAndFilterStructure } from 'src/app/structures/search-and-filter.structure';
+import { EntityReferenceDashboardStructure } from 'src/app/structures/dashboard-structures/entity-reference-dashboard.structure';
+import { SearchAndFilterStructure } from 'src/app/structures/dashboard-structures/search-and-filter.structure';
 import { apiEndpoints, environment } from 'src/environments/environment';
 
 @Injectable({
@@ -21,9 +21,9 @@ export class QueriesEntityReferenceService {
     };
 
     // POST
-    Post_SearchAndFilter_EntityReferenceStructure(data: SearchAndFilterStructure): Observable<EntityReferenceStructure[]> {
+    Post_SearchAndFilter_EntityReferenceStructure(data: SearchAndFilterStructure): Observable<EntityReferenceDashboardStructure[]> {
     return this.http
-        .post<EntityReferenceStructure[]>(
+        .post<EntityReferenceDashboardStructure[]>(
           this.baseurl + apiEndpoints.queries_entityReference.searchAndFilter,
           JSON.stringify(data),
           this.httpOptions

@@ -1,7 +1,7 @@
-import { BusinessCard } from "../models/businesscard.model";
-import { Customer } from "../models/customer.model";
-import { Property } from "../models/property.model";
-import { PreferenceStructure } from "./preference.structure";
+import { BusinessCard } from "../../models/businesscard.model";
+import { Customer } from "../../models/customer.model";
+import { Property } from "../../models/property.model";
+import { PreferenceStructure } from "../preference.structure";
 
 export class CustomerStructure {
     customer: Customer = <Customer>{};

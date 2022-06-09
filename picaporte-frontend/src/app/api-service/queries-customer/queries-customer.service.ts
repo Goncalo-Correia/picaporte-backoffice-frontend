@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
-import { CustomerDashboardStructure } from 'src/app/structures/customer-dashboard.structure';
+import { CustomerDashboardStructure } from 'src/app/structures/dashboard-structures/customer-dashboard.structure';
 import { apiEndpoints, environment } from 'src/environments/environment';
-import { SearchAndFilterStructure } from 'src/app/structures/search-and-filter.structure';
+import { SearchAndFilterStructure } from 'src/app/structures/dashboard-structures/search-and-filter.structure';
+import { CustomerStructure } from 'src/app/structures/main-structures/customer.structure';
 
 @Injectable({
   providedIn: 'root'
@@ -22,16 +23,16 @@ export class QueriesCustomerService {
     };
 
     // GET
-    Get_CustomerStructure(id: number): Observable<CustomerDashboardStructure> {
+    Get_CustomerStructure(id: number): Observable<CustomerStructure> {
       return this.http
-        .get<CustomerDashboardStructure>(this.baseurl + apiEndpoints.queries_customer.get + id)
+        .get<CustomerStructure>(this.baseurl + apiEndpoints.queries_customer.get + id)
         .pipe(retry(1), catchError(this.errorHandl));
     }
         
     // PUT
-    Put_CustomerStructure(id: number, data: CustomerDashboardStructure): Observable<CustomerDashboardStructure> {
+    Put_CustomerStructure(id: number, data: CustomerStructure): Observable<CustomerStructure> {
       return this.http
-        .put<CustomerDashboardStructure>(
+        .put<CustomerStructure>(
           this.baseurl + apiEndpoints.queries_customer.put + id,
             JSON.stringify(data),
             this.httpOptions
@@ -40,9 +41,9 @@ export class QueriesCustomerService {
     }
 
     // POST
-    Post_CustomerStructure(data: CustomerDashboardStructure): Observable<CustomerDashboardStructure> {
+    Post_CustomerStructure(data: CustomerStructure): Observable<CustomerStructure> {
       return this.http
-        .post<CustomerDashboardStructure>(
+        .post<CustomerStructure>(
           this.baseurl + apiEndpoints.queries_customer.post,
           JSON.stringify(data),
           this.httpOptions

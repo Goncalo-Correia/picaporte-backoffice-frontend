@@ -14,15 +14,29 @@
         </div>
     </div>
     <div class="p-5 w-100">
+
+        <div class="row">
+            <div class="col-auto fs-4">
+                <div *ngIf="isOnDetailsSubMenu" class="mb-3 fw-bold">Identificação e Morada</div>
+                <div *ngIf="isOnPreferencesSubMenu" class="mb-3 me-3 fw-bold">Preferências</div>
+                <div *ngIf="isOnPropertiesSubMenu" class="mb-3 fw-bold">Imóveis associados</div>
+            </div>
+            <div class="col mb-5 d-flex justify-content-end">
+                <button *ngIf="!isEditable" class="btn btn-picaporte-secondary" (click)="onClick_edit()">Editar</button>
+                <button *ngIf="isEditable" class="btn btn-danger me-3" (click)="onClick_cancel()">Cancelar</button>
+                <button *ngIf="isEditable" class="btn btn-success" (click)="onClick_submit()">Submeter dados</button>
+            </div>
+        </div>
+
         <div *ngIf="isOnDetailsSubMenu" class="row">
             <div class="col-6 px-3">
                 <div class="bg-white p-4 rounded h-100">
-                    <app-customer-detail [customer]="customerStructure.customer" (event_updateCustomerDetails)="eventHandler_updateCustomerDetails($event)"></app-customer-detail>
+                    <app-customer-detail [customer]="customerStructure.customer" [isEditable]="isEditable" (event_updateCustomerDetails)="eventHandler_updateCustomerDetails($event)"></app-customer-detail>
                 </div>
             </div>
             <div class="col-6 px-3">
                 <div class="bg-white p-4 rounded h-100">
-                    <app-address *ngIf="isDataFetched" [address]="customerStructure.customer.address" (event_updateAddress)="eventHandler_updateCustomerAddress($event)"></app-address>
+                    <app-address *ngIf="isDataFetched" [address]="customerStructure.customer.address" [isEditable]="isEditable" (event_updateAddress)="eventHandler_updateCustomerAddress($event)"></app-address>
                 </div>
             </div>
         </div>
@@ -31,12 +45,12 @@
         </div>
         <div *ngIf="isOnPreferencesSubMenu" class="row">
             <div class="col-12">
-                <app-preferences [preferences]="customerStructure.preferences" (event_updatePreferences)="eventHandler_updateCustomerPreferences($event)"></app-preferences>
+                <app-preferences [preferences]="customerStructure.preferences" [isEditable]="isEditable" (event_updatePreferences)="eventHandler_updateCustomerPreferences($event)"></app-preferences>
             </div>
         </div>
         <div *ngIf="isOnPropertiesSubMenu" class="row">
             <div class="col-12">
-                <app-customer-properties [properties]="customerStructure.properties" (event_updateCustomerProperties)="eventHandler_updateCustomerProperties($event)"></app-customer-properties>
+                <app-customer-properties [properties]="customerStructure.properties"></app-customer-properties>
             </div>
         </div>
         <div *ngIf="isOnHistorySubMenu" class="row">
@@ -46,3 +60,5 @@
         </div>
     </div>
 </div>
+
+<app-spinner *ngIf="isLoading"></app-spinner>

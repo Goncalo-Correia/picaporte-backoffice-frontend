@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { QueriesPropertyService } from 'src/app/api-service/queries-property/queries-property.service';
-import { PropertyDashboardStructure } from 'src/app/structures/property-dashboard.structure';
-import { SearchAndFilterStructure } from 'src/app/structures/search-and-filter.structure';
+import { PropertyDashboardStructure } from 'src/app/structures/dashboard-structures/property-dashboard.structure';
+import { SearchAndFilterStructure } from 'src/app/structures/dashboard-structures/search-and-filter.structure';
 
 @Component({
   selector: 'app-property-dashboard',

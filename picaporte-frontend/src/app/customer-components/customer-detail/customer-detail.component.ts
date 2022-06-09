@@ -9,6 +9,7 @@ import { Customer } from 'src/app/models/customer.model';
 export class CustomerDetailComponent implements OnInit {
 
   @Input() customer: Customer = <Customer>{};
+  @Input() isEditable: boolean = false;
 
   @Output() event_updateCustomerDetails = new EventEmitter<Customer>();
 

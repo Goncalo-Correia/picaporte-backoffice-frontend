@@ -4,7 +4,8 @@ import { QueriesPropertyService } from 'src/app/api-service/queries-property/que
 import { Address } from 'src/app/models/address.model';
 import { Property } from 'src/app/models/property.model';
 import { Static_AmenetieType } from 'src/app/models/static/static-amenetieType.model';
-import { PropertyStructure } from 'src/app/structures/property.structure';
+import { DocumentStructure } from 'src/app/structures/document.structure';
+import { PropertyStructure } from 'src/app/structures/main-structures/property.structure';
 import { Enum_PropertySubMenu, PropertySubMenu, PropertySubMenuFactory } from 'src/app/submenus/property.submenu';
 
 @Component({
@@ -65,8 +66,16 @@ export class PropertyComponent implements OnInit {
     this.propertyStructure.ameneties = data;
   }
 
-  eventHandler_updatePropertyDocuments(data: any) {
+  eventHandler_updateMainPropertyDocuments(data: Array<DocumentStructure>) {
+    this.propertyStructure.mainDocuments = data;
+  }
 
+  eventHandler_updateCertificatePropertyDocuments(data: Array<DocumentStructure>) {
+    this.propertyStructure.certificateDocuments = data;
+  }
+
+  eventHandler_updateOtherPropertyDocuments(data: Array<DocumentStructure>) {
+    this.propertyStructure.otherDocuments = data;
   }
 
   eventHandler_updatePropertyImages(data: any) {

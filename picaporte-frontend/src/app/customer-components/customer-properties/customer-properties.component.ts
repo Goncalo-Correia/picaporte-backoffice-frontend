@@ -10,15 +10,9 @@ export class CustomerPropertiesComponent implements OnInit {
 
   @Input() properties: Array<Property> | undefined;
 
-  @Output() event_updateCustomerProperties= new EventEmitter<Array<Property>>();
-
   constructor() { }
 
   ngOnInit(): void {
-  }
-
-  triggerEvent_updateCustomerProperties() {
-    this.event_updateCustomerProperties.emit(this.properties);
   }
 
 }

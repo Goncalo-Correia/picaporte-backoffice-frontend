@@ -7,6 +7,7 @@ import { PreferenceStructure } from 'src/app/structures/preference.structure';
 export class PreferenceService {
 
   preferenceStructure: PreferenceStructure = new PreferenceStructure();
+  preferenceStructureArray: Set<PreferenceStructure> = new Set<PreferenceStructure>();
 
   constructor() { }
 

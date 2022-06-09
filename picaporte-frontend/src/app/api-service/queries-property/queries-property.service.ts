@@ -1,9 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, retry, throwError } from 'rxjs';
-import { PropertyDashboardStructure } from 'src/app/structures/property-dashboard.structure';
-import { PropertyStructure } from 'src/app/structures/property.structure';
-import { SearchAndFilterStructure } from 'src/app/structures/search-and-filter.structure';
+import { PropertyDashboardStructure } from 'src/app/structures/dashboard-structures/property-dashboard.structure';
+import { PropertyStructure } from 'src/app/structures/main-structures/property.structure';
+import { SearchAndFilterStructure } from 'src/app/structures/dashboard-structures/search-and-filter.structure';
 import { apiEndpoints, environment } from 'src/environments/environment';
 
 @Injectable({

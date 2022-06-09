@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: "http://109.106.244.205:5024/"
+  apiUrl: "https://localhost:7036/"
 };
 
 export const apiEndpoints = {
@@ -34,6 +34,9 @@ export const apiEndpoints = {
   },
   static_propertyTypology: {
     getAll: "api/StaticPropertyTypology"
+  },
+  static_energyCertificates: {
+    getAll: "api/StaticEnergyCertificate"
   }
 };
 

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { QueriesEntityReferenceService } from 'src/app/api-service/queries-entity-reference/queries-entity-reference.service';
 import { EntityReference } from 'src/app/models/entity-reference.model';
-import { EntityReferenceStructure } from 'src/app/structures/entity-reference.structure';
-import { SearchAndFilterStructure } from 'src/app/structures/search-and-filter.structure';
+import { EntityReferenceDashboardStructure } from 'src/app/structures/dashboard-structures/entity-reference-dashboard.structure';
+import { SearchAndFilterStructure } from 'src/app/structures/dashboard-structures/search-and-filter.structure';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,7 +11,7 @@ import { SearchAndFilterStructure } from 'src/app/structures/search-and-filter.s
 })
 export class DashboardComponent implements OnInit {
 
-  entityReferenceList: Array<EntityReferenceStructure>;
+  entityReferenceList: Array<EntityReferenceDashboardStructure>;
   searchAndFilterStructure: SearchAndFilterStructure;
   next_searchAndFilterStructure: SearchAndFilterStructure;
   isDataFetched: boolean = false;
@@ -19,7 +19,7 @@ export class DashboardComponent implements OnInit {
   hasNext: boolean = true;
 
   constructor(public queries_entityReferenceService: QueriesEntityReferenceService) {
-    this.entityReferenceList = new Array<EntityReferenceStructure>();
+    this.entityReferenceList = new Array<EntityReferenceDashboardStructure>();
     this.searchAndFilterStructure = new SearchAndFilterStructure();
     this.next_searchAndFilterStructure = new SearchAndFilterStructure();
    }
@@ -30,7 +30,7 @@ export class DashboardComponent implements OnInit {
 
   get_dashboardStructure() {
     this.queries_entityReferenceService.Post_SearchAndFilter_EntityReferenceStructure(this.searchAndFilterStructure).subscribe((data: {}) => {
-      this.entityReferenceList = <EntityReferenceStructure[]>data;
+      this.entityReferenceList = <EntityReferenceDashboardStructure[]>data;
       this.isDataFetched = true;
       this.hasPreviousPage();
       this.hasNextPage();

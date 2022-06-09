@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: "http://109.106.244.205:5024/"
+  apiUrl: "https://localhost:7036/"
 };
 
 export const apiEndpoints = {

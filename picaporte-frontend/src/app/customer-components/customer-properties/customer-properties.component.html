@@ -1,1 +1,24 @@
-<p>customer-properties works!</p>
+<div class="row mb-5">
+    <div class="col-12">
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Referência</th>
+                <th scope="col">Preço</th>
+                <th scope="col">Morada</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let property in properties">
+                <th scope="row" class="cursor-pointer fw-bold color-secondary" [routerLink]="['/Imovel/', property.id]">{{property.reference}}</th>
+                <td>{{property.price}}</td>
+                <td>{{property.address.street + ", " + property.address.parish + ", " + property.address.city}}</td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+    <div *ngIf="properties?.length == 0" class="empty-card bg-white text-muted p-4 rounded d-flex flex-column justify-content-center align-items-center">
+      <i class="fa-solid fa-house fa-4x mb-3"></i>
+      <span>Não existem imóveis associados a este cliente</span>
+    </div>
+</div>

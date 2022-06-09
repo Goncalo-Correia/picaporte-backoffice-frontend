@@ -4,7 +4,7 @@ import { QueriesCustomerService } from 'src/app/api-service/queries-customer/que
 import { Address } from 'src/app/models/address.model';
 import { Customer } from 'src/app/models/customer.model';
 import { Property } from 'src/app/models/property.model';
-import { CustomerStructure } from 'src/app/structures/customer.structure';
+import { CustomerStructure } from 'src/app/structures/main-structures/customer.structure';
 import { PreferenceStructure } from 'src/app/structures/preference.structure';
 import { CustomerSubMenu, CustomerSubMenuFactory, Enum_CustomerSubMenu } from 'src/app/submenus/customer.submenu';
 
@@ -17,6 +17,10 @@ export class CustomerComponent implements OnInit {
 
   private customerId: number = 0;
 
+  isEditable: boolean = false;
+  isLoading: boolean = false;
+  isDataFetched: boolean = false;
+
   customerStructure: CustomerStructure;
   customerSubmenus: Array<CustomerSubMenu>;
   selectedCustomerSubMenu: Enum_CustomerSubMenu = Enum_CustomerSubMenu.DETAILS;
@@ -26,8 +30,6 @@ export class CustomerComponent implements OnInit {
   isOnPreferencesSubMenu: boolean = false;
   isOnPropertiesSubMenu: boolean = false;
   isOnHistorySubMenu: boolean = false;
-
-  isDataFetched: boolean = false;
 
   private customerSubmenuFactory: CustomerSubMenuFactory;
 
@@ -41,6 +43,20 @@ export class CustomerComponent implements OnInit {
     this.getActiveRoute();
     this.get_customerSubmenus();
     this.get_customerStructure();
+  }
+
+  onClick_edit() {
+    this.isEditable = true;
+  }
+
+  onClick_cancel() {
+    this.isEditable = false;
+    this.get_customerStructure();
+  }
+
+  onClick_submit() {
+    this.isEditable = false;
+    this.submit_customer();
   }
 
   onClick_selectSubMenu(enum_selectedCustomerSubMenu: Enum_CustomerSubMenu | undefined) {
@@ -61,22 +77,37 @@ export class CustomerComponent implements OnInit {
   }
 
   eventHandler_updateCustomerPreferences(data: Array<PreferenceStructure>) {
-    this.customerStructure.preferences = data;
-  }
-
-  eventHandler_updateCustomerProperties(data: Array<Property>) {
-    this.customerStructure.properties = data;
+    this.customerStructure.preferences = [...data];
   }
   
   private get_customerStructure() {
+    this.isLoading = true;
+    this.isDataFetched = false;
     this.queries_customerService.Get_CustomerStructure(this.customerId).subscribe((data: {}) => {
       this.customerStructure = <CustomerStructure>data;
       this.isDataFetched = true;
+      this.isLoading = false;
     });;
   }
 
   private get_customerSubmenus() {
     this.customerSubmenus = this.customerSubmenuFactory.getCustomerSubmenus();
+  }
+
+  private submit_customer() {
+    this.isLoading = true;
+    if (this.customerStructure.customer.id == 0) {
+      this.queries_customerService.Post_CustomerStructure(this.customerStructure).subscribe((data: {}) => {
+        this.customerStructure = <CustomerStructure>data;
+        this.customerId = this.customerStructure.customer.id;
+        this.isLoading = false;
+      });
+    } else {
+      this.queries_customerService.Put_CustomerStructure(this.customerId, this.customerStructure).subscribe((data: {}) => {
+        this.customerStructure = <CustomerStructure>data;
+        this.isLoading = false;
+      });
+    }
   }
 
   private getActiveRoute() {

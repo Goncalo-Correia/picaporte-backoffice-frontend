@@ -1,4 +1,4 @@
-export class EntityReferenceStructure {
+export class EntityReferenceDashboardStructure {
     id: number = 0;
     customerId: number = 0;
     propertyId: number = 0;

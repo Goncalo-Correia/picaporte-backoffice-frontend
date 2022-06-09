@@ -1,34 +1,82 @@
 <form>
   <div class="row">
     <div class="col mb-3">
-      <label for="firstName" class="form-label fw-bold">Nome</label>
-      <input type="text" class="form-control" id="firstName" name="firstName" [(ngModel)]="customer.firstName" (change)="triggerEvent_updateCustomerDetails()">
+      <label for="firstName" class="form-label fw-bold w-100">Nome</label>
+      <input *ngIf="isEditable; else firstNameRead" type="text" class="form-control" id="firstName" name="firstName" [(ngModel)]="customer.firstName" (change)="triggerEvent_updateCustomerDetails()">
+      <ng-template #firstNameRead>
+        <div *ngIf="customer.firstName != null; else firstNameNull">
+          {{customer.firstName}}
+        </div>
+        <ng-template #firstNameNull>
+          -
+        </ng-template>
+      </ng-template>
     </div>
   </div>
   <div class="row">
     <div class="col mb-3">
-      <label for="lastName" class="form-label fw-bold">Sobrenome</label>
-      <input type="text" class="form-control" id="lastName" name="lastName" [(ngModel)]="customer.lastName" (change)="triggerEvent_updateCustomerDetails()">
+      <label for="lastName" class="form-label fw-bold w-100">Sobrenome</label>
+      <input *ngIf="isEditable; else lastNameRead" type="text" class="form-control" id="lastName" name="lastName" [(ngModel)]="customer.lastName" (change)="triggerEvent_updateCustomerDetails()">
+      <ng-template #lastNameRead>
+        <div *ngIf="customer.lastName != null; else lastNameNull">
+          {{customer.lastName}}
+        </div>
+        <ng-template #lastNameNull>
+          -
+        </ng-template>
+      </ng-template>
     </div>
   </div>
   <div class="row">
     <div class="col-6 mb-3">
-      <label for="phoneNumber" class="form-label fw-bold">Telemóvel</label>
-      <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" [(ngModel)]="customer.phoneNumber" (change)="triggerEvent_updateCustomerDetails()">
+      <label for="phoneNumber" class="form-label fw-bold w-100">Telemóvel</label>
+      <input *ngIf="isEditable; else phoneNumberRead" type="text" class="form-control" id="phoneNumber" name="phoneNumber" [(ngModel)]="customer.phoneNumber" (change)="triggerEvent_updateCustomerDetails()">
+      <ng-template #phoneNumberRead>
+        <div *ngIf="customer.phoneNumber != null; else phoneNumberNull">
+          {{customer.phoneNumber}}
+        </div>
+        <ng-template #phoneNumberNull>
+          -
+        </ng-template>
+      </ng-template>
     </div>
     <div class="col-6 mb-3">
-      <label for="email" class="form-label fw-bold">Telemóvel</label>
-      <input type="email" class="form-control" id="email" name="email" [(ngModel)]="customer.email" (change)="triggerEvent_updateCustomerDetails()">
+      <label for="email" class="form-label fw-bold w-100">Telemóvel</label>
+      <input *ngIf="isEditable; else emailRead" type="email" class="form-control" id="email" name="email" [(ngModel)]="customer.email" (change)="triggerEvent_updateCustomerDetails()">
+      <ng-template #emailRead>
+        <div *ngIf="customer.email != null; else emailNull">
+          {{customer.email}}
+        </div>
+        <ng-template #emailNull>
+          -
+        </ng-template>
+      </ng-template>
     </div>
   </div>
   <div class="row">
     <div class="col-6 mb-3">
-      <label for="cc" class="form-label fw-bold">CC</label>
-      <input type="text" class="form-control" id="cc" name="cc" [(ngModel)]="customer.cc" (change)="triggerEvent_updateCustomerDetails()">
+      <label for="cc" class="form-label fw-bold w-100">CC</label>
+      <input *ngIf="isEditable; else ccRead" type="text" class="form-control" id="cc" name="cc" [(ngModel)]="customer.cc" (change)="triggerEvent_updateCustomerDetails()">
+      <ng-template #ccRead>
+        <div *ngIf="customer.cc != null; else ccNull">
+          {{customer.cc}}
+        </div>
+        <ng-template #ccNull>
+          -
+        </ng-template>
+      </ng-template>
     </div>
     <div class="col-6 mb-3">
-      <label for="nif" class="form-label fw-bold">NIF</label>
-      <input type="text" class="form-control" id="nif" name="nif" [(ngModel)]="customer.nif" (change)="triggerEvent_updateCustomerDetails()">
+      <label for="nif" class="form-label fw-bold w-100">NIF</label>
+      <input *ngIf="isEditable; else nifRead" type="text" class="form-control" id="nif" name="nif" [(ngModel)]="customer.nif" (change)="triggerEvent_updateCustomerDetails()">
+      <ng-template #nifRead>
+        <div *ngIf="customer.nif != null; else nifNull">
+          {{customer.nif}}
+        </div>
+        <ng-template #nifNull>
+          -
+        </ng-template>
+      </ng-template>
     </div>
   </div>
 </form>

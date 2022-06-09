@@ -1,34 +1,82 @@
 <form>
   <div class="row">
     <div class="col mb-3">
-      <label for="street" class="form-label fw-bold">Rua</label>
-      <input type="text" class="form-control" id="street" name="street" [(ngModel)]="address.street" (change)="triggerEvent_updateAddress()">
+      <label for="street" class="form-label fw-bold w-100">Rua</label>
+      <input *ngIf="isEditable; else streetRead" type="text" class="form-control" id="street" name="street" [(ngModel)]="address.street" (change)="triggerEvent_updateAddress()">
+      <ng-template #streetRead>
+        <div *ngIf="address.street != null; else streetNull">
+          {{address.street}}
+        </div>
+        <ng-template #streetNull>
+          -
+        </ng-template>
+      </ng-template>
     </div>
   </div>
   <div class="row">
     <div class="col-6 mb-3">
-      <label for="location" class="form-label fw-bold">Localização</label>
-      <input type="text" class="form-control" id="location" name="lastNalocationme" [(ngModel)]="address.location" (change)="triggerEvent_updateAddress()">
+      <label for="location" class="form-label fw-bold w-100">Localização</label>
+      <input *ngIf="isEditable; else locationRead" type="text" class="form-control" id="location" name="lastNalocationme" [(ngModel)]="address.location" (change)="triggerEvent_updateAddress()">
+      <ng-template #locationRead>
+        <div *ngIf="address.location != null; else locationNull">
+          {{address.location}}
+        </div>
+        <ng-template #locationNull>
+          -
+        </ng-template>
+      </ng-template>
     </div>
     <div class="col-6 mb-3">
-      <label for="parish" class="form-label fw-bold">Freguesia</label>
-      <input type="text" class="form-control" id="parish" name="parish" [(ngModel)]="address.parish" (change)="triggerEvent_updateAddress()">
+      <label for="parish" class="form-label fw-bold w-100">Freguesia</label>
+      <input *ngIf="isEditable; else parishRead" type="text" class="form-control" id="parish" name="parish" [(ngModel)]="address.parish" (change)="triggerEvent_updateAddress()">
+      <ng-template #parishRead>
+        <div *ngIf="address.parish != null; else parishNull">
+          {{address.parish}}
+        </div>
+        <ng-template #parishNull>
+          -
+        </ng-template>
+      </ng-template>
     </div>
   </div>
   <div class="row">
     <div class="mb-3 col-6">
-      <label for="city" class="form-label fw-bold">Cidade</label>
-      <input type="text" class="form-control" id="city" name="city" [(ngModel)]="address.city" (change)="triggerEvent_updateAddress()">
+      <label for="city" class="form-label fw-bold w-100">Cidade</label>
+      <input *ngIf="isEditable; else cityRead" type="text" class="form-control" id="city" name="city" [(ngModel)]="address.city" (change)="triggerEvent_updateAddress()">
+      <ng-template #cityRead>
+        <div *ngIf="address.city != null; else cityNull">
+          {{address.city}}
+        </div>
+        <ng-template #cityNull>
+          -
+        </ng-template>
+      </ng-template>
     </div>
     <div class="mb-3 col-6">
-      <label for="island" class="form-label fw-bold">Ilha</label>
-      <input type="text" class="form-control" id="island" name="island" [(ngModel)]="address.island" (change)="triggerEvent_updateAddress()">
+      <label for="island" class="form-label fw-bold w-100">Ilha</label>
+      <input *ngIf="isEditable; else islandRead" type="text" class="form-control" id="island" name="island" [(ngModel)]="address.island" (change)="triggerEvent_updateAddress()">
+      <ng-template #islandRead>
+        <div *ngIf="address.island != null; else islandNull">
+          {{address.island}}
+        </div>
+        <ng-template #islandNull>
+          -
+        </ng-template>
+      </ng-template>
     </div>
   </div>
   <div class="row">
     <div class="col mb-3">
-      <label for="description" class="form-label fw-bold">Descrição</label>
-      <textarea type="text" rows="3" class="form-control" id="description" name="description" [(ngModel)]="address.description" (change)="triggerEvent_updateAddress()"></textarea>
+      <label for="description" class="form-label fw-bold w-100">Descrição</label>
+      <textarea *ngIf="isEditable; else descriptionRead" type="text" rows="3" class="form-control" id="description" name="description" [(ngModel)]="address.description" (change)="triggerEvent_updateAddress()"></textarea>
+      <ng-template #descriptionRead>
+        <div *ngIf="address.description != null; else descriptionNull">
+          {{address.description}}
+        </div>
+        <ng-template #descriptionNull>
+          -
+        </ng-template>
+      </ng-template>
     </div>
   </div>  
 </form>

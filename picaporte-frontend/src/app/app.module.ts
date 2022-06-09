@@ -30,6 +30,7 @@ import { PropertyImagesComponent } from './property-components/property-images/p
 import { PropertyAddressComponent } from './property-components/property-address/property-address.component';
 import { PropertyObservationhistoryComponent } from './property-components/property-observationhistory/property-observationhistory.component';
 import { DashboardComponent } from './dashboard-components/dashboard/dashboard.component';
+import { SpinnerComponent } from './utiity-components/spinner/spinner.component';
 
 
 @NgModule({
@@ -54,7 +55,8 @@ import { DashboardComponent } from './dashboard-components/dashboard/dashboard.c
     PropertyImagesComponent,
     PropertyAddressComponent,
     PropertyObservationhistoryComponent,
-    DashboardComponent
+    DashboardComponent,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule,

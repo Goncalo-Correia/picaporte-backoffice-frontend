@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { QueriesCustomerService } from 'src/app/api-service/queries-customer/queries-customer.service';
 import { Address } from 'src/app/models/address.model';
 import { Customer } from 'src/app/models/customer.model';
-import { Property } from 'src/app/models/property.model';
 import { CustomerStructure } from 'src/app/structures/main-structures/customer.structure';
 import { PreferenceStructure } from 'src/app/structures/preference.structure';
 import { CustomerSubMenu, CustomerSubMenuFactory, Enum_CustomerSubMenu } from 'src/app/submenus/customer.submenu';
@@ -42,7 +41,11 @@ export class CustomerComponent implements OnInit {
   ngOnInit(): void {
     this.getActiveRoute();
     this.get_customerSubmenus();
-    this.get_customerStructure();
+    if (this.customerId != 0) {
+      this.get_customerStructure();
+    } else {
+      this.isDataFetched = true;
+    }
   }
 
   onClick_edit() {
@@ -51,7 +54,9 @@ export class CustomerComponent implements OnInit {
 
   onClick_cancel() {
     this.isEditable = false;
-    this.get_customerStructure();
+    if (this.customerId != 0) {
+      this.get_customerStructure();
+    }  
   }
 
   onClick_submit() {
@@ -87,7 +92,7 @@ export class CustomerComponent implements OnInit {
       this.customerStructure = <CustomerStructure>data;
       this.isDataFetched = true;
       this.isLoading = false;
-    });;
+    });
   }
 
   private get_customerSubmenus() {
@@ -96,16 +101,16 @@ export class CustomerComponent implements OnInit {
 
   private submit_customer() {
     this.isLoading = true;
+
     if (this.customerStructure.customer.id == 0) {
       this.queries_customerService.Post_CustomerStructure(this.customerStructure).subscribe((data: {}) => {
         this.customerStructure = <CustomerStructure>data;
         this.customerId = this.customerStructure.customer.id;
-        this.isLoading = false;
+        this.get_customerStructure();
       });
     } else {
       this.queries_customerService.Put_CustomerStructure(this.customerId, this.customerStructure).subscribe((data: {}) => {
-        this.customerStructure = <CustomerStructure>data;
-        this.isLoading = false;
+        this.get_customerStructure();
       });
     }
   }

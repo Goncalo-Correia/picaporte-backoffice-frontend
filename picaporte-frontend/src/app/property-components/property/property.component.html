@@ -14,15 +14,30 @@
         </div>
     </div>
     <div class="p-5 w-100">
+
+        <div class="row">
+            <div class="col-auto fs-4">
+                <div *ngIf="isOnDetailsSubMenu" class="mb-3 fw-bold">Identificação e Morada</div>
+                <div *ngIf="isOnCaracteristicsSubMenu" class="mb-3 me-3 fw-bold">Características</div>
+                <div *ngIf="isOnDocumentsSubMenu" class="mb-3 fw-bold">Documentos associados</div>
+                <div *ngIf="isOnImagesSubMenu" class="mb-3 fw-bold">Imagens associadas</div>
+            </div>
+            <div class="col mb-5 d-flex justify-content-end">
+                <button *ngIf="!isEditable" class="btn btn-picaporte-secondary" (click)="onClick_edit()">Editar</button>
+                <button *ngIf="isEditable" class="btn btn-danger me-3" (click)="onClick_cancel()">Cancelar</button>
+                <button *ngIf="isEditable" class="btn btn-success" (click)="onClick_submit()">Submeter dados</button>
+            </div>
+        </div>
+
         <div *ngIf="isOnDetailsSubMenu" class="row">
             <div class="col-6 px-3">
                 <div class="bg-white p-4 rounded h-100">
-                    <app-property-detail [property]="propertyStructure.property" (event_updatePropertyDetails)="eventHandler_updatePropertyDetails($event)"></app-property-detail>
+                    <app-property-detail *ngIf="isDataFetched" [isEditable]="isEditable" [property]="propertyStructure.property" (event_updatePropertyDetails)="eventHandler_updatePropertyDetails($event)"></app-property-detail>
                 </div>
             </div>
             <div class="col-6 px-3">
                 <div class="bg-white p-4 rounded h-100">
-                    <app-address *ngIf="isDataFetched" [address]="propertyStructure.property.address" (event_updateAddress)="eventHandler_updatePropertyAddress($event)"></app-address>
+                    <app-address *ngIf="isDataFetched" [isEditable]="isEditable" [address]="propertyStructure.property.address" (event_updateAddress)="eventHandler_updatePropertyAddress($event)"></app-address>
                 </div>
             </div>
         </div>
@@ -30,19 +45,22 @@
             
         </div>
         <div *ngIf="isOnCaracteristicsSubMenu" class="row">
-            <div class="col-12 bg-white p-4 rounded h-100">
-                <app-property-caracteristics [ameneties]="propertyStructure.ameneties" (event_updatePropertyCaracteristics)="eventHandler_updatePropertyCaracteristics($event)"></app-property-caracteristics>
+            <div class="col-12 px-3">
+                <div class="bg-white p-4 rounded h-100">
+                    <app-property-caracteristics [isEditable]="isEditable" [ameneties]="propertyStructure.ameneties" (event_updatePropertyCaracteristics)="eventHandler_updatePropertyCaracteristics($event)"></app-property-caracteristics>
+                </div>
             </div>
         </div>
         <div *ngIf="isOnDocumentsSubMenu" class="row">
             <div class="col-12">
-                <app-property-documents [mainDocuments]="propertyStructure.mainDocuments" [certificateDocuments]="propertyStructure.certificateDocuments" [otherDocuments]="propertyStructure.otherDocuments" 
+                <app-property-documents [isEditable]="isEditable" [mainDocuments]="propertyStructure.mainDocuments" [certificateDocuments]="propertyStructure.certificateDocuments" [otherDocuments]="propertyStructure.otherDocuments" 
                 (event_updateMainPropertyDocuments)="eventHandler_updateMainPropertyDocuments($event)" (event_updateCertificatePropertyDocuments)="eventHandler_updateCertificatePropertyDocuments($event)" (event_updateOtherPropertyDocuments)="eventHandler_updateOtherPropertyDocuments($event)"></app-property-documents>
             </div>
         </div>
         <div *ngIf="isOnImagesSubMenu" class="row">
             <div class="col-12">
-                <!--<app-customer-properties [properties]="customerStructure.properties" (event_updateCustomerProperties)="eventHandler_updatePropertyImages($event)"></app-customer-properties>-->
+                <app-property-images [isEditable]="isEditable" [mainImage]="propertyStructure.mainImage" [otherImages]="propertyStructure.images" 
+                (event_updateMainImage)="eventHandler_updatePropertyMainImage($event)" (event_updateOtherImages)="eventHandler_updatePropertyOtherImages($event)"></app-property-images>
             </div>
         </div>
         <div *ngIf="isOnRentingSubMenu" class="row">
@@ -67,3 +85,5 @@
         </div>
     </div>
 </div>
+
+<app-spinner *ngIf="isLoading"></app-spinner>

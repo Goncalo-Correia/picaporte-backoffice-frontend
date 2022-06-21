@@ -21,5 +21,4 @@ export class CustomerDetailComponent implements OnInit {
   triggerEvent_updateCustomerDetails() {
     this.event_updateCustomerDetails.emit(this.customer);
   }
-
 }

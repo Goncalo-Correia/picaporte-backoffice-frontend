@@ -108,8 +108,24 @@
     height: 400px;
 }
 
+.card-disabled {
+    border: none;
+}
+
 /* MODAL */
 .modal-list {
     overflow-y: scroll;
     height: 400px;
+}
+
+/* INPUT */
+.form-check-input[type=checkbox] {
+    border-radius: 15px;
+    height: 2em;
+    width: 2em;
+}
+
+.form-check-input:checked {
+    background-color: var(--bs-success);
+    border-color: var(--bs-success);
 }

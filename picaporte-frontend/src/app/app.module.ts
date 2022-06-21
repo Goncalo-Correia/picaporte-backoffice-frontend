@@ -14,7 +14,6 @@ import { HeaderComponent } from './layout-components/header/header.component';
 import { SidenavComponent } from './layout-components/sidenav/sidenav.component';
 import { CustomerComponent } from './customer-components/customer/customer.component';
 import { CustomerPropertiesComponent } from './customer-components/customer-properties/customer-properties.component';
-import { CustomerBusinesscardsComponent } from './customer-components/customer-businesscards/customer-businesscards.component';
 import { CustomerPreferencesComponent } from './generic-components/preferences/preferences.component';
 import { CustomerDashboardComponent } from './dashboard-components/customer-dashboard/customer-dashboard.component';
 import { QueriesCustomerService } from './api-service/queries-customer/queries-customer.service';
@@ -27,7 +26,6 @@ import { PropertyDetailComponent } from './property-components/property-detail/p
 import { PropertyCaracteristicsComponent } from './property-components/property-caracteristics/property-caracteristics.component';
 import { PropertyDocumentsComponent } from './property-components/property-documents/property-documents.component';
 import { PropertyImagesComponent } from './property-components/property-images/property-images.component';
-import { PropertyAddressComponent } from './property-components/property-address/property-address.component';
 import { PropertyObservationhistoryComponent } from './property-components/property-observationhistory/property-observationhistory.component';
 import { DashboardComponent } from './dashboard-components/dashboard/dashboard.component';
 import { SpinnerComponent } from './utiity-components/spinner/spinner.component';
@@ -42,7 +40,6 @@ import { SpinnerComponent } from './utiity-components/spinner/spinner.component'
     SidenavComponent,
     CustomerComponent,
     CustomerPropertiesComponent,
-    CustomerBusinesscardsComponent,
     CustomerPreferencesComponent,
     CustomerDashboardComponent,
     CustomerDetailComponent,
@@ -53,7 +50,6 @@ import { SpinnerComponent } from './utiity-components/spinner/spinner.component'
     PropertyCaracteristicsComponent,
     PropertyDocumentsComponent,
     PropertyImagesComponent,
-    PropertyAddressComponent,
     PropertyObservationhistoryComponent,
     DashboardComponent,
     SpinnerComponent

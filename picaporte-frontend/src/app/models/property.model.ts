@@ -1,9 +1,9 @@
 import { Address } from "./address.model";
-import { BusinessCard } from "./businesscard.model";
 import { Customer } from "./customer.model";
 import { Image } from "./image.model";
 import { Static_AmenetieType } from "./static/static-amenetieType.model";
 import { Static_EnergyCertificate } from "./static/static-energycertificate.model";
+import { Static_PropertyConditionStatus } from "./static/static-propertyconditionstatus.model";
 import { Static_PropertyStatus } from "./static/static-propertystatus.model";
 import { Static_PropertyType } from "./static/static-propertytype.model";
 import { Static_PropertyTypology } from "./static/static-propertytypology.model";
@@ -28,6 +28,7 @@ export class Property {
         public mainImageId: number,
         public propertyTypeId: number,
         public propertyStatusId: number,
+        public propertyConditionStatusId: number,
         public propertyTypologyId: number,
         public energyCertificateId: number,
         public createdByUserId: number,
@@ -38,13 +39,13 @@ export class Property {
         public mainImage: Image,
         public propertyType: Static_PropertyType,
         public propertyStatus: Static_PropertyStatus,
+        public propertyConditionStatus: Static_PropertyConditionStatus,
         public propertyTypology: Static_PropertyTypology,
         public energyCertificate: Static_EnergyCertificate,
         public createdByUser: User,
         public uploadedByUser: User,
 
         public ameneties: Array<Static_AmenetieType>,
-        public businessCards: Array<BusinessCard>,
         public documents: Array<Document>,
         public images: Array<Image>
     ) {};

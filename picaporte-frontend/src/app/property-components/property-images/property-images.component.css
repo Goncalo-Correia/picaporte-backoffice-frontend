@@ -1,0 +1,9 @@
+.property-image {
+    object-fit: contain;
+}
+
+.modal-property-image {
+    height: 300px;
+    width: 500px;
+    object-fit: contain;
+}

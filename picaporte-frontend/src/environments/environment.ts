@@ -23,6 +23,9 @@ export const apiEndpoints = {
     put: "api/Queries_Property/",
     searchAndFilter: "api/Queries_Property/SearchAndFilter"
   },
+  customer: {
+    getAll: "api/Customers"
+  },
   static_amenetieType: {
     getAll: "api/StaticAmenetieType"
   },
@@ -32,11 +35,17 @@ export const apiEndpoints = {
   static_propertyStatus: {
     getAll: "api/StaticPropertyStatus"
   },
+  static_propertyConditionStatus: {
+    getAll: "api/StaticPropertyConditionStatus"
+  },
   static_propertyTypology: {
     getAll: "api/StaticPropertyTypology"
   },
   static_energyCertificates: {
     getAll: "api/StaticEnergyCertificate"
+  },
+  static_documentTypes: {
+    getAll: "api/StaticDocumentType"
   }
 };
 

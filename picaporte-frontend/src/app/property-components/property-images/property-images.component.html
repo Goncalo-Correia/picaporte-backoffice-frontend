@@ -1,1 +1,90 @@
-<p>property-images works!</p>
+<div class="form-row mb-5">
+    <div class="col-12">
+        <div class="row mb-5">
+            <div class="col-3">
+                <div class="bg-white rounded p-3">
+                    <div *ngIf="mainImage.image.fileName != null" class="d-flex justify-content-center">
+                      <div class="card">
+                        <img [src]="mainImage.imageUploadStructure.image" class="rounded card-img-top property-image" alt="...">
+                        <div class="card-body">
+                          <div class="card-text">{{mainImage.image.fileName}}</div>
+                          <div *ngIf="isEditable" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="color-primary fw-bold cursor-pointer" (click)="onClick_editMainImage()">Editar imagem</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div *ngIf="mainImage.imageUploadStructure.image == null">
+                        <div>Imagem principal vazia</div>
+                        <button *ngIf="isEditable" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="btn btn-picaporte-primary mt-3" (click)="onClick_editMainImage()">Adicionar imagem</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+              <div class="bg-white rounded p-3">Não existem imagens em destaque</div>
+            </div>
+        </div>
+        <div class="form-row bg-white rounded p-3">
+            <div class="col-12">
+                <div *ngIf="otherImages.length > 0 && !otherImagesIsEmpty; else emptyOtherImages" class="row">
+                    <div class="col-12">
+                        <button *ngIf="isEditable" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="btn btn-picaporte-primary mb-3" (click)="onClick_editOtherImage(-1)">Adicionar imagem</button>
+                    </div>
+                    <div *ngFor="let image of otherImages; index as i" [ngClass]="{'col-3' : !image.isToDelete}">
+                        <div *ngIf="!image.isToDelete">
+                          <div class="card">
+                            <a [href]="image.imageUploadStructure.image" data-lightbox="roadtrip">
+                              <img [src]="image.imageUploadStructure.image" class="rounded card-img-top property-image" alt="...">
+                            </a>
+                            <div class="card-body">
+                              <div class="card-text">{{image.image.fileName}}</div>
+                              <div *ngIf="isEditable" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="color-primary fw-bold cursor-pointer" (click)="onClick_editOtherImage(i)">Editar imagem</div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+                <ng-template #emptyOtherImages>
+                    <p class="card-text">Não existem imagens para este imóvel</p>
+                    <button *ngIf="isEditable" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="btn btn-picaporte-primary" (click)="onClick_editOtherImage(-1)">Adicionar imagem</button>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Imagem</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="onClick_close()"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="firstName" class="form-label fw-bold">Nome</label>
+              <input type="text" class="form-control" id="firstName" name="firstName" [(ngModel)]="selectedImageStructure.image.fileName" required>
+            </div>
+            <div class="mb-3 d-flex justify-content-center">
+                <img *ngIf="selectedImageStructure.imageUploadStructure.image != null" [src]="selectedImageStructure.imageUploadStructure.image" class="rounded modal-property-image">
+            </div>
+            <div class="mb-3">
+              <label for="firstName" class="form-label fw-bold">Ficheiro</label>
+              <input type="file" class="form-control" id="file" name="file" (change)="onChange_file($event)">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <div class="d-flex justify-content-between w-100">
+            <div>
+              <i *ngIf="selectedRowNumber != -1 && !isMainImage" class="fa-solid fa-trash fa-2x text-danger cursor-pointer" data-bs-dismiss="modal" (click)="onClick_remove(selectedRowNumber)"></i>
+            </div>
+            <div>
+              <button type="button" class="btn  me-2" data-bs-dismiss="modal" (click)="onClick_close()">Cancelar</button>
+              <button type="submit" class="btn btn-success" data-bs-dismiss="modal" (click)="onClick_submit()">Confirmar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

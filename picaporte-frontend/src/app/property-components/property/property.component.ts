@@ -4,6 +4,7 @@ import { QueriesPropertyService } from 'src/app/api-service/queries-property/que
 import { Address } from 'src/app/models/address.model';
 import { Property } from 'src/app/models/property.model';
 import { Static_AmenetieType } from 'src/app/models/static/static-amenetieType.model';
+import { AmenetieTypeStructure } from 'src/app/structures/amenetie-type.structure';
 import { DocumentStructure } from 'src/app/structures/document.structure';
 import { PropertyStructure } from 'src/app/structures/main-structures/property.structure';
 import { Enum_PropertySubMenu, PropertySubMenu, PropertySubMenuFactory } from 'src/app/submenus/property.submenu';
@@ -16,6 +17,10 @@ import { Enum_PropertySubMenu, PropertySubMenu, PropertySubMenuFactory } from 's
 export class PropertyComponent implements OnInit {
 
   private propertyId: number = 0;
+
+  isEditable: boolean = false;
+  isLoading: boolean = false;
+  isDataFetched: boolean = false;
 
   propertyStructure: PropertyStructure;
   propertySubmenus: Array<PropertySubMenu>;
@@ -30,8 +35,6 @@ export class PropertyComponent implements OnInit {
   isOnLocationSubMenu: boolean = false;
   isOnObservationHistorySubMenu: boolean = false;
   isOnHistorySubMenu: boolean = false;
-
-  isDataFetched: boolean = false;
   
   private propertySubmenuFactory: PropertySubMenuFactory;
 
@@ -45,6 +48,20 @@ export class PropertyComponent implements OnInit {
     this.getActiveRoute();
     this.get_propertySubmenus();
     this.get_propertyStructure();
+  }
+
+  onClick_edit() {
+    this.isEditable = true;
+  }
+
+  onClick_cancel() {
+    this.isEditable = false;
+    this.get_propertyStructure();
+  }
+
+  onClick_submit() {
+    this.isEditable = false;
+    this.submit_property();
   }
 
   onClick_selectSubMenu(enum_selectedCustomerSubMenu: Enum_PropertySubMenu | undefined) {
@@ -62,7 +79,7 @@ export class PropertyComponent implements OnInit {
     this.propertyStructure.property.address = data;
   }
 
-  eventHandler_updatePropertyCaracteristics(data: Array<Static_AmenetieType>) {
+  eventHandler_updatePropertyCaracteristics(data: Array<AmenetieTypeStructure>) {
     this.propertyStructure.ameneties = data;
   }
 
@@ -78,7 +95,11 @@ export class PropertyComponent implements OnInit {
     this.propertyStructure.otherDocuments = data;
   }
 
-  eventHandler_updatePropertyImages(data: any) {
+  eventHandler_updatePropertyMainImage(data: any) {
+
+  }
+
+  eventHandler_updatePropertyOtherImages(data: any) {
 
   }
 
@@ -94,10 +115,28 @@ export class PropertyComponent implements OnInit {
     
   }
 
+  private submit_property() {
+    this.isLoading = true;
+
+    if (this.propertyStructure.property.id == 0) {
+      this.queries_propertyService.Post_PropertyStructure(this.propertyStructure).subscribe((data: {}) => {
+        this.propertyStructure = <PropertyStructure>data;
+        this.propertyId = this.propertyStructure.property.id;
+        this.get_propertyStructure();
+      });
+    } else {
+      this.queries_propertyService.Put_PropertyStructure(this.propertyId, this.propertyStructure).subscribe((data: {}) => {
+        this.get_propertyStructure();
+      });
+    }
+  }
+
   private get_propertyStructure() {
+    this.isLoading = true;
     this.queries_propertyService.Get_PropertyStructure(this.propertyId).subscribe((data: {}) => {
       this.propertyStructure = <PropertyStructure>data;
       this.isDataFetched = true;
+      this.isLoading = false;
     });;
   }
 

@@ -12,6 +12,8 @@ import { StaticAmenetieTypeServiceService } from 'src/app/api-service/static-ame
 import { Static_AmenetieType } from 'src/app/models/static/static-amenetieType.model';
 import { Static_EnergyCertificate } from 'src/app/models/static/static-energycertificate.model';
 import { StaticEnergyCertificateService } from 'src/app/api-service/static-energy-certificate/static-energy-certificate.service';
+import { Static_PropertyConditionStatus } from 'src/app/models/static/static-propertyconditionstatus.model';
+import { StaticPropertyConditionStatusService } from 'src/app/api-service/static-property-condition-status/property-condition-status.service';
 
 
 @Component({
@@ -30,11 +32,13 @@ export class CustomerPreferencesComponent implements OnInit {
   selectedRowNumber: number = -1;
   selectedPropertyTypeLabel: string = "Nenhuma opção seleccionada";
   selectedPropertyStatusLabel: string = "Nenhuma opção seleccionada";
+  selectedPropertyConditionStatusLabel: string = "Nenhuma opção seleccionada";
   selectedPropertyTypologyLabel: string = "Nenhuma opção seleccionada";
   selectedEnergyCertificateLabel: string = "Nenhuma opção seleccionada";
 
   staticPropertyTypes: Static_PropertyType[] = [];
   staticPropertyStatuses: Static_PropertyStatus[] = [];
+  staticPropertyConditionStatuses: Static_PropertyConditionStatus[] = [];
   staticPropertyTypologies: Static_PropertyTypology[] = [];
   staticEnergyCertificates: Static_EnergyCertificate[] = [];
 
@@ -45,6 +49,7 @@ export class CustomerPreferencesComponent implements OnInit {
   constructor(
     public static_propertyTypeService: StaticPropertyTypeService, 
     public static_propertyStatusService: StaticPropertyStatusService, 
+    public static_propertyConditionStatusService: StaticPropertyConditionStatusService, 
     public static_propertyTypologyService: StaticPropertyTypologyService,
     public static_energyCertificateService: StaticEnergyCertificateService,
     public preferenceService: PreferenceService,
@@ -59,6 +64,7 @@ export class CustomerPreferencesComponent implements OnInit {
   ngOnInit(): void {
     this.get_staticPropertyTypes();
     this.get_staticPropertyStatuses();
+    this.get_staticPropertyConditionStatuses();
     this.get_staticPropertyTypologies();
     this.get_staticEnergyCertificates();
     this.get_amenetieTypes();
@@ -76,6 +82,12 @@ export class CustomerPreferencesComponent implements OnInit {
     this.selectedPropertyStatusLabel = label;
   }
 
+  onClick_selectPropertyConditionStatus(propertyConditionStatus: Static_PropertyConditionStatus, label: string) {
+    this.selectedPreferenceStructure.preference.propertyConditionStatusId = propertyConditionStatus.id;
+    this.selectedPreferenceStructure.preference.propertyConditionStatus = propertyConditionStatus;
+    this.selectedPropertyConditionStatusLabel = label;
+  }
+
   onClick_selectPropertyTypology(propertyTypology: Static_PropertyTypology, label: string) {
     this.selectedPreferenceStructure.preference.propertyTypologyId = propertyTypology.id;
     this.selectedPreferenceStructure.preference.propertyTypology = propertyTypology;
@@ -91,6 +103,7 @@ export class CustomerPreferencesComponent implements OnInit {
   onClick_close() {
     this.selectedPropertyTypeLabel = "Nenhuma opção seleccionada";
     this.selectedPropertyStatusLabel = "Nenhuma opção seleccionada";
+    this.selectedPropertyConditionStatusLabel = "Nenhuma opção seleccionada";
     this.selectedPropertyTypologyLabel = "Nenhuma opção seleccionada";
     this.selectedEnergyCertificateLabel = "Nenhuma opção seleccionada";
   }
@@ -112,6 +125,9 @@ export class CustomerPreferencesComponent implements OnInit {
       }
       if (this.selectedPreferenceStructure.preference.propertyStatus != null) {
         this.selectedPropertyStatusLabel = this.selectedPreferenceStructure.preference.propertyStatus?.label;
+      }
+      if (this.selectedPreferenceStructure.preference.propertyConditionStatus != null) {
+        this.selectedPropertyConditionStatusLabel = this.selectedPreferenceStructure.preference.propertyConditionStatus?.label;
       }
       if (this.selectedPreferenceStructure.preference.propertyTypology != null) {
         this.selectedPropertyTypologyLabel = this.selectedPreferenceStructure.preference.propertyTypology?.label;
@@ -149,25 +165,31 @@ export class CustomerPreferencesComponent implements OnInit {
   private get_staticPropertyTypes() {
     this.static_propertyTypeService.GetAll_PropertyTypes().subscribe((data: {}) => {
       this.staticPropertyTypes = <Static_PropertyType[]>data;
-    });;
+    });
   }
 
   private get_staticPropertyStatuses() {
     this.static_propertyStatusService.GetAll_PropertyStatuses().subscribe((data: {}) => {
       this.staticPropertyStatuses = <Static_PropertyStatus[]>data;
-    });;
+    });
   }
 
   private get_staticPropertyTypologies() {
     this.static_propertyTypologyService.GetAll_PropertyTypologies().subscribe((data: {}) => {
       this.staticPropertyTypologies = <Static_PropertyTypology[]>data;
-    });;
+    });
+  }
+
+  private get_staticPropertyConditionStatuses() {
+    this.static_propertyConditionStatusService.GetAll_PropertyConditionStatuses().subscribe((data: {}) => {
+      this.staticPropertyConditionStatuses = <Static_PropertyConditionStatus[]>data;
+    });
   }
 
   private get_staticEnergyCertificates() {
     this.static_energyCertificateService.GetAll_EnergyCertificates().subscribe((data: {}) => {
       this.staticEnergyCertificates = <Static_EnergyCertificate[]>data;
-    });;
+    });
   }
 
   private get_amenetieTypes() {
@@ -176,10 +198,10 @@ export class CustomerPreferencesComponent implements OnInit {
       var localAmeneties = <Static_AmenetieType[]>data;
       localAmeneties.forEach(element => {
         this.amenentieTypeStructure = new AmenetieTypeStructure();
-        this.amenentieTypeStructure.amenetie = element;
+        this.amenentieTypeStructure.amenetieType = element;
         this.amenetieTypeStructureList.push(this.amenentieTypeStructure);
       });
-    });;
+    });
   }
 
   private buildAmenetieTypeStructure(isSubmit: boolean) {
@@ -187,15 +209,15 @@ export class CustomerPreferencesComponent implements OnInit {
       this.selectedPreferenceStructure.ameneties = new Array<Static_AmenetieType>();
       this.amenetieTypeStructureList.filter(prop => prop.isSelected == true).forEach(element => {
         this.staticAmenetieType = new Static_AmenetieType();
-        this.staticAmenetieType.id = element.amenetie.id;
-        this.staticAmenetieType.label = element.amenetie.label;
-        this.staticAmenetieType.description = element.amenetie.description;
-        this.staticAmenetieType.order = element.amenetie.order;
+        this.staticAmenetieType.id = element.amenetieType.id;
+        this.staticAmenetieType.label = element.amenetieType.label;
+        this.staticAmenetieType.description = element.amenetieType.description;
+        this.staticAmenetieType.order = element.amenetieType.order;
         this.selectedPreferenceStructure.ameneties.push(this.staticAmenetieType);
       })
     } else {
       for (let index = 0; index < this.amenetieTypeStructureList.length; index++) {
-        if (this.selectedPreferenceStructure.ameneties.findIndex(prop => prop.id == this.amenetieTypeStructureList[index].amenetie.id) == -1) {
+        if (this.selectedPreferenceStructure.ameneties.findIndex(prop => prop.id == this.amenetieTypeStructureList[index].amenetieType.id) == -1) {
           this.amenetieTypeStructureList[index].isSelected = false;
         } else {
           this.amenetieTypeStructureList[index].isSelected = true;

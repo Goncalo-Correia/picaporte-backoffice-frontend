@@ -1,5 +1,4 @@
 import { Address } from "./address.model";
-import { BusinessCard } from "./businesscard.model";
 import { Preference } from "./preference.model";
 import { User } from "./user.model";
 import { Property } from "./property.model";
@@ -19,7 +18,6 @@ export class Customer {
 
         public address: Address,
         public user: User,
-        public businessCards: Array<BusinessCard>,
         public preferences: Array<Preference>,
         public properties: Array<Property>
     ) {};

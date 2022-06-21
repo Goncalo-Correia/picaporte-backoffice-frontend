@@ -21,12 +21,16 @@ export class PreferenceService {
     this.preferenceStructure.preference.constructionYear = preferenceStructure.preference.constructionYear;
 
     this.preferenceStructure.preference.propertyStatusId = preferenceStructure.preference.propertyStatusId;
+    this.preferenceStructure.preference.propertyConditionStatusId = preferenceStructure.preference.propertyConditionStatusId;
     this.preferenceStructure.preference.propertyTypeId = preferenceStructure.preference.propertyTypeId;
     this.preferenceStructure.preference.propertyTypologyId = preferenceStructure.preference.propertyTypologyId;
+    this.preferenceStructure.preference.energyCertificateId = preferenceStructure.preference.energyCertificateId;
 
     this.preferenceStructure.preference.propertyStatus = preferenceStructure.preference.propertyStatus;
+    this.preferenceStructure.preference.propertyConditionStatus = preferenceStructure.preference.propertyConditionStatus;
     this.preferenceStructure.preference.propertyType = preferenceStructure.preference.propertyType;
     this.preferenceStructure.preference.propertyTypology = preferenceStructure.preference.propertyTypology;
+    this.preferenceStructure.preference.energyCertificate = preferenceStructure.preference.energyCertificate;
 
     this.preferenceStructure.preference.ameneties = preferenceStructure.preference.ameneties;
 

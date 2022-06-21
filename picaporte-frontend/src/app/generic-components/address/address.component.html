@@ -70,7 +70,7 @@
       <label for="description" class="form-label fw-bold w-100">Descrição</label>
       <textarea *ngIf="isEditable; else descriptionRead" type="text" rows="3" class="form-control" id="description" name="description" [(ngModel)]="address.description" (change)="triggerEvent_updateAddress()"></textarea>
       <ng-template #descriptionRead>
-        <div *ngIf="address.description != null; else descriptionNull">
+        <div *ngIf="address.description != null || address.description != ''; else descriptionNull">
           {{address.description}}
         </div>
         <ng-template #descriptionNull>

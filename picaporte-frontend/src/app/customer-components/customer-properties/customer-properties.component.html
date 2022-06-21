@@ -1,4 +1,4 @@
-<div class="row mb-5">
+<div class="row">
     <div class="col-12">
         <table class="table">
             <thead>
@@ -9,8 +9,8 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let property in properties">
-                <th scope="row" class="cursor-pointer fw-bold color-secondary" [routerLink]="['/Imovel/', property.id]">{{property.reference}}</th>
+              <tr *ngFor="let property of properties" class="table-row">
+                <td scope="row" class="cursor-pointer fw-bold color-secondary" [routerLink]="['/Imovel/', property.id]">{{property.reference}}</td>
                 <td>{{property.price}}</td>
                 <td>{{property.address.street + ", " + property.address.parish + ", " + property.address.city}}</td>
               </tr>

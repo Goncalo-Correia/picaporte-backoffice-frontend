@@ -1,1 +1,167 @@
-<p>property-documents works!</p>
+<div class="form-row mb-5">
+    <div class="col-12">
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Nome</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Estado</th>
+                <th *ngIf="isEditable" scope="col" class="d-flex justify-content-end">
+                  <div class="d-flex align-items-center fw-bold cursor-pointer color-secondary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="onClick_addNewMainDocument()">
+                    <div class="me-2">
+                      Adicionar documentos principais
+                    </div>
+                    <i class="fa-solid fa-circle-plus"></i>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody *ngIf="isEditable">
+              <tr *ngFor="let documentStructure of mainDocuments; index as i" class="table-row" data-bs-toggle="modal" data-bs-target="#staticBackdrop" [ngClass]="{'cursor-pointer' : isEditable}" [ngClass]="{'d-none' : documentStructure.isToDelete}" (click)="onClick_editMainDocuments(i)">
+                <td *ngIf="!documentStructure.isToDelete" scope="row" class="fw-bold color-secondary">{{documentStructure.document.documentName}}</td>
+                <td *ngIf="!documentStructure.isToDelete">{{documentStructure.document.documentType?.label}}</td>
+                <td *ngIf="!documentStructure.isToDelete">{{documentStructure.document.documentStatus?.label}}</td>
+                <td *ngIf="!documentStructure.isToDelete && isEditable"></td>
+              </tr>
+            </tbody>
+            <tbody *ngIf="!isEditable">
+              <tr *ngFor="let documentStructure of mainDocuments; index as i" class="table-row">
+                <td *ngIf="!documentStructure.isToDelete" scope="row" class="fw-bold color-secondary">{{documentStructure.document.documentName}}</td>
+                <td *ngIf="!documentStructure.isToDelete">{{documentStructure.document.documentType?.label}}</td>
+                <td *ngIf="!documentStructure.isToDelete">{{documentStructure.document.documentStatus?.label}}</td>
+                <td *ngIf="!documentStructure.isToDelete && isEditable"></td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+    <div *ngIf="mainDocuments.length == 0 || allMainDocumentsToBeDeleted" class="bg-white text-muted p-4 rounded d-flex flex-column justify-content-center align-items-center">
+      <span>Não existem documentos principais associados a este imóvel</span>
+    </div>
+</div>
+<div class="form-row mb-5">
+    <div class="col-12">
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Nome</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Estado</th>
+                <th *ngIf="isEditable" scope="col" class="d-flex justify-content-end">
+                  <div class="d-flex align-items-center fw-bold cursor-pointer color-secondary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="onClick_addNewCertificateDocument()">
+                    <div class="me-2">
+                      Adicionar certificados
+                    </div>
+                    <i class="fa-solid fa-circle-plus"></i>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody *ngIf="isEditable">
+              <tr *ngFor="let documentStructure of certificateDocuments; index as i" class="table-row" data-bs-toggle="modal" data-bs-target="#staticBackdrop" [ngClass]="{'cursor-pointer' : isEditable}" [ngClass]="{'d-none' : documentStructure.isToDelete}" (click)="onClick_editCertificateDocuments(i)">
+                  <td *ngIf="!documentStructure.isToDelete"  scope="row" class="fw-bold color-secondary">{{documentStructure.document.documentName}}</td>
+                  <td *ngIf="!documentStructure.isToDelete">{{documentStructure.document.documentType?.label}}</td>
+                  <td *ngIf="!documentStructure.isToDelete">{{documentStructure.document.documentStatus?.label}}</td>
+                  <td *ngIf="!documentStructure.isToDelete && isEditable"></td>
+              </tr>
+            </tbody>
+            <tbody *ngIf="!isEditable">
+              <tr *ngFor="let documentStructure of certificateDocuments; index as i" class="table-row">
+                  <td *ngIf="!documentStructure.isToDelete"  scope="row" class="fw-bold color-secondary">{{documentStructure.document.documentName}}</td>
+                  <td *ngIf="!documentStructure.isToDelete">{{documentStructure.document.documentType?.label}}</td>
+                  <td *ngIf="!documentStructure.isToDelete">{{documentStructure.document.documentStatus?.label}}</td>
+                  <td *ngIf="!documentStructure.isToDelete && isEditable"></td>
+              </tr>
+          </table>
+    </div>
+    <div *ngIf="certificateDocuments.length != 0 || !allCertificateDocumentsToBeDeleted" class="bg-white text-muted p-4 rounded d-flex flex-column justify-content-center align-items-center">
+      <span>Não existem certificados associados a este imóvel</span>
+    </div>
+</div>
+<div class="form-row mb-5">
+    <div class="col-12">
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Nome</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Estado</th>
+                <th *ngIf="isEditable" scope="col" class="d-flex justify-content-end">
+                  <div class="d-flex align-items-center fw-bold cursor-pointer color-secondary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="onClick_addNewOtherDocument()">
+                    <div class="me-2">
+                      Adicionar documentos adcionais
+                    </div>
+                    <i class="fa-solid fa-circle-plus"></i>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody *ngIf="isEditable">
+              <tr *ngFor="let documentStructure of otherDocuments; index as i" class="table-row" data-bs-toggle="modal" data-bs-target="#staticBackdrop" [ngClass]="{'cursor-pointer' : isEditable}" [ngClass]="{'d-none' : documentStructure.isToDelete}" (click)="onClick_editOtherDocuments(i)">
+                  <td *ngIf="!documentStructure.isToDelete"  scope="row" class="fw-bold color-secondary">{{documentStructure.document.documentName}}</td>
+                  <td *ngIf="!documentStructure.isToDelete">{{documentStructure.document.documentType?.label}}</td>
+                  <td *ngIf="!documentStructure.isToDelete">{{documentStructure.document.documentStatus?.label}}</td>
+                  <td *ngIf="!documentStructure.isToDelete && isEditable"></td>
+              </tr>
+            </tbody>
+            <tbody *ngIf="!isEditable">
+              <tr *ngFor="let documentStructure of otherDocuments; index as i" class="table-row">
+                  <td *ngIf="!documentStructure.isToDelete"  scope="row" class="fw-bold color-secondary">{{documentStructure.document.documentName}}</td>
+                  <td *ngIf="!documentStructure.isToDelete">{{documentStructure.document.documentType?.label}}</td>
+                  <td *ngIf="!documentStructure.isToDelete">{{documentStructure.document.documentStatus?.label}}</td>
+                  <td *ngIf="!documentStructure.isToDelete && isEditable"></td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+    <div *ngIf="otherDocuments.length == 0 || allOtherDocumentsToBeDeleted" class="bg-white text-muted p-4 rounded d-flex flex-column justify-content-center align-items-center">
+      <span>Não existem documentos adicionais associados a este imóvel</span>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Documento</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="onClick_close()"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="firstName" class="form-label fw-bold">Nome</label>
+            <input type="text" class="form-control" id="firstName" name="firstName" [(ngModel)]="selectedDocumentStructure.document.documentName" required>
+          </div>
+          <div class="mb-3">
+            <label for="cc" class="form-label fw-bold">Tipo do documento</label>
+            <div class="dropdown">
+              <button class="w-100 btn btn-secondary dropdown-toggle" type="button" id="propertyType" data-bs-toggle="dropdown" aria-expanded="false">
+                {{selectedDocumentTypeLabel}}
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="propertyType">
+                <li *ngFor="let documentType of availableDocumentTypes">
+                  <a class="dropdown-item cursor-pointer" (click)="onClick_selectDocumentType(documentType, documentType.label)">{{documentType.label}}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="firstName" class="form-label fw-bold">Ficheiro</label>
+            <input type="file" class="form-control" id="file" name="file" (change)="onChange_file($event)">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div class="d-flex justify-content-between w-100">
+          <div>
+            <i *ngIf="selectedRowNumber != -1" class="fa-solid fa-trash fa-2x text-danger cursor-pointer" data-bs-dismiss="modal" (click)="onClick_remove(selectedRowNumber)"></i>
+          </div>
+          <div>
+            <button type="button" class="btn  me-2" data-bs-dismiss="modal" (click)="onClick_close()">Cancelar</button>
+            <button type="submit" class="btn btn-success" data-bs-dismiss="modal" (click)="onClick_submit()">Confirmar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

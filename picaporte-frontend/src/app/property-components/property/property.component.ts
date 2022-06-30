@@ -71,6 +71,10 @@ export class PropertyComponent implements OnInit {
     this.checkSelectedSubMenu();
   }
 
+  eventHandler_updatePropertyOnline(data: boolean) {
+    this.propertyStructure.property.isOnline = data;
+  }
+
   eventHandler_updatePropertyDetails(data: any) {
     this.propertyStructure.property = data;
   }

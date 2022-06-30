@@ -29,6 +29,7 @@ import { PropertyImagesComponent } from './property-components/property-images/p
 import { PropertyObservationhistoryComponent } from './property-components/property-observationhistory/property-observationhistory.component';
 import { DashboardComponent } from './dashboard-components/dashboard/dashboard.component';
 import { SpinnerComponent } from './utiity-components/spinner/spinner.component';
+import { PropertyOnlineComponent } from './property-components/property-online/property-online.component';
 
 
 @NgModule({
@@ -52,7 +53,8 @@ import { SpinnerComponent } from './utiity-components/spinner/spinner.component'
     PropertyImagesComponent,
     PropertyObservationhistoryComponent,
     DashboardComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    PropertyOnlineComponent
   ],
   imports: [
     BrowserModule,

@@ -14,6 +14,7 @@ export class Property {
         public id: number,
         public reference: string,
         public description: string,
+        public isOnline: boolean,
         public price: number,
         public bathrooms: number,
         public totalConstructionArea: number,

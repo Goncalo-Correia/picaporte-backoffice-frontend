@@ -3,7 +3,7 @@
         <div class="row mb-5">
             <div class="col-3">
                 <div class="bg-white rounded p-3">
-                    <div *ngIf="mainImage.image.fileName != null" class="d-flex justify-content-center">
+                    <div *ngIf="mainImage.image.fileName != null; else emptyMainImage" class="d-flex justify-content-center">
                       <div class="card">
                         <img [src]="mainImage.imageUploadStructure.image" class="rounded card-img-top property-image" alt="...">
                         <div class="card-body">
@@ -12,10 +12,12 @@
                         </div>
                       </div>
                     </div>
-                    <div *ngIf="mainImage.imageUploadStructure.image == null">
-                        <div>Imagem principal vazia</div>
-                        <button *ngIf="isEditable" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="btn btn-picaporte-primary mt-3" (click)="onClick_editMainImage()">Adicionar imagem</button>
-                    </div>
+                    <ng-template #emptyMainImage>
+                      <div>
+                          <div>Imagem principal vazia</div>
+                          <button *ngIf="isEditable" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="btn btn-picaporte-primary mt-3" (click)="onClick_editMainImage()">Adicionar imagem</button>
+                      </div>
+                    </ng-template>
                 </div>
             </div>
             <div class="col">

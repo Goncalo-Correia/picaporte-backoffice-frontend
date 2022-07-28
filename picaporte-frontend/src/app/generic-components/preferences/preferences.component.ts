@@ -8,7 +8,7 @@ import { Static_PropertyStatus } from 'src/app/models/static/static-propertystat
 import { Static_PropertyTypology } from 'src/app/models/static/static-propertytypology.model';
 import { PreferenceService } from 'src/app/services/preference-service/preference.service';
 import { AmenetieTypeStructure } from 'src/app/structures/amenetie-type.structure';
-import { StaticAmenetieTypeServiceService } from 'src/app/api-service/static-amenetie-type/static-amenetie-type-service.service';
+import { StaticAmenetieTypeService } from 'src/app/api-service/static-amenetie-type/static-amenetie-type-service.service';
 import { Static_AmenetieType } from 'src/app/models/static/static-amenetieType.model';
 import { Static_EnergyCertificate } from 'src/app/models/static/static-energycertificate.model';
 import { StaticEnergyCertificateService } from 'src/app/api-service/static-energy-certificate/static-energy-certificate.service';
@@ -53,7 +53,7 @@ export class CustomerPreferencesComponent implements OnInit {
     public static_propertyTypologyService: StaticPropertyTypologyService,
     public static_energyCertificateService: StaticEnergyCertificateService,
     public preferenceService: PreferenceService,
-    public amenetieTypeService: StaticAmenetieTypeServiceService) 
+    public amenetieTypeService: StaticAmenetieTypeService) 
   { 
     this.selectedPreferenceStructure = new PreferenceStructure();
     this.amenetieTypeStructureList = new Array<AmenetieTypeStructure>();

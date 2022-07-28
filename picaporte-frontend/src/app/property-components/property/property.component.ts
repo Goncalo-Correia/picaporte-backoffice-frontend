@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { QueriesPropertyService } from 'src/app/api-service/queries-property/queries-property.service';
+import { StaticAmenetieTypeService } from 'src/app/api-service/static-amenetie-type/static-amenetie-type-service.service';
 import { Address } from 'src/app/models/address.model';
 import { Property } from 'src/app/models/property.model';
 import { Static_AmenetieType } from 'src/app/models/static/static-amenetieType.model';
@@ -16,7 +17,7 @@ import { Enum_PropertySubMenu, PropertySubMenu, PropertySubMenuFactory } from 's
 })
 export class PropertyComponent implements OnInit {
 
-  private propertyId: number = 0;
+  propertyId: number = 0;
 
   isEditable: boolean = false;
   isLoading: boolean = false;
@@ -38,7 +39,7 @@ export class PropertyComponent implements OnInit {
   
   private propertySubmenuFactory: PropertySubMenuFactory;
 
-  constructor(public queries_propertyService: QueriesPropertyService, private activeRoute: ActivatedRoute) {
+  constructor(public queries_propertyService: QueriesPropertyService, private activeRoute: ActivatedRoute, public amentieTypeService: StaticAmenetieTypeService) {
     this.propertyStructure = new PropertyStructure();
     this.propertySubmenus = new Array<PropertySubMenu>();
     this.propertySubmenuFactory = new PropertySubMenuFactory();
@@ -137,11 +138,30 @@ export class PropertyComponent implements OnInit {
 
   private get_propertyStructure() {
     this.isLoading = true;
-    this.queries_propertyService.Get_PropertyStructure(this.propertyId).subscribe((data: {}) => {
-      this.propertyStructure = <PropertyStructure>data;
-      this.isDataFetched = true;
-      this.isLoading = false;
-    });;
+    if (this.propertyId != 0 && this.propertyId != null) {
+      this.queries_propertyService.Get_PropertyStructure(this.propertyId).subscribe((data: {}) => {
+        this.propertyStructure = <PropertyStructure>data;
+        this.isDataFetched = true;
+        this.isLoading = false;
+      });
+    } else {
+      this.propertyStructure = new PropertyStructure();
+      
+      this.amentieTypeService.GetAll_AmenetieTypes().subscribe((data: {}) => {
+        var amenetieTypes: Array<Static_AmenetieType> = <Array<Static_AmenetieType>>data;
+        
+        amenetieTypes.forEach(element => {
+          var amenetieTypeStructure: AmenetieTypeStructure = new AmenetieTypeStructure();
+          amenetieTypeStructure.amenetieType = element;
+
+          this.propertyStructure.ameneties.push(amenetieTypeStructure);
+        });
+
+        this.isDataFetched = true;
+        this.isLoading = false;
+        this.isEditable = true;
+      });
+    }
   }
 
   private get_propertySubmenus() {

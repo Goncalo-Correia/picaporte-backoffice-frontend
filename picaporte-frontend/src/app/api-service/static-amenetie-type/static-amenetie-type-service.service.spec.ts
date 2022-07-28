@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { StaticAmenetieTypeServiceService } from './static-amenetie-type-service.service';
+import { StaticAmenetieTypeService } from './static-amenetie-type-service.service';
 
 describe('StaticAmenetieTypeServiceService', () => {
-  let service: StaticAmenetieTypeServiceService;
+  let service: StaticAmenetieTypeService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(StaticAmenetieTypeServiceService);
+    service = TestBed.inject(StaticAmenetieTypeService);
   });
 
   it('should be created', () => {

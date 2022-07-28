@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 
 // Import the module from the SDK
 import { AuthModule } from '@auth0/auth0-angular';
+
 import { Auth0ServiceComponent } from './services/auth0-service/auth0-service.component';
 import { HomeComponent } from './router-components/home/home.component';
 import { HeaderComponent } from './layout-components/header/header.component';
@@ -30,6 +31,7 @@ import { PropertyObservationhistoryComponent } from './property-components/prope
 import { DashboardComponent } from './dashboard-components/dashboard/dashboard.component';
 import { SpinnerComponent } from './utiity-components/spinner/spinner.component';
 import { PropertyOnlineComponent } from './property-components/property-online/property-online.component';
+import { Auth0Component } from './auth0/auth0.component';
 
 
 @NgModule({
@@ -54,7 +56,8 @@ import { PropertyOnlineComponent } from './property-components/property-online/p
     PropertyObservationhistoryComponent,
     DashboardComponent,
     SpinnerComponent,
-    PropertyOnlineComponent
+    PropertyOnlineComponent,
+    Auth0Component
   ],
   imports: [
     BrowserModule,

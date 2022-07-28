@@ -14,7 +14,7 @@ import { CustomerSubMenu, CustomerSubMenuFactory, Enum_CustomerSubMenu } from 's
 })
 export class CustomerComponent implements OnInit {
 
-  private customerId: number = 0;
+  customerId: number = 0;
 
   isEditable: boolean = false;
   isLoading: boolean = false;
@@ -88,11 +88,17 @@ export class CustomerComponent implements OnInit {
   private get_customerStructure() {
     this.isLoading = true;
     this.isDataFetched = false;
-    this.queries_customerService.Get_CustomerStructure(this.customerId).subscribe((data: {}) => {
-      this.customerStructure = <CustomerStructure>data;
+    if (this.customerId != 0 && this.customerId != null) {
+      this.queries_customerService.Get_CustomerStructure(this.customerId).subscribe((data: {}) => {
+        this.customerStructure = <CustomerStructure>data;
+        this.isDataFetched = true;
+        this.isLoading = false;
+      });
+    } else {
       this.isDataFetched = true;
       this.isLoading = false;
-    });
+      this.isEditable = true;
+    }
   }
 
   private get_customerSubmenus() {
@@ -102,9 +108,11 @@ export class CustomerComponent implements OnInit {
   private submit_customer() {
     this.isLoading = true;
 
-    if (this.customerStructure.customer.id == 0) {
+    if (this.customerStructure.customer.id == 0 || this.customerStructure.customer.id == null) {
+      console.log(this.customerStructure);
+      
       this.queries_customerService.Post_CustomerStructure(this.customerStructure).subscribe((data: {}) => {
-        this.customerStructure = <CustomerStructure>data;
+        this.customerStructure.customer = <Customer>data;
         this.customerId = this.customerStructure.customer.id;
         this.get_customerStructure();
       });

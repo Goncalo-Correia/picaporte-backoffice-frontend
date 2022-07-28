@@ -7,7 +7,7 @@ import { apiEndpoints, environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class StaticAmenetieTypeServiceService {
+export class StaticAmenetieTypeService {
 
    // Base url
    baseurl = environment.apiUrl;

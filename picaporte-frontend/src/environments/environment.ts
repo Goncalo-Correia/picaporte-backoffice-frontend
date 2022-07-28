@@ -13,7 +13,7 @@ export const apiEndpoints = {
   },
   queries_customer: {
     get: "api/Queries_Customers/",
-    post: "api/Queries_Customers/",
+    post: "api/Queries_Customers",
     put: "api/Queries_Customers/",
     searchAndFilter: "api/Queries_Customers/SearchAndFilter"
   },
@@ -27,25 +27,28 @@ export const apiEndpoints = {
     getAll: "api/Customers"
   },
   static_amenetieType: {
-    getAll: "api/StaticAmenetieType"
+    getAll: "api/Static_AmenetieType"
   },
   static_propertyType: {
-    getAll: "api/StaticPropertyType"
+    getAll: "api/Static_PropertyType"
   },
   static_propertyStatus: {
-    getAll: "api/StaticPropertyStatus"
+    getAll: "api/Static_PropertyStatus"
   },
   static_propertyConditionStatus: {
-    getAll: "api/StaticPropertyConditionStatus"
+    getAll: "api/Static_PropertyConditionStatus"
   },
   static_propertyTypology: {
-    getAll: "api/StaticPropertyTypology"
+    getAll: "api/Static_PropertyTypology"
   },
   static_energyCertificates: {
-    getAll: "api/StaticEnergyCertificate"
+    getAll: "api/Static_EnergyCertificate"
   },
   static_documentTypes: {
-    getAll: "api/StaticDocumentType"
+    getAll: "api/Static_DocumentType"
+  },
+  user: {
+    authotize: "authorize"
   }
 };
 

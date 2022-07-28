@@ -9,7 +9,7 @@ export const apiEndpoints = {
   },
   queries_customer: {
     get: "api/Queries_Customers/",
-    post: "api/Queries_Customers/",
+    post: "api/Queries_Customers",
     put: "api/Queries_Customers/",
     searchAndFilter: "api/Queries_Customers/SearchAndFilter"
   },

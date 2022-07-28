@@ -1,5 +1,5 @@
 import { AfterViewChecked, AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { StaticAmenetieTypeServiceService } from 'src/app/api-service/static-amenetie-type/static-amenetie-type-service.service';
+import { StaticAmenetieTypeService } from 'src/app/api-service/static-amenetie-type/static-amenetie-type-service.service';
 import { Static_AmenetieType } from 'src/app/models/static/static-amenetieType.model';
 import { AmenetieTypeStructure } from 'src/app/structures/amenetie-type.structure';
 
@@ -15,7 +15,7 @@ export class PropertyCaracteristicsComponent implements OnInit {
 
   @Output() event_updatePropertyCaracteristics = new EventEmitter<Array<AmenetieTypeStructure>>();
 
-  constructor(public amenetieTypeService: StaticAmenetieTypeServiceService) {}
+  constructor(public amenetieTypeService: StaticAmenetieTypeService) {}
 
   ngOnInit(): void {
     

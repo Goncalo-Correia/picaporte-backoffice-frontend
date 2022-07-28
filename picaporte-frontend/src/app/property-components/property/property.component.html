@@ -24,14 +24,14 @@
             </div>
             <div class="col mb-5 d-flex justify-content-end">
                 <button *ngIf="!isEditable" class="btn btn-picaporte-secondary" (click)="onClick_edit()">Editar</button>
-                <button *ngIf="isEditable" class="btn btn-danger me-3" (click)="onClick_cancel()">Cancelar</button>
+                <button *ngIf="isEditable && propertyId != null && propertyId != 0" class="btn btn-danger me-3" (click)="onClick_cancel()">Cancelar</button>
                 <button *ngIf="isEditable" class="btn btn-success" (click)="onClick_submit()">Submeter dados</button>
             </div>
         </div>
 
         <div *ngIf="isOnDetailsSubMenu" class="row">
             <div class="col-12 px-3 mb-3">
-                <app-property-online [isOnline]="propertyStructure.property.isOnline" [isEditable]="isEditable" (event_updatePropertyOnline)="eventHandler_updatePropertyOnline($event)"></app-property-online>
+                <app-property-online *ngIf="isDataFetched" [isOnline]="propertyStructure.property.isOnline" [isEditable]="isEditable" (event_updatePropertyOnline)="eventHandler_updatePropertyOnline($event)"></app-property-online>
             </div>
             <div class="col-6 px-3">
                 <div class="bg-white p-4 rounded h-100">
@@ -50,19 +50,20 @@
         <div *ngIf="isOnCaracteristicsSubMenu" class="row">
             <div class="col-12 px-3">
                 <div class="bg-white p-4 rounded h-100">
-                    <app-property-caracteristics [isEditable]="isEditable" [ameneties]="propertyStructure.ameneties" (event_updatePropertyCaracteristics)="eventHandler_updatePropertyCaracteristics($event)"></app-property-caracteristics>
+                    <app-property-caracteristics *ngIf="isDataFetched" [isEditable]="isEditable" [ameneties]="propertyStructure.ameneties" 
+                    (event_updatePropertyCaracteristics)="eventHandler_updatePropertyCaracteristics($event)"></app-property-caracteristics>
                 </div>
             </div>
         </div>
         <div *ngIf="isOnDocumentsSubMenu" class="row">
             <div class="col-12">
-                <app-property-documents [isEditable]="isEditable" [mainDocuments]="propertyStructure.mainDocuments" [certificateDocuments]="propertyStructure.certificateDocuments" [otherDocuments]="propertyStructure.otherDocuments" 
+                <app-property-documents *ngIf="isDataFetched" [isEditable]="isEditable" [mainDocuments]="propertyStructure.mainDocuments" [certificateDocuments]="propertyStructure.certificateDocuments" [otherDocuments]="propertyStructure.otherDocuments" 
                 (event_updateMainPropertyDocuments)="eventHandler_updateMainPropertyDocuments($event)" (event_updateCertificatePropertyDocuments)="eventHandler_updateCertificatePropertyDocuments($event)" (event_updateOtherPropertyDocuments)="eventHandler_updateOtherPropertyDocuments($event)"></app-property-documents>
             </div>
         </div>
         <div *ngIf="isOnImagesSubMenu" class="row">
             <div class="col-12">
-                <app-property-images [isEditable]="isEditable" [mainImage]="propertyStructure.mainImage" [otherImages]="propertyStructure.images" 
+                <app-property-images *ngIf="isDataFetched" [isEditable]="isEditable" [mainImage]="propertyStructure.mainImage" [otherImages]="propertyStructure.images" 
                 (event_updateMainImage)="eventHandler_updatePropertyMainImage($event)" (event_updateOtherImages)="eventHandler_updatePropertyOtherImages($event)"></app-property-images>
             </div>
         </div>

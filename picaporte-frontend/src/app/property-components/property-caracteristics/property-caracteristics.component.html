@@ -3,7 +3,7 @@
         <div class="card" [ngClass]="{'cursor-pointer' : isEditable}" [ngClass]="{'card-disabled' : !isEditable}" (click)="isEditable && onClick_checkbox(i)">
             <div class="card-body">
                 <div class="d-flex align-items-center">
-                    <input *ngIf="isEditable; else amenetieRead" class="form-check-input" type="checkbox" [checked]="amenetieStructure.isSelected" id="amenetie.id">
+                    <input *ngIf="isEditable; else amenetieRead" class="form-check-input cursor-pointer" type="checkbox" [checked]="amenetieStructure.isSelected" id="amenetie.id">
                     <ng-template #amenetieRead>
                         <i *ngIf="amenetieStructure.isSelected; else amenetieUnchecked" class="fa-solid fa-circle-check text-success fa-2x"></i>
                         <ng-template #amenetieUnchecked>

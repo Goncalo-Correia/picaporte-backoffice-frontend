@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Image } from 'src/app/models/image.model';
 import { ImageService } from 'src/app/services/image-service/image.service';
 import { ImageStructure } from 'src/app/structures/image.structure';
@@ -10,7 +10,7 @@ import * as $ from 'jquery';
   templateUrl: './property-images.component.html',
   styleUrls: ['./property-images.component.css']
 })
-export class PropertyImagesComponent implements OnInit {
+export class PropertyImagesComponent {
 
   @Input() mainImage: ImageStructure = new ImageStructure(new Image(), new ImgurImageUploadStructure(), false);
   @Input() otherImages: Array<ImageStructure> = new Array<ImageStructure>();
@@ -26,9 +26,6 @@ export class PropertyImagesComponent implements OnInit {
   otherImagesIsEmpty: boolean = false;
 
   constructor(public imageService: ImageService) { }
-
-  ngOnInit(): void {
-  }
 
   onChange_file(event: any) {
     var file = event.target.files[0];

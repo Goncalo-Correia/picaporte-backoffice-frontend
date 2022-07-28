@@ -13,8 +13,10 @@ import { ToDosComponent } from './router-components/to-dos/to-dos.component';
 const routes: Routes = [
   { path: '', component: DashboardComponent },
   { path: 'Imoveis', component: PropertyDashboardComponent },
+  { path: 'Imovel', component: PropertyComponent },
   { path: 'Imovel/:id', component: PropertyComponent },
   { path: 'Clientes', component: CustomerDashboardComponent },
+  { path: 'Cliente', component: CustomerComponent },
   { path: 'Cliente/:id', component: CustomerComponent },
   { path: 'Tarefas', component: TasksComponent },
   { path: 'Noticias', component: NewsComponent },

@@ -26,27 +26,21 @@ export const apiEndpoints = {
   customer: {
     getAll: "api/Customers"
   },
-  static_amenetieType: {
-    getAll: "api/Static_AmenetieType"
+  renting: {
+    getRentingsByPropertyId: "api/Rentings/Property/",
+    post: "api/Rentings/",
+    put: "api/Rentings/",
+    delete: "api/Rentings/"
   },
-  static_propertyType: {
-    getAll: "api/Static_PropertyType"
-  },
-  static_propertyStatus: {
-    getAll: "api/Static_PropertyStatus"
-  },
-  static_propertyConditionStatus: {
-    getAll: "api/Static_PropertyConditionStatus"
-  },
-  static_propertyTypology: {
-    getAll: "api/Static_PropertyTypology"
-  },
-  static_energyCertificates: {
-    getAll: "api/Static_EnergyCertificate"
-  },
-  static_documentTypes: {
-    getAll: "api/Static_DocumentType"
-  },
+  static_amenetieType: "api/Static_AmenetieType/",
+  static_propertyType: "api/Static_PropertyType/",
+  static_propertyStatus: "api/Static_PropertyStatus/",
+  static_propertyConditionStatus: "api/Static_PropertyConditionStatus/",
+  static_propertyTypology: "api/Static_PropertyTypology/",
+  static_energyCertificates: "api/Static_EnergyCertificate/",
+  static_documentTypes: "api/Static_DocumentType/",
+  static_documentStatus: "api/Static_DocumentStatus/",
+  static_rentingActionTypes: "api/Static_RentingActionType/",
   user: {
     authotize: "authorize"
   }

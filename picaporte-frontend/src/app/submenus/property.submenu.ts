@@ -31,7 +31,7 @@ export class PropertySubMenuFactory {
         this.propertySubMenus = new Array<PropertySubMenu>();
     }
 
-    getPropertySubmenus(): Array<PropertySubMenu> {
+    getPropertySubmenus(isEditable: boolean): Array<PropertySubMenu> {
         this.propertySubMenus.push({
             enum_propertySubMenu: Enum_PropertySubMenu.DETAILS,
             label: "Dados do imóvel",
@@ -57,16 +57,18 @@ export class PropertySubMenuFactory {
             label: "Imagens",
             description: "Listagem de imagens associadas"
         });
-        this.propertySubMenus.push({
-            enum_propertySubMenu: Enum_PropertySubMenu.RENTING,
-            label: "Arrendamento",
-            description: "Especificações de arrendamento"
-        });
-        this.propertySubMenus.push({
-            enum_propertySubMenu: Enum_PropertySubMenu.OBSERVATION_HISTORY,
-            label: "Histórico de Observações",
-            description: "Listagem deobservações"
-        });
+        if (!isEditable) {
+            this.propertySubMenus.push({
+                enum_propertySubMenu: Enum_PropertySubMenu.RENTING,
+                label: "Arrendamento",
+                description: "Especificações de arrendamento"
+            });
+            this.propertySubMenus.push({
+                enum_propertySubMenu: Enum_PropertySubMenu.OBSERVATION_HISTORY,
+                label: "Histórico de Observações",
+                description: "Listagem deobservações"
+            });
+        }
         this.propertySubMenus.push({
             enum_propertySubMenu: Enum_PropertySubMenu.HISTORY,
             label: "Histórico",

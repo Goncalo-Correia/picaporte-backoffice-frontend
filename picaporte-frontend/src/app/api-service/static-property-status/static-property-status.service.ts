@@ -19,26 +19,58 @@ export class StaticPropertyStatusService {
       }),
     };
 
-    // GET ALL
-    GetAll_PropertyStatuses(): Observable<Static_PropertyStatus[]> {
-      return this.http
-        .get<Static_PropertyStatus[]>(this.baseurl + apiEndpoints.static_propertyStatus.getAll)
-        .pipe(retry(1), catchError(this.errorHandl));
-    }
+  // GET ALL
+  GetAll_PropertyStatuses(): Observable<Static_PropertyStatus[]> {
+    return this.http
+      .get<Static_PropertyStatus[]>(this.baseurl + apiEndpoints.static_propertyStatus)
+      .pipe(retry(1), catchError(this.errorHandl));
+  }
 
-    // Error handling
-    errorHandl(error: any) {
-      let errorMessage = '';
-      if (error.error instanceof ErrorEvent) {
-        // Get client-side error
-        errorMessage = error.error.message;
-      } else {
-        // Get server-side error
-        errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-      }
-      console.log(errorMessage);
-      return throwError(() => {
-        return errorMessage;
-      });
+  // POST
+  Post_PropertyStatus(data: Static_PropertyStatus): Observable<Static_PropertyStatus> {
+    return this.http
+      .post<Static_PropertyStatus>(
+        this.baseurl + apiEndpoints.static_propertyStatus,
+        JSON.stringify(data),
+        this.httpOptions
+      )
+      .pipe(retry(1), catchError(this.errorHandl));
+  }
+
+  // PUT
+  Put_PropertyStatus(data: Static_PropertyStatus): Observable<Static_PropertyStatus> {
+    return this.http
+      .put<Static_PropertyStatus>(
+        this.baseurl + apiEndpoints.static_propertyStatus + data.id,
+        JSON.stringify(data),
+        this.httpOptions
+      )
+      .pipe(retry(1), catchError(this.errorHandl));
+  }
+
+  // DELETE
+  Delete_PropertyStatus(data: number) {
+    return this.http
+      .delete(
+        this.baseurl + apiEndpoints.static_propertyStatus + data,
+        this.httpOptions
+      )
+      .pipe(retry(1), catchError(this.errorHandl));
+  }
+
+  // Error handling
+  errorHandl(error: any) {
+    let errorMessage = '';
+    if (error.error instanceof ErrorEvent) {
+      // Get client-side error
+      errorMessage = error.error.message;
+    } else {
+      // Get server-side error
+      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
+    console.log(errorMessage);
+    return throwError(() => {
+      return errorMessage;
+    });
+  }
 }

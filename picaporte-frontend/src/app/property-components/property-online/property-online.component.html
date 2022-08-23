@@ -1,13 +1,13 @@
 <div class="form-row bg-white rounded p-3">
     <div class="col-12">
         <div *ngIf="isEditable; else readOnly" class="btn-group btn-group-lg" role="group" aria-label="Basic mixed styles example">
-            <button type="button" class="btn btn-lg " [ngClass]="{'disabled': !isEditable}" [ngClass]="isOnline ? 'btn-outline-danger' : 'btn-danger' " (click)="onClick_changeOnlineStatus(false)">Offline</button>
-            <button type="button" class="btn btn-lg " [ngClass]="{'disabled': !isEditable}" [ngClass]="isOnline ? 'btn-success' : 'btn-outline-danger' " (click)="onClick_changeOnlineStatus(true)">Online</button>
+            <button type="button" class="btn btn-lg " [ngClass]="isOnline ? 'btn-outline-danger' : 'btn-danger' " (click)="onClick_changeOnlineStatus(false)">Offline</button>
+            <button type="button" class="btn btn-lg " [ngClass]="isOnline ? 'btn-success' : 'btn-outline-success' " (click)="onClick_changeOnlineStatus(true)">Online</button>
         </div>
         <ng-template #readOnly>
             <div class="btn-group btn-group-lg" role="group" aria-label="Basic mixed styles example">
                 <button type="button" class="btn btn-lg " [ngClass]="isOnline ? 'btn-outline-danger' : 'btn-danger' " disabled>Offline</button>
-                <button type="button" class="btn btn-lg " [ngClass]="isOnline ? 'btn-success' : 'btn-outline-danger' " disabled>Online</button>
+                <button type="button" class="btn btn-lg " [ngClass]="isOnline ? 'btn-success' : 'btn-outline-success' " disabled>Online</button>
             </div>
         </ng-template>
     </div>

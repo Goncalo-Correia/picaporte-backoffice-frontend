@@ -1,0 +1,162 @@
+<div class="row">
+
+    <div class="col-12 mb-3">
+        <div class="d-flex align-items-center justify-content-end gap-3">
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createUpdateModal" (click)="onClick_showModal_newRenting(rentingEvent.NEW_CONTRACT)">Novo contrato</button>
+            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#createUpdateModal" (click)="onClick_showModal_newRenting(rentingEvent.CLOSE_CONTRACT)">Terminar contrato</button>
+            <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#createUpdateModal" (click)="onClick_showModal_newRenting(rentingEvent.OBSERVATION)">Observação</button>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="bg-white p-4 rounded h-100">
+            <section *ngIf="rentingList.length > 0; else emptyRentingList" class="timer-section">
+                <div class="container">
+                    <div class="timer-container">
+                        <ul class="timer">
+                            <li *ngFor="let rentingItem of rentingList; let i = index" class="step new-contract"
+                            [ngClass]="{
+                                'new-contract': rentingItem.rentingActionTypeId === rentingEvent.NEW_CONTRACT, 
+                                'close-contract' : rentingItem.rentingActionTypeId === rentingEvent.CLOSE_CONTRACT,
+                                'comment' : rentingItem.rentingActionTypeId === rentingEvent.OBSERVATION }">
+                                <span>{{i}}</span>
+                                <div class="content">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <div class="fs-5">{{rentingItem.title}}asfasfdasfadf</div>
+                                        <div class="d-flex gap-3">
+                                            <i class="fa-solid fa-pen-to-square" data-bs-toggle="modal" data-bs-target="#createUpdateModal" (click)="onClick_showModal_editRenting(i)"></i>
+                                            <i class="fa-solid fa-trash-can" data-bs-toggle="modal" data-bs-target="#deleteModal" (click)="onClick_showModal_deleteRenting(i)"></i>
+                                        </div>
+                                    </div>
+                                    <div class="fs-6">
+                                        {{rentingItem.comment}}
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center fs-6">
+                                        <div class="d-flex gap-1">
+                                            <i class="fa-solid fa-user"></i>
+                                            <div>{{rentingItem.lastModifiedByUser?.firstName}} {{rentingItem.lastModifiedByUser?.lastName}}</div>
+                                        </div>
+                                        <div>{{rentingItem.lastModifiedOn}}</div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            <ng-template #emptyRentingList>
+                <div class="d-flex flex-column align-items-center my-5">
+                    <i class="fa-solid fa-timeline fa-4x"></i>
+                    <div>Sem registos de arrendamento</div>
+                </div>
+            </ng-template>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal" id="createUpdateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">{{selectedRentiongActionTypeLabel}}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="onClick_close()"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="firstName" class="form-label fw-bold">Nome</label>
+              <input type="text" class="form-control" id="firstName" name="firstName" [(ngModel)]="selectedRenting.title">
+            </div>
+            <div class="mb-3">
+              <label for="cc" class="form-label fw-bold">Inquilino</label>
+              <div class="dropdown">
+                <button class="w-100 btn btn-secondary dropdown-toggle" type="button" id="propertyType" data-bs-toggle="dropdown" aria-expanded="false">
+                  {{selectedCustomerLabel}} {{selectedRenting.customer?.lastName}}
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="propertyType">
+                  <li *ngFor="let customer of customerList">
+                    <a class="dropdown-item cursor-pointer" (click)="onClick_selectCustomer(customer)">{{customer.firstName}} {{customer.lastName}}</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="firstName" class="form-label fw-bold">Detalhes</label>
+              <textarea class="form-control" rows="3" [(ngModel)]="selectedRenting.title"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <div class="d-flex justify-content-end w-100">
+            <div>
+              <button type="button" class="btn  me-2" data-bs-dismiss="modal" (click)="onClick_close()">Cancelar</button>
+              <button type="submit" class="btn btn-success" data-bs-dismiss="modal" (click)="onClick_submit()">Confirmar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal" id="createUpdateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Documento</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="onClick_closeDelete()"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+                <div class="mb-3">
+                    Remover registo de arrendamento?
+                </div>
+                <section class="timer-section">
+                    <div class="container">
+                        <div class="timer-container">
+                            <ul class="timer">
+                                <li class="step new-contract"
+                                [ngClass]="{
+                                    'new-contract': toDeleteRenting.rentingActionTypeId === rentingEvent.NEW_CONTRACT, 
+                                    'close-contract' : toDeleteRenting.rentingActionTypeId === rentingEvent.CLOSE_CONTRACT,
+                                    'comment' : toDeleteRenting.rentingActionTypeId === rentingEvent.OBSERVATION }">
+                                    <div class="content">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <div class="fs-5">{{toDeleteRenting.title}}asfasfdasfadf</div>
+                                            <div class="d-flex gap-3">
+                                                <i class="fa-solid fa-pen-to-square" data-bs-toggle="modal" data-bs-target="#createUpdateModal"></i>
+                                                <i class="fa-solid fa-trash-can" data-bs-toggle="modal" data-bs-target="#deleteModal"></i>
+                                            </div>
+                                        </div>
+                                        <div class="fs-6">
+                                            {{toDeleteRenting.comment}}
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center fs-6">
+                                            <div class="d-flex gap-1">
+                                                <i class="fa-solid fa-user"></i>
+                                                <div>{{toDeleteRenting.lastModifiedByUser?.firstName}} {{toDeleteRenting.lastModifiedByUser?.lastName}}</div>
+                                            </div>
+                                            <div>{{toDeleteRenting.lastModifiedOn}}</div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <div class="d-flex justify-content-end w-100">
+            <div>
+              <button type="button" class="btn  me-2" data-bs-dismiss="modal" (click)="onClick_closeDelete()">Cancelar</button>
+              <button type="submit" class="btn btn-success" data-bs-dismiss="modal" (click)="onClick_submitDelete()">Confirmar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

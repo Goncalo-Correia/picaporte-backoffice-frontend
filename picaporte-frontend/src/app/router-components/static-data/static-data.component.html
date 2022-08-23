@@ -1,0 +1,77 @@
+<div class="p-5 row">
+    <div class="col-4">
+        <div *ngIf="selectedStaticDataEnum == Enum_StaticData().PROPERTY_STATUS" class="bg-white p-3 rounded h-100 cursor-pointer mb-3">
+            Estados de imóvel
+        </div>
+        <div *ngIf="selectedStaticDataEnum == Enum_StaticData().PROPERTY_TYPE" class="bg-white p-3 rounded h-100 cursor-pointer mb-3">
+            Tipos de imóvel
+        </div>
+        <div *ngIf="selectedStaticDataEnum == Enum_StaticData().PROPERTY_CONDITION_STATUS" class="bg-white p-3 rounded h-100 cursor-pointer mb-3">
+            Estados de condição do imóvel
+        </div>
+        <div *ngIf="selectedStaticDataEnum == Enum_StaticData().PROPERTY_TYPOLOGY" class="bg-white p-3 rounded h-100 cursor-pointer mb-3">
+            Tipologia de imóvel
+        </div>
+        <div *ngIf="selectedStaticDataEnum == Enum_StaticData().PROPERTY_ENERGY_CERTIFICATE" class="bg-white p-3 rounded h-100 cursor-pointer mb-3">
+            Certificados de energias
+        </div>
+        <div *ngIf="selectedStaticDataEnum == Enum_StaticData().AMENETIE_TYPE" class="bg-white p-3 rounded h-100 cursor-pointer mb-3">
+            Caracteristícas
+        </div>
+        <div *ngIf="selectedStaticDataEnum == Enum_StaticData().DOCUMENT_STATUS" class="bg-white p-3 rounded h-100 cursor-pointer mb-3">
+            Estados de documento
+        </div>
+        <div *ngIf="selectedStaticDataEnum == Enum_StaticData().DOCUMENT_TYPE" class="bg-white p-3 rounded h-100 cursor-pointer mb-3">
+            Tipos de documento
+        </div>
+    </div>
+    <div class="col-8 bg-white p-4 rounded h-100">
+        <div class="accordion accordion-flush" id="accordionFlushExample">
+            <div *ngFor="let staticDataItem of staticDataStructureList" class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingOne">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne" (click)="onClick_selectStaticDataItem(staticDataItem)">
+                        {{staticDataItem.label}}
+                    </button>
+                </h2>
+                <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body">
+                        <div *ngIf="isEditable; else readOnlyStaticData">
+                            <form>
+                                <div class="mb-3">
+                                    <label for="firstName" class="form-label fw-bold w-100">Título</label>
+                                    <input type="text" class="form-control" id="firstName" name="firstName" [(ngModel)]="staticDataItem.label">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="firstName" class="form-label fw-bold w-100">Descrição</label>
+                                    <input type="text" class="form-control" id="firstName" name="firstName" [(ngModel)]="staticDataItem.description">
+                                </div>
+                                <div class="d-flex justify-content-end gap-3">
+                                    <button *ngIf="isEditable" class="btn btn-small btn-danger" (click)="onClick_cancel()">Cancelar</button>
+                                    <button *ngIf="isEditable" class="btn btn-small btn-success" (click)="onClick_submit()">Submeter dados</button>
+                                </div>
+                            </form>
+                        </div>
+                        <ng-template #readOnlyStaticData>
+                            <form>
+                                <div class="mb-3">
+                                    <label for="firstName" class="form-label fw-bold w-100">Título</label>
+                                    <div>{{staticDataItem.label}}</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="firstName" class="form-label fw-bold w-100">Descrição</label>
+                                    <div>{{staticDataItem.description}}</div>
+                                </div>
+                                <div class="d-flex justify-content-end gap-3">
+                                    <i class="fa-solid fa-pen-to-square fa-lg cursor-pointer" (click)="onClick_edit()"></i>
+                                </div>
+                            </form>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+            <div class="w-100">
+                <button class="btn btn-picaporte-primary">Adicionar novo item</button>
+            </div>
+        </div>
+    </div>
+</div>

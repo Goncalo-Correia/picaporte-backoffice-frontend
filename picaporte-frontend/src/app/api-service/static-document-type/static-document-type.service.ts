@@ -19,15 +19,47 @@ export class StaticDocumentTypeService {
      }),
    };
 
-   // GET ALL
-   GetAll_DocumentTypes(): Observable<Static_DocumentType[]> {
-     return this.http
-       .get<Static_DocumentType[]>(this.baseurl + apiEndpoints.static_documentTypes.getAll)
-       .pipe(retry(1), catchError(this.errorHandl));
-   }
+  // GET ALL
+  GetAll_DocumentTypes(): Observable<Static_DocumentType[]> {
+    return this.http
+      .get<Static_DocumentType[]>(this.baseurl + apiEndpoints.static_documentTypes)
+      .pipe(retry(1), catchError(this.errorHandl));
+  }
 
-   // Error handling
-   errorHandl(error: any) {
+  // POST
+  Post_DocumentType(data: Static_DocumentType): Observable<Static_DocumentType> {
+    return this.http
+      .post<Static_DocumentType>(
+        this.baseurl + apiEndpoints.static_documentTypes,
+        JSON.stringify(data),
+        this.httpOptions
+      )
+      .pipe(retry(1), catchError(this.errorHandl));
+  }
+
+  // PUT
+  Put_DocumentType(data: Static_DocumentType): Observable<Static_DocumentType> {
+    return this.http
+      .put<Static_DocumentType>(
+        this.baseurl + apiEndpoints.static_documentTypes + data.id,
+        JSON.stringify(data),
+        this.httpOptions
+      )
+      .pipe(retry(1), catchError(this.errorHandl));
+  }
+
+  // DELETE
+  Delete_DocumentType(data: number) {
+    return this.http
+      .delete(
+        this.baseurl + apiEndpoints.static_documentTypes + data,
+        this.httpOptions
+      )
+      .pipe(retry(1), catchError(this.errorHandl));
+  }
+
+  // Error handling
+  errorHandl(error: any) {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
       // Get client-side error

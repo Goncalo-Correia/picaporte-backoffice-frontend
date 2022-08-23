@@ -1,36 +1,36 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, retry, throwError } from 'rxjs';
-import { Static_PropertyTypology } from 'src/app/models/static/static-propertytypology.model';
+import { Static_DocumentStatus } from 'src/app/models/static/static-documentstatus.model';
 import { apiEndpoints, environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
-export class StaticPropertyTypologyService {
+export class StaticDocumentStatusService {
 
-    // Base url
-    baseurl = environment.apiUrl;
-    constructor(private http: HttpClient) {}
-    // Http Headers
-    httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-    };
+   // Base url
+   baseurl = environment.apiUrl;
+   constructor(private http: HttpClient) {}
+   // Http Headers
+   httpOptions = {
+     headers: new HttpHeaders({
+       'Content-Type': 'application/json',
+     }),
+   };
 
   // GET ALL
-  GetAll_PropertyTypology(): Observable<Static_PropertyTypology[]> {
+  GetAll_DocumentStatus(): Observable<Static_DocumentStatus[]> {
     return this.http
-      .get<Static_PropertyTypology[]>(this.baseurl + apiEndpoints.static_propertyTypology)
+      .get<Static_DocumentStatus[]>(this.baseurl + apiEndpoints.static_documentStatus)
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
   // POST
-  Post_PropertyTypologies(data: Static_PropertyTypology): Observable<Static_PropertyTypology> {
+  Post_DocumentStatus(data: Static_DocumentStatus): Observable<Static_DocumentStatus> {
     return this.http
-      .post<Static_PropertyTypology>(
-        this.baseurl + apiEndpoints.static_propertyTypology,
+      .post<Static_DocumentStatus>(
+        this.baseurl + apiEndpoints.static_documentStatus,
         JSON.stringify(data),
         this.httpOptions
       )
@@ -38,10 +38,10 @@ export class StaticPropertyTypologyService {
   }
 
   // PUT
-  Put_PropertyTypology(data: Static_PropertyTypology): Observable<Static_PropertyTypology> {
+  Put_DocumentStatus(data: Static_DocumentStatus): Observable<Static_DocumentStatus> {
     return this.http
-      .put<Static_PropertyTypology>(
-        this.baseurl + apiEndpoints.static_propertyTypology + data.id,
+      .put<Static_DocumentStatus>(
+        this.baseurl + apiEndpoints.static_documentStatus + data.id,
         JSON.stringify(data),
         this.httpOptions
       )
@@ -49,10 +49,10 @@ export class StaticPropertyTypologyService {
   }
 
   // DELETE
-  Delete_PropertyTypology(data: number) {
+  Delete_DocumentStatus(data: number) {
     return this.http
       .delete(
-        this.baseurl + apiEndpoints.static_propertyTypology + data,
+        this.baseurl + apiEndpoints.static_documentStatus + data,
         this.httpOptions
       )
       .pipe(retry(1), catchError(this.errorHandl));

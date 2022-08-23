@@ -19,26 +19,58 @@ export class StaticEnergyCertificateService {
      }),
    };
 
-   // GET ALL
-   GetAll_EnergyCertificates(): Observable<Static_EnergyCertificate[]> {
-     return this.http
-       .get<Static_EnergyCertificate[]>(this.baseurl + apiEndpoints.static_energyCertificates.getAll)
-       .pipe(retry(1), catchError(this.errorHandl));
-   }
+  // GET ALL
+  GetAll_EnergyCertificates(): Observable<Static_EnergyCertificate[]> {
+    return this.http
+      .get<Static_EnergyCertificate[]>(this.baseurl + apiEndpoints.static_energyCertificates)
+      .pipe(retry(1), catchError(this.errorHandl));
+  }
 
-   // Error handling
-   errorHandl(error: any) {
-     let errorMessage = '';
-     if (error.error instanceof ErrorEvent) {
-       // Get client-side error
-       errorMessage = error.error.message;
-     } else {
-       // Get server-side error
-       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-     }
-     console.log(errorMessage);
-     return throwError(() => {
-       return errorMessage;
-     });
-   }
+  // POST
+  Post_EnergyCertificate(data: Static_EnergyCertificate): Observable<Static_EnergyCertificate> {
+    return this.http
+      .post<Static_EnergyCertificate>(
+        this.baseurl + apiEndpoints.static_energyCertificates,
+        JSON.stringify(data),
+        this.httpOptions
+      )
+      .pipe(retry(1), catchError(this.errorHandl));
+  }
+
+  // PUT
+  Put_EnergyCertificate(data: Static_EnergyCertificate): Observable<Static_EnergyCertificate> {
+    return this.http
+      .put<Static_EnergyCertificate>(
+        this.baseurl + apiEndpoints.static_energyCertificates + data.id,
+        JSON.stringify(data),
+        this.httpOptions
+      )
+      .pipe(retry(1), catchError(this.errorHandl));
+  }
+
+  // DELETE
+  Delete_EnergyCertificate(data: number) {
+    return this.http
+      .delete(
+        this.baseurl + apiEndpoints.static_energyCertificates + data,
+        this.httpOptions
+      )
+      .pipe(retry(1), catchError(this.errorHandl));
+  }
+
+  // Error handling
+  errorHandl(error: any) {
+    let errorMessage = '';
+    if (error.error instanceof ErrorEvent) {
+      // Get client-side error
+      errorMessage = error.error.message;
+    } else {
+      // Get server-side error
+      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+    }
+    console.log(errorMessage);
+    return throwError(() => {
+      return errorMessage;
+    });
+  }
 }

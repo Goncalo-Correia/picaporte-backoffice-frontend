@@ -18,35 +18,33 @@ export class AppComponent implements OnInit {
     
     await this.auth.isLoading$;
 
-    var authenticated;
-    await this.auth.isAuthenticated$.subscribe(val => authenticated =  val);
-    console.log(authenticated);
-    
-    if (authenticated) {
-      this.showSplashScreen = false;
-    } 
-    else 
-    {
-      await this.auth.loginWithRedirect({
-        redirect_uri: 'http://localhost:4200/'
-      });
 
-      await this.auth.handleRedirectCallback();
-/*
-      var authorizeStructure: AuthorizeStructure = new AuthorizeStructure();
+    await this.auth.isAuthenticated$.subscribe(async (authenticated) => {
+      console.log(authenticated);
 
-      await this.auth.getAccessTokenSilently().subscribe(val => authorizeStructure.accessToken = val);
-      await this.auth.getUser().subscribe(val => authorizeStructure.email = val?.email);
-
-      await this.userService.Post_AuthorizeUser(authorizeStructure).subscribe((data: {}) => {
-        var isValid = <boolean>data;
-        if (!isValid) {
-          this.auth.logout({
-            returnTo: 'http://localhost:4200/'
-          });
-        }
-      });
-*/
-    }
+      if (authenticated) {
+        this.showSplashScreen = false;
+      } else {
+        await this.auth.loginWithRedirect({
+          redirect_uri: 'http://localhost:4200/'
+        });
+  
+        await this.auth.handleRedirectCallback();
+  
+        var authorizeStructure: AuthorizeStructure = new AuthorizeStructure();
+  
+        await this.auth.getAccessTokenSilently().subscribe(val => authorizeStructure.accessToken = val);
+        await this.auth.getUser().subscribe(val => authorizeStructure.email = val?.email);
+  
+        await this.userService.Post_AuthorizeUser(authorizeStructure).subscribe((data: {}) => {
+          var isValid = <boolean>data;
+          if (!isValid) {
+            this.auth.logout({
+              returnTo: 'http://localhost:4200/'
+            });
+          }
+        });
+      }
+    });
   }
 }

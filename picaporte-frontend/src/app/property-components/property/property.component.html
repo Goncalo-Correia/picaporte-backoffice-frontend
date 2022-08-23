@@ -13,7 +13,7 @@
             </div>
         </div>
     </div>
-    <div class="p-5 w-100">
+    <div class="p-5 w-100 overflow-y-scroll">
 
         <div class="row">
             <div class="col-auto fs-4">
@@ -21,8 +21,9 @@
                 <div *ngIf="isOnCaracteristicsSubMenu" class="mb-3 me-3 fw-bold">Características</div>
                 <div *ngIf="isOnDocumentsSubMenu" class="mb-3 fw-bold">Documentos associados</div>
                 <div *ngIf="isOnImagesSubMenu" class="mb-3 fw-bold">Imagens associadas</div>
+                <div *ngIf="isOnRentingSubMenu" class="mb-3 fw-bold">Registo de arrendamento</div>
             </div>
-            <div class="col mb-5 d-flex justify-content-end">
+            <div *ngIf="!isOnRentingSubMenu" class="col mb-5 d-flex justify-content-end">
                 <button *ngIf="!isEditable" class="btn btn-picaporte-secondary" (click)="onClick_edit()">Editar</button>
                 <button *ngIf="isEditable && propertyId != null && propertyId != 0" class="btn btn-danger me-3" (click)="onClick_cancel()">Cancelar</button>
                 <button *ngIf="isEditable" class="btn btn-success" (click)="onClick_submit()">Submeter dados</button>
@@ -69,7 +70,7 @@
         </div>
         <div *ngIf="isOnRentingSubMenu" class="row">
             <div class="col-12">
-                <!--<app-customer-properties [properties]="customerStructure.properties" (event_updateCustomerProperties)="eventHandler_updatePropertyRenting($event)"></app-customer-properties>-->
+                <app-property-renting [propertyId]="propertyId"></app-property-renting>
             </div>
         </div>
         <div *ngIf="isOnLocationSubMenu" class="row">

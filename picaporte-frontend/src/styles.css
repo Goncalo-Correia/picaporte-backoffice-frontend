@@ -63,6 +63,11 @@
     vertical-align: inherit;
 }
 
+/* OVERFLOW */
+.overflow-y-scroll {
+    overflow-y: scroll;
+}
+
 /* SUB MENUS */
 .submenu-container {
     width: fit-content;

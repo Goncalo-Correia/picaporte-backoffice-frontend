@@ -10,7 +10,6 @@ import { AppComponent } from './app.component';
 import { AuthModule } from '@auth0/auth0-angular';
 
 import { Auth0ServiceComponent } from './services/auth0-service/auth0-service.component';
-import { HomeComponent } from './router-components/home/home.component';
 import { HeaderComponent } from './layout-components/header/header.component';
 import { SidenavComponent } from './layout-components/sidenav/sidenav.component';
 import { CustomerComponent } from './customer-components/customer/customer.component';
@@ -32,13 +31,14 @@ import { DashboardComponent } from './dashboard-components/dashboard/dashboard.c
 import { SpinnerComponent } from './utiity-components/spinner/spinner.component';
 import { PropertyOnlineComponent } from './property-components/property-online/property-online.component';
 import { Auth0Component } from './auth0/auth0.component';
+import { PropertyRentingComponent } from './property-components/property-renting/property-renting.component';
+import { StaticDataComponent } from './router-components/static-data/static-data.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     Auth0ServiceComponent,
-    HomeComponent,
     HeaderComponent,
     SidenavComponent,
     CustomerComponent,
@@ -57,7 +57,9 @@ import { Auth0Component } from './auth0/auth0.component';
     DashboardComponent,
     SpinnerComponent,
     PropertyOnlineComponent,
-    Auth0Component
+    Auth0Component,
+    PropertyRentingComponent,
+    StaticDataComponent
   ],
   imports: [
     BrowserModule,

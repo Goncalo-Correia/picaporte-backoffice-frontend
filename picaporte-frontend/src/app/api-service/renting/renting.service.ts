@@ -1,13 +1,14 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, retry, throwError } from 'rxjs';
-import { Static_AmenetieType } from 'src/app/models/static/static-amenetieType.model';
+import { Customer } from 'src/app/models/customer.model';
+import { Renting } from 'src/app/models/renting.model';
 import { apiEndpoints, environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
-export class StaticAmenetieTypeService {
+export class RentingService {
 
   // Base url
   baseurl = environment.apiUrl;
@@ -20,17 +21,17 @@ export class StaticAmenetieTypeService {
   };
 
   // GET ALL
-  GetAll_AmenetieTypes(): Observable<Static_AmenetieType[]> {
+  GetRentingsByPropertyId(propertyId: number): Observable<Renting[]> {
     return this.http
-      .get<Static_AmenetieType[]>(this.baseurl + apiEndpoints.static_amenetieType)
+      .get<Renting[]>(this.baseurl + apiEndpoints.renting.getRentingsByPropertyId + propertyId)
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
   // POST
-  Post_AmenetieType(data: Static_AmenetieType): Observable<Static_AmenetieType> {
+  Post_Renting(data: Renting): Observable<Renting> {
     return this.http
-      .post<Static_AmenetieType>(
-        this.baseurl + apiEndpoints.static_amenetieType,
+      .post<Renting>(
+        this.baseurl + apiEndpoints.renting.post,
         JSON.stringify(data),
         this.httpOptions
       )
@@ -38,23 +39,23 @@ export class StaticAmenetieTypeService {
   }
 
   // PUT
-  Put_AmenetieType(data: Static_AmenetieType): Observable<Static_AmenetieType> {
+  Put_Renting(id: number, data: Renting): Observable<Renting> {
     return this.http
-      .put<Static_AmenetieType>(
-        this.baseurl + apiEndpoints.static_amenetieType + data.id,
-        JSON.stringify(data),
-        this.httpOptions
-      )
+      .put<Renting>(
+        this.baseurl + apiEndpoints.renting.put + id,
+          JSON.stringify(data),
+          this.httpOptions
+        )
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
-  // DELETE
-  Delete_AmenetieType(data: number) {
+  // PUT
+  Delete_Renting(id: number): Observable<Renting> {
     return this.http
-      .delete(
-        this.baseurl + apiEndpoints.static_amenetieType + data,
-        this.httpOptions
-      )
+      .delete<Renting>(
+        this.baseurl + apiEndpoints.renting.delete + id,
+          this.httpOptions
+        )
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
@@ -68,10 +69,8 @@ export class StaticAmenetieTypeService {
       // Get server-side error
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
-    console.log(errorMessage);
     return throwError(() => {
       return errorMessage;
     });
   }
-   
 }

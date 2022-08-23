@@ -19,26 +19,58 @@ export class StaticPropertyTypeService {
       }),
     };
 
-    // GET ALL
-    GetAll_PropertyTypes(): Observable<Static_PropertyType[]> {
-      return this.http
-        .get<Static_PropertyType[]>(this.baseurl + apiEndpoints.static_propertyType.getAll)
-        .pipe(retry(1), catchError(this.errorHandl));
-    }
+  // GET ALL
+  GetAll_PropertyTypes(): Observable<Static_PropertyType[]> {
+    return this.http
+      .get<Static_PropertyType[]>(this.baseurl + apiEndpoints.static_propertyType)
+      .pipe(retry(1), catchError(this.errorHandl));
+  }
 
-    // Error handling
-    errorHandl(error: any) {
-      let errorMessage = '';
-      if (error.error instanceof ErrorEvent) {
-        // Get client-side error
-        errorMessage = error.error.message;
-      } else {
-        // Get server-side error
-        errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-      }
-      console.log(errorMessage);
-      return throwError(() => {
-        return errorMessage;
-      });
+  // POST
+  Post_PropertyType(data: Static_PropertyType): Observable<Static_PropertyType> {
+    return this.http
+      .post<Static_PropertyType>(
+        this.baseurl + apiEndpoints.static_propertyType,
+        JSON.stringify(data),
+        this.httpOptions
+      )
+      .pipe(retry(1), catchError(this.errorHandl));
+  }
+
+  // PUT
+  Put_PropertyType(data: Static_PropertyType): Observable<Static_PropertyType> {
+    return this.http
+      .put<Static_PropertyType>(
+        this.baseurl + apiEndpoints.static_propertyType + data.id,
+        JSON.stringify(data),
+        this.httpOptions
+      )
+      .pipe(retry(1), catchError(this.errorHandl));
+  }
+
+  // DELETE
+  Delete_PropertyType(data: number) {
+    return this.http
+      .delete(
+        this.baseurl + apiEndpoints.static_propertyType + data,
+        this.httpOptions
+      )
+      .pipe(retry(1), catchError(this.errorHandl));
+  }
+
+  // Error handling
+  errorHandl(error: any) {
+    let errorMessage = '';
+    if (error.error instanceof ErrorEvent) {
+      // Get client-side error
+      errorMessage = error.error.message;
+    } else {
+      // Get server-side error
+      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
+    console.log(errorMessage);
+    return throwError(() => {
+      return errorMessage;
+    });
+  }
 }

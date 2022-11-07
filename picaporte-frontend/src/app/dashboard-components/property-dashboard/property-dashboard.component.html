@@ -1,62 +1,149 @@
 <div class="p-5 row">
-    <div class="col">
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="Pesquise por um cliente"  aria-describedby="button-addon2" [(ngModel)]="searchAndFilterStructure.searchText">
-            <button class="btn btn-picaporte-secondary" type="button" id="button-addon2" (click)="get_propertyDashboardStructure()">Pesquisar</button>
+  <div class="col-12 mb-3">
+    <div *ngIf="isKpiDataFetched else kpiElseBlock" class="row">
+      <div *ngFor="let dashboardKpi of dashboardKpis" class="col-2 p-2">
+        <app-dashboard-kpi 
+          [dashboardKpiStructure]="dashboardKpi" 
+          [isSelected]="propertyDashboardSearchAndFilterStructure.propertyTypeId == dashboardKpi.id"
+          [isPlaceholder]="false"
+          (dashboardKpiClicked)="eventHandler_dashboardKpiClicked($event)"
+        >
+        </app-dashboard-kpi>
+      </div>
+    </div>
+    <ng-template #kpiElseBlock>
+      <div class="row">
+        <div *ngFor="let number of [0,1,2]" class="col-2 p-2">
+          <app-dashboard-kpi 
+            [dashboardKpiStructure]="placeholderDashboardKpi" 
+            [isSelected]="false"
+            [isPlaceholder]="true"
+            (dashboardKpiClicked)="eventHandler_dashboardKpiClicked($event)"
+          >
+          </app-dashboard-kpi>
         </div>
-    </div>
-    <div class="col-3 d-flex justify-content-end mb-3">
-        <button routerLink="/Imovel" class="btn btn-picaporte-secondary">Novo imóvel</button>
-    </div>
-    <div>
-        <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">Referência</th>
-                <th scope="col">Cliente</th>
-                <th scope="col">Estado do imóvel</th>
-                <th scope="col">Tipo do imóvel</th>
-                <th scope="col">Atualizado em</th>
-                <th scope="col">Atualizado por</th>
-              </tr>
-            </thead>
-            <tbody *ngIf="isDataFetched; else elseBlock">
-                <tr *ngFor="let property of propertyDashboardStructureArray" class="table-row">
-                    <td scope="row"><span [routerLink]="['/Imovel/', property.id]" class="col cursor-pointer color-primary fw-bold">{{property.reference}}</span></td>
-                    <td><span class="col">{{property.customerName}}</span></td>
-                    <td><span class="col">{{property.propertyStatusLabel}}</span></td>
-                    <td><span class="col">{{property.propertyTypeLabel}}</span></td>
-                    <td><span class="col">{{property.lastModifiedOn}}</span></td>
-                    <td><span class="col">{{property.lastModifiedBy}}</span></td>
-                </tr>
-            </tbody>
-            <ng-template #elseBlock>
-                <tbody>
-                    <tr *ngFor="let number of [0,1,2,3,4]" class="placeholder-glow table-row">
-                        <td scope="row"><span class="placeholder col-4"></span></td>
-                        <td><span class="placeholder col-2"></span></td>
-                        <td><span class="placeholder col-2"></span></td>
-                        <td><span class="placeholder col-2"></span></td>
-                        <td><span class="placeholder col-2"></span></td>
-                        <td><span class="placeholder col-2"></span></td>
-                    </tr>
-                </tbody>
-            </ng-template>
-          </table>
-    </div>
-    <div *ngIf="propertyDashboardStructureArray.length == 0 && isDataFetched" class="w-100 p-4 text-center rounded bg-white">
-        Não foram encontrados imóveis
-    </div>
-    <div *ngIf="isDataFetched">
-        <nav>
-            <ul class="pagination justify-content-end">
-              <li *ngIf="hasPrevious" class="page-item" (click)="previous()">
-                <a class="page-link color-primary">Anterior</a>
-              </li>
-              <li *ngIf="hasNext" class="page-item" (click)="next()">
-                <a class="page-link color-primary">Seguinte</a>
+      </div>
+    </ng-template>
+  </div>
+  <div>
+    <app-search-and-filter-bar 
+      [searchText]="propertyDashboardSearchAndFilterStructure.searchAndFilterStructure.searchText"
+      [buttonLabel]="'Novo imóvel'"
+      [showButton]="true"
+      [placeholder]="'Pesquise por um imóvel'"
+      [hasFilters]="true"
+      [hasSelectedFilter]="(propertyDashboardSearchAndFilterStructure.propertyStatusId != 0 && propertyDashboardSearchAndFilterStructure.propertyStatusId != null) ||
+      propertyDashboardSearchAndFilterStructure.propertyTypologyId != 0 && propertyDashboardSearchAndFilterStructure.propertyTypologyId != null ||
+      propertyDashboardSearchAndFilterStructure.propertyConditionStatusId != 0 && propertyDashboardSearchAndFilterStructure.propertyConditionStatusId != null ||
+      propertyDashboardSearchAndFilterStructure.amenetieTypeId != 0 && propertyDashboardSearchAndFilterStructure.amenetieTypeId != null"
+      (searchTextChanged)="eventHandler_searchTextChanged($event)"
+      (buttonClicked)="eventHandler_buttonClicked()"
+    >
+      <div>
+        <div class="row mb-3">
+          <div class="dropdown col-3 px-3">
+            <button class="btn btn-secondary dropdown-toggle w-100" [ngClass]="{'btn-success': propertyDashboardSearchAndFilterStructure.propertyStatusId != 0 && propertyDashboardSearchAndFilterStructure.propertyStatusId != null}" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {{statusFilterLabel}}
+            </button>
+            <ul class="dropdown-menu dropdown-menu-dark w-100">
+              <li *ngFor="let propertyDashboardFilterStatuses of propertyDashboardFilters.statuses" (click)="onClick_selectStatusFilter(propertyDashboardFilterStatuses.id, propertyDashboardFilterStatuses.label)" class="cursor-pointer">
+                <div class="dropdown-item">{{propertyDashboardFilterStatuses.label}}</div>
               </li>
             </ul>
-          </nav>
-    </div>
+          </div>
+          <div class="dropdown col-3 px-3">
+            <button class="btn btn-secondary dropdown-toggle w-100" [ngClass]="{'btn-success': propertyDashboardSearchAndFilterStructure.propertyTypologyId != 0 && propertyDashboardSearchAndFilterStructure.propertyTypologyId != null}" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {{typologyFilterLabel}}
+            </button>
+            <ul class="dropdown-menu dropdown-menu-dark w-100">
+              <li *ngFor="let propertyDashboardFilterTypologies of propertyDashboardFilters.tipologies" (click)="onClick_selectTypologyFilter(propertyDashboardFilterTypologies.id, propertyDashboardFilterTypologies.label)" class="cursor-pointer">
+                <div class="dropdown-item">{{propertyDashboardFilterTypologies.label}}</div>
+              </li>
+            </ul>
+          </div>
+          <div class="dropdown col-3 px-3">
+            <button class="btn btn-secondary dropdown-toggle w-100" [ngClass]="{'btn-success': propertyDashboardSearchAndFilterStructure.propertyConditionStatusId != 0 && propertyDashboardSearchAndFilterStructure.propertyConditionStatusId != null}" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {{conditionStatusFilterLabel}}
+            </button>
+            <ul class="dropdown-menu dropdown-menu-dark w-100">
+              <li *ngFor="let propertyDashboardFilterConditionStatuses of propertyDashboardFilters.statuses" (click)="onClick_selectConditionStatusFilter(propertyDashboardFilterConditionStatuses.id, propertyDashboardFilterConditionStatuses.label)" class="cursor-pointer">
+                <div class="dropdown-item">{{propertyDashboardFilterConditionStatuses.label}}</div>
+              </li>
+            </ul>
+          </div>
+          <div class="dropdown col-3 px-3">
+            <button class="btn btn-secondary dropdown-toggle w-100" [ngClass]="{'btn-success': propertyDashboardSearchAndFilterStructure.amenetieTypeId != 0 && propertyDashboardSearchAndFilterStructure.amenetieTypeId != null}" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {{amenetieTypeFilterLabel}}
+            </button>
+            <ul class="dropdown-menu dropdown-menu-dark scrollable-dropdown-menu w-100">
+              <li *ngFor="let propertyDashboardFilterAmenetieType of propertyDashboardFilters.amenetieTypes" (click)="onClick_selectAmenetieTypeFilter(propertyDashboardFilterAmenetieType.id, propertyDashboardFilterAmenetieType.label)" class="cursor-pointer">
+                <div class="dropdown-item">{{propertyDashboardFilterAmenetieType.label}}</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="row justify-content-end">
+          <div class="col-auto px-3">
+            <button type="button" class="btn btn-light" (click)="onClick_clearFilter()">Limpar filtros</button>
+          </div>
+          <div class="col-auto px-3">
+            <button type="button" class="btn btn-picaporte-secondary" (click)="onClick_confirmFilter()">Confirmar filtros</button>
+          </div>
+        </div>
+      </div>
+    </app-search-and-filter-bar>
+  </div>
+  <div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Referência</th>
+          <th scope="col">Cliente</th>
+          <th scope="col">Estado do imóvel</th>
+          <th scope="col">Tipo do imóvel</th>
+          <th scope="col">Atualizado em</th>
+          <th scope="col">Atualizado por</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="isDataFetched; else elseBlock">
+        <tr *ngFor="let property of propertyDashboardStructureArray" class="table-row">
+          <td scope="row"><span [routerLink]="['/Imovel/', property.id]"
+              class="col cursor-pointer color-primary fw-bold">{{property.reference}}</span></td>
+          <td><span class="col">{{property.customerName}}</span></td>
+          <td><span class="col">{{property.propertyStatusLabel}}</span></td>
+          <td><span class="col">{{property.propertyTypeLabel}}</span></td>
+          <td><span class="col">{{property.lastModifiedOn}}</span></td>
+          <td><span class="col">{{property.lastModifiedBy}}</span></td>
+        </tr>
+      </tbody>
+      <ng-template #elseBlock>
+        <tbody>
+          <tr *ngFor="let number of [0,1,2]" class="placeholder-glow table-row">
+            <td scope="row"><span class="placeholder col-4"></span></td>
+            <td><span class="placeholder col-2"></span></td>
+            <td><span class="placeholder col-2"></span></td>
+            <td><span class="placeholder col-2"></span></td>
+            <td><span class="placeholder col-2"></span></td>
+            <td><span class="placeholder col-2"></span></td>
+          </tr>
+        </tbody>
+      </ng-template>
+    </table>
+  </div>
+  <div *ngIf="propertyDashboardStructureArray.length == 0 && isDataFetched"
+    class="w-100 p-4 text-center rounded bg-white">
+    Não foram encontrados imóveis
+  </div>
+  <div *ngIf="isDataFetched">
+    <nav>
+      <ul class="pagination justify-content-end">
+        <li *ngIf="hasPrevious" class="page-item" (click)="previous()">
+          <a class="page-link color-primary">Anterior</a>
+        </li>
+        <li *ngIf="hasNext" class="page-item" (click)="next()">
+          <a class="page-link color-primary">Seguinte</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
 </div>

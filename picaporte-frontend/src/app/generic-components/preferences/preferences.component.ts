@@ -175,7 +175,7 @@ export class CustomerPreferencesComponent implements OnInit {
   }
 
   private get_staticPropertyTypologies() {
-    this.static_propertyTypologyService.GetAll_PropertyTypologies().subscribe((data: {}) => {
+    this.static_propertyTypologyService.GetAll_PropertyTypology().subscribe((data: {}) => {
       this.staticPropertyTypologies = <Static_PropertyTypology[]>data;
     });
   }

@@ -1,0 +1,7 @@
+.dashboard-kpi {
+    border: 2px solid white;
+}
+
+.dashboard-kpi-selected {
+    border: 2px solid #198754;
+}

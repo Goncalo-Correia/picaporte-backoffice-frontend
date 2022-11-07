@@ -1,0 +1,27 @@
+.search-and-filter .form-control {
+    border-radius: unset;
+    height: 56px;
+}
+
+.search-and-filter .btn {
+    border-radius: 0 0.25rem 0.25rem 0;
+}
+
+.search-and-filter .filters {
+    border-radius: 0.25rem 0 0 0.25rem;
+    border-right: 1px solid #dee2e6;
+}
+
+.search-and-filter.open .btn {
+    border-radius: 0 0.25rem 0 0;
+}
+
+.search-and-filter.open .filters {
+    border-radius: 0.25rem 0 0 0;
+    border-right: 1px solid #dee2e6;
+}
+
+.search-and-filter .filters-placeholder {
+    background-color: #e9ecef;
+    border-radius: 0px 0px 10px 10px;
+}

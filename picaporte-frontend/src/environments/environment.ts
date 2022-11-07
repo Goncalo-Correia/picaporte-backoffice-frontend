@@ -9,19 +9,22 @@ export const environment = {
 
 export const apiEndpoints = {
   queries_entityReference: {
-    searchAndFilter: "api/Queries_EntityReference/SearchAndFilter"
+    searchAndFilter: "api/Queries_EntityReference/SearchAndFilter",
+    kpi: "api/Queries_EntityReference/Kpi"
   },
   queries_customer: {
     get: "api/Queries_Customers/",
     post: "api/Queries_Customers",
     put: "api/Queries_Customers/",
-    searchAndFilter: "api/Queries_Customers/SearchAndFilter"
+    searchAndFilter: "api/Queries_Customers/SearchAndFilter",
+    kpi: "api/Queries_Customers/Kpi"
   },
   queries_property: {
     get: "api/Queries_Property/",
     post: "api/Queries_Property/",
     put: "api/Queries_Property/",
-    searchAndFilter: "api/Queries_Property/SearchAndFilter"
+    searchAndFilter: "api/Queries_Property/SearchAndFilter",
+    kpi: "api/Queries_Property/Kpi"
   },
   customer: {
     getAll: "api/Customers"
@@ -37,7 +40,7 @@ export const apiEndpoints = {
   static_propertyStatus: "api/Static_PropertyStatus/",
   static_propertyConditionStatus: "api/Static_PropertyConditionStatus/",
   static_propertyTypology: "api/Static_PropertyTypology/",
-  static_energyCertificates: "api/Static_EnergyCertificate/",
+  static_energyCertificates: "api/Static_PropertyEnergyCertificate/",
   static_documentTypes: "api/Static_DocumentType/",
   static_documentStatus: "api/Static_DocumentStatus/",
   static_rentingActionTypes: "api/Static_RentingActionType/",

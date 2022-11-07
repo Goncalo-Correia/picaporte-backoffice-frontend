@@ -1,0 +1,13 @@
+.static-data-menu-item {
+    background-color: white;
+}
+
+.static-data-menu-item.selected {
+    background-color: var(--color-secondary);
+    color: var(--color-primary);
+    font-weight: bold;
+}
+
+.accordion-header {
+    border-bottom: 1px solid var(--color-body-background);
+}

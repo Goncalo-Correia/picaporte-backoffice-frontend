@@ -1,10 +1,12 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, retry, throwError } from 'rxjs';
-import { PropertyDashboardStructure } from 'src/app/structures/dashboard-structures/property-dashboard.structure';
+import { PropertyDashboardStructure } from 'src/app/structures/dashboard-structures/property/property-dashboard.structure';
 import { PropertyStructure } from 'src/app/structures/main-structures/property.structure';
 import { SearchAndFilterStructure } from 'src/app/structures/dashboard-structures/search-and-filter.structure';
 import { apiEndpoints, environment } from 'src/environments/environment';
+import { PropertyDashboardSearchAndFilterStructure } from 'src/app/structures/dashboard-structures/property/property-dashboard-search-and-filter.structure';
+import { DashboardKpiStructure } from 'src/app/structures/dashboard-structures/dashboard-kpi.structure';
 
 @Injectable({
   providedIn: 'root'
@@ -51,13 +53,19 @@ export class QueriesPropertyService {
     }
 
     // POST
-    Post_SearchAndFilter_PropertyStructure(data: SearchAndFilterStructure): Observable<PropertyDashboardStructure[]> {
+    Post_SearchAndFilter_PropertyStructure(data: PropertyDashboardSearchAndFilterStructure): Observable<PropertyDashboardStructure[]> {
       return this.http
         .post<PropertyDashboardStructure[]>(
           this.baseurl + apiEndpoints.queries_property.searchAndFilter,
           JSON.stringify(data),
           this.httpOptions
         )
+        .pipe(retry(1), catchError(this.errorHandl));
+    }
+
+    Get_Kpis() {
+      return this.http
+        .get<DashboardKpiStructure[]>(this.baseurl + apiEndpoints.queries_property.kpi)
         .pipe(retry(1), catchError(this.errorHandl));
     }
 

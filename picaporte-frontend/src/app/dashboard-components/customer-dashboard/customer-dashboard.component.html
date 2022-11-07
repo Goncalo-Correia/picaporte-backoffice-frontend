@@ -1,45 +1,104 @@
 <div class="p-5 row">
-    <div class="col">
-        <div class="input-group">
-            <input type="text" class="form-control" placeholder="Pesquise por um cliente"  aria-describedby="button-addon2" [(ngModel)]="searchAndFilterStructure.searchText">
-            <button class="btn btn-picaporte-secondary" type="button" id="button-addon2" (click)="get_customerDashboardStructure()">Pesquisar</button>
+  <div class="col-12 mb-3">
+    <div *ngIf="isKpiDataFetched else kpiElseBlock" class="row">
+      <div class="col-2 p-2">
+        <app-dashboard-kpi 
+          [dashboardKpiStructure]="dashboardKpis[0]" 
+          [isSelected]="customerSearchAndFilterStructure.customersWithUser == false"
+          [isPlaceholder]="false"
+          (dashboardKpiClicked)="eventHandler_dashboardKpiClicked(0)"
+        >
+        </app-dashboard-kpi>
+      </div>
+      <div class="col-2 p-2">
+        <app-dashboard-kpi 
+          [dashboardKpiStructure]="dashboardKpis[1]" 
+          [isSelected]="customerSearchAndFilterStructure.customersWithUser == true"
+          [isPlaceholder]="false"
+          (dashboardKpiClicked)="eventHandler_dashboardKpiClicked(1)"
+        >
+        </app-dashboard-kpi>
+      </div>
+    </div>
+    <ng-template #kpiElseBlock>
+      <div class="row">
+        <div *ngFor="let number of [0,1,2]" class="col-2 p-2">
+          <app-dashboard-kpi 
+            [dashboardKpiStructure]="placeholderDashboardKpi" 
+            [isSelected]="false"
+            [isPlaceholder]="true"
+            (dashboardKpiClicked)="eventHandler_dashboardKpiClicked($event)"
+          >
+          </app-dashboard-kpi>
         </div>
-    </div>
-    <div class="col-3 d-flex justify-content-end mb-3">
-        <button routerLink="/Cliente" class="btn btn-picaporte-secondary">Novo cliente</button>
-    </div>
+      </div>
+    </ng-template>
+  </div>
+  <app-search-and-filter-bar 
+    [searchText]="customerSearchAndFilterStructure.searchAndFilterStructure.searchText"
+    [buttonLabel]="'Novo cliente'"
+    [showButton]="true"
+    [placeholder]="'Pesquise por um cliente'"
+    [hasFilters]="true"
+    [hasSelectedFilter]="(customerSearchAndFilterStructure.amenetieTypeId != 0 && customerSearchAndFilterStructure.amenetieTypeId != null)"
+    (searchTextChanged)="eventHandler_searchTextChanged($event)"
+    (buttonClicked)="eventHandler_buttonClicked()"
+  >
     <div>
-        <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">Nome</th>
-                <th scope="col">Imóveis registados</th>
-                <th scope="col">Preferências registadas</th>
-                <th scope="col">Atualizado em</th>
-                <th scope="col">Atualizado por</th>
-              </tr>
-            </thead>
-            <tbody *ngIf="isDataFetched; else elseBlock">
-                <tr *ngFor="let customer of customerDashboardStructureArray" class="table-row">
-                    <td scope="row"><span [routerLink]="['/Cliente/', customer.id]" class="col cursor-pointer color-primary fw-bold">{{customer.customerName}}</span></td>
-                    <td><span class="col">{{customer.countOfProperties}}</span></td>
-                    <td><span class="col">{{customer.countOfPreferences}}</span></td>
-                    <td><span class="col">{{customer.lastModifiedOn}}</span></td>
-                    <td><span class="col">{{customer.lastModifiedBy}}</span></td>
-                </tr>
-            </tbody>
-            <ng-template #elseBlock>
-                <tbody>
-                    <tr *ngFor="let number of [0,1,2,3,4]" class="placeholder-glow table-row">
-                        <td scope="row"><span class="placeholder col-4"></span></td>
-                        <td><span class="placeholder col-2"></span></td>
-                        <td><span class="placeholder col-2"></span></td>
-                        <td><span class="placeholder col-2"></span></td>
-                        <td><span class="placeholder col-2"></span></td>
-                    </tr>
-                </tbody>
-            </ng-template>
-          </table>
+      <div class="row mb-3">
+        <div class="dropdown col-3 px-3">
+          <button class="btn btn-secondary dropdown-toggle w-100" [ngClass]="{'btn-success': customerSearchAndFilterStructure.amenetieTypeId != 0 && customerSearchAndFilterStructure.amenetieTypeId != null}" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            {{amenetieTypeFilterLabel}}
+          </button>
+          <ul class="dropdown-menu dropdown-menu-dark scrollable-dropdown-menu w-100">
+            <li *ngFor="let customerDashboardFilterAmenetieType of customerDashboardFilters.amenetieTypes" (click)="onClick_selectAmenetieTypeFilter(customerDashboardFilterAmenetieType.id, customerDashboardFilterAmenetieType.label)" class="cursor-pointer">
+              <div class="dropdown-item">{{customerDashboardFilterAmenetieType.label}}</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row justify-content-end">
+        <div class="col-auto px-3">
+          <button type="button" class="btn btn-light" (click)="onClick_clearFilter()">Limpar filtros</button>
+        </div>
+        <div class="col-auto px-3">
+          <button type="button" class="btn btn-picaporte-secondary" (click)="onClick_confirmFilter()">Confirmar filtros</button>
+        </div>
+      </div>
+    </div>
+  </app-search-and-filter-bar>
+  <div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Nome</th>
+          <th scope="col">Imóveis registados</th>
+          <th scope="col">Preferências registadas</th>
+          <th scope="col">Atualizado em</th>
+          <th scope="col">Atualizado por</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="isDataFetched; else elseBlock">
+        <tr *ngFor="let customer of customerDashboardStructureArray" class="table-row">
+          <td scope="row"><span [routerLink]="['/Cliente/', customer.id]" class="col cursor-pointer color-primary fw-bold">{{customer.customerName}}</span></td>
+          <td><span class="col">{{customer.countOfProperties}}</span></td>
+          <td><span class="col">{{customer.countOfPreferences}}</span></td>
+          <td><span class="col">{{customer.lastModifiedOn}}</span></td>
+          <td><span class="col">{{customer.lastModifiedBy}}</span></td>
+        </tr>
+        </tbody>
+        <ng-template #elseBlock>
+          <tbody>
+            <tr *ngFor="let number of [0,1,2,3,4]" class="placeholder-glow table-row">
+              <td scope="row"><span class="placeholder col-4"></span></td>
+              <td><span class="placeholder col-2"></span></td>
+              <td><span class="placeholder col-2"></span></td>
+              <td><span class="placeholder col-2"></span></td>
+              <td><span class="placeholder col-2"></span></td>
+            </tr>
+          </tbody>
+        </ng-template>
+      </table>
     </div>
     <div *ngIf="customerDashboardStructureArray.length == 0 && isDataFetched" class="w-100 p-4 text-center rounded bg-white">
         Não foram encontrados clientes

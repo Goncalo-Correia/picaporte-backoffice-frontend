@@ -43,7 +43,7 @@ export class PropertyDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.get_Customers();
-    if (this.property.customerId != 0) {
+    if (this.property.customerId != 0 && this.property.customerId != undefined) {
       this.selectedCustomerName = this.property.customer.firstName + " " + this.property.customer.lastName;
     }
     this.get_staticPropertyTypes();
@@ -120,7 +120,7 @@ export class PropertyDetailComponent implements OnInit {
   }
 
   private get_staticPropertyTypologies() {
-    this.static_propertyTypologyService.GetAll_PropertyTypologies().subscribe((data: {}) => {
+    this.static_propertyTypologyService.GetAll_PropertyTypology().subscribe((data: {}) => {
       this.staticPropertyTypologies = <Static_PropertyTypology[]>data;
     });
   }

@@ -7,6 +7,7 @@ import { PropertyDashboardComponent } from './dashboard-components/property-dash
 import { PropertyComponent } from './property-components/property/property.component';
 import { MonitoringAnalyticsComponent } from './router-components/monitoring-analytics/monitoring-analytics.component';
 import { NewsComponent } from './router-components/news/news.component';
+import { StaticDataComponent } from './router-components/static-data/static-data.component';
 import { TasksComponent } from './router-components/tasks/tasks.component';
 import { ToDosComponent } from './router-components/to-dos/to-dos.component';
 
@@ -21,7 +22,8 @@ const routes: Routes = [
   { path: 'Tarefas', component: TasksComponent },
   { path: 'Noticias', component: NewsComponent },
   { path: 'ToDos', component: ToDosComponent },
-  { path: 'Estatisticas', component: MonitoringAnalyticsComponent }
+  { path: 'Estatisticas', component: MonitoringAnalyticsComponent },
+  { path: 'GestaoDeDados', component: StaticDataComponent }
 ];
 
 @NgModule({

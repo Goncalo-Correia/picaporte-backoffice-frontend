@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
-import { CustomerDashboardStructure } from 'src/app/structures/dashboard-structures/customer-dashboard.structure';
+import { CustomerDashboardStructure } from 'src/app/structures/dashboard-structures/customer/customer-dashboard.structure';
 import { apiEndpoints, environment } from 'src/environments/environment';
 import { SearchAndFilterStructure } from 'src/app/structures/dashboard-structures/search-and-filter.structure';
 import { CustomerStructure } from 'src/app/structures/main-structures/customer.structure';
+import { DashboardKpiStructure } from 'src/app/structures/dashboard-structures/dashboard-kpi.structure';
 
 @Injectable({
   providedIn: 'root'
@@ -59,6 +60,12 @@ export class QueriesCustomerService {
           JSON.stringify(data),
           this.httpOptions
         )
+        .pipe(retry(1), catchError(this.errorHandl));
+    }
+
+    Get_Kpis() {
+      return this.http
+        .get<DashboardKpiStructure[]>(this.baseurl + apiEndpoints.queries_customer.kpi)
         .pipe(retry(1), catchError(this.errorHandl));
     }
 

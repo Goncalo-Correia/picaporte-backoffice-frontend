@@ -91,11 +91,40 @@
         </ng-template>
       </div>
     </div>
+    <div *ngIf="isEditable; else propertyStatusRead" class="row">
+      <div class="col-6 mb-3">
+        <label for="nif" class="form-label fw-bold">Estado de venda do imóvel</label>
+        <div class="dropdown">
+          <button class="w-100 btn btn-warning dropdown-toggle" type="button" id="propertyConditionStatus" data-bs-toggle="dropdown" aria-expanded="false">
+            <a *ngIf="property.propertyStatus?.label != null; else propertyStatusNullEdit">{{property.propertyStatus?.label}}</a>
+            <ng-template #propertyStatusNullEdit>
+              <a>Nenhuma opção seleccionada</a>
+            </ng-template>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="propertyType">
+            <li *ngFor="let propertyStatus of staticPropertyStatuses">
+              <a class="dropdown-item" (click)="onClick_selectPropertyStatus(propertyStatus)">{{propertyStatus.label}}</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <ng-template #propertyStatusRead>
+      <div class="row">
+        <div class="mb-2 col-6">
+          <label class="fw-bold">Estado de venda</label>
+          <div *ngIf="property.propertyStatus?.label != null; else propertyStatusNull">{{property.propertyStatus?.label}}</div>
+          <ng-template #propertyStatusNull>
+            <div>-</div>
+          </ng-template>
+        </div>
+      </div>
+    </ng-template>
     <div class="row">
       <div class="col-12 mb-3">
         <label for="nif" class="form-label fw-bold">Proprietário</label>
         <div *ngIf="isEditable; else clientRead" class="dropdown">
-          <button class="w-100 btn btn-secondary dropdown-toggle" type="button" id="propertyType" data-bs-toggle="dropdown" aria-expanded="false">
+          <button class="w-100 btn btn-dark dropdown-toggle" type="button" id="propertyType" data-bs-toggle="dropdown" aria-expanded="false">
             {{selectedCustomerName}}
           </button>
           <ul class="dropdown-menu" aria-labelledby="propertyType">
@@ -109,23 +138,7 @@
         </ng-template>
       </div>
     </div>
-    <div *ngIf="isEditable; else propertyStatusTypeRead" class="row">
-      <div class="col-6 mb-3">
-        <label for="nif" class="form-label fw-bold">Estado de venda do imóvel</label>
-        <div class="dropdown">
-          <button class="w-100 btn btn-secondary dropdown-toggle" type="button" id="propertyConditionStatus" data-bs-toggle="dropdown" aria-expanded="false">
-            <a *ngIf="property.propertyStatus?.label != null; else propertyStatusNullEdit">{{property.propertyStatus?.label}}</a>
-            <ng-template #propertyStatusNullEdit>
-              <a>Nenhuma opção seleccionada</a>
-            </ng-template>
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="propertyType">
-            <li *ngFor="let propertyStatus of staticPropertyStatuses">
-              <a class="dropdown-item" (click)="onClick_selectPropertyStatus(propertyStatus)">{{propertyStatus.label}}</a>
-            </li>
-          </ul>
-        </div>
-      </div>
+    <div *ngIf="isEditable; else propertyTypeRead" class="row">
       <div class="col-6 mb-3">
         <label for="cc" class="form-label fw-bold">Tipo do imóvel</label>
         <div class="dropdown">
@@ -142,20 +155,36 @@
           </ul>
         </div>
       </div>
-    </div>
-    <ng-template #propertyStatusTypeRead>
-      <div class="row">
-        <div class="mb-2 col-6">
-          <label class="fw-bold">Estado de venda</label>
-          <div *ngIf="property.propertyStatus?.label != null; else propertyStatusNull">{{property.propertyStatus?.label}}</div>
-          <ng-template #propertyStatusNull>
-            <div>-</div>
-          </ng-template>
+      <div class="col-6 mb-3">
+        <label for="nif" class="form-label fw-bold">Eficiência energética do imóvel</label>
+        <div class="dropdown">
+          <button class="w-100 btn btn-secondary dropdown-toggle" type="button" id="propertyConditionStatus" data-bs-toggle="dropdown" aria-expanded="false">
+            <a *ngIf="property.energyCertificate?.label != null; else energyCertificateNullEdit">{{property.energyCertificate?.label}}</a>
+            <ng-template #energyCertificateNullEdit>
+              <a>Nenhuma opção seleccionada</a>
+            </ng-template>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="propertyType">
+            <li *ngFor="let energyCertificate of staticEnergyCertificates">
+              <a class="dropdown-item" (click)="onClick_selectEnergyCertificate(energyCertificate)">{{energyCertificate.label}}</a>
+            </li>
+          </ul>
         </div>
+      </div>
+    </div>
+    <ng-template #propertyTypeRead>
+      <div class="row">
         <div class="mb-2 col-6">
           <label class="fw-bold">Tipo do imóvel</label>
           <div *ngIf="property.propertyType?.label != null; else propertyTypeNull">{{property.propertyType?.label}}</div>
           <ng-template #propertyTypeNull>
+            <div>-</div>
+          </ng-template>
+        </div>
+        <div class="mb-2 col-6">
+          <label class="fw-bold">Eficiência energética do imóvel</label>
+          <div *ngIf="property.energyCertificate?.label != null; else energyCertificateNull">{{property.energyCertificate?.label}}</div>
+          <ng-template #energyCertificateNull>
             <div>-</div>
           </ng-template>
         </div>
@@ -208,35 +237,6 @@
           <label class="fw-bold">Tipologia do imóvel</label>
           <div *ngIf="property.propertyTypology?.label != null; else propertyTypologyNull">{{property.propertyTypology?.label}}</div>
           <ng-template #propertyTypologyNull>
-            <div>-</div>
-          </ng-template>
-        </div>
-      </div>
-    </ng-template>
-    <div *ngIf="isEditable; else energyCertificateRead" class="row">
-      <div class="col-6 mb-3">
-        <label for="nif" class="form-label fw-bold">Eficiência energética do imóvel</label>
-        <div class="dropdown">
-          <button class="w-100 btn btn-secondary dropdown-toggle" type="button" id="propertyConditionStatus" data-bs-toggle="dropdown" aria-expanded="false">
-            <a *ngIf="property.energyCertificate?.label != null; else energyCertificateNullEdit">{{property.energyCertificate?.label}}</a>
-            <ng-template #energyCertificateNullEdit>
-              <a>Nenhuma opção seleccionada</a>
-            </ng-template>
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="propertyType">
-            <li *ngFor="let energyCertificate of staticEnergyCertificates">
-              <a class="dropdown-item" (click)="onClick_selectEnergyCertificate(energyCertificate)">{{energyCertificate.label}}</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <ng-template #energyCertificateRead>
-      <div class="row">
-        <div class="mb-2 col-6">
-          <label class="fw-bold">Eficiência energética do imóvel</label>
-          <div *ngIf="property.energyCertificate?.label != null; else energyCertificateNull">{{property.energyCertificate?.label}}</div>
-          <ng-template #energyCertificateNull>
             <div>-</div>
           </ng-template>
         </div>

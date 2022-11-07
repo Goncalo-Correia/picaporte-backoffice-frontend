@@ -6,6 +6,9 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+//Dragula
+import { DragulaModule } from 'ng2-dragula';
+
 // Import the module from the SDK
 import { AuthModule } from '@auth0/auth0-angular';
 
@@ -33,6 +36,8 @@ import { PropertyOnlineComponent } from './property-components/property-online/p
 import { Auth0Component } from './auth0/auth0.component';
 import { PropertyRentingComponent } from './property-components/property-renting/property-renting.component';
 import { StaticDataComponent } from './router-components/static-data/static-data.component';
+import { DashboardKpiComponent } from './generic-components/dashboard-kpi/dashboard-kpi.component';
+import { SearchAndFilterBarComponent } from './generic-components/search-and-filter-bar/search-and-filter-bar.component';
 
 
 @NgModule({
@@ -59,13 +64,16 @@ import { StaticDataComponent } from './router-components/static-data/static-data
     PropertyOnlineComponent,
     Auth0Component,
     PropertyRentingComponent,
-    StaticDataComponent
+    StaticDataComponent,
+    DashboardKpiComponent,
+    SearchAndFilterBarComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
+    DragulaModule.forRoot(),
     AuthModule.forRoot({
       domain: 'REDACTED_AUTH0_DOMAIN_OLD',
       clientId: 'REDACTED_AUTH0_CLIENT_ID_OLD'

@@ -1,7 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, retry, throwError } from 'rxjs';
-import { EntityReferenceDashboardStructure } from 'src/app/structures/dashboard-structures/entity-reference-dashboard.structure';
+import { DashboardKpiStructure } from 'src/app/structures/dashboard-structures/dashboard-kpi.structure';
+import { EntityReferenceDashboardStructure } from 'src/app/structures/dashboard-structures/entity-reference/entity-reference-dashboard.structure';
+import { EntityReferenceSearchAndFilterStructure } from 'src/app/structures/dashboard-structures/entity-reference/entity-reference-search-and-filter.structure';
 import { SearchAndFilterStructure } from 'src/app/structures/dashboard-structures/search-and-filter.structure';
 import { apiEndpoints, environment } from 'src/environments/environment';
 
@@ -21,13 +23,19 @@ export class QueriesEntityReferenceService {
     };
 
     // POST
-    Post_SearchAndFilter_EntityReferenceStructure(data: SearchAndFilterStructure): Observable<EntityReferenceDashboardStructure[]> {
+    Post_SearchAndFilter_EntityReferenceStructure(data: EntityReferenceSearchAndFilterStructure): Observable<EntityReferenceDashboardStructure[]> {
     return this.http
         .post<EntityReferenceDashboardStructure[]>(
           this.baseurl + apiEndpoints.queries_entityReference.searchAndFilter,
           JSON.stringify(data),
           this.httpOptions
         )
+        .pipe(retry(1), catchError(this.errorHandl));
+    }
+
+    Get_Kpis() {
+      return this.http
+        .get<DashboardKpiStructure[]>(this.baseurl + apiEndpoints.queries_entityReference.kpi)
         .pipe(retry(1), catchError(this.errorHandl));
     }
     

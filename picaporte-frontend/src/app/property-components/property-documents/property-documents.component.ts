@@ -22,7 +22,7 @@ export class PropertyDocumentsComponent implements OnInit {
   @Output() event_updateCertificatePropertyDocuments = new EventEmitter<Array<DocumentStructure>>();
   @Output() event_updateOtherPropertyDocuments = new EventEmitter<Array<DocumentStructure>>();
 
-  selectedDocumentStructure: DocumentStructure = new DocumentStructure(new Document(), false);
+  selectedDocumentStructure: DocumentStructure = new DocumentStructure();
   selectedDocumentTypeLabel: string = "Nenhum tipo seleccionado";
   selectedRowNumber: number = -1;
   private isMainDocument: boolean = false;
@@ -46,7 +46,7 @@ export class PropertyDocumentsComponent implements OnInit {
     this.selectedDocumentTypeLabel = "Nenhum tipo seleccionado";
     this.isMainDocument = true;
     this.buildDocumentTypes(true, false, false);
-    this.selectedDocumentStructure = new DocumentStructure(new Document(), false);
+    this.selectedDocumentStructure = new DocumentStructure();
     console.log(this.availableDocumentTypes);
     
   }
@@ -56,7 +56,7 @@ export class PropertyDocumentsComponent implements OnInit {
     this.selectedDocumentTypeLabel = "Nenhum tipo seleccionado";
     this.isCertificateDocument = true;
     this.buildDocumentTypes(false, true, false);
-    this.selectedDocumentStructure = new DocumentStructure(new Document(), false);
+    this.selectedDocumentStructure = new DocumentStructure();
   }
 
   onClick_addNewOtherDocument() {
@@ -64,7 +64,7 @@ export class PropertyDocumentsComponent implements OnInit {
     this.selectedDocumentTypeLabel = "Nenhum tipo seleccionado";
     this.isOtherDocument = true;
     this.buildDocumentTypes(false, false, true);
-    this.selectedDocumentStructure = new DocumentStructure(new Document(), false);
+    this.selectedDocumentStructure = new DocumentStructure();
   }
 
   onClick_selectDocumentType(documentType: Static_DocumentType, documentTypeLabel: string) {
@@ -75,20 +75,22 @@ export class PropertyDocumentsComponent implements OnInit {
 
   onChange_file(event: any) {
       var file = event.target.files[0];
-      var reader = new FileReader();
-
-      reader.onload = function(e) {
-        // binary data
-        event.target.files[0].binary = e.target?.result;
-      };
-      reader.onerror = function(e) {
-        // error occurred
-        console.log('Error : ' + e.type);
-      };
-
-      reader.readAsBinaryString(file);
-      
+      this.getBase64(file, event, this.selectedDocumentStructure);   
   }
+
+  private getBase64(file: any, event: any, documentStructure: DocumentStructure) {
+    var reader = new FileReader();
+    reader.onload = function () {
+      event.target.files[0].binary = (reader.result);
+      documentStructure.content = event.target.files[0].binary;
+      documentStructure.document.filePath = event.target.files[0].name;
+    };
+    reader.readAsDataURL(file);
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
+    };
+ }
+
   
   onClick_editMainDocuments(index: number) {
     this.selectedRowNumber = index;

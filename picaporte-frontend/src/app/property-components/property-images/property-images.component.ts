@@ -2,7 +2,6 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Image } from 'src/app/models/image.model';
 import { ImageService } from 'src/app/services/image-service/image.service';
 import { ImageStructure } from 'src/app/structures/image.structure';
-import { ImgurImageUploadStructure } from 'src/app/structures/imgur/imgur-image-upload.structure';
 import { IAlbum, Lightbox } from 'ngx-lightbox';
 import * as $ from 'jquery';
 
@@ -13,7 +12,7 @@ import * as $ from 'jquery';
 })
 export class PropertyImagesComponent {
 
-  @Input() mainImage: ImageStructure = new ImageStructure(new Image(), new ImgurImageUploadStructure(), false);
+  @Input() mainImage: ImageStructure = new ImageStructure();
   @Input() otherImages: Array<ImageStructure> = new Array<ImageStructure>();
   @Input() isEditable: boolean = false;
 
@@ -22,7 +21,7 @@ export class PropertyImagesComponent {
 
   lightboxImages: Array<IAlbum>;
   lightboxUrl: string = "";
-  selectedImageStructure: ImageStructure = new ImageStructure(new Image(), new ImgurImageUploadStructure(), false);
+  selectedImageStructure: ImageStructure = new ImageStructure();
   selectedRowNumber: number = -1;
   isMainImage: boolean = false;
 
@@ -41,9 +40,8 @@ export class PropertyImagesComponent {
     var reader = new FileReader();
     reader.onload = function () {
       event.target.files[0].binary = (reader.result);
-      imageStructure.imageUploadStructure.image = event.target.files[0].binary;
-      imageStructure.imageUploadStructure.name = event.target.files[0].name;
-      imageStructure.imageUploadStructure.type = event.target.files[0].type;
+      imageStructure.content = event.target.files[0].binary;
+      imageStructure.image.filePath = event.target.files[0].name;
     };
     reader.readAsDataURL(file);
     reader.onerror = function (error) {
@@ -63,18 +61,18 @@ export class PropertyImagesComponent {
     if (index >= 0) {
       this.selectedImageStructure = this.imageService.mapNewImageStructure(this.otherImages[index]);
     } else {
-      this.selectedImageStructure = new ImageStructure(new Image(), new ImgurImageUploadStructure(), false);
+      this.selectedImageStructure = new ImageStructure();
     }
   }
 
   onClick_showMainImageLightbox() {
-    let url = (this.mainImage.image.id == 0) ? this.mainImage.imageUploadStructure.image : this.mainImage.image.url;
+    let url = (this.mainImage.image.id == 0) ? this.mainImage.content : this.mainImage.image.filePath;
     this.lightboxUrl = (url != null) ? url : "";
 
     this.lightboxImages = new Array<IAlbum>();
     this.lightboxImages.push({
       src: this.lightboxUrl,
-      caption: this.mainImage.image.fileName,
+      caption: this.mainImage.image.title,
       thumb: ""
     });
     
@@ -124,7 +122,7 @@ export class PropertyImagesComponent {
   private buildLightboxImages() {
     this.lightboxImages = new Array<IAlbum>();
     this.otherImages.forEach(element => {
-      let url = (element.image.id == 0) ? element.imageUploadStructure.image : element.image.url;
+      let url = (element.image.id == 0) ? element.content : element.image.filePath;
       this.lightboxUrl = (url != null) ? url : "";
 
       this.lightboxImages?.push({

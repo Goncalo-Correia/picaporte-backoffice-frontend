@@ -6,16 +6,17 @@ import { DocumentStructure } from 'src/app/structures/document.structure';
   providedIn: 'root'
 })
 export class DocumentService {
-  documentStructure: DocumentStructure = new DocumentStructure(new Document(), false);
+  documentStructure: DocumentStructure = new DocumentStructure();
   documentStructureArray: Set<DocumentStructure> = new Set<DocumentStructure>();
 
   constructor() { }
 
   mapNewDocumentStructure(documentStructure: DocumentStructure): DocumentStructure {
-    this.documentStructure = new DocumentStructure(new Document(), false);
+    this.documentStructure = new DocumentStructure();
 
     this.documentStructure.document.id = documentStructure.document.id;
     this.documentStructure.document.documentName = documentStructure.document.documentName;
+    this.documentStructure.document.filePath = documentStructure.document.filePath;
 
     this.documentStructure.document.requestedOn = documentStructure.document.requestedOn;
     this.documentStructure.document.requestedUserId = documentStructure.document.documentTypeId;

@@ -5,7 +5,7 @@ import { User } from "./user.model";
 export class Document {
     public id: number = 0;
     public documentName: string = "";
-    public fileName: string = "";
+    public filePath: string = "";
     public requestedOn: Date = new Date();
     public uploadedOn: Date = new Date();
     

@@ -3,7 +3,7 @@ import { Property } from "../../models/property.model";
 import { PreferenceStructure } from "../preference.structure";
 
 export class CustomerStructure {
-    customer: Customer = <Customer>{};
+    customer: Customer = new Customer();
     preferences: Array<PreferenceStructure> = new Array<PreferenceStructure>();
     properties: Array<Property> = new Array<Property>();
 }

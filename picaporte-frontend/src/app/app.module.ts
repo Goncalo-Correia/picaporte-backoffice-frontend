@@ -6,8 +6,10 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-//Dragula
+//Imported components
 import { DragulaModule } from 'ng2-dragula';
+import { LightboxModule } from 'ngx-lightbox';
+import { CKEditorModule } from 'ckeditor4-angular';
 
 // Import the module from the SDK
 import { AuthModule } from '@auth0/auth0-angular';
@@ -38,6 +40,12 @@ import { PropertyRentingComponent } from './property-components/property-renting
 import { StaticDataComponent } from './router-components/static-data/static-data.component';
 import { DashboardKpiComponent } from './generic-components/dashboard-kpi/dashboard-kpi.component';
 import { SearchAndFilterBarComponent } from './generic-components/search-and-filter-bar/search-and-filter-bar.component';
+import { ActivityLogComponent } from './generic-components/activity-log/activity-log.component';
+import { UserComponent } from './user-components/user/user.component';
+import { UserDashboardComponent } from './dashboard-components/user-dashboard/user-dashboard.component';
+import { UserDetailComponent } from './user-components/user-detail/user-detail.component';
+import { NewsComponent } from './router-components/news/news.component';
+import { ToDosComponent } from './router-components/to-dos/to-dos.component';
 
 
 @NgModule({
@@ -66,20 +74,31 @@ import { SearchAndFilterBarComponent } from './generic-components/search-and-fil
     PropertyRentingComponent,
     StaticDataComponent,
     DashboardKpiComponent,
-    SearchAndFilterBarComponent
+    SearchAndFilterBarComponent,
+    ActivityLogComponent,
+    UserComponent,
+    UserDashboardComponent,
+    UserDetailComponent,
+    NewsComponent,
+    ToDosComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
+    LightboxModule,
+    CKEditorModule,
     DragulaModule.forRoot(),
     AuthModule.forRoot({
       domain: 'REDACTED_AUTH0_DOMAIN_OLD',
       clientId: 'REDACTED_AUTH0_CLIENT_ID_OLD'
     })
   ],
-  exports: [RouterModule],
+  exports: [
+    RouterModule,
+    NewsComponent
+  ],
   providers: [QueriesCustomerService],
   bootstrap: [AppComponent]
 })

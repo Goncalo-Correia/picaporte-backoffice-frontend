@@ -1,1 +1,104 @@
-<p>to-dos works!</p>
+<div class="p-5 row">
+    <div class="col-12 d-flex justify-content-between">
+        <div class="fw-bold mb-3">To Dos</div>
+        <div class="mb-3 d-flex justify-content-end">
+            <div class="d-flex align-items-center fs-5 fw-bold cursor-pointer color-secondary" (click)="onClick_addNew()">
+                <div class="me-2">
+                    Adicionar ToDo
+                </div>
+                <i class="fa-solid fa-circle-plus"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+        <div *ngFor="let item of toDoStructureList" class="w-100 p-4 rounded bg-white cursor-pointer">
+            <div class="fw-bold mb-1">{{item.toDo.title}}</div>
+            <div class="text-neutral-6 fs-4">{{item.toDo.lastModifiedOn}} - {{item.toDo.lastModifiedBy.firstName + " " + item.toDo.lastModifiedBy.lastName}}</div>
+        </div>
+        <div *ngIf="toDoStructureList.length == 0 && isDataFetched" class="w-100 p-4 text-center rounded bg-white">
+            Não foram encontrados To Dos
+        </div>
+    </div>
+    <div class="col-8">
+        <div *ngIf="selectedToDoIndex != -1; else noSelectedtoDo" class="bg-white p-4 rounded h-100">
+            <form>
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <label for="reference" class="form-label fw-bold">Título</label>
+                        <input *ngIf="isEditable" type="text" class="form-control" id="reference" name="reference" [(ngModel)]="selectedToDo.toDo.title">
+                        <div *ngIf="!isEditable">{{selectedToDo.toDo.title}}</div>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <label for="description" class="form-label fw-bold">Descrição</label>
+                        <textarea *ngIf="isEditable"  rows="3" class="form-control" id="description" name="description" [(ngModel)]="selectedToDo.toDo.description"></textarea>
+                        <div *ngIf="!isEditable">{{selectedToDo.toDo.description}}</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div *ngIf="isEditable" class="col-12 mb-3">
+                        <div class="d-flex align-items-center justify-content-end fs-6 fw-bold cursor-pointer color-secondary" (click)="onClick_addNewItem()">
+                            <div class="me-2">
+                                Adicionar item
+                            </div>
+                            <i class="fa-solid fa-circle-plus"></i>
+                        </div>
+                    </div>
+                    <div *ngIf="selectedToDo.toDoItems.length != 0" class="col-12 mb-5">
+                        <div *ngFor="let item of selectedToDo.toDoItems" class="w-100 mb-2 rounded bg-white cursor-pointer">
+                            <div class="d-flex align-items-center gap-3">
+                                <input class="form-check-input mt-0" type="checkbox" name="checkbox" [(ngModel)]="item.isChecked">
+                                <input *ngIf="isEditable" type="text" class="form-control" name="label" [(ngModel)]="item.label">
+                                <div *ngIf="!isEditable" class="fw-bold mb-1">{{item.label}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="isEditable" class="d-flex justify-content-between w-100">
+                    <div>
+                      <i *ngIf="selectedToDoIndex != -1" class="fa-solid fa-trash fa-2x text-danger cursor-pointer" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></i>
+                    </div>
+                    <div>
+                      <button type="button" class="btn  me-2" data-bs-dismiss="modal" (click)="onClick_close()">Cancelar</button>
+                      <button type="submit" class="btn btn-success" data-bs-dismiss="modal" (click)="onClick_submit()">Confirmar</button>
+                    </div>
+                </div>
+                <div *ngIf="!isEditable" class="d-flex justify-content-end w-100">
+                    <div>
+                      <button type="submit" class="btn btn-success" (click)="onClick_editable()">Editar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <ng-template #noSelectedtoDo>
+            <div class="w-100 p-4 text-center rounded bg-white">
+                Seleccione um To Do
+            </div>
+        </ng-template>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Remover ToDo</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="w-100 mb-3">
+                    Tem a certeza que deseja remover este ToDo?
+                </div>
+                <div class="fw-bold">
+                    {{selectedToDo.toDo.title}}
+                </div>
+            </div>
+            <div class="modal-footer">
+            <div class="d-flex justify-content-between w-100">
+                <button type="button" class="btn  me-2" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-success" data-bs-dismiss="modal" (click)="onClick_confirmDelete()">Confirmar</button>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>

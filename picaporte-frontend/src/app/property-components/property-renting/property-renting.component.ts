@@ -70,7 +70,7 @@ export class PropertyRentingComponent implements OnInit {
 
   }
 
-  onClick_showModal_newRenting(rentingActionTypeId: Enum_RentingEvent) {
+  onClick_showModal_newRenting(rentingActionTypeId: number) {
     this.selectedRenting = new Renting();
     if (rentingActionTypeId == Enum_RentingEvent.NEW_CONTRACT) {
       this.selectedRentiongActionTypeLabel = "Novo contrato";
@@ -79,7 +79,7 @@ export class PropertyRentingComponent implements OnInit {
     } else {
       this.selectedRentiongActionTypeLabel = "Observação";
     }
-    this.selectedRenting.rentingActionType = <Identifiers>rentingActionTypeId;
+    this.selectedRenting.rentingActionType.id = rentingActionTypeId;
     this.selectedRowNumber = -1;
   }
 

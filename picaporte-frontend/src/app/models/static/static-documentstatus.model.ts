@@ -1,8 +1,6 @@
 export class Static_DocumentStatus {
-    constructor(
-        public id: number,
-        public label: string,
-        public description: string,
-        public order: number
-    ) {};
+    public id: number = 0;
+    public label: string = "";
+    public description: string = "";
+    public order: number = 0;
 }

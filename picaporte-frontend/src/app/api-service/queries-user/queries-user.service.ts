@@ -1,0 +1,87 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { catchError, Observable, retry, throwError } from 'rxjs';
+import { apiEndpoints, environment } from 'src/environments/environment';
+import { DashboardKpiStructure } from 'src/app/structures/dashboard-structures/dashboard-kpi.structure';
+import { UserStructure } from 'src/app/structures/main-structures/user.structure';
+import { CustomerDashboardStructure } from 'src/app/structures/dashboard-structures/customer/customer-dashboard.structure';
+import { UserDashboardSearchAndFilterStructure } from 'src/app/structures/dashboard-structures/user/user-dashboard-search-and-filter.structure';
+import { UserDashboardStructure } from 'src/app/structures/dashboard-structures/user/user-dashboard.structure';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class QueriesUserService {
+
+    // Base url
+    baseurl = environment.apiUrl;
+    constructor(private http: HttpClient) {}
+    // Http Headers
+    httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    };
+    
+    // GET
+    Get_UserStructure(id: number): Observable<UserStructure> {
+      return this.http
+        .get<UserStructure>(this.baseurl + apiEndpoints.queries_user.get + id)
+        .pipe(retry(1), catchError(this.errorHandl));
+    }
+
+    // PUT
+    Put_UserStructure(id: number, data: UserStructure): Observable<UserStructure> {
+      return this.http
+        .put<UserStructure>(
+          this.baseurl + apiEndpoints.queries_user.put + id,
+            JSON.stringify(data),
+            this.httpOptions
+          )
+        .pipe(retry(1), catchError(this.errorHandl));
+    }
+    
+    // POST
+    Post_UserStructure(data: UserStructure): Observable<UserStructure> {
+      return this.http
+        .post<UserStructure>(
+          this.baseurl + apiEndpoints.queries_user.post,
+          JSON.stringify(data),
+          this.httpOptions
+        )
+        .pipe(retry(1), catchError(this.errorHandl));
+    }
+
+    // POST
+    Post_SearchAndFilter_UserStructure(data: UserDashboardSearchAndFilterStructure): Observable<UserDashboardStructure[]> {
+      return this.http
+        .post<UserDashboardStructure[]>(
+          this.baseurl + apiEndpoints.queries_user.searchAndFilter,
+          JSON.stringify(data),
+          this.httpOptions
+        )
+        .pipe(retry(1), catchError(this.errorHandl));
+    }
+
+    Get_Kpis() {
+      return this.http
+        .get<DashboardKpiStructure[]>(this.baseurl + apiEndpoints.queries_user.kpi)
+        .pipe(retry(1), catchError(this.errorHandl));
+    }
+
+    // Error handling
+    errorHandl(error: any) {
+      let errorMessage = '';
+      if (error.error instanceof ErrorEvent) {
+        // Get client-side error
+        errorMessage = error.error.message;
+      } else {
+        // Get server-side error
+        errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+      }
+      console.log(errorMessage);
+      return throwError(() => {
+        return errorMessage;
+      });
+    }
+}

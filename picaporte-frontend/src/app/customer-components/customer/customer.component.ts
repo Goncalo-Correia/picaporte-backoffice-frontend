@@ -28,7 +28,7 @@ export class CustomerComponent implements OnInit {
   isOnTasksSubMenu: boolean = false;
   isOnPreferencesSubMenu: boolean = false;
   isOnPropertiesSubMenu: boolean = false;
-  isOnHistorySubMenu: boolean = false;
+  isOnActivityLogMenu: boolean = false;
 
   private customerSubmenuFactory: CustomerSubMenuFactory;
 
@@ -126,7 +126,6 @@ export class CustomerComponent implements OnInit {
   private getActiveRoute() {
     this.activeRoute.paramMap.subscribe(res => {
       this.customerId = <number><unknown>res.get('id');
-      console.log(res.get('id'));
     });  
   }
 
@@ -135,6 +134,6 @@ export class CustomerComponent implements OnInit {
     this.isOnTasksSubMenu = this.selectedCustomerSubMenu == Enum_CustomerSubMenu.TASKS;
     this.isOnPreferencesSubMenu = this.selectedCustomerSubMenu == Enum_CustomerSubMenu.PREFERENCES;
     this.isOnPropertiesSubMenu = this.selectedCustomerSubMenu == Enum_CustomerSubMenu.PROPERTIES;
-    this.isOnHistorySubMenu = this.selectedCustomerSubMenu == Enum_CustomerSubMenu.HISTORY;
+    this.isOnActivityLogMenu = this.selectedCustomerSubMenu == Enum_CustomerSubMenu.HISTORY;
   }
 }

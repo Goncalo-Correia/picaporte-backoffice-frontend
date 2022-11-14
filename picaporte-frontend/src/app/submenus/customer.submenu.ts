@@ -43,7 +43,7 @@ export class CustomerSubMenuFactory {
             enum_customerSubMenu: Enum_CustomerSubMenu.PREFERENCES,
             label: "Preferências",
             description: "Listagem de preferências de imóvel"
-        });~
+        });
         this.customerSubMenus.push({
             enum_customerSubMenu: Enum_CustomerSubMenu.PROPERTIES,
             label: "Imóveis",

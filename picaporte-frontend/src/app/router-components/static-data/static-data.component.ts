@@ -51,6 +51,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    this.dragulaService.destroy("STATIC_DATA");
   }
 
   onClick_selectStaticDataType(staticDataType: Enum_StaticData) {

@@ -102,10 +102,8 @@ export class PropertyDashboardComponent implements OnInit {
   eventHandler_dashboardKpiClicked(clickedPropertyTypeId: number) {
     if (this.propertyDashboardSearchAndFilterStructure.propertyTypeId != clickedPropertyTypeId) {
       this.propertyDashboardSearchAndFilterStructure.propertyTypeId = clickedPropertyTypeId;
-    } else {
-      this.propertyDashboardSearchAndFilterStructure.propertyTypeId = undefined;
+      this.get_propertyDashboardStructure();
     }
-    this.get_propertyDashboardStructure();
   }
 
   eventHandler_searchTextChanged(searchText: string) {

@@ -1,0 +1,101 @@
+<div class="p-5 row">
+    <div class="col-12 mb-3">
+        <div *ngIf="isKpiDataFetched else kpiElseBlock" class="row">
+            <div class="col-2 p-2">
+                <app-dashboard-kpi 
+                    [dashboardKpiStructure]="dashboardKpis[0]" 
+                    [isSelected]="!userSearchAndFilterStructure.hasAdminFilter"
+                    [isPlaceholder]="false"
+                    (dashboardKpiClicked)="eventHandler_dashboardKpiClicked(0)"
+                >
+                </app-dashboard-kpi>
+            </div>
+            <div class="col-2 p-2">
+                <app-dashboard-kpi 
+                    [dashboardKpiStructure]="dashboardKpis[1]" 
+                    [isSelected]="userSearchAndFilterStructure.hasAdminFilter && !userSearchAndFilterStructure.isAdmin"
+                    [isPlaceholder]="false"
+                    (dashboardKpiClicked)="eventHandler_dashboardKpiClicked(1)"
+                >
+                </app-dashboard-kpi>
+            </div>
+            <div class="col-2 p-2">
+                <app-dashboard-kpi 
+                    [dashboardKpiStructure]="dashboardKpis[2]" 
+                    [isSelected]="userSearchAndFilterStructure.hasAdminFilter && userSearchAndFilterStructure.isAdmin"
+                    [isPlaceholder]="false"
+                    (dashboardKpiClicked)="eventHandler_dashboardKpiClicked(2)"
+                >
+                </app-dashboard-kpi>
+            </div>
+        </div>
+        <ng-template #kpiElseBlock>
+            <div class="row">
+                <div *ngFor="let number of [0,1,2]" class="col-2 p-2">
+                    <app-dashboard-kpi 
+                        [dashboardKpiStructure]="placeholderDashboardKpi" 
+                        [isSelected]="false"
+                        [isPlaceholder]="true"
+                        (dashboardKpiClicked)="eventHandler_dashboardKpiClicked($event)"
+                    >
+                    </app-dashboard-kpi>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+    <app-search-and-filter-bar 
+      [searchText]="userSearchAndFilterStructure.searchAndFilterStructure.searchText"
+      [buttonLabel]="'Novo utilizador'"
+      [showButton]="true"
+      [placeholder]="'Pesquise por um utilizador'"
+      [hasFilters]="false"
+      [hasSelectedFilter]="false"
+      (searchTextChanged)="eventHandler_searchTextChanged($event)"
+      (buttonClicked)="eventHandler_buttonClicked()"
+    >
+    </app-search-and-filter-bar>
+    <div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Nome</th>
+            <th scope="col">Email</th>
+            <th scope="col">Role</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="isDataFetched; else elseBlock">
+          <tr *ngFor="let user of userDashboardStructureArray" class="table-row">
+            <td scope="row"><span [routerLink]="['/Utilizador/', user.id]" class="col cursor-pointer color-primary fw-bold">{{user.name}}</span></td>
+            <td><span class="col">{{user.email}}</span></td>
+            <td><span class="col">{{(user.isAdmin) ? "Administrador": "Cliente"}}</span></td>
+          </tr>
+          </tbody>
+          <ng-template #elseBlock>
+            <tbody>
+              <tr *ngFor="let number of [0,1,2,3,4]" class="placeholder-glow table-row">
+                <td scope="row"><span class="placeholder col-4"></span></td>
+                <td><span class="placeholder col-2"></span></td>
+                <td><span class="placeholder col-2"></span></td>
+                <td><span class="placeholder col-2"></span></td>
+                <td><span class="placeholder col-2"></span></td>
+              </tr>
+            </tbody>
+          </ng-template>
+        </table>
+      </div>
+      <div *ngIf="userDashboardStructureArray.length == 0 && isDataFetched" class="w-100 p-4 text-center rounded bg-white">
+          Não foram encontrados utilizadores
+      </div>
+      <div *ngIf="isDataFetched">
+          <nav>
+              <ul class="pagination justify-content-end">
+                <li *ngIf="hasPrevious" class="page-item" (click)="previous()">
+                  <a class="page-link color-primary">Anterior</a>
+                </li>
+                <li *ngIf="hasNext" class="page-item" (click)="next()">
+                  <a class="page-link color-primary">Seguinte</a>
+                </li>
+              </ul>
+            </nav>
+      </div>
+  </div>

@@ -22,6 +22,7 @@
                 <div *ngIf="isOnDocumentsSubMenu" class="mb-3 fw-bold">Documentos associados</div>
                 <div *ngIf="isOnImagesSubMenu" class="mb-3 fw-bold">Imagens associadas</div>
                 <div *ngIf="isOnRentingSubMenu" class="mb-3 fw-bold">Registo de arrendamento</div>
+                <div *ngIf="isOnActivityLogMenu" class="mb-3 fw-bold">Histórico do imóvel</div>
             </div>
             <div *ngIf="!isOnRentingSubMenu" class="col mb-5 d-flex justify-content-end">
                 <button *ngIf="!isEditable" class="btn btn-picaporte-secondary" (click)="onClick_edit()">Editar</button>
@@ -83,9 +84,9 @@
                 <!--<app-customer-properties [properties]="customerStructure.properties" (event_updateCustomerProperties)="eventHandler_updatePropertyObservationHistory($event)"></app-customer-properties>-->
             </div>
         </div>
-        <div *ngIf="isOnHistorySubMenu" class="row">
+        <div *ngIf="isOnActivityLogMenu && isDataFetched" class="row">
             <div class="col-12">
-    
+                <app-activity-log [entityReferenceId]="propertyStructure.property.entityReferenceId"></app-activity-log>
             </div>
         </div>
     </div>

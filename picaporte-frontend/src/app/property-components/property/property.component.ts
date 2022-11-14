@@ -35,7 +35,7 @@ export class PropertyComponent implements OnInit {
   isOnRentingSubMenu: boolean = false;
   isOnLocationSubMenu: boolean = false;
   isOnObservationHistorySubMenu: boolean = false;
-  isOnHistorySubMenu: boolean = false;
+  isOnActivityLogMenu: boolean = false;
   
   private propertySubmenuFactory: PropertySubMenuFactory;
 
@@ -185,7 +185,7 @@ export class PropertyComponent implements OnInit {
     this.isOnRentingSubMenu = this.selectedPropertySubMenu == Enum_PropertySubMenu.RENTING;
     this.isOnLocationSubMenu = this.selectedPropertySubMenu == Enum_PropertySubMenu.LOCATION;
     this.isOnObservationHistorySubMenu = this.selectedPropertySubMenu == Enum_PropertySubMenu.OBSERVATION_HISTORY;
-    this.isOnHistorySubMenu = this.selectedPropertySubMenu == Enum_PropertySubMenu.HISTORY;
+    this.isOnActivityLogMenu = this.selectedPropertySubMenu == Enum_PropertySubMenu.HISTORY;
   }
 
 }

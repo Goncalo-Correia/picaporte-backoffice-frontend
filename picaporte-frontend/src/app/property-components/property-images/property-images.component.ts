@@ -3,6 +3,7 @@ import { Image } from 'src/app/models/image.model';
 import { ImageService } from 'src/app/services/image-service/image.service';
 import { ImageStructure } from 'src/app/structures/image.structure';
 import { ImgurImageUploadStructure } from 'src/app/structures/imgur/imgur-image-upload.structure';
+import { IAlbum, Lightbox } from 'ngx-lightbox';
 import * as $ from 'jquery';
 
 @Component({
@@ -19,13 +20,17 @@ export class PropertyImagesComponent {
   @Output() event_updateMainImage = new EventEmitter<ImageStructure>();
   @Output() event_updateOtherImages = new EventEmitter<Array<ImageStructure>>();
 
+  lightboxImages: Array<IAlbum>;
+  lightboxUrl: string = "";
   selectedImageStructure: ImageStructure = new ImageStructure(new Image(), new ImgurImageUploadStructure(), false);
   selectedRowNumber: number = -1;
   isMainImage: boolean = false;
 
   otherImagesIsEmpty: boolean = false;
 
-  constructor(public imageService: ImageService) { }
+  constructor(public imageService: ImageService, private _lightbox: Lightbox) { 
+    this.lightboxImages = new Array<IAlbum>();
+  }
 
   onChange_file(event: any) {
     var file = event.target.files[0];
@@ -34,13 +39,13 @@ export class PropertyImagesComponent {
 
   private getBase64(file: any, event: any, imageStructure: ImageStructure) {
     var reader = new FileReader();
-    reader.readAsDataURL(file);
     reader.onload = function () {
       event.target.files[0].binary = (reader.result);
       imageStructure.imageUploadStructure.image = event.target.files[0].binary;
       imageStructure.imageUploadStructure.name = event.target.files[0].name;
       imageStructure.imageUploadStructure.type = event.target.files[0].type;
     };
+    reader.readAsDataURL(file);
     reader.onerror = function (error) {
       console.log('Error: ', error);
     };
@@ -60,6 +65,25 @@ export class PropertyImagesComponent {
     } else {
       this.selectedImageStructure = new ImageStructure(new Image(), new ImgurImageUploadStructure(), false);
     }
+  }
+
+  onClick_showMainImageLightbox() {
+    let url = (this.mainImage.image.id == 0) ? this.mainImage.imageUploadStructure.image : this.mainImage.image.url;
+    this.lightboxUrl = (url != null) ? url : "";
+
+    this.lightboxImages = new Array<IAlbum>();
+    this.lightboxImages.push({
+      src: this.lightboxUrl,
+      caption: this.mainImage.image.fileName,
+      thumb: ""
+    });
+    
+    this._lightbox.open(this.lightboxImages, 0);
+  }
+
+  onClick_showOtherImageLightbox(index: number) {
+    this.buildLightboxImages();
+    this._lightbox.open(this.lightboxImages, index);
   }
 
   onClick_close() {
@@ -97,7 +121,23 @@ export class PropertyImagesComponent {
     $('#file').val("");
   }
 
+  private buildLightboxImages() {
+    this.lightboxImages = new Array<IAlbum>();
+    this.otherImages.forEach(element => {
+      let url = (element.image.id == 0) ? element.imageUploadStructure.image : element.image.url;
+      this.lightboxUrl = (url != null) ? url : "";
+
+      this.lightboxImages?.push({
+        src: this.lightboxUrl,
+        caption: element.image.title,
+        thumb: ""
+      });
+    })
+  }
+
   triggerEvent_updateMainImage() {
+    console.log(this.mainImage);
+    
     this.event_updateMainImage.emit(this.mainImage);
   }
 

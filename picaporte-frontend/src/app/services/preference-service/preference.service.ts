@@ -32,7 +32,7 @@ export class PreferenceService {
     this.preferenceStructure.preference.propertyTypology = preferenceStructure.preference.propertyTypology;
     this.preferenceStructure.preference.energyCertificate = preferenceStructure.preference.energyCertificate;
 
-    this.preferenceStructure.preference.ameneties = preferenceStructure.preference.ameneties;
+    //this.preferenceStructure.preference.ameneties = preferenceStructure.preference.ameneties;
 
     this.preferenceStructure.ameneties = preferenceStructure.ameneties;
 

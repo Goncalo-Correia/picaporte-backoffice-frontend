@@ -1,10 +1,8 @@
 export class Static_DocumentType {
-    constructor(
-        public id: number,
-        public label: string,
-        public description: string,
-        public order: number,
-        public isPrimary: boolean,
-        public isCertificate: boolean
-    ) {};
+    public id: number = 0;
+    public label: string = "";
+    public description: string = "";
+    public order: number = 0;
+    public isPrimary: boolean = false;
+    public isCertificate: boolean = false;
 }

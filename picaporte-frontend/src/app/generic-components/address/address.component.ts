@@ -8,7 +8,7 @@ import { Address } from 'src/app/models/address.model';
 })
 export class AddressComponent implements OnInit {
 
-  @Input() address: Address = <Address>{};
+  @Input() address: Address = new Address();
   @Input() isEditable: boolean = false;
 
   @Output() event_updateAddress = new EventEmitter<Address>();

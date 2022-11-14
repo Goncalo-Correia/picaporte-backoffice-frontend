@@ -1,0 +1,89 @@
+<form>
+    <div class="row">
+        <div class="col-6 mb-3">
+            <label class="form-label fw-bold w-100">Tipo de utilizador</label>
+            <div *ngIf="isEditable; else readOnly" class="btn-group btn-group-lg" role="group" aria-label="Basic mixed styles example">
+                <button type="button" class="btn btn-lg " [ngClass]="user.isAdmin ? 'btn-danger' : 'btn-outline-danger' " (click)="onClick_selectUserRole(true)">Administrador</button>
+                <button type="button" class="btn btn-lg " [ngClass]="user.isAdmin ? 'btn-outline-success' : 'btn-success' " (click)="onClick_selectUserRole(false)">Cliente</button>
+            </div>
+            <ng-template #readOnly>
+                <div class="btn-group btn-group-lg" role="group" aria-label="Basic mixed styles example">
+                    <button type="button" class="btn btn-lg " [ngClass]="user.isAdmin ? 'btn-danger' : 'btn-outline-danger' " disabled>Administrador</button>
+                    <button type="button" class="btn btn-lg " [ngClass]="!user.isAdmin ? 'btn-outline-success' : 'btn-success' " disabled>Cliente</button>
+                </div>
+            </ng-template>
+        </div>
+    </div>
+    <div class="row">
+      <div class="col-6 mb-3">
+        <label for="firstName" class="form-label fw-bold w-100">Nome</label>
+        <input *ngIf="isEditable; else firstNameRead" type="text" class="form-control" id="firstName" name="firstName" [(ngModel)]="user.firstName" (change)="triggerEvent_updateUserDetails()">
+        <ng-template #firstNameRead>
+            <div *ngIf="user.firstName != null; else firstNameNull">
+                {{user.firstName}}
+            </div>
+            <ng-template #firstNameNull>
+                -
+            </ng-template>
+        </ng-template>
+      </div>
+      <div class="col-6 mb-3">
+        <label for="lastName" class="form-label fw-bold w-100">Sobrenome</label>
+        <input *ngIf="isEditable; else lastNameRead" type="text" class="form-control" id="lastName" name="lastName" [(ngModel)]="user.lastName" (change)="triggerEvent_updateUserDetails()">
+        <ng-template #lastNameRead>
+            <div *ngIf="user.lastName != null; else lastNameNull">
+                {{user.lastName}}
+            </div>
+            <ng-template #lastNameNull>
+                -
+            </ng-template>
+        </ng-template>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 mb-3">
+        <label for="phoneNumber" class="form-label fw-bold w-100">Telemóvel</label>
+        <input *ngIf="isEditable; else phoneNumberRead" type="text" class="form-control" id="phoneNumber" name="phoneNumber" [(ngModel)]="user.phoneNumber" (change)="triggerEvent_updateUserDetails()">
+        <ng-template #phoneNumberRead>
+            <div *ngIf="user.phoneNumber != null; else phoneNumberNull">
+                {{user.phoneNumber}}
+            </div>
+            <ng-template #phoneNumberNull>
+                -
+            </ng-template>
+        </ng-template>
+      </div>
+      <div class="col-6 mb-3">
+        <label for="email" class="form-label fw-bold w-100">Telemóvel</label>
+        <input *ngIf="isEditable; else emailRead" type="email" class="form-control" id="email" name="email" [(ngModel)]="user.email" (change)="triggerEvent_updateUserDetails()">
+        <ng-template #emailRead>
+            <div *ngIf="user.email != null; else emailNull">
+                {{user.email}}
+            </div>
+            <ng-template #emailNull>
+                -
+            </ng-template>
+        </ng-template>
+      </div>
+    </div>
+    <div class="row">
+        <div class="col-6 mb-3">
+            <label class="form-label fw-bold w-100">Último login</label>
+            <div *ngIf="user.lastLogin != null; else lastLoginNull">
+                {{user.lastLogin}}
+            </div>
+            <ng-template #lastLoginNull>
+                -
+            </ng-template>
+        </div>
+        <div class="col-6 mb-3">
+            <label class="form-label fw-bold w-100">Cliente</label>
+            <div *ngIf="customerName != null && customerName != ''; else customerNull">
+                {{customerName}}
+            </div>
+            <ng-template #customerNull>
+                -
+            </ng-template>
+        </div>
+    </div>
+</form>

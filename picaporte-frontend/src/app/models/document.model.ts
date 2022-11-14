@@ -3,21 +3,19 @@ import { Static_DocumentType } from "./static/static-documenttype.model";
 import { User } from "./user.model";
 
 export class Document {
-    constructor(
-        public id?: number,
-        public documentName?: string,
-        public fileName?: string,
-        public requestedOn?: Date,
-        public uploadedOn?: Date,
-        
-        public documentTypeId?: number,
-        public documentStatusId?: number,
-        public uploadedUserId?: number,
-        public requestedUserId?: number,
+    public id: number = 0;
+    public documentName: string = "";
+    public fileName: string = "";
+    public requestedOn: Date = new Date();
+    public uploadedOn: Date = new Date();
+    
+    public documentTypeId: number = 0;
+    public documentStatusId: number = 0;
+    public uploadedUserId: number = 0;
+    public requestedUserId: number = 0;
 
-        public documentType?: Static_DocumentType,
-        public documentStatus?: Static_DocumentStatus,
-        public uploadedByUser?: User,
-        public createdByUser?: User
-    ) {};
+    public documentType: Static_DocumentType = new Static_DocumentType();
+    public documentStatus: Static_DocumentStatus = new Static_DocumentStatus();
+    public uploadedByUser: User = new User();
+    public createdByUser: User = new User();
 }

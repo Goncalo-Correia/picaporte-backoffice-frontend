@@ -44,7 +44,7 @@ export class PropertyDetailComponent implements OnInit {
   ngOnInit(): void {
     this.get_Customers();
     if (this.property.customerId != 0 && this.property.customerId != undefined) {
-      this.selectedCustomerName = this.property.customer.firstName + " " + this.property.customer.lastName;
+      this.selectedCustomerName = this.property.customer?.firstName + " " + this.property.customer?.lastName;
     }
     this.get_staticPropertyTypes();
     this.get_staticPropertyStatuses();

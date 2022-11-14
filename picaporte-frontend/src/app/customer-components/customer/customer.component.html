@@ -17,9 +17,10 @@
 
         <div class="row d-flex align-items-center mb-3">
             <div class="col-auto fs-4 fw-bold">
-                <div *ngIf="isOnDetailsSubMenu">Identificação e Morada</div>
-                <div *ngIf="isOnPreferencesSubMenu">Preferências</div>
-                <div *ngIf="isOnPropertiesSubMenu">Imóveis associados</div>
+                <div *ngIf="isOnDetailsSubMenu" class="mb-3 fw-bold">Identificação e Morada</div>
+                <div *ngIf="isOnPreferencesSubMenu" class="mb-3 fw-bold">Preferências</div>
+                <div *ngIf="isOnPropertiesSubMenu" class="mb-3 fw-bold">Imóveis associados</div>
+                <div *ngIf="isOnActivityLogMenu" class="mb-3 fw-bold">Histórico do cliente</div>
             </div>
             <div class="col d-flex justify-content-end">
                 <button *ngIf="!isEditable" class="btn btn-picaporte-secondary" (click)="onClick_edit()">Editar</button>
@@ -53,9 +54,9 @@
                 <app-customer-properties [properties]="customerStructure.properties"></app-customer-properties>
             </div>
         </div>
-        <div *ngIf="isOnHistorySubMenu" class="row">
+        <div *ngIf="isOnActivityLogMenu && isDataFetched" class="row">
             <div class="col-12">
-    
+                <app-activity-log [entityReferenceId]="customerStructure.customer.entityReferenceId"></app-activity-log>
             </div>
         </div>
     </div>

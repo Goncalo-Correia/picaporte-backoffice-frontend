@@ -19,6 +19,13 @@ export const apiEndpoints = {
     searchAndFilter: "api/Queries_Customers/SearchAndFilter",
     kpi: "api/Queries_Customers/Kpi"
   },
+  queries_user: {
+    get: "api/Queries_Users/",
+    post: "api/Queries_Users",
+    put: "api/Queries_Users/",
+    searchAndFilter: "api/Queries_Users/SearchAndFilter",
+    kpi: "api/Queries_Users/Kpi"
+  },
   queries_property: {
     get: "api/Queries_Property/",
     post: "api/Queries_Property/",
@@ -34,6 +41,20 @@ export const apiEndpoints = {
     post: "api/Rentings/",
     put: "api/Rentings/",
     delete: "api/Rentings/"
+  },
+  news: {
+    get: "api/News",
+    post: "api/News",
+    put: "api/News/",
+    delete: "api/News/"
+  },
+  toDos: {
+    get: "api/ToDo",
+    post: "api/ToDo",
+    delete: "api/ToDo/"
+  },
+  activityLog: {
+    get: "api/ActivityLog/EntityReference/"
   },
   static_amenetieType: "api/Static_AmenetieType/",
   static_propertyType: "api/Static_PropertyType/",

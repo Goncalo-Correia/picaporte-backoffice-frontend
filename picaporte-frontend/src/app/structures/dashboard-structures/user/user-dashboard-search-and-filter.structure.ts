@@ -1,7 +1,7 @@
 import { SearchAndFilterStructure } from "../search-and-filter.structure";
 
-export class CustomerSearchAndfilterStructure {
+export class UserDashboardSearchAndFilterStructure {
     searchAndFilterStructure: SearchAndFilterStructure = new SearchAndFilterStructure();
-    amenetieTypeId: number | undefined;
-    customersWithUser: boolean | undefined;
+    isAdmin: boolean = false;
+    hasAdminFilter: boolean = false;
 }

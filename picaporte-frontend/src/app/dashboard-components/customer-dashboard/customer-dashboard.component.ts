@@ -1,13 +1,10 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
 import { QueriesCustomerService } from 'src/app/api-service/queries-customer/queries-customer.service';
 import { CustomerDashboardFilterStructure } from 'src/app/structures/dashboard-structures/customer/customer-dashboard-filters.structure';
 import { CustomerDashboardStructure } from 'src/app/structures/dashboard-structures/customer/customer-dashboard.structure';
-import { CustomerSearchAndfilterStructure } from 'src/app/structures/dashboard-structures/customer/customer-search-and-filter.structure';
+import { CustomerDashboardSearchAndFilterStructure } from 'src/app/structures/dashboard-structures/customer/customer-dashboard-search-and-filter.structure';
 import { DashboardKpiStructure } from 'src/app/structures/dashboard-structures/dashboard-kpi.structure';
-import { SearchAndFilterStructure } from 'src/app/structures/dashboard-structures/search-and-filter.structure';
 
 @Component({
   selector: 'app-customer-dashboard',
@@ -20,8 +17,7 @@ export class CustomerDashboardComponent implements OnInit {
   placeholderDashboardKpi: DashboardKpiStructure;
 
   customerDashboardStructureArray: CustomerDashboardStructure[];
-  customerSearchAndFilterStructure: CustomerSearchAndfilterStructure;
-  next_searchAndFilterStructure: SearchAndFilterStructure;
+  customerSearchAndFilterStructure: CustomerDashboardSearchAndFilterStructure;
   hasPrevious: boolean = true;
   hasNext: boolean = true;
 
@@ -38,8 +34,7 @@ export class CustomerDashboardComponent implements OnInit {
     this.dashboardKpis = new Array<DashboardKpiStructure>();
     this.placeholderDashboardKpi = new DashboardKpiStructure();
     this.customerDashboardStructureArray = new Array<CustomerDashboardStructure>();
-    this.customerSearchAndFilterStructure = new CustomerSearchAndfilterStructure();
-    this.next_searchAndFilterStructure = new SearchAndFilterStructure();
+    this.customerSearchAndFilterStructure = new CustomerDashboardSearchAndFilterStructure();
     this.customerDashboardFilters = new CustomerDashboardFilterStructure();
   }
 
@@ -64,12 +59,14 @@ export class CustomerDashboardComponent implements OnInit {
   }
 
   eventHandler_dashboardKpiClicked(index: number) {
-    if (index == 0) {
+    if (index == 0 && this.customerSearchAndFilterStructure.customersWithUser) {
       this.customerSearchAndFilterStructure.customersWithUser = false;
-    } else {
+      this.get_customerDashboardStructure();
+    } 
+    if (index == 1 && !this.customerSearchAndFilterStructure.customersWithUser) {
       this.customerSearchAndFilterStructure.customersWithUser = true;
+      this.get_customerDashboardStructure();
     }
-    this.get_customerDashboardStructure();
   }
 
   eventHandler_searchTextChanged(searchText: string) {
@@ -79,10 +76,11 @@ export class CustomerDashboardComponent implements OnInit {
 
   eventHandler_buttonClicked() {
     // ADD NAVIGATION TO NEW PROPERTY
-    this.router.navigate(["/","Imovel"]);
+    this.router.navigate(["/","Cliente"]);
   }
 
   get_customerDashboardStructure() {
+    this.isDataFetched = false;
     this.queries_customerService.Post_SearchAndFilter_CustomerStructure(this.customerSearchAndFilterStructure.searchAndFilterStructure).subscribe((data: {}) => {
       this.customerDashboardStructureArray = <CustomerDashboardStructure[]>data;
       this.isDataFetched = true;

@@ -31,7 +31,7 @@ export class QueriesPropertyService {
     }
         
     // PUT
-    Put_PropertyStructure(id: number, data: PropertyStructure): Observable<PropertyStructure> {
+    Put_PropertyStructure(id?: number, data?: PropertyStructure): Observable<PropertyStructure> {
       return this.http
         .put<PropertyStructure>(
           this.baseurl + apiEndpoints.queries_property.put + id,

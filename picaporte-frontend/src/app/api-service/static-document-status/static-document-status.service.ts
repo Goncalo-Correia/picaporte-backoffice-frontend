@@ -12,48 +12,42 @@ export class StaticDocumentStatusService {
    // Base url
    baseurl = environment.apiUrl;
    constructor(private http: HttpClient) {}
-   // Http Headers
-   httpOptions = {
-     headers: new HttpHeaders({
-       'Content-Type': 'application/json',
-     }),
-   };
 
   // GET ALL
-  GetAll_DocumentStatus(): Observable<Static_DocumentStatus[]> {
+  GetAll_DocumentStatus(httpOptions: { headers: HttpHeaders }): Observable<Static_DocumentStatus[]> {
     return this.http
-      .get<Static_DocumentStatus[]>(this.baseurl + apiEndpoints.static_documentStatus)
+      .get<Static_DocumentStatus[]>(this.baseurl + apiEndpoints.static_documentStatus, httpOptions)
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
   // POST
-  Post_DocumentStatus(data: Static_DocumentStatus): Observable<Static_DocumentStatus> {
+  Post_DocumentStatus(data: Static_DocumentStatus, httpOptions: { headers: HttpHeaders }): Observable<Static_DocumentStatus> {
     return this.http
       .post<Static_DocumentStatus>(
         this.baseurl + apiEndpoints.static_documentStatus,
         JSON.stringify(data),
-        this.httpOptions
+        httpOptions
       )
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
   // PUT
-  Put_DocumentStatus(data: Static_DocumentStatus): Observable<Static_DocumentStatus> {
+  Put_DocumentStatus(data: Static_DocumentStatus, httpOptions: { headers: HttpHeaders }): Observable<Static_DocumentStatus> {
     return this.http
       .put<Static_DocumentStatus>(
         this.baseurl + apiEndpoints.static_documentStatus + data.id,
         JSON.stringify(data),
-        this.httpOptions
+        httpOptions
       )
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
   // DELETE
-  Delete_DocumentStatus(data: number) {
+  Delete_DocumentStatus(data: number, httpOptions: { headers: HttpHeaders }) {
     return this.http
       .delete(
         this.baseurl + apiEndpoints.static_documentStatus + data,
-        this.httpOptions
+        httpOptions
       )
       .pipe(retry(1), catchError(this.errorHandl));
   }

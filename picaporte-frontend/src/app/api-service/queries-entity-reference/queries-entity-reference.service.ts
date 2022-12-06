@@ -15,27 +15,21 @@ export class QueriesEntityReferenceService {
     // Base url
     baseurl = environment.apiUrl;
     constructor(private http: HttpClient) {}
-    // Http Headers
-    httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-    };
 
     // POST
-    Post_SearchAndFilter_EntityReferenceStructure(data: EntityReferenceSearchAndFilterStructure): Observable<EntityReferenceDashboardStructure[]> {
+    Post_SearchAndFilter_EntityReferenceStructure(data: EntityReferenceSearchAndFilterStructure, httpOptions: { headers: HttpHeaders }): Observable<EntityReferenceDashboardStructure[]> {
     return this.http
         .post<EntityReferenceDashboardStructure[]>(
           this.baseurl + apiEndpoints.queries_entityReference.searchAndFilter,
           JSON.stringify(data),
-          this.httpOptions
+          httpOptions
         )
         .pipe(retry(1), catchError(this.errorHandl));
     }
 
-    Get_Kpis() {
+    Get_Kpis(httpOptions: { headers: HttpHeaders }) {
       return this.http
-        .get<DashboardKpiStructure[]>(this.baseurl + apiEndpoints.queries_entityReference.kpi)
+        .get<DashboardKpiStructure[]>(this.baseurl + apiEndpoints.queries_entityReference.kpi, httpOptions)
         .pipe(retry(1), catchError(this.errorHandl));
     }
     

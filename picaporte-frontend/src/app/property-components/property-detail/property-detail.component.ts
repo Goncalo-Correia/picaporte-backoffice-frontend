@@ -1,10 +1,13 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { catchError } from 'rxjs';
 import { CustomerService } from 'src/app/api-service/customer/customer.service';
 import { StaticEnergyCertificateService } from 'src/app/api-service/static-energy-certificate/static-energy-certificate.service';
 import { StaticPropertyConditionStatusService } from 'src/app/api-service/static-property-condition-status/property-condition-status.service';
 import { StaticPropertyStatusService } from 'src/app/api-service/static-property-status/static-property-status.service';
 import { StaticPropertyTypeService } from 'src/app/api-service/static-property-type/static-property-type.service';
 import { StaticPropertyTypologyService } from 'src/app/api-service/static-property-typology/static-property-typology.service';
+import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
+import { MessageComponent } from 'src/app/generic-components/message/message.component';
 import { Customer } from 'src/app/models/customer.model';
 import { Property } from 'src/app/models/property.model';
 import { Static_EnergyCertificate } from 'src/app/models/static/static-energycertificate.model';
@@ -20,6 +23,8 @@ import { Static_PropertyTypology } from 'src/app/models/static/static-propertyty
 })
 export class PropertyDetailComponent implements OnInit {
 
+  @ViewChild(MessageComponent) messageComponent!: MessageComponent;
+  
   @Input() property: Property = <Property>{};
   @Input() isEditable: boolean = false;
 
@@ -39,7 +44,9 @@ export class PropertyDetailComponent implements OnInit {
     public static_propertyStatusService: StaticPropertyStatusService, 
     public static_propertyConditionStatusService: StaticPropertyConditionStatusService, 
     public static_propertyTypologyService: StaticPropertyTypologyService,
-    public static_energyCertificateService: StaticEnergyCertificateService) { }
+    public static_energyCertificateService: StaticEnergyCertificateService,
+    private authenticationService: AuthenticationService
+    ) { }
 
   ngOnInit(): void {
     this.get_Customers();
@@ -102,38 +109,92 @@ export class PropertyDetailComponent implements OnInit {
   }
 
   private get_Customers() {
-    this.customerService.GetAll_Customers().subscribe((data: {}) => {
-      this.customers = <Customer[]>data;
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+      this.customerService.GetAll_Customers(resolve)
+      .pipe(
+        catchError(err => {
+          this.messageComponent.showMessage(err.error);
+          return err;
+        })
+      )
+      .subscribe(data => {
+        this.customers = <Customer[]>data;
+      });
     });
   }
 
   private get_staticPropertyTypes() {
-    this.static_propertyTypeService.GetAll_PropertyTypes().subscribe((data: {}) => {
-      this.staticPropertyTypes = <Static_PropertyType[]>data;
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+      this.static_propertyTypeService.GetAll_PropertyTypes(resolve)
+      .pipe(
+        catchError(err => {
+          this.messageComponent.showMessage(err.error);
+          return err;
+        })
+      )
+      .subscribe(data => {
+        this.staticPropertyTypes = <Static_PropertyType[]>data;
+      });
     });
   }
 
   private get_staticPropertyStatuses() {
-    this.static_propertyStatusService.GetAll_PropertyStatuses().subscribe((data: {}) => {
-      this.staticPropertyStatuses = <Static_PropertyStatus[]>data;
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+      this.static_propertyStatusService.GetAll_PropertyStatuses(resolve)
+      .pipe(
+        catchError(err => {
+          this.messageComponent.showMessage(err.error);
+          return err;
+        })
+      )
+      .subscribe(data => {
+        this.staticPropertyStatuses = <Static_PropertyStatus[]>data;
+      });
     });
   }
 
   private get_staticPropertyTypologies() {
-    this.static_propertyTypologyService.GetAll_PropertyTypology().subscribe((data: {}) => {
-      this.staticPropertyTypologies = <Static_PropertyTypology[]>data;
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+      this.static_propertyTypologyService.GetAll_PropertyTypology(resolve)
+      .pipe(
+        catchError(err => {
+          this.messageComponent.showMessage(err.error);
+          return err;
+        })
+      )
+      .subscribe(data => {
+        this.staticPropertyTypologies = <Static_PropertyTypology[]>data;
+      });
     });
   }
 
   private get_staticPropertyConditionStatuses() {
-    this.static_propertyConditionStatusService.GetAll_PropertyConditionStatuses().subscribe((data: {}) => {
-      this.staticPropertyConditionStatuses = <Static_PropertyConditionStatus[]>data;
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+      this.static_propertyConditionStatusService.GetAll_PropertyConditionStatuses(resolve)
+      .pipe(
+        catchError(err => {
+          this.messageComponent.showMessage(err.error);
+          return err;
+        })
+      )
+      .subscribe(data => {
+        this.staticPropertyConditionStatuses = <Static_PropertyConditionStatus[]>data;
+      });
     });
   }
 
   private get_staticEnergyCertificates() {
-    this.static_energyCertificateService.GetAll_EnergyCertificates().subscribe((data: {}) => {
-      this.staticEnergyCertificates = <Static_EnergyCertificate[]>data;
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+      this.static_energyCertificateService.GetAll_EnergyCertificates(resolve)
+      .pipe(
+        catchError(err => {
+          this.messageComponent.showMessage(err.error);
+          return err;
+        })
+      )
+      .subscribe(data => {
+        this.staticEnergyCertificates = <Static_EnergyCertificate[]>data;
+      });
     });
   }
 

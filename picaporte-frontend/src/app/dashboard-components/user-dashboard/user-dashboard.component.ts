@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { catchError } from 'rxjs';
 import { QueriesUserService } from 'src/app/api-service/queries-user/queries-user.service';
+import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
+import { MessageComponent } from 'src/app/generic-components/message/message.component';
 import { DashboardKpiStructure } from 'src/app/structures/dashboard-structures/dashboard-kpi.structure';
 import { UserDashboardSearchAndFilterStructure } from 'src/app/structures/dashboard-structures/user/user-dashboard-search-and-filter.structure';
 import { UserDashboardStructure } from 'src/app/structures/dashboard-structures/user/user-dashboard.structure';
@@ -13,6 +16,8 @@ import { UserDashboardStructure } from 'src/app/structures/dashboard-structures/
 
 export class UserDashboardComponent implements OnInit {
 
+  @ViewChild(MessageComponent) messageComponent!: MessageComponent;
+  
   dashboardKpis: Array<DashboardKpiStructure>;
   placeholderDashboardKpi: DashboardKpiStructure;
 
@@ -24,7 +29,11 @@ export class UserDashboardComponent implements OnInit {
   isDataFetched: boolean = false;
   isKpiDataFetched: boolean = false;
 
-  constructor(public queries_userService: QueriesUserService, public router: Router) { 
+  constructor(
+    public queries_userService: QueriesUserService, 
+    public router: Router,
+    private authenticationService: AuthenticationService
+    ) { 
     this.dashboardKpis = new Array<DashboardKpiStructure>();
     this.placeholderDashboardKpi = new DashboardKpiStructure();
     this.userDashboardStructureArray = new Array<UserDashboardStructure>();
@@ -66,12 +75,21 @@ export class UserDashboardComponent implements OnInit {
 
   get_userDashboardStructure() {
     this.isDataFetched = false;
-    this.queries_userService.Post_SearchAndFilter_UserStructure(this.userSearchAndFilterStructure).subscribe((data: {}) => {
-      this.userDashboardStructureArray = <UserDashboardStructure[]>data;
-      this.isDataFetched = true;
-      this.hasPreviousPage();
-      this.hasNextPage();
-    }); 
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+      this.queries_userService.Post_SearchAndFilter_UserStructure(this.userSearchAndFilterStructure, resolve)
+      .pipe(
+        catchError(err => {
+          this.messageComponent.showMessage(err.error);
+          return err;
+        })
+      )
+      .subscribe(data => {
+        this.userDashboardStructureArray = <UserDashboardStructure[]>data;
+        this.isDataFetched = true;
+        this.hasPreviousPage();
+        this.hasNextPage();
+      }); 
+    });
   }
 
   previous() {
@@ -99,9 +117,18 @@ export class UserDashboardComponent implements OnInit {
   }
 
   private get_Kpis() {
-    this.queries_userService.Get_Kpis().subscribe((data: {}) => {
-      this.dashboardKpis = <DashboardKpiStructure[]>data;
-      this.isKpiDataFetched = true;
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+      this.queries_userService.Get_Kpis(resolve)
+      .pipe(
+        catchError(err => {
+          this.messageComponent.showMessage(err.error);
+          return err;
+        })
+      )
+      .subscribe(data => {
+        this.dashboardKpis = <DashboardKpiStructure[]>data;
+        this.isKpiDataFetched = true;
+      });
     });
   }
 }

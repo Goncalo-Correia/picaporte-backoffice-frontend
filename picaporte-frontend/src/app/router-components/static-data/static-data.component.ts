@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { StaticAmenetieTypeService } from 'src/app/api-service/static-amenetie-type/static-amenetie-type-service.service';
 import { StaticDocumentTypeService } from 'src/app/api-service/static-document-type/static-document-type.service';
 import { StaticEnergyCertificateService } from 'src/app/api-service/static-energy-certificate/static-energy-certificate.service';
@@ -9,7 +9,9 @@ import { StaticPropertyTypologyService } from 'src/app/api-service/static-proper
 import { StaticDocumentStatusService } from 'src/app/api-service/static-document-status/static-document-status.service';
 import { StaticDataStructure } from 'src/app/structures/static-data.structure';
 import { DragulaService } from 'ng2-dragula';
-import { Subscription } from 'rxjs';
+import { catchError, Subscription } from 'rxjs';
+import { MessageComponent } from 'src/app/generic-components/message/message.component';
+import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
 
 @Component({
   selector: 'app-static-data',
@@ -18,6 +20,8 @@ import { Subscription } from 'rxjs';
 })
 export class StaticDataComponent implements OnInit, OnDestroy {
 
+  @ViewChild(MessageComponent) messageComponent!: MessageComponent;
+  
   subscription = new Subscription();
 
   isEditable: boolean = false;
@@ -36,7 +40,8 @@ export class StaticDataComponent implements OnInit, OnDestroy {
     private staticAmenetieTypeService: StaticAmenetieTypeService,
     private staticDocumentStatusService: StaticDocumentStatusService,
     private staticDocumentTypeService: StaticDocumentTypeService,
-    private dragulaService: DragulaService
+    private dragulaService: DragulaService,
+    private authenticationService: AuthenticationService
   ) {
     dragulaService.createGroup("STATIC_DATA", {});
 
@@ -140,89 +145,233 @@ export class StaticDataComponent implements OnInit, OnDestroy {
   private saveData() {
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_STATUS) {
       if (this.selectedStaticDataStructure.id == 0) {
-        this.staticPropertyStatusService.Post_PropertyStatus(this.selectedStaticDataStructure).subscribe((data: {}) => {
-          this.fetchData();
+        this.authenticationService.authorizeUser().then((resolve:any) => { 
+          this.staticPropertyStatusService.Post_PropertyStatus(this.selectedStaticDataStructure, resolve)
+          .pipe(
+            catchError(err => {
+              this.messageComponent.showMessage(err.error);
+              return err;
+            })
+          )
+          .subscribe(data => {
+            this.fetchData();
+          });
         });
       } else {
-        this.staticPropertyStatusService.Put_PropertyStatus(this.selectedStaticDataStructure).subscribe((data: {}) => {
-          this.fetchData();
+        this.authenticationService.authorizeUser().then((resolve:any) => { 
+          this.staticPropertyStatusService.Put_PropertyStatus(this.selectedStaticDataStructure, resolve)
+          .pipe(
+            catchError(err => {
+              this.messageComponent.showMessage(err.error);
+              return err;
+            })
+          )
+          .subscribe(data => {
+            this.fetchData();
+          });
         });
       }
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_TYPE) {
       if (this.selectedStaticDataStructure.id == 0) {
-        this.staticPropertyTypeService.Post_PropertyType(this.selectedStaticDataStructure).subscribe((data: {}) => {
-          this.fetchData();
+        this.authenticationService.authorizeUser().then((resolve:any) => { 
+          this.staticPropertyTypeService.Post_PropertyType(this.selectedStaticDataStructure, resolve)
+          .pipe(
+            catchError(err => {
+              this.messageComponent.showMessage(err.error);
+              return err;
+            })
+          )
+          .subscribe(data => {
+            this.fetchData();
+          });
         });
       } else {
-        this.staticPropertyTypeService.Put_PropertyType(this.selectedStaticDataStructure).subscribe((data: {}) => {
-          this.fetchData();
+        this.authenticationService.authorizeUser().then((resolve:any) => { 
+          this.staticPropertyTypeService.Put_PropertyType(this.selectedStaticDataStructure, resolve)
+          .pipe(
+            catchError(err => {
+              this.messageComponent.showMessage(err.error);
+              return err;
+            })
+          )
+          .subscribe(data => {
+            this.fetchData();
+          });
         });
       }
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_CONDITION_STATUS) {
       if (this.selectedStaticDataStructure.id == 0) {
-        this.staticPropertyConditionStatusService.Post_PropertyConditionStatus(this.selectedStaticDataStructure).subscribe((data: {}) => {
-          this.fetchData();
+        this.authenticationService.authorizeUser().then((resolve:any) => { 
+          this.staticPropertyConditionStatusService.Post_PropertyConditionStatus(this.selectedStaticDataStructure, resolve)
+          .pipe(
+            catchError(err => {
+              this.messageComponent.showMessage(err.error);
+              return err;
+            })
+          )
+          .subscribe(data => {
+            this.fetchData();
+          });
         });
       } else {
-        this.staticPropertyConditionStatusService.Put_PropertyConditionStatus(this.selectedStaticDataStructure).subscribe((data: {}) => {
-          this.fetchData();
+        this.authenticationService.authorizeUser().then((resolve:any) => { 
+          this.staticPropertyConditionStatusService.Put_PropertyConditionStatus(this.selectedStaticDataStructure, resolve)
+          .pipe(
+            catchError(err => {
+              this.messageComponent.showMessage(err.error);
+              return err;
+            })
+          )
+          .subscribe(data => {
+            this.fetchData();
+          });
         });
       }
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_TYPOLOGY) {
       if (this.selectedStaticDataStructure.id == 0) {
-        this.staticPropertyTypologyService.Post_PropertyTypologies(this.selectedStaticDataStructure).subscribe((data: {}) => {
-          this.fetchData();
+        this.authenticationService.authorizeUser().then((resolve:any) => { 
+          this.staticPropertyTypologyService.Post_PropertyTypologies(this.selectedStaticDataStructure, resolve)
+          .pipe(
+            catchError(err => {
+              this.messageComponent.showMessage(err.error);
+              return err;
+            })
+          )
+          .subscribe(data => {
+            this.fetchData();
+          });
         });
       } else {
-        this.staticPropertyTypologyService.Put_PropertyTypology(this.selectedStaticDataStructure).subscribe((data: {}) => {
-          this.fetchData();
+        this.authenticationService.authorizeUser().then((resolve:any) => { 
+          this.staticPropertyTypologyService.Put_PropertyTypology(this.selectedStaticDataStructure, resolve)
+          .pipe(
+            catchError(err => {
+              this.messageComponent.showMessage(err.error);
+              return err;
+            })
+          )
+          .subscribe(data => {
+            this.fetchData();
+          });
         });
       }
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_ENERGY_CERTIFICATE) {
       if (this.selectedStaticDataStructure.id == 0) {
-        this.staticEnergyCertificateService.Post_EnergyCertificate(this.selectedStaticDataStructure).subscribe((data: {}) => {
-          this.fetchData();
+        this.authenticationService.authorizeUser().then((resolve:any) => { 
+          this.staticEnergyCertificateService.Post_EnergyCertificate(this.selectedStaticDataStructure, resolve)
+          .pipe(
+            catchError(err => {
+              this.messageComponent.showMessage(err.error);
+              return err;
+            })
+          )
+          .subscribe(data => {
+            this.fetchData();
+          });
         });
       } else {
-        this.staticEnergyCertificateService.Put_EnergyCertificate(this.selectedStaticDataStructure).subscribe((data: {}) => {
-          this.fetchData();
+        this.authenticationService.authorizeUser().then((resolve:any) => { 
+          this.staticEnergyCertificateService.Put_EnergyCertificate(this.selectedStaticDataStructure, resolve)
+          .pipe(
+            catchError(err => {
+              this.messageComponent.showMessage(err.error);
+              return err;
+            })
+          )
+          .subscribe(data => {
+            this.fetchData();
+          }); 
         });
       }
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.AMENETIE_TYPE) {
       if (this.selectedStaticDataStructure.id == 0) {
-        this.staticAmenetieTypeService.Post_AmenetieType(this.selectedStaticDataStructure).subscribe((data: {}) => {
-          this.fetchData();
+        this.authenticationService.authorizeUser().then((resolve:any) => { 
+          this.staticAmenetieTypeService.Post_AmenetieType(this.selectedStaticDataStructure, resolve)
+          .pipe(
+            catchError(err => {
+              this.messageComponent.showMessage(err.error);
+              return err;
+            })
+          )
+          .subscribe(data => {
+            this.fetchData();
+          });
         });
       } else {
-        this.staticAmenetieTypeService.Put_AmenetieType(this.selectedStaticDataStructure).subscribe((data: {}) => {
-          this.fetchData();
+        this.authenticationService.authorizeUser().then((resolve:any) => { 
+          this.staticAmenetieTypeService.Put_AmenetieType(this.selectedStaticDataStructure, resolve)
+          .pipe(
+            catchError(err => {
+              this.messageComponent.showMessage(err.error);
+              return err;
+            })
+          )
+          .subscribe(data => {
+            this.fetchData();
+          }); 
         });
       }
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.DOCUMENT_STATUS) {
       if (this.selectedStaticDataStructure.id == 0) {
-        this.staticDocumentStatusService.Post_DocumentStatus(this.selectedStaticDataStructure).subscribe((data: {}) => {
-          this.fetchData();
+        this.authenticationService.authorizeUser().then((resolve:any) => { 
+          this.staticDocumentStatusService.Post_DocumentStatus(this.selectedStaticDataStructure, resolve)
+          .pipe(
+            catchError(err => {
+              this.messageComponent.showMessage(err.error);
+              return err;
+            })
+          )
+          .subscribe(data => {
+            this.fetchData();
+          });
         });
       } else {
-        this.staticDocumentStatusService.Put_DocumentStatus(this.selectedStaticDataStructure).subscribe((data: {}) => {
-          this.fetchData();
+        this.authenticationService.authorizeUser().then((resolve:any) => { 
+          this.staticDocumentStatusService.Put_DocumentStatus(this.selectedStaticDataStructure, resolve)
+          .pipe(
+            catchError(err => {
+              this.messageComponent.showMessage(err.error);
+              return err;
+            })
+          )
+          .subscribe(data => {
+            this.fetchData();
+          });
         });
       }
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.DOCUMENT_TYPE) {
       if (this.selectedStaticDataStructure.id == 0) {
-        this.staticDocumentTypeService.Post_DocumentType(this.selectedStaticDataStructure).subscribe((data: {}) => {
-          this.fetchData();
+        this.authenticationService.authorizeUser().then((resolve:any) => { 
+          this.staticDocumentTypeService.Post_DocumentType(this.selectedStaticDataStructure, resolve)
+          .pipe(
+            catchError(err => {
+              this.messageComponent.showMessage(err.error);
+              return err;
+            })
+          )
+          .subscribe(data => {
+            this.fetchData();
+          });
         });
       } else {
-        this.staticDocumentTypeService.Put_DocumentType(this.selectedStaticDataStructure).subscribe((data: {}) => {
-          this.fetchData();
+        this.authenticationService.authorizeUser().then((resolve:any) => { 
+          this.staticDocumentTypeService.Put_DocumentType(this.selectedStaticDataStructure, resolve)
+          .pipe(
+            catchError(err => {
+              this.messageComponent.showMessage(err.error);
+              return err;
+            })
+          )
+          .subscribe(data => {
+            this.fetchData();
+          });
         });
       }
     }
@@ -230,86 +379,230 @@ export class StaticDataComponent implements OnInit, OnDestroy {
 
   private deleteData() {
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_STATUS) {
-      this.staticPropertyStatusService.Delete_PropertyStatus(this.selectedStaticDataStructure.id).subscribe((data: {}) => {
-        this.fetchData();
+      this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.staticPropertyStatusService.Delete_PropertyStatus(this.selectedStaticDataStructure.id, resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          this.fetchData();
+        });
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_TYPE) {
-      this.staticPropertyTypeService.Delete_PropertyType(this.selectedStaticDataStructure.id).subscribe((data: {}) => {
-        this.fetchData();
+      this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.staticPropertyTypeService.Delete_PropertyType(this.selectedStaticDataStructure.id, resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          this.fetchData();
+        });
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_CONDITION_STATUS) {
-      this.staticPropertyConditionStatusService.Delete_PropertyConditionStatus(this.selectedStaticDataStructure.id).subscribe((data: {}) => {
-        this.fetchData();
+      this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.staticPropertyConditionStatusService.Delete_PropertyConditionStatus(this.selectedStaticDataStructure.id, resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          this.fetchData();
+        });
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_TYPOLOGY) {
-      this.staticPropertyTypologyService.Delete_PropertyTypology(this.selectedStaticDataStructure.id).subscribe((data: {}) => {
-        this.fetchData();
+      this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.staticPropertyTypologyService.Delete_PropertyTypology(this.selectedStaticDataStructure.id, resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          this.fetchData();
+        });
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_ENERGY_CERTIFICATE) {
-      this.staticEnergyCertificateService.Delete_EnergyCertificate(this.selectedStaticDataStructure.id).subscribe((data: {}) => {
-        this.fetchData();
+      this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.staticEnergyCertificateService.Delete_EnergyCertificate(this.selectedStaticDataStructure.id, resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          this.fetchData();
+        });
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.AMENETIE_TYPE) {
-      this.staticAmenetieTypeService.Delete_AmenetieType(this.selectedStaticDataStructure.id).subscribe((data: {}) => {
-        this.fetchData();
+      this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.staticAmenetieTypeService.Delete_AmenetieType(this.selectedStaticDataStructure.id, resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          this.fetchData();
+        });
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.DOCUMENT_STATUS) {
-      this.staticDocumentStatusService.Delete_DocumentStatus(this.selectedStaticDataStructure.id).subscribe((data: {}) => {
-        this.fetchData();
+      this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.staticDocumentStatusService.Delete_DocumentStatus(this.selectedStaticDataStructure.id, resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          this.fetchData();
+        });
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.DOCUMENT_TYPE) {
-      this.staticDocumentTypeService.Delete_DocumentType(this.selectedStaticDataStructure.id).subscribe((data: {}) => {
-        this.fetchData();
+      this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.staticDocumentTypeService.Delete_DocumentType(this.selectedStaticDataStructure.id, resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          this.fetchData();
+        });
       });
     }
   } 
 
   private fetchData() {
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_STATUS) {
-      this.staticPropertyStatusService.GetAll_PropertyStatuses().subscribe((data: {}) => {
-        this.staticDataStructureList = <Array<StaticDataStructure>>data;
+      this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.staticPropertyStatusService.GetAll_PropertyStatuses(resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          this.staticDataStructureList = <Array<StaticDataStructure>>data;
+        });
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_TYPE) {
-      this.staticPropertyTypeService.GetAll_PropertyTypes().subscribe((data: {}) => {
-        this.staticDataStructureList = <Array<StaticDataStructure>>data;
+      this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.staticPropertyTypeService.GetAll_PropertyTypes(resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          this.staticDataStructureList = <Array<StaticDataStructure>>data;
+        });
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_CONDITION_STATUS) {
-      this.staticPropertyConditionStatusService.GetAll_PropertyConditionStatuses().subscribe((data: {}) => {
-        this.staticDataStructureList = <Array<StaticDataStructure>>data;
+      this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.staticPropertyConditionStatusService.GetAll_PropertyConditionStatuses(resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          this.staticDataStructureList = <Array<StaticDataStructure>>data;
+        });
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_TYPOLOGY) {
-      this.staticPropertyTypologyService.GetAll_PropertyTypology().subscribe((data: {}) => {
-        this.staticDataStructureList = <Array<StaticDataStructure>>data;
+      this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.staticPropertyTypologyService.GetAll_PropertyTypology(resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          this.staticDataStructureList = <Array<StaticDataStructure>>data;
+        });
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_ENERGY_CERTIFICATE) {
-      this.staticEnergyCertificateService.GetAll_EnergyCertificates().subscribe((data: {}) => {
-        this.staticDataStructureList = <Array<StaticDataStructure>>data;
+      this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.staticEnergyCertificateService.GetAll_EnergyCertificates(resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          this.staticDataStructureList = <Array<StaticDataStructure>>data;
+        });
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.AMENETIE_TYPE) {
-      this.staticAmenetieTypeService.GetAll_AmenetieTypes().subscribe((data: {}) => {
-        this.staticDataStructureList = <Array<StaticDataStructure>>data;
+      this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.staticAmenetieTypeService.GetAll_AmenetieTypes(resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          this.staticDataStructureList = <Array<StaticDataStructure>>data;
+        });
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.DOCUMENT_STATUS) {
-      this.staticDocumentStatusService.GetAll_DocumentStatus().subscribe((data: {}) => {
-        this.staticDataStructureList = <Array<StaticDataStructure>>data;
+      this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.staticDocumentStatusService.GetAll_DocumentStatus(resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          this.staticDataStructureList = <Array<StaticDataStructure>>data;
+        });
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.DOCUMENT_TYPE) {
-      this.staticDocumentTypeService.GetAll_DocumentTypes().subscribe((data: {}) => {
-        this.staticDataStructureList = <Array<StaticDataStructure>>data;
+      this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.staticDocumentTypeService.GetAll_DocumentTypes(resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          this.staticDataStructureList = <Array<StaticDataStructure>>data;
+        });
       });
     }
   }
@@ -325,59 +618,131 @@ export class StaticDataComponent implements OnInit, OnDestroy {
 
   private saveItemData(item: StaticDataStructure, isLastIndex: boolean) {
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_STATUS) {
-      this.staticPropertyStatusService.Put_PropertyStatus(item).subscribe((data: {}) => {
-        if (isLastIndex) {
-          this.fetchData();
-        }
+      this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.staticPropertyStatusService.Put_PropertyStatus(item, resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          if (isLastIndex) {
+            this.fetchData();
+          }
+        });
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_TYPE) {
-      this.staticPropertyTypeService.Put_PropertyType(item).subscribe((data: {}) => {
-        if (isLastIndex) {
-          this.fetchData();
-        }
+      this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.staticPropertyTypeService.Put_PropertyType(item, resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          if (isLastIndex) {
+            this.fetchData();
+          }
+        });
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_CONDITION_STATUS) {
-      this.staticPropertyConditionStatusService.Put_PropertyConditionStatus(item).subscribe((data: {}) => {
-        if (isLastIndex) {
-          this.fetchData();
-        }
+      this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.staticPropertyConditionStatusService.Put_PropertyConditionStatus(item, resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          if (isLastIndex) {
+            this.fetchData();
+          }
+        });
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_TYPOLOGY) {
-      this.staticPropertyTypologyService.Put_PropertyTypology(item).subscribe((data: {}) => {
-        if (isLastIndex) {
-          this.fetchData();
-        }
+      this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.staticPropertyTypologyService.Put_PropertyTypology(item, resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          if (isLastIndex) {
+            this.fetchData();
+          }
+        });
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_ENERGY_CERTIFICATE) {
-      this.staticEnergyCertificateService.Put_EnergyCertificate(item).subscribe((data: {}) => {
-        if (isLastIndex) {
-          this.fetchData();
-        }
+      this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.staticEnergyCertificateService.Put_EnergyCertificate(item, resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          if (isLastIndex) {
+            this.fetchData();
+          }
+        });
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.AMENETIE_TYPE) {
-      this.staticAmenetieTypeService.Put_AmenetieType(item).subscribe((data: {}) => {
-        if (isLastIndex) {
-          this.fetchData();
-        }
+      this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.staticAmenetieTypeService.Put_AmenetieType(item, resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          if (isLastIndex) {
+            this.fetchData();
+          }
+        });
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.DOCUMENT_STATUS) {
-      this.staticDocumentStatusService.Put_DocumentStatus(item).subscribe((data: {}) => {
-        if (isLastIndex) {
-          this.fetchData();
-        }
+      this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.staticDocumentStatusService.Put_DocumentStatus(item, resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          if (isLastIndex) {
+            this.fetchData();
+          }
+        });
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.DOCUMENT_TYPE) {
-      this.staticDocumentTypeService.Put_DocumentType(item).subscribe((data: {}) => {
-        if (isLastIndex) {
-          this.fetchData();
-        }
+      this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.staticDocumentTypeService.Put_DocumentType(item, resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          if (isLastIndex) {
+            this.fetchData();
+          }
+        });
       });
     }
   }

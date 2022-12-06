@@ -12,48 +12,42 @@ export class StaticPropertyTypologyService {
     // Base url
     baseurl = environment.apiUrl;
     constructor(private http: HttpClient) {}
-    // Http Headers
-    httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-    };
 
   // GET ALL
-  GetAll_PropertyTypology(): Observable<Static_PropertyTypology[]> {
+  GetAll_PropertyTypology(httpOptions: { headers: HttpHeaders }): Observable<Static_PropertyTypology[]> {
     return this.http
-      .get<Static_PropertyTypology[]>(this.baseurl + apiEndpoints.static_propertyTypology)
+      .get<Static_PropertyTypology[]>(this.baseurl + apiEndpoints.static_propertyTypology, httpOptions)
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
   // POST
-  Post_PropertyTypologies(data: Static_PropertyTypology): Observable<Static_PropertyTypology> {
+  Post_PropertyTypologies(data: Static_PropertyTypology, httpOptions: { headers: HttpHeaders }): Observable<Static_PropertyTypology> {
     return this.http
       .post<Static_PropertyTypology>(
         this.baseurl + apiEndpoints.static_propertyTypology,
         JSON.stringify(data),
-        this.httpOptions
+        httpOptions
       )
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
   // PUT
-  Put_PropertyTypology(data: Static_PropertyTypology): Observable<Static_PropertyTypology> {
+  Put_PropertyTypology(data: Static_PropertyTypology, httpOptions: { headers: HttpHeaders }): Observable<Static_PropertyTypology> {
     return this.http
       .put<Static_PropertyTypology>(
         this.baseurl + apiEndpoints.static_propertyTypology + data.id,
         JSON.stringify(data),
-        this.httpOptions
+        httpOptions
       )
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
   // DELETE
-  Delete_PropertyTypology(data: number) {
+  Delete_PropertyTypology(data: number, httpOptions: { headers: HttpHeaders }) {
     return this.http
       .delete(
         this.baseurl + apiEndpoints.static_propertyTypology + data,
-        this.httpOptions
+        httpOptions
       )
       .pipe(retry(1), catchError(this.errorHandl));
   }

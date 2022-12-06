@@ -12,48 +12,42 @@ export class StaticAmenetieTypeService {
   // Base url
   baseurl = environment.apiUrl;
   constructor(private http: HttpClient) {}
-  // Http Headers
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-    }),
-  };
 
   // GET ALL
-  GetAll_AmenetieTypes(): Observable<Static_AmenetieType[]> {
+  GetAll_AmenetieTypes(httpOptions: { headers: HttpHeaders }): Observable<Static_AmenetieType[]> {
     return this.http
-      .get<Static_AmenetieType[]>(this.baseurl + apiEndpoints.static_amenetieType)
+      .get<Static_AmenetieType[]>(this.baseurl + apiEndpoints.static_amenetieType, httpOptions)
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
   // POST
-  Post_AmenetieType(data: Static_AmenetieType): Observable<Static_AmenetieType> {
+  Post_AmenetieType(data: Static_AmenetieType, httpOptions: { headers: HttpHeaders }): Observable<Static_AmenetieType> {
     return this.http
       .post<Static_AmenetieType>(
         this.baseurl + apiEndpoints.static_amenetieType,
         JSON.stringify(data),
-        this.httpOptions
+        httpOptions
       )
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
   // PUT
-  Put_AmenetieType(data: Static_AmenetieType): Observable<Static_AmenetieType> {
+  Put_AmenetieType(data: Static_AmenetieType, httpOptions: { headers: HttpHeaders }): Observable<Static_AmenetieType> {
     return this.http
       .put<Static_AmenetieType>(
         this.baseurl + apiEndpoints.static_amenetieType + data.id,
         JSON.stringify(data),
-        this.httpOptions
+        httpOptions
       )
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
   // DELETE
-  Delete_AmenetieType(data: number) {
+  Delete_AmenetieType(data: number, httpOptions: { headers: HttpHeaders }) {
     return this.http
       .delete(
         this.baseurl + apiEndpoints.static_amenetieType + data,
-        this.httpOptions
+        httpOptions
       )
       .pipe(retry(1), catchError(this.errorHandl));
   }

@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { catchError } from 'rxjs';
 import { QueriesEntityReferenceService } from 'src/app/api-service/queries-entity-reference/queries-entity-reference.service';
+import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
+import { MessageComponent } from 'src/app/generic-components/message/message.component';
 import { EntityReference } from 'src/app/models/entity-reference.model';
 import { DashboardKpiStructure } from 'src/app/structures/dashboard-structures/dashboard-kpi.structure';
 import { EntityReferenceDashboardStructure } from 'src/app/structures/dashboard-structures/entity-reference/entity-reference-dashboard.structure';
@@ -14,6 +17,8 @@ import { SearchAndFilterStructure } from 'src/app/structures/dashboard-structure
 })
 export class DashboardComponent implements OnInit {
 
+  @ViewChild(MessageComponent) messageComponent!: MessageComponent;
+  
   dashboardKpis: Array<DashboardKpiStructure>;
   placeholderDashboardKpi: DashboardKpiStructure;
 
@@ -28,8 +33,9 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     public queries_entityReferenceService: QueriesEntityReferenceService,
-    public router: Router) 
-    {
+    public router: Router,
+    private authenticationService: AuthenticationService
+    ) {
     this.dashboardKpis = new Array<DashboardKpiStructure>();
     this.placeholderDashboardKpi = new DashboardKpiStructure();
     this.entityReferenceList = new Array<EntityReferenceDashboardStructure>();
@@ -62,11 +68,20 @@ export class DashboardComponent implements OnInit {
 
   get_dashboardStructure() {
     this.isDataFetched = false;
-    this.queries_entityReferenceService.Post_SearchAndFilter_EntityReferenceStructure(this.entityReferenceSearchAndFilterStructure).subscribe((data: {}) => {
-      this.entityReferenceList = <EntityReferenceDashboardStructure[]>data;
-      this.isDataFetched = true;
-      this.hasPreviousPage();
-      this.hasNextPage();
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+      this.queries_entityReferenceService.Post_SearchAndFilter_EntityReferenceStructure(this.entityReferenceSearchAndFilterStructure, resolve)
+      .pipe(
+        catchError(err => {
+          this.messageComponent.showMessage(err.error);
+          return err;
+        })
+      )
+      .subscribe(data => {
+        this.entityReferenceList = <EntityReferenceDashboardStructure[]>data;
+        this.isDataFetched = true;
+        this.hasPreviousPage();
+        this.hasNextPage();
+      });
     });
   }
 
@@ -95,9 +110,18 @@ export class DashboardComponent implements OnInit {
   }
 
   private get_Kpis() {
-    this.queries_entityReferenceService.Get_Kpis().subscribe((data: {}) => {
-      this.dashboardKpis = <DashboardKpiStructure[]>data;
-      this.isKpiDataFetched = true;
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+      this.queries_entityReferenceService.Get_Kpis(resolve)
+      .pipe(
+        catchError(err => {
+          this.messageComponent.showMessage(err.error);
+          return err;
+        })
+      )
+      .subscribe(data => {
+        this.dashboardKpis = <DashboardKpiStructure[]>data;
+        this.isKpiDataFetched = true;
+      });
     });
   }
 }

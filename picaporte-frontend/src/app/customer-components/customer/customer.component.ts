@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { catchError } from 'rxjs';
 import { QueriesCustomerService } from 'src/app/api-service/queries-customer/queries-customer.service';
+import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
+import { MessageComponent } from 'src/app/generic-components/message/message.component';
 import { Address } from 'src/app/models/address.model';
 import { Customer } from 'src/app/models/customer.model';
 import { CustomerStructure } from 'src/app/structures/main-structures/customer.structure';
@@ -14,6 +17,8 @@ import { CustomerSubMenu, CustomerSubMenuFactory, Enum_CustomerSubMenu } from 's
 })
 export class CustomerComponent implements OnInit {
 
+  @ViewChild(MessageComponent) messageComponent!: MessageComponent;
+  
   customerId: number = 0;
 
   isEditable: boolean = false;
@@ -32,7 +37,11 @@ export class CustomerComponent implements OnInit {
 
   private customerSubmenuFactory: CustomerSubMenuFactory;
 
-  constructor(public queries_customerService: QueriesCustomerService, private activeRoute: ActivatedRoute) { 
+  constructor(
+    public queries_customerService: QueriesCustomerService, 
+    private activeRoute: ActivatedRoute,
+    private authenticationService: AuthenticationService
+    ) { 
     this.customerStructure = new CustomerStructure();
     this.customerSubmenus = new Array<CustomerSubMenu>();
     this.customerSubmenuFactory = new CustomerSubMenuFactory();
@@ -89,10 +98,19 @@ export class CustomerComponent implements OnInit {
     this.isLoading = true;
     this.isDataFetched = false;
     if (this.customerId != 0 && this.customerId != null) {
-      this.queries_customerService.Get_CustomerStructure(this.customerId).subscribe((data: {}) => {
-        this.customerStructure = <CustomerStructure>data;
-        this.isDataFetched = true;
-        this.isLoading = false;
+      this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+        this.queries_customerService.Get_CustomerStructure(this.customerId, resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          this.customerStructure = <CustomerStructure>data;
+          this.isDataFetched = true;
+          this.isLoading = false;
+        });
       });
     } else {
       this.isDataFetched = true;
@@ -110,15 +128,33 @@ export class CustomerComponent implements OnInit {
 
     if (this.customerStructure.customer.id == 0 || this.customerStructure.customer.id == null) {
       console.log(this.customerStructure);
-      
-      this.queries_customerService.Post_CustomerStructure(this.customerStructure).subscribe((data: {}) => {
-        this.customerStructure.customer = <Customer>data;
-        this.customerId = this.customerStructure.customer.id;
-        this.get_customerStructure();
+
+      this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.queries_customerService.Post_CustomerStructure(this.customerStructure, resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          this.customerStructure.customer = <Customer>data;
+          this.customerId = this.customerStructure.customer.id;
+          this.get_customerStructure();
+        });
       });
     } else {
-      this.queries_customerService.Put_CustomerStructure(this.customerId, this.customerStructure).subscribe((data: {}) => {
-        this.get_customerStructure();
+      this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.queries_customerService.Put_CustomerStructure(this.customerId, this.customerStructure, resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          this.get_customerStructure();
+        });
       });
     }
   }

@@ -16,56 +16,50 @@ export class QueriesUserService {
     // Base url
     baseurl = environment.apiUrl;
     constructor(private http: HttpClient) {}
-    // Http Headers
-    httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-    };
     
     // GET
-    Get_UserStructure(id: number): Observable<UserStructure> {
+    Get_UserStructure(id: number, httpOptions: { headers: HttpHeaders }): Observable<UserStructure> {
       return this.http
-        .get<UserStructure>(this.baseurl + apiEndpoints.queries_user.get + id)
+        .get<UserStructure>(this.baseurl + apiEndpoints.queries_user.get + id, httpOptions)
         .pipe(retry(1), catchError(this.errorHandl));
     }
 
     // PUT
-    Put_UserStructure(id: number, data: UserStructure): Observable<UserStructure> {
+    Put_UserStructure(id: number, data: UserStructure, httpOptions: { headers: HttpHeaders }): Observable<UserStructure> {
       return this.http
         .put<UserStructure>(
           this.baseurl + apiEndpoints.queries_user.put + id,
             JSON.stringify(data),
-            this.httpOptions
+            httpOptions
           )
         .pipe(retry(1), catchError(this.errorHandl));
     }
     
     // POST
-    Post_UserStructure(data: UserStructure): Observable<UserStructure> {
+    Post_UserStructure(data: UserStructure, httpOptions: { headers: HttpHeaders }): Observable<UserStructure> {
       return this.http
         .post<UserStructure>(
           this.baseurl + apiEndpoints.queries_user.post,
           JSON.stringify(data),
-          this.httpOptions
+          httpOptions
         )
         .pipe(retry(1), catchError(this.errorHandl));
     }
 
     // POST
-    Post_SearchAndFilter_UserStructure(data: UserDashboardSearchAndFilterStructure): Observable<UserDashboardStructure[]> {
+    Post_SearchAndFilter_UserStructure(data: UserDashboardSearchAndFilterStructure, httpOptions: { headers: HttpHeaders }): Observable<UserDashboardStructure[]> {
       return this.http
         .post<UserDashboardStructure[]>(
           this.baseurl + apiEndpoints.queries_user.searchAndFilter,
           JSON.stringify(data),
-          this.httpOptions
+          httpOptions
         )
         .pipe(retry(1), catchError(this.errorHandl));
     }
 
-    Get_Kpis() {
+    Get_Kpis(httpOptions: { headers: HttpHeaders }) {
       return this.http
-        .get<DashboardKpiStructure[]>(this.baseurl + apiEndpoints.queries_user.kpi)
+        .get<DashboardKpiStructure[]>(this.baseurl + apiEndpoints.queries_user.kpi, httpOptions)
         .pipe(retry(1), catchError(this.errorHandl));
     }
 

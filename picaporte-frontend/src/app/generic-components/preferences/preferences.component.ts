@@ -14,6 +14,7 @@ import { Static_EnergyCertificate } from 'src/app/models/static/static-energycer
 import { StaticEnergyCertificateService } from 'src/app/api-service/static-energy-certificate/static-energy-certificate.service';
 import { Static_PropertyConditionStatus } from 'src/app/models/static/static-propertyconditionstatus.model';
 import { StaticPropertyConditionStatusService } from 'src/app/api-service/static-property-condition-status/property-condition-status.service';
+import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
 
 
 @Component({
@@ -53,8 +54,9 @@ export class CustomerPreferencesComponent implements OnInit {
     public static_propertyTypologyService: StaticPropertyTypologyService,
     public static_energyCertificateService: StaticEnergyCertificateService,
     public preferenceService: PreferenceService,
-    public amenetieTypeService: StaticAmenetieTypeService) 
-  { 
+    public amenetieTypeService: StaticAmenetieTypeService,
+    private authenticationService: AuthenticationService
+  ) { 
     this.selectedPreferenceStructure = new PreferenceStructure();
     this.amenetieTypeStructureList = new Array<AmenetieTypeStructure>();
     this.amenentieTypeStructure = new AmenetieTypeStructure();
@@ -163,43 +165,55 @@ export class CustomerPreferencesComponent implements OnInit {
   }
 
   private get_staticPropertyTypes() {
-    this.static_propertyTypeService.GetAll_PropertyTypes().subscribe((data: {}) => {
-      this.staticPropertyTypes = <Static_PropertyType[]>data;
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+      this.static_propertyTypeService.GetAll_PropertyTypes(resolve).subscribe((data: {}) => {
+        this.staticPropertyTypes = <Static_PropertyType[]>data;
+      });
     });
   }
 
   private get_staticPropertyStatuses() {
-    this.static_propertyStatusService.GetAll_PropertyStatuses().subscribe((data: {}) => {
-      this.staticPropertyStatuses = <Static_PropertyStatus[]>data;
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+      this.static_propertyStatusService.GetAll_PropertyStatuses(resolve).subscribe((data: {}) => {
+        this.staticPropertyStatuses = <Static_PropertyStatus[]>data;
+      });
     });
   }
 
   private get_staticPropertyTypologies() {
-    this.static_propertyTypologyService.GetAll_PropertyTypology().subscribe((data: {}) => {
-      this.staticPropertyTypologies = <Static_PropertyTypology[]>data;
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+      this.static_propertyTypologyService.GetAll_PropertyTypology(resolve).subscribe((data: {}) => {
+        this.staticPropertyTypologies = <Static_PropertyTypology[]>data;
+      });
     });
   }
 
   private get_staticPropertyConditionStatuses() {
-    this.static_propertyConditionStatusService.GetAll_PropertyConditionStatuses().subscribe((data: {}) => {
-      this.staticPropertyConditionStatuses = <Static_PropertyConditionStatus[]>data;
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+      this.static_propertyConditionStatusService.GetAll_PropertyConditionStatuses(resolve).subscribe((data: {}) => {
+        this.staticPropertyConditionStatuses = <Static_PropertyConditionStatus[]>data;
+      });
     });
   }
 
   private get_staticEnergyCertificates() {
-    this.static_energyCertificateService.GetAll_EnergyCertificates().subscribe((data: {}) => {
-      this.staticEnergyCertificates = <Static_EnergyCertificate[]>data;
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+      this.static_energyCertificateService.GetAll_EnergyCertificates(resolve).subscribe((data: {}) => {
+        this.staticEnergyCertificates = <Static_EnergyCertificate[]>data;
+      });
     });
   }
 
   private get_amenetieTypes() {
     this.amenetieTypeStructureList = new Array<AmenetieTypeStructure>();
-    this.amenetieTypeService.GetAll_AmenetieTypes().subscribe((data: {}) => {
-      var localAmeneties = <Static_AmenetieType[]>data;
-      localAmeneties.forEach(element => {
-        this.amenentieTypeStructure = new AmenetieTypeStructure();
-        this.amenentieTypeStructure.amenetieType = element;
-        this.amenetieTypeStructureList.push(this.amenentieTypeStructure);
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+      this.amenetieTypeService.GetAll_AmenetieTypes(resolve).subscribe((data: {}) => {
+        var localAmeneties = <Static_AmenetieType[]>data;
+        localAmeneties.forEach(element => {
+          this.amenentieTypeStructure = new AmenetieTypeStructure();
+          this.amenentieTypeStructure.amenetieType = element;
+          this.amenetieTypeStructureList.push(this.amenentieTypeStructure);
+        });
       });
     });
   }

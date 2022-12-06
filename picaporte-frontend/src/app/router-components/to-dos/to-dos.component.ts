@@ -1,5 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { catchError } from 'rxjs';
 import { ToDoService } from 'src/app/api-service/to-do/to-do.service';
+import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
+import { MessageComponent } from 'src/app/generic-components/message/message.component';
 import { ToDoItem } from 'src/app/models/to-do-item.model';
 import { ToDoStructure } from 'src/app/structures/to-do.structure';
 
@@ -10,6 +13,8 @@ import { ToDoStructure } from 'src/app/structures/to-do.structure';
 })
 export class ToDosComponent implements OnInit {
 
+  @ViewChild(MessageComponent) messageComponent!: MessageComponent;
+  
   isDataFetched: boolean = false;
   isEditable: boolean = false;
 
@@ -17,7 +22,10 @@ export class ToDosComponent implements OnInit {
   selectedToDo: ToDoStructure;
   selectedToDoIndex: number = -1;
 
-  constructor(private toDoService: ToDoService) { 
+  constructor(
+    private toDoService: ToDoService,
+    private authenticationService: AuthenticationService
+  ) { 
     this.toDoStructureList = new Array<ToDoStructure>();
     this.selectedToDo = new ToDoStructure();
   }
@@ -62,21 +70,48 @@ export class ToDosComponent implements OnInit {
   private get_toDos() {
     this.isDataFetched = false;
     this.isEditable = false;
-    this.toDoService.Get_ToDos().subscribe((data) => {
-      this.toDoStructureList = <ToDoStructure[]>data;
-      this.isDataFetched = true;
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+      this.toDoService.Get_ToDos(resolve)
+      .pipe(
+        catchError(err => {
+          this.messageComponent.showMessage(err.error);
+          return err;
+        })
+      )
+      .subscribe(data => {
+        this.toDoStructureList = <ToDoStructure[]>data;
+        this.isDataFetched = true;
+      });
     });
   }
 
   private post_toDos() {
-    this.toDoService.Post_ToDos(this.selectedToDo).subscribe(() => {
-      this.get_toDos();
+    this.authenticationService.authorizeUser().then((resolve:any) => { 
+      this.toDoService.Post_ToDos(this.selectedToDo, resolve)
+      .pipe(
+        catchError(err => {
+          this.messageComponent.showMessage(err.error);
+          return err;
+        })
+      )
+      .subscribe(data => {
+        this.get_toDos();
+      });
     });
   }
 
   private delete_toDo() {
-    this.toDoService.Delete_ToDo(this.selectedToDo.toDo.id).subscribe(() => {
-      this.get_toDos();
+    this.authenticationService.authorizeUser().then((resolve:any) => { 
+      this.toDoService.Delete_ToDo(this.selectedToDo.toDo.id, resolve)
+      .pipe(
+        catchError(err => {
+          this.messageComponent.showMessage(err.error);
+          return err;
+        })
+      )
+      .subscribe(data => {
+        this.get_toDos();
+      });
     });
   }
 }

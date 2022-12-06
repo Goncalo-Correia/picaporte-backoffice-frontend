@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Route, Router } from '@angular/router';
 import { QueriesPropertyService } from 'src/app/api-service/queries-property/queries-property.service';
 import { DashboardKpiStructure } from 'src/app/structures/dashboard-structures/dashboard-kpi.structure';
@@ -14,6 +14,9 @@ import { Static_PropertyTypology } from 'src/app/models/static/static-propertyty
 import { Static_PropertyConditionStatus } from 'src/app/models/static/static-propertyconditionstatus.model';
 import { StaticAmenetieTypeService } from 'src/app/api-service/static-amenetie-type/static-amenetie-type-service.service';
 import { Static_AmenetieType } from 'src/app/models/static/static-amenetieType.model';
+import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
+import { catchError } from 'rxjs';
+import { MessageComponent } from 'src/app/generic-components/message/message.component';
 
 @Component({
   selector: 'app-property-dashboard',
@@ -22,6 +25,8 @@ import { Static_AmenetieType } from 'src/app/models/static/static-amenetieType.m
 })
 export class PropertyDashboardComponent implements OnInit {
 
+  @ViewChild(MessageComponent) messageComponent!: MessageComponent;
+  
   dashboardKpis: Array<DashboardKpiStructure>;
   placeholderDashboardKpi: DashboardKpiStructure;
 
@@ -47,8 +52,9 @@ export class PropertyDashboardComponent implements OnInit {
     public staticPropertyTypologyService: StaticPropertyTypologyService,
     public staticPropertyConditionStatusService: StaticPropertyConditionStatusService,
     public staticAmenetieTypeService: StaticAmenetieTypeService,
-    public router: Router) 
-    {
+    public router: Router,
+    private authenticationService: AuthenticationService
+    ) {
     this.dashboardKpis = new Array<DashboardKpiStructure>();
     this.placeholderDashboardKpi = new DashboardKpiStructure();
     this.propertyDashboardFilters = new PropertyDashboardFilterStructure();
@@ -118,11 +124,20 @@ export class PropertyDashboardComponent implements OnInit {
 
   get_propertyDashboardStructure() {
     this.isDataFetched = false;
-    this.queries_propertyService.Post_SearchAndFilter_PropertyStructure(this.propertyDashboardSearchAndFilterStructure).subscribe((data: {}) => {
-      this.propertyDashboardStructureArray = <PropertyDashboardStructure[]>data;
-      this.isDataFetched = true;
-      this.hasPreviousPage();
-      this.hasNextPage();
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+      this.queries_propertyService.Post_SearchAndFilter_PropertyStructure(this.propertyDashboardSearchAndFilterStructure, resolve)
+      .pipe(
+        catchError(err => {
+          this.messageComponent.showMessage(err.error);
+          return err;
+        })
+      )
+      .subscribe(data => {
+        this.propertyDashboardStructureArray = <PropertyDashboardStructure[]>data;
+        this.isDataFetched = true;
+        this.hasPreviousPage();
+        this.hasNextPage();
+      });
     });
   }
 
@@ -151,9 +166,18 @@ export class PropertyDashboardComponent implements OnInit {
   }
 
   private get_Kpis() {
-    this.queries_propertyService.Get_Kpis().subscribe((data: {}) => {
-      this.dashboardKpis = <DashboardKpiStructure[]>data;
-      this.isKpiDataFetched = true;
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+      this.queries_propertyService.Get_Kpis(resolve)
+      .pipe(
+        catchError(err => {
+          this.messageComponent.showMessage(err.error);
+          return err;
+        })
+      )
+      .subscribe(data => {
+        this.dashboardKpis = <DashboardKpiStructure[]>data;
+        this.isKpiDataFetched = true;
+      });
     });
   }
 
@@ -165,26 +189,62 @@ export class PropertyDashboardComponent implements OnInit {
   }
 
   private getPropertyStatus() {
-    this.staticPropertyStatusService.GetAll_PropertyStatuses().subscribe((data: {}) => {
-      this.propertyDashboardFilters.statuses = <Static_PropertyStatus[]>data;
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+      this.staticPropertyStatusService.GetAll_PropertyStatuses(resolve)
+      .pipe(
+        catchError(err => {
+          this.messageComponent.showMessage(err.error);
+          return err;
+        })
+      )
+      .subscribe(data => {
+        this.propertyDashboardFilters.statuses = <Static_PropertyStatus[]>data;
+      });
     });
   }
 
   private getPropertyTypologies() {
-    this.staticPropertyTypologyService.GetAll_PropertyTypology().subscribe((data: {}) => {
-      this.propertyDashboardFilters.tipologies = <Static_PropertyTypology[]>data;
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+      this.staticPropertyTypologyService.GetAll_PropertyTypology(resolve)
+      .pipe(
+        catchError(err => {
+          this.messageComponent.showMessage(err.error);
+          return err;
+        })
+      )
+      .subscribe(data => {
+        this.propertyDashboardFilters.tipologies = <Static_PropertyTypology[]>data;
+      });
     });
   }
 
   private getPropertyConditionStatus() {
-    this.staticPropertyConditionStatusService.GetAll_PropertyConditionStatuses().subscribe((data: {}) => {
-      this.propertyDashboardFilters.conditionStatuses = <Static_PropertyConditionStatus[]>data;
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+      this.staticPropertyConditionStatusService.GetAll_PropertyConditionStatuses(resolve)
+      .pipe(
+        catchError(err => {
+          this.messageComponent.showMessage(err.error);
+          return err;
+        })
+      )
+      .subscribe(data => {
+        this.propertyDashboardFilters.conditionStatuses = <Static_PropertyConditionStatus[]>data;
+      });
     });
   }
 
   private getAmenetieTypes() {
-    this.staticAmenetieTypeService.GetAll_AmenetieTypes().subscribe((data: {}) => {
-      this.propertyDashboardFilters.amenetieTypes = <Static_AmenetieType[]>data;
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+      this.staticAmenetieTypeService.GetAll_AmenetieTypes(resolve)
+      .pipe(
+        catchError(err => {
+          this.messageComponent.showMessage(err.error);
+          return err;
+        })
+      )
+      .subscribe(data => {
+        this.propertyDashboardFilters.amenetieTypes = <Static_AmenetieType[]>data;
+      });
     });
   }
 }

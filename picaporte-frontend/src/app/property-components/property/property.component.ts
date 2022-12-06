@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { catchError } from 'rxjs';
 import { QueriesPropertyService } from 'src/app/api-service/queries-property/queries-property.service';
 import { StaticAmenetieTypeService } from 'src/app/api-service/static-amenetie-type/static-amenetie-type-service.service';
+import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
+import { MessageComponent } from 'src/app/generic-components/message/message.component';
 import { Address } from 'src/app/models/address.model';
 import { Property } from 'src/app/models/property.model';
 import { Static_AmenetieType } from 'src/app/models/static/static-amenetieType.model';
@@ -17,6 +20,8 @@ import { Enum_PropertySubMenu, PropertySubMenu, PropertySubMenuFactory } from 's
 })
 export class PropertyComponent implements OnInit {
 
+  @ViewChild(MessageComponent) messageComponent!: MessageComponent;
+  
   propertyId: number = 0;
 
   isEditable: boolean = false;
@@ -39,7 +44,12 @@ export class PropertyComponent implements OnInit {
   
   private propertySubmenuFactory: PropertySubMenuFactory;
 
-  constructor(public queries_propertyService: QueriesPropertyService, private activeRoute: ActivatedRoute, public amentieTypeService: StaticAmenetieTypeService) {
+  constructor(
+    public queries_propertyService: QueriesPropertyService, 
+    private activeRoute: ActivatedRoute, 
+    public amentieTypeService: StaticAmenetieTypeService,
+    private authenticationService: AuthenticationService
+    ) {
     this.propertyStructure = new PropertyStructure();
     this.propertySubmenus = new Array<PropertySubMenu>();
     this.propertySubmenuFactory = new PropertySubMenuFactory();
@@ -120,14 +130,32 @@ export class PropertyComponent implements OnInit {
     this.isLoading = true;
 
     if (this.propertyStructure.property.id == 0) {
-      this.queries_propertyService.Post_PropertyStructure(this.propertyStructure).subscribe((data: {}) => {
-        this.propertyStructure = <PropertyStructure>data;
-        this.propertyId = this.propertyStructure.property.id;
-        this.get_propertyStructure();
+      this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.queries_propertyService.Post_PropertyStructure(this.propertyStructure, resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          this.propertyStructure = <PropertyStructure>data;
+          this.propertyId = this.propertyStructure.property.id;
+          this.get_propertyStructure();
+        });
       });
     } else {
-      this.queries_propertyService.Put_PropertyStructure(this.propertyId, this.propertyStructure).subscribe((data: {}) => {
-        this.get_propertyStructure();
+      this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.queries_propertyService.Put_PropertyStructure(this.propertyId, this.propertyStructure, resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          this.get_propertyStructure();
+        });
       });
     }
   }
@@ -135,29 +163,47 @@ export class PropertyComponent implements OnInit {
   private get_propertyStructure() {
     this.isLoading = true;
     if (this.propertyId != 0 && this.propertyId != null) {
-      this.queries_propertyService.Get_PropertyStructure(this.propertyId).subscribe((data: {}) => {
-        this.propertyStructure = <PropertyStructure>data;
-        this.isDataFetched = true;
-        this.isLoading = false;
-        this.get_propertySubmenus();
+      this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+        this.queries_propertyService.Get_PropertyStructure(this.propertyId, resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          this.propertyStructure = <PropertyStructure>data;
+          this.isDataFetched = true;
+          this.isLoading = false;
+          this.get_propertySubmenus();
+        });
       });
     } else {
       this.propertyStructure = new PropertyStructure();
       
-      this.amentieTypeService.GetAll_AmenetieTypes().subscribe((data: {}) => {
-        var amenetieTypes: Array<Static_AmenetieType> = <Array<Static_AmenetieType>>data;
-        
-        amenetieTypes.forEach(element => {
-          var amenetieTypeStructure: AmenetieTypeStructure = new AmenetieTypeStructure();
-          amenetieTypeStructure.amenetieType = element;
+      this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+        this.amentieTypeService.GetAll_AmenetieTypes(resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          var amenetieTypes: Array<Static_AmenetieType> = <Array<Static_AmenetieType>>data;
+          
+          amenetieTypes.forEach(element => {
+            var amenetieTypeStructure: AmenetieTypeStructure = new AmenetieTypeStructure();
+            amenetieTypeStructure.amenetieType = element;
 
-          this.propertyStructure.ameneties.push(amenetieTypeStructure);
+            this.propertyStructure.ameneties.push(amenetieTypeStructure);
+          });
+
+          this.isDataFetched = true;
+          this.isLoading = false;
+          this.isEditable = true;
+          this.get_propertySubmenus();
         });
-
-        this.isDataFetched = true;
-        this.isLoading = false;
-        this.isEditable = true;
-        this.get_propertySubmenus();
       });
     }
   }

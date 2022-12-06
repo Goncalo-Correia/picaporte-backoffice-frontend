@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { QueriesCustomerService } from 'src/app/api-service/queries-customer/queries-customer.service';
 import { CustomerDashboardFilterStructure } from 'src/app/structures/dashboard-structures/customer/customer-dashboard-filters.structure';
 import { CustomerDashboardStructure } from 'src/app/structures/dashboard-structures/customer/customer-dashboard.structure';
 import { CustomerDashboardSearchAndFilterStructure } from 'src/app/structures/dashboard-structures/customer/customer-dashboard-search-and-filter.structure';
 import { DashboardKpiStructure } from 'src/app/structures/dashboard-structures/dashboard-kpi.structure';
+import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
+import { catchError } from 'rxjs';
+import { MessageComponent } from 'src/app/generic-components/message/message.component';
 
 @Component({
   selector: 'app-customer-dashboard',
@@ -13,6 +16,8 @@ import { DashboardKpiStructure } from 'src/app/structures/dashboard-structures/d
 })
 export class CustomerDashboardComponent implements OnInit {
 
+  @ViewChild(MessageComponent) messageComponent!: MessageComponent;
+  
   dashboardKpis: Array<DashboardKpiStructure>;
   placeholderDashboardKpi: DashboardKpiStructure;
 
@@ -29,8 +34,9 @@ export class CustomerDashboardComponent implements OnInit {
 
   constructor(
     public queries_customerService: QueriesCustomerService,
-    public router: Router)
-    {
+    public router: Router,
+    private authenticationService: AuthenticationService
+    ) {
     this.dashboardKpis = new Array<DashboardKpiStructure>();
     this.placeholderDashboardKpi = new DashboardKpiStructure();
     this.customerDashboardStructureArray = new Array<CustomerDashboardStructure>();
@@ -81,11 +87,20 @@ export class CustomerDashboardComponent implements OnInit {
 
   get_customerDashboardStructure() {
     this.isDataFetched = false;
-    this.queries_customerService.Post_SearchAndFilter_CustomerStructure(this.customerSearchAndFilterStructure.searchAndFilterStructure).subscribe((data: {}) => {
-      this.customerDashboardStructureArray = <CustomerDashboardStructure[]>data;
-      this.isDataFetched = true;
-      this.hasPreviousPage();
-      this.hasNextPage();
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+      this.queries_customerService.Post_SearchAndFilter_CustomerStructure(this.customerSearchAndFilterStructure.searchAndFilterStructure, resolve)
+      .pipe(
+        catchError(err => {
+          this.messageComponent.showMessage(err.error);
+          return err;
+        })
+      )
+      .subscribe(data => {
+        this.customerDashboardStructureArray = <CustomerDashboardStructure[]>data;
+        this.isDataFetched = true;
+        this.hasPreviousPage();
+        this.hasNextPage();
+      });
     });
     
   }
@@ -115,9 +130,18 @@ export class CustomerDashboardComponent implements OnInit {
   }
 
   private get_Kpis() {
-    this.queries_customerService.Get_Kpis().subscribe((data: {}) => {
-      this.dashboardKpis = <DashboardKpiStructure[]>data;
-      this.isKpiDataFetched = true;
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+      this.queries_customerService.Get_Kpis(resolve)
+      .pipe(
+        catchError(err => {
+          this.messageComponent.showMessage(err.error);
+          return err;
+        })
+      )
+      .subscribe(data => {
+        this.dashboardKpis = <DashboardKpiStructure[]>data;
+        this.isKpiDataFetched = true;
+      });
     });
   }
 }

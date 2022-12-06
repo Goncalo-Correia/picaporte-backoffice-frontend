@@ -12,48 +12,42 @@ export class StaticDocumentTypeService {
    // Base url
    baseurl = environment.apiUrl;
    constructor(private http: HttpClient) {}
-   // Http Headers
-   httpOptions = {
-     headers: new HttpHeaders({
-       'Content-Type': 'application/json',
-     }),
-   };
 
   // GET ALL
-  GetAll_DocumentTypes(): Observable<Static_DocumentType[]> {
+  GetAll_DocumentTypes(httpOptions: { headers: HttpHeaders }): Observable<Static_DocumentType[]> {
     return this.http
-      .get<Static_DocumentType[]>(this.baseurl + apiEndpoints.static_documentTypes)
+      .get<Static_DocumentType[]>(this.baseurl + apiEndpoints.static_documentTypes, httpOptions)
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
   // POST
-  Post_DocumentType(data: Static_DocumentType): Observable<Static_DocumentType> {
+  Post_DocumentType(data: Static_DocumentType, httpOptions: { headers: HttpHeaders }): Observable<Static_DocumentType> {
     return this.http
       .post<Static_DocumentType>(
         this.baseurl + apiEndpoints.static_documentTypes,
         JSON.stringify(data),
-        this.httpOptions
+        httpOptions
       )
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
   // PUT
-  Put_DocumentType(data: Static_DocumentType): Observable<Static_DocumentType> {
+  Put_DocumentType(data: Static_DocumentType, httpOptions: { headers: HttpHeaders }): Observable<Static_DocumentType> {
     return this.http
       .put<Static_DocumentType>(
         this.baseurl + apiEndpoints.static_documentTypes + data.id,
         JSON.stringify(data),
-        this.httpOptions
+        httpOptions
       )
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
   // DELETE
-  Delete_DocumentType(data: number) {
+  Delete_DocumentType(data: number, httpOptions: { headers: HttpHeaders }) {
     return this.http
       .delete(
         this.baseurl + apiEndpoints.static_documentTypes + data,
-        this.httpOptions
+        httpOptions
       )
       .pipe(retry(1), catchError(this.errorHandl));
   }

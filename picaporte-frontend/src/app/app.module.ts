@@ -46,6 +46,7 @@ import { UserDashboardComponent } from './dashboard-components/user-dashboard/us
 import { UserDetailComponent } from './user-components/user-detail/user-detail.component';
 import { NewsComponent } from './router-components/news/news.component';
 import { ToDosComponent } from './router-components/to-dos/to-dos.component';
+import { MessageComponent } from './generic-components/message/message.component';
 
 
 @NgModule({
@@ -80,7 +81,8 @@ import { ToDosComponent } from './router-components/to-dos/to-dos.component';
     UserDashboardComponent,
     UserDetailComponent,
     NewsComponent,
-    ToDosComponent
+    ToDosComponent,
+    MessageComponent
   ],
   imports: [
     BrowserModule,

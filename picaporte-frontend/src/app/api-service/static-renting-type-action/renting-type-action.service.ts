@@ -12,17 +12,11 @@ export class StaticRentingTypeActionService {
     // Base url
     baseurl = environment.apiUrl;
     constructor(private http: HttpClient) {}
-    // Http Headers
-    httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-    };
 
     // GET ALL
-    GetAll_RentingActionTypes(): Observable<Static_RentingActionType[]> {
+    GetAll_RentingActionTypes(httpOptions: { headers: HttpHeaders }): Observable<Static_RentingActionType[]> {
       return this.http
-        .get<Static_RentingActionType[]>(this.baseurl + apiEndpoints.static_rentingActionTypes.getAll)
+        .get<Static_RentingActionType[]>(this.baseurl + apiEndpoints.static_rentingActionTypes, httpOptions)
         .pipe(retry(1), catchError(this.errorHandl));
     }
 

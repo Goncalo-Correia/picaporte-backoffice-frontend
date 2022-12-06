@@ -12,48 +12,42 @@ export class StaticPropertyTypeService {
     // Base url
     baseurl = environment.apiUrl;
     constructor(private http: HttpClient) {}
-    // Http Headers
-    httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-    };
 
   // GET ALL
-  GetAll_PropertyTypes(): Observable<Static_PropertyType[]> {
+  GetAll_PropertyTypes(httpOptions: { headers: HttpHeaders }): Observable<Static_PropertyType[]> {
     return this.http
-      .get<Static_PropertyType[]>(this.baseurl + apiEndpoints.static_propertyType)
+      .get<Static_PropertyType[]>(this.baseurl + apiEndpoints.static_propertyType, httpOptions)
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
   // POST
-  Post_PropertyType(data: Static_PropertyType): Observable<Static_PropertyType> {
+  Post_PropertyType(data: Static_PropertyType, httpOptions: { headers: HttpHeaders }): Observable<Static_PropertyType> {
     return this.http
       .post<Static_PropertyType>(
         this.baseurl + apiEndpoints.static_propertyType,
         JSON.stringify(data),
-        this.httpOptions
+        httpOptions
       )
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
   // PUT
-  Put_PropertyType(data: Static_PropertyType): Observable<Static_PropertyType> {
+  Put_PropertyType(data: Static_PropertyType, httpOptions: { headers: HttpHeaders }): Observable<Static_PropertyType> {
     return this.http
       .put<Static_PropertyType>(
         this.baseurl + apiEndpoints.static_propertyType + data.id,
         JSON.stringify(data),
-        this.httpOptions
+        httpOptions
       )
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
   // DELETE
-  Delete_PropertyType(data: number) {
+  Delete_PropertyType(data: number, httpOptions: { headers: HttpHeaders }) {
     return this.http
       .delete(
         this.baseurl + apiEndpoints.static_propertyType + data,
-        this.httpOptions
+        httpOptions
       )
       .pipe(retry(1), catchError(this.errorHandl));
   }

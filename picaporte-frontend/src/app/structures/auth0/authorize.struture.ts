@@ -1,5 +1,8 @@
 export class AuthorizeStructure {
-
-    accessToken: string = "";
-    email: string | undefined;
+    accessToken: string | undefined = "";
+    email: string | undefined = "";
+    givenName: string = "";
+    familyName: string = "";
+    phoneNumber: string = "";
+    userId: string = "";
 }

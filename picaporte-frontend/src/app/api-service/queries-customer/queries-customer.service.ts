@@ -16,56 +16,50 @@ export class QueriesCustomerService {
     // Base url
     baseurl = environment.apiUrl;
     constructor(private http: HttpClient) {}
-    // Http Headers
-    httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-    };
 
     // GET
-    Get_CustomerStructure(id: number): Observable<CustomerStructure> {
+    Get_CustomerStructure(id: number, httpOptions: { headers: HttpHeaders }): Observable<CustomerStructure> {
       return this.http
-        .get<CustomerStructure>(this.baseurl + apiEndpoints.queries_customer.get + id)
+        .get<CustomerStructure>(this.baseurl + apiEndpoints.queries_customer.get + id, httpOptions)
         .pipe(retry(1), catchError(this.errorHandl));
     }
         
     // PUT
-    Put_CustomerStructure(id: number, data: CustomerStructure): Observable<CustomerStructure> {
+    Put_CustomerStructure(id: number, data: CustomerStructure, httpOptions: { headers: HttpHeaders }): Observable<CustomerStructure> {
       return this.http
         .put<CustomerStructure>(
           this.baseurl + apiEndpoints.queries_customer.put + id,
             JSON.stringify(data),
-            this.httpOptions
+            httpOptions
           )
         .pipe(retry(1), catchError(this.errorHandl));
     }
 
     // POST
-    Post_CustomerStructure(data: CustomerStructure): Observable<CustomerStructure> {
+    Post_CustomerStructure(data: CustomerStructure, httpOptions: { headers: HttpHeaders }): Observable<CustomerStructure> {
       return this.http
         .post<CustomerStructure>(
           this.baseurl + apiEndpoints.queries_customer.post,
           JSON.stringify(data),
-          this.httpOptions
+          httpOptions
         )
         .pipe(retry(1), catchError(this.errorHandl));
     }
 
     // POST
-    Post_SearchAndFilter_CustomerStructure(data: SearchAndFilterStructure): Observable<CustomerDashboardStructure[]> {
+    Post_SearchAndFilter_CustomerStructure(data: SearchAndFilterStructure, httpOptions: { headers: HttpHeaders }): Observable<CustomerDashboardStructure[]> {
       return this.http
         .post<CustomerDashboardStructure[]>(
           this.baseurl + apiEndpoints.queries_customer.searchAndFilter,
           JSON.stringify(data),
-          this.httpOptions
+          httpOptions
         )
         .pipe(retry(1), catchError(this.errorHandl));
     }
 
-    Get_Kpis() {
+    Get_Kpis(httpOptions: { headers: HttpHeaders }) {
       return this.http
-        .get<DashboardKpiStructure[]>(this.baseurl + apiEndpoints.queries_customer.kpi)
+        .get<DashboardKpiStructure[]>(this.baseurl + apiEndpoints.queries_customer.kpi, httpOptions)
         .pipe(retry(1), catchError(this.errorHandl));
     }
 

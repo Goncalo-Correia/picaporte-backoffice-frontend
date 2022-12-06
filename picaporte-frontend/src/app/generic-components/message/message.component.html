@@ -1,0 +1,4 @@
+<div *ngIf="isToShowMessage" class="message-container p-3 d-flex gap-3 text-white bg-danger align-items-center justify-content-between cursor-pointer" (click)="hideMessage()">
+    <div>{{message}}</div>
+    <i class="fa-solid fa-circle-xmark"></i>
+</div>

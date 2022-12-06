@@ -12,17 +12,11 @@ export class CustomerService {
    // Base url
    baseurl = environment.apiUrl;
    constructor(private http: HttpClient) {}
-   // Http Headers
-   httpOptions = {
-     headers: new HttpHeaders({
-       'Content-Type': 'application/json',
-     }),
-   };
 
    // GET ALL
-   GetAll_Customers(): Observable<Customer[]> {
+   GetAll_Customers(httpOptions: { headers: HttpHeaders }): Observable<Customer[]> {
      return this.http
-       .get<Customer[]>(this.baseurl + apiEndpoints.customer.getAll)
+       .get<Customer[]>(this.baseurl + apiEndpoints.customer.getAll, httpOptions)
        .pipe(retry(1), catchError(this.errorHandl));
    }
 

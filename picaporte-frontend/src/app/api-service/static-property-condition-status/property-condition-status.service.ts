@@ -12,48 +12,42 @@ export class StaticPropertyConditionStatusService {
     // Base url
     baseurl = environment.apiUrl;
     constructor(private http: HttpClient) {}
-    // Http Headers
-    httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-    };
 
   // GET ALL
-  GetAll_PropertyConditionStatuses(): Observable<Static_PropertyConditionStatus[]> {
+  GetAll_PropertyConditionStatuses(httpOptions: { headers: HttpHeaders }): Observable<Static_PropertyConditionStatus[]> {
     return this.http
-      .get<Static_PropertyConditionStatus[]>(this.baseurl + apiEndpoints.static_propertyConditionStatus)
+      .get<Static_PropertyConditionStatus[]>(this.baseurl + apiEndpoints.static_propertyConditionStatus, httpOptions)
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
   // POST
-  Post_PropertyConditionStatus(data: Static_PropertyConditionStatus): Observable<Static_PropertyConditionStatus> {
+  Post_PropertyConditionStatus(data: Static_PropertyConditionStatus, httpOptions: { headers: HttpHeaders }): Observable<Static_PropertyConditionStatus> {
     return this.http
       .post<Static_PropertyConditionStatus>(
         this.baseurl + apiEndpoints.static_propertyConditionStatus,
         JSON.stringify(data),
-        this.httpOptions
+        httpOptions
       )
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
   // PUT
-  Put_PropertyConditionStatus(data: Static_PropertyConditionStatus): Observable<Static_PropertyConditionStatus> {
+  Put_PropertyConditionStatus(data: Static_PropertyConditionStatus, httpOptions: { headers: HttpHeaders }): Observable<Static_PropertyConditionStatus> {
     return this.http
       .put<Static_PropertyConditionStatus>(
         this.baseurl + apiEndpoints.static_propertyConditionStatus + data.id,
         JSON.stringify(data),
-        this.httpOptions
+        httpOptions
       )
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
   // DELETE
-  Delete_PropertyConditionStatus(data: number) {
+  Delete_PropertyConditionStatus(data: number, httpOptions: { headers: HttpHeaders }) {
     return this.http
       .delete(
         this.baseurl + apiEndpoints.static_propertyConditionStatus + data,
-        this.httpOptions
+        httpOptions
       )
       .pipe(retry(1), catchError(this.errorHandl));
   }

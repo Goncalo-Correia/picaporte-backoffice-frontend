@@ -1,5 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { catchError } from 'rxjs';
 import { StaticDocumentTypeService } from 'src/app/api-service/static-document-type/static-document-type.service';
+import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
+import { MessageComponent } from 'src/app/generic-components/message/message.component';
 import { Document } from 'src/app/models/document.model';
 import { Static_DocumentType } from 'src/app/models/static/static-documenttype.model';
 import { DocumentService } from 'src/app/services/document-service/document.service';
@@ -13,6 +16,8 @@ declare let $: any;
 })
 export class PropertyDocumentsComponent implements OnInit {
 
+  @ViewChild(MessageComponent) messageComponent!: MessageComponent;
+  
   @Input() mainDocuments: Array<DocumentStructure> = new Array<DocumentStructure>();
   @Input() certificateDocuments: Array<DocumentStructure> = new Array<DocumentStructure>();
   @Input() otherDocuments: Array<DocumentStructure> = new Array<DocumentStructure>();
@@ -35,7 +40,11 @@ export class PropertyDocumentsComponent implements OnInit {
   private documentTypes: Array<Static_DocumentType> = new Array<Static_DocumentType>();
   availableDocumentTypes: Array<Static_DocumentType> = new Array<Static_DocumentType>();
 
-  constructor(public documentTypeService: StaticDocumentTypeService, public documentService: DocumentService) { }
+  constructor(
+    public documentTypeService: StaticDocumentTypeService, 
+    public documentService: DocumentService,
+    private authenticationService: AuthenticationService
+  ) { }
 
   ngOnInit(): void {
     this.get_documentTypes();
@@ -198,9 +207,18 @@ export class PropertyDocumentsComponent implements OnInit {
   }
 
   private get_documentTypes() {
-    this.documentTypeService.GetAll_DocumentTypes().subscribe((data: {}) => {
-      this.documentTypes = <Static_DocumentType[]>data;
-    });;
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+      this.documentTypeService.GetAll_DocumentTypes(resolve)
+      .pipe(
+        catchError(err => {
+          this.messageComponent.showMessage(err.error);
+          return err;
+        })
+      )
+      .subscribe(data => {
+        this.documentTypes = <Static_DocumentType[]>data;
+      });
+    });
   }
 
   private buildDocumentTypes(isMainDocument: boolean, isCertificateDocument: boolean, isOtherDocument: boolean) {

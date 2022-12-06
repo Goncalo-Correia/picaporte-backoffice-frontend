@@ -12,48 +12,42 @@ export class StaticEnergyCertificateService {
    // Base url
    baseurl = environment.apiUrl;
    constructor(private http: HttpClient) {}
-   // Http Headers
-   httpOptions = {
-     headers: new HttpHeaders({
-       'Content-Type': 'application/json',
-     }),
-   };
 
   // GET ALL
-  GetAll_EnergyCertificates(): Observable<Static_EnergyCertificate[]> {
+  GetAll_EnergyCertificates(httpOptions: { headers: HttpHeaders }): Observable<Static_EnergyCertificate[]> {
     return this.http
-      .get<Static_EnergyCertificate[]>(this.baseurl + apiEndpoints.static_energyCertificates)
+      .get<Static_EnergyCertificate[]>(this.baseurl + apiEndpoints.static_energyCertificates, httpOptions)
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
   // POST
-  Post_EnergyCertificate(data: Static_EnergyCertificate): Observable<Static_EnergyCertificate> {
+  Post_EnergyCertificate(data: Static_EnergyCertificate, httpOptions: { headers: HttpHeaders }): Observable<Static_EnergyCertificate> {
     return this.http
       .post<Static_EnergyCertificate>(
         this.baseurl + apiEndpoints.static_energyCertificates,
         JSON.stringify(data),
-        this.httpOptions
+        httpOptions
       )
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
   // PUT
-  Put_EnergyCertificate(data: Static_EnergyCertificate): Observable<Static_EnergyCertificate> {
+  Put_EnergyCertificate(data: Static_EnergyCertificate, httpOptions: { headers: HttpHeaders }): Observable<Static_EnergyCertificate> {
     return this.http
       .put<Static_EnergyCertificate>(
         this.baseurl + apiEndpoints.static_energyCertificates + data.id,
         JSON.stringify(data),
-        this.httpOptions
+        httpOptions
       )
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
   // DELETE
-  Delete_EnergyCertificate(data: number) {
+  Delete_EnergyCertificate(data: number, httpOptions: { headers: HttpHeaders }) {
     return this.http
       .delete(
         this.baseurl + apiEndpoints.static_energyCertificates + data,
-        this.httpOptions
+        httpOptions
       )
       .pipe(retry(1), catchError(this.errorHandl));
   }

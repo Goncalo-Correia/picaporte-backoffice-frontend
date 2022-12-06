@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { catchError } from 'rxjs';
 import { QueriesUserService } from 'src/app/api-service/queries-user/queries-user.service';
 import { UserService } from 'src/app/api-service/user/user.service';
+import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
+import { MessageComponent } from 'src/app/generic-components/message/message.component';
 import { User } from 'src/app/models/user.model';
 import { UserStructure } from 'src/app/structures/main-structures/user.structure';
 import { PreferenceStructure } from 'src/app/structures/preference.structure';
@@ -14,6 +17,8 @@ import { Enum_UserSubMenu, UserSubMenu, UserSubMenuFactory } from 'src/app/subme
 })
 export class UserComponent implements OnInit {
 
+  @ViewChild(MessageComponent) messageComponent!: MessageComponent;
+  
   userId: number = 0;
 
   isEditable: boolean = false;
@@ -32,8 +37,9 @@ export class UserComponent implements OnInit {
 
   constructor(
     public queries_userService: QueriesUserService,
-    private activeRoute: ActivatedRoute) 
-  { 
+    private activeRoute: ActivatedRoute,
+    private authenticationService: AuthenticationService
+  ) { 
     this.userStructure = new UserStructure();
     this.userSubmenus = new Array<UserSubMenu>();
     this.userSubmenuFactory = new UserSubMenuFactory();
@@ -84,10 +90,19 @@ export class UserComponent implements OnInit {
     this.isLoading = true;
     this.isDataFetched = false;
     if (this.userId != 0 && this.userId != null) {
-      this.queries_userService.Get_UserStructure(this.userId).subscribe((data: {}) => {
-        this.userStructure = <UserStructure>data;
-        this.isDataFetched = true;
-        this.isLoading = false;
+      this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+        this.queries_userService.Get_UserStructure(this.userId, resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          this.userStructure = <UserStructure>data;
+          this.isDataFetched = true;
+          this.isLoading = false;
+        });
       });
     } else {
       this.isDataFetched = true;
@@ -104,14 +119,32 @@ export class UserComponent implements OnInit {
     this.isLoading = true;
 
     if (this.userStructure.user.id == 0 || this.userStructure.user.id == null) {
-      this.queries_userService.Post_UserStructure(this.userStructure).subscribe((data: {}) => {
-        this.userStructure.user = <User>data;
-        this.userId = this.userStructure.user.id;
-        this.get_userStructure();
+      this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.queries_userService.Post_UserStructure(this.userStructure, resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          this.userStructure.user = <User>data;
+          this.userId = this.userStructure.user.id;
+          this.get_userStructure();
+        });
       });
     } else {
-      this.queries_userService.Put_UserStructure(this.userId, this.userStructure).subscribe((data: {}) => {
-        this.get_userStructure();
+      this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.queries_userService.Put_UserStructure(this.userId, this.userStructure, resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          this.get_userStructure();
+        });
       });
     }
   }

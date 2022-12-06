@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: "https://localhost:7036/"
+  apiUrl: "https://localhost:7036/",
+  apiKey: "REDACTED_API_KEY"
 };
 
 export const apiEndpoints = {
@@ -64,9 +65,9 @@ export const apiEndpoints = {
   static_energyCertificates: "api/Static_PropertyEnergyCertificate/",
   static_documentTypes: "api/Static_DocumentType/",
   static_documentStatus: "api/Static_DocumentStatus/",
-  static_rentingActionTypes: "api/Static_RentingActionType/",
+  static_rentingActionTypes: "api/Static_RentingActionType",
   user: {
-    authotize: "authorize"
+    authotize: "api/Users/authorize"
   }
 };
 

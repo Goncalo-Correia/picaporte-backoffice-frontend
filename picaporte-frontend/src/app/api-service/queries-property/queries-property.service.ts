@@ -1,9 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, retry, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { PropertyDashboardStructure } from 'src/app/structures/dashboard-structures/property/property-dashboard.structure';
 import { PropertyStructure } from 'src/app/structures/main-structures/property.structure';
-import { SearchAndFilterStructure } from 'src/app/structures/dashboard-structures/search-and-filter.structure';
 import { apiEndpoints, environment } from 'src/environments/environment';
 import { PropertyDashboardSearchAndFilterStructure } from 'src/app/structures/dashboard-structures/property/property-dashboard-search-and-filter.structure';
 import { DashboardKpiStructure } from 'src/app/structures/dashboard-structures/dashboard-kpi.structure';
@@ -16,72 +15,45 @@ export class QueriesPropertyService {
     // Base url
     baseurl = environment.apiUrl;
     constructor(private http: HttpClient) {}
-    // Http Headers
-    httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-    };
     
     // GET
-    Get_PropertyStructure(id: number): Observable<PropertyStructure> {
+    Get_PropertyStructure(id: number, httpOptions: { headers: HttpHeaders }): Observable<PropertyStructure> {
       return this.http
-        .get<PropertyStructure>(this.baseurl + apiEndpoints.queries_property.get + id)
-        .pipe(retry(1), catchError(this.errorHandl));
+        .get<PropertyStructure>(this.baseurl + apiEndpoints.queries_property.get + id);
     }
         
     // PUT
-    Put_PropertyStructure(id?: number, data?: PropertyStructure): Observable<PropertyStructure> {
+    Put_PropertyStructure(id: number, data: PropertyStructure, httpOptions: { headers: HttpHeaders }): Observable<PropertyStructure> {
       return this.http
         .put<PropertyStructure>(
           this.baseurl + apiEndpoints.queries_property.put + id,
             JSON.stringify(data),
-            this.httpOptions
-          )
-        .pipe(retry(1), catchError(this.errorHandl));
+            httpOptions
+          );
     }
 
     // POST
-    Post_PropertyStructure(data: PropertyStructure): Observable<PropertyStructure> {
+    Post_PropertyStructure(data: PropertyStructure, httpOptions: { headers: HttpHeaders }): Observable<PropertyStructure> {
       return this.http
         .post<PropertyStructure>(
           this.baseurl + apiEndpoints.queries_property.post,
           JSON.stringify(data),
-          this.httpOptions
-        )
-        .pipe(retry(1), catchError(this.errorHandl));
+          httpOptions
+        );
     }
 
     // POST
-    Post_SearchAndFilter_PropertyStructure(data: PropertyDashboardSearchAndFilterStructure): Observable<PropertyDashboardStructure[]> {
+    Post_SearchAndFilter_PropertyStructure(data: PropertyDashboardSearchAndFilterStructure, httpOptions: { headers: HttpHeaders }): Observable<PropertyDashboardStructure[]> {
       return this.http
         .post<PropertyDashboardStructure[]>(
           this.baseurl + apiEndpoints.queries_property.searchAndFilter,
           JSON.stringify(data),
-          this.httpOptions
-        )
-        .pipe(retry(1), catchError(this.errorHandl));
+          httpOptions
+        );
     }
 
-    Get_Kpis() {
+    Get_Kpis(httpOptions: { headers: HttpHeaders }) {
       return this.http
-        .get<DashboardKpiStructure[]>(this.baseurl + apiEndpoints.queries_property.kpi)
-        .pipe(retry(1), catchError(this.errorHandl));
-    }
-
-    // Error handling
-    errorHandl(error: any) {
-      let errorMessage = '';
-      if (error.error instanceof ErrorEvent) {
-        // Get client-side error
-        errorMessage = error.error.message;
-      } else {
-        // Get server-side error
-        errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-      }
-      console.log(errorMessage);
-      return throwError(() => {
-        return errorMessage;
-      });
+        .get<DashboardKpiStructure[]>(this.baseurl + apiEndpoints.queries_property.kpi, httpOptions);
     }
 }

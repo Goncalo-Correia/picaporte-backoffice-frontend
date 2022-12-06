@@ -13,49 +13,43 @@ export class RentingService {
   // Base url
   baseurl = environment.apiUrl;
   constructor(private http: HttpClient) {}
-  // Http Headers
-  httpOptions = {
-    headers: new HttpHeaders({
-      'Content-Type': 'application/json',
-    }),
-  };
 
   // GET ALL
-  GetRentingsByPropertyId(propertyId: number): Observable<Renting[]> {
+  GetRentingsByPropertyId(propertyId: number, httpOptions: { headers: HttpHeaders }): Observable<Renting[]> {
     return this.http
-      .get<Renting[]>(this.baseurl + apiEndpoints.renting.getRentingsByPropertyId + propertyId)
+      .get<Renting[]>(this.baseurl + apiEndpoints.renting.getRentingsByPropertyId + propertyId, httpOptions)
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
   // POST
-  Post_Renting(data: Renting): Observable<Renting> {
+  Post_Renting(data: Renting, httpOptions: { headers: HttpHeaders }): Observable<Renting> {
     return this.http
       .post<Renting>(
         this.baseurl + apiEndpoints.renting.post,
         JSON.stringify(data),
-        this.httpOptions
+        httpOptions
       )
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
   // PUT
-  Put_Renting(id: number, data: Renting): Observable<Renting> {
+  Put_Renting(id: number, data: Renting, httpOptions: { headers: HttpHeaders }): Observable<Renting> {
     return this.http
       .put<Renting>(
         this.baseurl + apiEndpoints.renting.put + id,
           JSON.stringify(data),
-          this.httpOptions
+          httpOptions
         )
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
   // PUT
-  Delete_Renting(id: number): Observable<Renting> {
+  Delete_Renting(id: number, httpOptions: { headers: HttpHeaders }): Observable<Renting> {
     return this.http
       .delete<Renting>(
         this.baseurl + apiEndpoints.renting.delete + id,
-          this.httpOptions
-        )
+        httpOptions
+      )
       .pipe(retry(1), catchError(this.errorHandl));
   }
 

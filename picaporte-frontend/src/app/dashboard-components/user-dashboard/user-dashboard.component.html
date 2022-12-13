@@ -1,7 +1,7 @@
-<div class="p-5 row">
-    <div class="col-12 mb-3">
-        <div *ngIf="isKpiDataFetched else kpiElseBlock" class="row">
-            <div class="col-2 p-2">
+<div class="p-5 w-100">
+    <div class="mb-3">
+        <div *ngIf="isKpiDataFetched else kpiElseBlock" class="d-flex gap-3">
+            <div class="col">
                 <app-dashboard-kpi 
                     [dashboardKpiStructure]="dashboardKpis[0]" 
                     [isSelected]="!userSearchAndFilterStructure.hasAdminFilter"
@@ -10,7 +10,7 @@
                 >
                 </app-dashboard-kpi>
             </div>
-            <div class="col-2 p-2">
+            <div class="col">
                 <app-dashboard-kpi 
                     [dashboardKpiStructure]="dashboardKpis[1]" 
                     [isSelected]="userSearchAndFilterStructure.hasAdminFilter && !userSearchAndFilterStructure.isAdmin"
@@ -19,7 +19,7 @@
                 >
                 </app-dashboard-kpi>
             </div>
-            <div class="col-2 p-2">
+            <div class="col">
                 <app-dashboard-kpi 
                     [dashboardKpiStructure]="dashboardKpis[2]" 
                     [isSelected]="userSearchAndFilterStructure.hasAdminFilter && userSearchAndFilterStructure.isAdmin"
@@ -44,14 +44,14 @@
         </ng-template>
     </div>
     <app-search-and-filter-bar 
-      [searchText]="userSearchAndFilterStructure.searchAndFilterStructure.searchText"
-      [buttonLabel]="'Novo utilizador'"
-      [showButton]="true"
-      [placeholder]="'Pesquise por um utilizador'"
-      [hasFilters]="false"
-      [hasSelectedFilter]="false"
-      (searchTextChanged)="eventHandler_searchTextChanged($event)"
-      (buttonClicked)="eventHandler_buttonClicked()"
+    [searchText]="userSearchAndFilterStructure.searchAndFilterStructure.searchText"
+    [buttonLabel]="'Novo utilizador'"
+    [showButton]="true"
+    [placeholder]="'Pesquise por um utilizador'"
+    [hasFilters]="false"
+    [hasSelectedFilter]="false"
+    (searchTextChanged)="eventHandler_searchTextChanged($event)"
+    (buttonClicked)="eventHandler_buttonClicked()"
     >
     </app-search-and-filter-bar>
     <div>

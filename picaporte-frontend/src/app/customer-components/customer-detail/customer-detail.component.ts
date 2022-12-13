@@ -8,12 +8,14 @@ import { Customer } from 'src/app/models/customer.model';
 })
 export class CustomerDetailComponent implements OnInit {
 
-  @Input() customer: Customer = <Customer>{};
+  @Input() customer: Customer;
   @Input() isEditable: boolean = false;
 
   @Output() event_updateCustomerDetails = new EventEmitter<Customer>();
 
-  constructor() { }
+  constructor() { 
+    this.customer = new Customer();
+  }
 
   ngOnInit(): void {
   }

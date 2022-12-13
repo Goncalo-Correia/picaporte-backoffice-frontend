@@ -2,14 +2,14 @@
     <div class="row">
         <div class="col-6 mb-3">
             <label class="form-label fw-bold w-100">Tipo de utilizador</label>
-            <div *ngIf="isEditable; else readOnly" class="btn-group btn-group-lg" role="group" aria-label="Basic mixed styles example">
+            <div *ngIf="isEditable; else readOnly" class="btn-group btn-group-lg" role="group">
                 <button type="button" class="btn btn-lg " [ngClass]="user.isAdmin ? 'btn-danger' : 'btn-outline-danger' " (click)="onClick_selectUserRole(true)">Administrador</button>
                 <button type="button" class="btn btn-lg " [ngClass]="user.isAdmin ? 'btn-outline-success' : 'btn-success' " (click)="onClick_selectUserRole(false)">Cliente</button>
             </div>
             <ng-template #readOnly>
-                <div class="btn-group btn-group-lg" role="group" aria-label="Basic mixed styles example">
+                <div class="btn-group btn-group-lg" role="group">
                     <button type="button" class="btn btn-lg " [ngClass]="user.isAdmin ? 'btn-danger' : 'btn-outline-danger' " disabled>Administrador</button>
-                    <button type="button" class="btn btn-lg " [ngClass]="!user.isAdmin ? 'btn-outline-success' : 'btn-success' " disabled>Cliente</button>
+                    <button type="button" class="btn btn-lg " [ngClass]="user.isAdmin ? 'btn-outline-success' : 'btn-success' " disabled>Cliente</button>
                 </div>
             </ng-template>
         </div>

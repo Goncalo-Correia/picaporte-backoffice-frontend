@@ -26,17 +26,18 @@ export class QueriesCustomerService {
         
     // PUT
     Put_CustomerStructure(id: number, data: CustomerStructure, httpOptions: { headers: HttpHeaders }): Observable<CustomerStructure> {
+      
       return this.http
-        .put<CustomerStructure>(
-          this.baseurl + apiEndpoints.queries_customer.put + id,
-            JSON.stringify(data),
-            httpOptions
-          )
+      .put<CustomerStructure>(
+        this.baseurl + apiEndpoints.queries_customer.put + id,
+        JSON.stringify(data),
+        httpOptions
+        )
         .pipe(retry(1), catchError(this.errorHandl));
-    }
-
-    // POST
-    Post_CustomerStructure(data: CustomerStructure, httpOptions: { headers: HttpHeaders }): Observable<CustomerStructure> {
+      }
+      
+      // POST
+      Post_CustomerStructure(data: CustomerStructure, httpOptions: { headers: HttpHeaders }): Observable<CustomerStructure> {
       return this.http
         .post<CustomerStructure>(
           this.baseurl + apiEndpoints.queries_customer.post,

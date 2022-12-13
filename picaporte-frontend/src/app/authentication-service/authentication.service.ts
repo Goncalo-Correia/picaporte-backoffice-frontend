@@ -37,14 +37,14 @@ export class AuthenticationService {
                   authorizeStructure.phoneNumber = auth0User.phone_number;
                   authorizeStructure.givenName = auth0User.given_name;
                   authorizeStructure.familyName = auth0User.family_name;
-                  this.refreshHttpOptions().then((resolve:any) => {
-                    this.userService.Post_AuthorizeUser(authorizeStructure, resolve).subscribe(userId => {
+                  this.refreshHttpOptions().then((httpOptions:any) => {
+                    this.userService.Post_AuthorizeUser(authorizeStructure, httpOptions).subscribe(userId => {
                       if (userId == 0) {
                         this.auth.logout({
                           returnTo: 'http://localhost:4200/'
                         });
                       } else {
-                        resolve(resolve);
+                        resolve(httpOptions);
                       }
                     });
                   });

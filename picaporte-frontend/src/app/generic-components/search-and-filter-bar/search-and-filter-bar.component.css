@@ -1,9 +1,22 @@
 .search-and-filter .form-control {
     border-radius: unset;
     height: 56px;
+    border: none;
 }
 
 .search-and-filter .btn {
+    border-radius: 0 0.25rem 0.25rem 0;
+}
+
+.search-and-filter .filter-hidden {
+    border-radius: 0.25rem 0 0 0.25rem;
+}
+
+.search-and-filter .filter-hidden.button-hidden {
+    border-radius: 0.25rem 0.25rem 0.25rem 0.25rem;
+}
+
+.search-and-filter .button-hidden {
     border-radius: 0 0.25rem 0.25rem 0;
 }
 

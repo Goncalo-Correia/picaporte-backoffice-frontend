@@ -16,7 +16,7 @@
   <div class="row">
     <div class="col-6 mb-3">
       <label for="location" class="form-label fw-bold w-100">Localização</label>
-      <input *ngIf="isEditable; else locationRead" type="text" class="form-control" id="location" name="lastNalocationme" [(ngModel)]="address.location" (change)="triggerEvent_updateAddress()">
+      <input *ngIf="isEditable; else locationRead" type="text" class="form-control" id="location" name="location" [(ngModel)]="address.location" (change)="triggerEvent_updateAddress()">
       <ng-template #locationRead>
         <div *ngIf="address.location != null; else locationNull">
           {{address.location}}

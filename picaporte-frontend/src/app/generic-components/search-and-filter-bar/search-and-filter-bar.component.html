@@ -1,12 +1,12 @@
 <div class="search-and-filter" [ngClass]="{'open': showFilters}">
-    <div class="row">
+    <div class="d-flex">
         <div class="col d-flex align-items-center p-0">
             <div *ngIf="hasFilters" class="bg-white filters d-flex align-items-center gap-3 p-3 cursor-pointer" (click)="onClick_openCloseFilters()">
                 <i class="fa-solid fa-filter" [ngClass]="{'text-success': hasSelectedFilter}"></i>
                 <div>Filtros</div>
             </div>
             <div class="input-group h-100">
-                <input type="text" class="form-control" placeholder={{placeholder}} aria-describedby="button-addon2" [(ngModel)]="searchText">
+                <input type="text" class="form-control" [ngClass]="{'filter-hidden': !hasFilters, 'button-hidden': !showButton}" placeholder={{placeholder}} aria-describedby="button-addon2" [(ngModel)]="searchText" (change)="onChange()">
             </div>
         </div>
         <div *ngIf="showButton" class="col-auto d-flex justify-content-end p-0">

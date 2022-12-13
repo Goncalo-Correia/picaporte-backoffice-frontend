@@ -41,8 +41,8 @@
       </ng-template>
     </div>
     <div class="col-6 mb-3">
-      <label for="email" class="form-label fw-bold w-100">Telemóvel</label>
-      <input *ngIf="isEditable; else emailRead" type="email" class="form-control" id="email" name="email" [(ngModel)]="customer.email" (change)="triggerEvent_updateCustomerDetails()">
+      <label for="email" class="form-label fw-bold w-100">Email</label>
+      <input *ngIf="isEditable; else emailRead" type="text" class="form-control" id="email" name="email" [(ngModel)]="customer.email" (change)="triggerEvent_updateCustomerDetails()">
       <ng-template #emailRead>
         <div *ngIf="customer.email != null; else emailNull">
           {{customer.email}}

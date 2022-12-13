@@ -8,12 +8,14 @@ import { Address } from 'src/app/models/address.model';
 })
 export class AddressComponent implements OnInit {
 
-  @Input() address: Address = new Address();
+  @Input() address: Address;
   @Input() isEditable: boolean = false;
 
   @Output() event_updateAddress = new EventEmitter<Address>();
 
-  constructor() { }
+  constructor() { 
+    this.address = new Address();
+  }
 
   ngOnInit(): void {
   }

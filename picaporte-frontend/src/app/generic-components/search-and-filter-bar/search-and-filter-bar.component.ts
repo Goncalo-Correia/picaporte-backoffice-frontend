@@ -26,10 +26,7 @@ export class SearchAndFilterBarComponent implements OnInit {
   }
 
   onChange() {
-    if(this.timeout) clearTimeout(this.timeout);
-    this.timeout = setTimeout(() => {
-      this.searchTextChanged.emit(this.searchText);
-    },500);
+    this.searchTextChanged.emit(this.searchText);
   }
 
   onClick_button() {
@@ -39,5 +36,4 @@ export class SearchAndFilterBarComponent implements OnInit {
   onClick_openCloseFilters() {
     this.showFilters = !this.showFilters;
   }
-
 }

@@ -14,7 +14,6 @@ export class Customer {
 
     public addressId: number = 0;
     public userId: number = 0;
-    public entityReferenceId: number = 0;
 
     public address: Address = new Address();
     public user: User = new User();

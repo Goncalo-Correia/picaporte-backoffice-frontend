@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { catchError } from 'rxjs';
 import { QueriesUserService } from 'src/app/api-service/queries-user/queries-user.service';
-import { UserService } from 'src/app/api-service/user/user.service';
 import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
 import { MessageComponent } from 'src/app/generic-components/message/message.component';
 import { User } from 'src/app/models/user.model';

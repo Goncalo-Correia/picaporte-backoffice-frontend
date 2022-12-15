@@ -38,6 +38,8 @@ export class QueriesCustomerService {
       
       // POST
       Post_CustomerStructure(data: CustomerStructure, httpOptions: { headers: HttpHeaders }): Observable<CustomerStructure> {
+        console.log(data);
+        
       return this.http
         .post<CustomerStructure>(
           this.baseurl + apiEndpoints.queries_customer.post,

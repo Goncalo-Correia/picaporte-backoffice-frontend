@@ -86,7 +86,7 @@ export class PropertyComponent implements OnInit {
     this.propertyStructure.property.isOnline = data;
   }
 
-  eventHandler_updatePropertyDetails(data: any) {
+  eventHandler_updatePropertyDetails(data: Property) {
     this.propertyStructure.property = data;
   }
 
@@ -129,7 +129,7 @@ export class PropertyComponent implements OnInit {
   private submit_property() {
     this.isLoading = true;
 
-    if (this.propertyStructure.property.id == 0) {
+    if (this.propertyStructure.property.id == 0 || this.propertyStructure.property.id == null) {
       this.authenticationService.authorizeUser().then((resolve:any) => { 
         this.queries_propertyService.Post_PropertyStructure(this.propertyStructure, resolve)
         .pipe(
@@ -139,7 +139,7 @@ export class PropertyComponent implements OnInit {
           })
         )
         .subscribe(data => {
-          this.propertyStructure = <PropertyStructure>data;
+          this.propertyStructure.property = <Property>data;
           this.propertyId = this.propertyStructure.property.id;
           this.get_propertyStructure();
         });

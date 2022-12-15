@@ -125,6 +125,7 @@ export class CustomerComponent implements OnInit {
 
   private submit_customer() {
     this.isLoading = true;
+
     if (this.customerStructure.customer.id == 0 || this.customerStructure.customer.id == null) {
       this.authenticationService.authorizeUser().then((resolve:any) => {
         this.queries_customerService.Post_CustomerStructure(this.customerStructure, resolve)

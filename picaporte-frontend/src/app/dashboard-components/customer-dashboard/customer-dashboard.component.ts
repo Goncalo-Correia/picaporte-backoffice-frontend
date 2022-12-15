@@ -8,6 +8,8 @@ import { DashboardKpiStructure } from 'src/app/structures/dashboard-structures/d
 import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
 import { catchError } from 'rxjs';
 import { MessageComponent } from 'src/app/generic-components/message/message.component';
+import { StaticAmenetieTypeService } from 'src/app/api-service/static-amenetie-type/static-amenetie-type-service.service';
+import { Static_AmenetieType } from 'src/app/models/static/static-amenetieType.model';
 
 @Component({
   selector: 'app-customer-dashboard',
@@ -35,7 +37,8 @@ export class CustomerDashboardComponent implements OnInit {
   constructor(
     public queries_customerService: QueriesCustomerService,
     public router: Router,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private staticAmenetieTypeService: StaticAmenetieTypeService
     ) {
     this.dashboardKpis = new Array<DashboardKpiStructure>();
     this.placeholderDashboardKpi = new DashboardKpiStructure();
@@ -47,6 +50,7 @@ export class CustomerDashboardComponent implements OnInit {
   ngOnInit(): void {
     this.get_Kpis();
     this.get_customerDashboardStructure();
+    this.getFilters();
   }
 
   onClick_selectAmenetieTypeFilter(amenetieTypeId: number, label: string) {
@@ -119,6 +123,24 @@ export class CustomerDashboardComponent implements OnInit {
 
       this.get_customerDashboardStructure();
     }
+  }
+
+  private getFilters() {
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+      this.staticAmenetieTypeService.GetAll_AmenetieTypes(resolve)
+      .pipe(
+        catchError(err => {
+          this.messageComponent.showMessage(err.error);
+          return err;
+        })
+      )
+      .subscribe(data => {
+        this.customerDashboardFilters.amenetieTypes = <Static_AmenetieType[]>data;
+        this.isDataFetched = true;
+        this.hasPreviousPage();
+        this.hasNextPage();
+      });
+    });
   }
 
   private hasPreviousPage() {

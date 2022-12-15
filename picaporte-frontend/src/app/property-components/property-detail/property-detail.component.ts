@@ -28,7 +28,7 @@ export class PropertyDetailComponent implements OnInit {
   @Input() property: Property = <Property>{};
   @Input() isEditable: boolean = false;
 
-  @Output() event_updateCPropertyDetails = new EventEmitter<Property>();
+  @Output() event_updatePropertyDetails = new EventEmitter<Property>();
 
   customers: Array<Customer> = new Array<Customer>();
   selectedCustomerName: string = "Nenhum cliente associado";
@@ -105,7 +105,7 @@ export class PropertyDetailComponent implements OnInit {
   }
 
   triggerEvent_updatePropertyDetails() {
-    this.event_updateCPropertyDetails.emit(this.property);
+    this.event_updatePropertyDetails.emit(this.property);
   }
 
   private get_Customers() {

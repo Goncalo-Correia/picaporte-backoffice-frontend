@@ -33,7 +33,6 @@ export class Property {
     public energyCertificateId: number = 0;
     public createdByUserId: number = 0;
     public updatedByUserId: number = 0;
-    public entityReferenceId: number = 0;
 
     public address: Address = new Address();
     public customer: Customer = new Customer();

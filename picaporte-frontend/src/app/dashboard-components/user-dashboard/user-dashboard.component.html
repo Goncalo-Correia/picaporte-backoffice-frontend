@@ -1,6 +1,6 @@
 <div class="p-5 w-100">
-    <div class="mb-3">
-        <div *ngIf="isKpiDataFetched else kpiElseBlock" class="d-flex gap-3">
+    <div class="col-12 mb-3">
+        <div *ngIf="isKpiDataFetched else kpiElseBlock" class="row">
             <div class="col">
                 <app-dashboard-kpi 
                     [dashboardKpiStructure]="dashboardKpis[0]" 
@@ -43,18 +43,20 @@
             </div>
         </ng-template>
     </div>
-    <app-search-and-filter-bar 
-    [searchText]="userSearchAndFilterStructure.searchAndFilterStructure.searchText"
-    [buttonLabel]="'Novo utilizador'"
-    [showButton]="true"
-    [placeholder]="'Pesquise por um utilizador'"
-    [hasFilters]="false"
-    [hasSelectedFilter]="false"
-    (searchTextChanged)="eventHandler_searchTextChanged($event)"
-    (buttonClicked)="eventHandler_buttonClicked()"
-    >
-    </app-search-and-filter-bar>
-    <div>
+    <div class="col-12">
+      <app-search-and-filter-bar 
+      [searchText]="userSearchAndFilterStructure.searchAndFilterStructure.searchText"
+      [buttonLabel]="'Novo utilizador'"
+      [showButton]="true"
+      [placeholder]="'Pesquise por um utilizador'"
+      [hasFilters]="false"
+      [hasSelectedFilter]="false"
+      (searchTextChanged)="eventHandler_searchTextChanged($event)"
+      (buttonClicked)="eventHandler_buttonClicked()"
+      >
+      </app-search-and-filter-bar>
+    </div>
+    <div class="col-12">
       <table class="table">
         <thead>
           <tr>
@@ -83,8 +85,10 @@
           </ng-template>
         </table>
       </div>
-      <div *ngIf="userDashboardStructureArray.length == 0 && isDataFetched" class="w-100 p-4 text-center rounded bg-white">
+      <div *ngIf="userDashboardStructureArray.length == 0 && isDataFetched" class="col-12">
+        <div class="p-4 text-center rounded bg-white">
           Não foram encontrados utilizadores
+        </div>
       </div>
       <div *ngIf="isDataFetched">
           <nav>

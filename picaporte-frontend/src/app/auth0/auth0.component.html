@@ -13,7 +13,9 @@
     </ng-container>
     
     <ng-template #loggedOut>
-        <button class="btn btn-info" (click)="auth.loginWithRedirect()">
+        <button class="btn btn-info" (click)="auth.loginWithRedirect({
+            redirect_uri: 'https://picaporte.website'
+          })">
             <div class="d-flex align-items-center gap-3">
                 <i class="fa-solid fa-user"></i>
                 <div>Log in</div>

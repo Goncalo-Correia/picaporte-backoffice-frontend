@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
         this.auth.isAuthenticated$.subscribe((authenticated) => {
           if (authenticated) {
             this.auth.buildAuthorizeUrl({
-              redirect_uri: 'http://localhost:4200/'
+              redirect_uri: 'https://picaporte.website'
             }).subscribe((data) => {
               console.log("token", data);
               this.authenticationService.authorizeUser().then(data => {
@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
             })
           } else {
             this.auth.loginWithRedirect({
-              redirect_uri: 'http://localhost:4200/'
+              redirect_uri: 'https://picaporte.website'
             });
           }
         });

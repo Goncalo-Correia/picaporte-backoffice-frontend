@@ -20,8 +20,6 @@ export class Property {
     public livingArea: number = 0;
     public hasTermiteCertificate: boolean = false;
     public constructionYear: number = 0;
-    public createdOn: Date = new Date();
-    public lastModifiedOn: Date = new Date();
     
     public addressId: number = 0;
     public customerId: number = 0;
@@ -31,8 +29,6 @@ export class Property {
     public propertyConditionStatusId: number = 0;
     public propertyTypologyId: number = 0;
     public energyCertificateId: number = 0;
-    public createdByUserId: number = 0;
-    public updatedByUserId: number = 0;
 
     public address: Address = new Address();
     public customer: Customer = new Customer();
@@ -42,8 +38,6 @@ export class Property {
     public propertyConditionStatus: Static_PropertyConditionStatus = new Static_PropertyConditionStatus();
     public propertyTypology: Static_PropertyTypology = new Static_PropertyTypology();
     public energyCertificate: Static_EnergyCertificate = new Static_EnergyCertificate();
-    public createdByUser: User = new User();
-    public uploadedByUser: User = new User();
 
     public ameneties: Array<Static_AmenetieType> = new Array<Static_AmenetieType>();
     public documents: Array<Document> = new Array<Document>();

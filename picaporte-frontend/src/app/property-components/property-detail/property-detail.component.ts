@@ -125,7 +125,7 @@ export class PropertyDetailComponent implements OnInit {
 
   private get_staticPropertyTypes() {
     this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.static_propertyTypeService.GetAll_PropertyTypes(resolve)
+      this.static_propertyTypeService.GetAll_PropertyTypes(true, resolve)
       .pipe(
         catchError(err => {
           this.messageComponent.showMessage(err.error);
@@ -140,7 +140,7 @@ export class PropertyDetailComponent implements OnInit {
 
   private get_staticPropertyStatuses() {
     this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.static_propertyStatusService.GetAll_PropertyStatuses(resolve)
+      this.static_propertyStatusService.GetAll_PropertyStatuses(true, resolve)
       .pipe(
         catchError(err => {
           this.messageComponent.showMessage(err.error);
@@ -155,7 +155,7 @@ export class PropertyDetailComponent implements OnInit {
 
   private get_staticPropertyTypologies() {
     this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.static_propertyTypologyService.GetAll_PropertyTypology(resolve)
+      this.static_propertyTypologyService.GetAll_PropertyTypology(true, resolve)
       .pipe(
         catchError(err => {
           this.messageComponent.showMessage(err.error);
@@ -170,7 +170,7 @@ export class PropertyDetailComponent implements OnInit {
 
   private get_staticPropertyConditionStatuses() {
     this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.static_propertyConditionStatusService.GetAll_PropertyConditionStatuses(resolve)
+      this.static_propertyConditionStatusService.GetAll_PropertyConditionStatuses(true, resolve)
       .pipe(
         catchError(err => {
           this.messageComponent.showMessage(err.error);
@@ -185,7 +185,7 @@ export class PropertyDetailComponent implements OnInit {
 
   private get_staticEnergyCertificates() {
     this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.static_energyCertificateService.GetAll_EnergyCertificates(resolve)
+      this.static_energyCertificateService.GetAll_EnergyCertificates(true, resolve)
       .pipe(
         catchError(err => {
           this.messageComponent.showMessage(err.error);

@@ -14,9 +14,9 @@ export class StaticPropertyConditionStatusService {
     constructor(private http: HttpClient) {}
 
   // GET ALL
-  GetAll_PropertyConditionStatuses(httpOptions: { headers: HttpHeaders }): Observable<Static_PropertyConditionStatus[]> {
+  GetAll_PropertyConditionStatuses(isActive: boolean, httpOptions: { headers: HttpHeaders }): Observable<Static_PropertyConditionStatus[]> {
     return this.http
-      .get<Static_PropertyConditionStatus[]>(this.baseurl + apiEndpoints.static_propertyConditionStatus, httpOptions)
+      .get<Static_PropertyConditionStatus[]>(this.baseurl + apiEndpoints.static_propertyConditionStatus.get + isActive, httpOptions)
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
@@ -24,7 +24,7 @@ export class StaticPropertyConditionStatusService {
   Post_PropertyConditionStatus(data: Static_PropertyConditionStatus, httpOptions: { headers: HttpHeaders }): Observable<Static_PropertyConditionStatus> {
     return this.http
       .post<Static_PropertyConditionStatus>(
-        this.baseurl + apiEndpoints.static_propertyConditionStatus,
+        this.baseurl + apiEndpoints.static_propertyConditionStatus.base,
         JSON.stringify(data),
         httpOptions
       )
@@ -35,7 +35,17 @@ export class StaticPropertyConditionStatusService {
   Put_PropertyConditionStatus(data: Static_PropertyConditionStatus, httpOptions: { headers: HttpHeaders }): Observable<Static_PropertyConditionStatus> {
     return this.http
       .put<Static_PropertyConditionStatus>(
-        this.baseurl + apiEndpoints.static_propertyConditionStatus + data.id,
+        this.baseurl + apiEndpoints.static_propertyConditionStatus.base + data.id,
+        JSON.stringify(data),
+        httpOptions
+      )
+      .pipe(retry(1), catchError(this.errorHandl));
+  }
+
+  Put_PropertyConditionStatuses(data: Array<Static_PropertyConditionStatus>, httpOptions: { headers: HttpHeaders }): Observable<Static_PropertyConditionStatus> {
+    return this.http
+      .put<Static_PropertyConditionStatus>(
+        this.baseurl + apiEndpoints.static_propertyConditionStatus.updateAll,
         JSON.stringify(data),
         httpOptions
       )
@@ -46,7 +56,7 @@ export class StaticPropertyConditionStatusService {
   Delete_PropertyConditionStatus(data: number, httpOptions: { headers: HttpHeaders }) {
     return this.http
       .delete(
-        this.baseurl + apiEndpoints.static_propertyConditionStatus + data,
+        this.baseurl + apiEndpoints.static_propertyConditionStatus.base + data,
         httpOptions
       )
       .pipe(retry(1), catchError(this.errorHandl));

@@ -14,9 +14,9 @@ export class StaticDocumentTypeService {
    constructor(private http: HttpClient) {}
 
   // GET ALL
-  GetAll_DocumentTypes(httpOptions: { headers: HttpHeaders }): Observable<Static_DocumentType[]> {
+  GetAll_DocumentTypes(isActive: boolean, httpOptions: { headers: HttpHeaders }): Observable<Static_DocumentType[]> {
     return this.http
-      .get<Static_DocumentType[]>(this.baseurl + apiEndpoints.static_documentTypes, httpOptions)
+      .get<Static_DocumentType[]>(this.baseurl + apiEndpoints.static_documentTypes.get + isActive, httpOptions)
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
@@ -24,7 +24,7 @@ export class StaticDocumentTypeService {
   Post_DocumentType(data: Static_DocumentType, httpOptions: { headers: HttpHeaders }): Observable<Static_DocumentType> {
     return this.http
       .post<Static_DocumentType>(
-        this.baseurl + apiEndpoints.static_documentTypes,
+        this.baseurl + apiEndpoints.static_documentTypes.base,
         JSON.stringify(data),
         httpOptions
       )
@@ -35,7 +35,17 @@ export class StaticDocumentTypeService {
   Put_DocumentType(data: Static_DocumentType, httpOptions: { headers: HttpHeaders }): Observable<Static_DocumentType> {
     return this.http
       .put<Static_DocumentType>(
-        this.baseurl + apiEndpoints.static_documentTypes + data.id,
+        this.baseurl + apiEndpoints.static_documentTypes.base + data.id,
+        JSON.stringify(data),
+        httpOptions
+      )
+      .pipe(retry(1), catchError(this.errorHandl));
+  }
+
+  Put_DocumentTypes(data: Array<Static_DocumentType>, httpOptions: { headers: HttpHeaders }): Observable<Static_DocumentType> {
+    return this.http
+      .put<Static_DocumentType>(
+        this.baseurl + apiEndpoints.static_documentTypes.updateAll,
         JSON.stringify(data),
         httpOptions
       )
@@ -46,7 +56,7 @@ export class StaticDocumentTypeService {
   Delete_DocumentType(data: number, httpOptions: { headers: HttpHeaders }) {
     return this.http
       .delete(
-        this.baseurl + apiEndpoints.static_documentTypes + data,
+        this.baseurl + apiEndpoints.static_documentTypes.base + data,
         httpOptions
       )
       .pipe(retry(1), catchError(this.errorHandl));

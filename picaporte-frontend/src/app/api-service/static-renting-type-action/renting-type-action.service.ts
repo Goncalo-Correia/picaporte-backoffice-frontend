@@ -14,9 +14,9 @@ export class StaticRentingTypeActionService {
     constructor(private http: HttpClient) {}
 
     // GET ALL
-    GetAll_RentingActionTypes(httpOptions: { headers: HttpHeaders }): Observable<Static_RentingActionType[]> {
+    GetAll_RentingActionTypes(isActive: boolean, httpOptions: { headers: HttpHeaders }): Observable<Static_RentingActionType[]> {
       return this.http
-        .get<Static_RentingActionType[]>(this.baseurl + apiEndpoints.static_rentingActionTypes, httpOptions)
+        .get<Static_RentingActionType[]>(this.baseurl + apiEndpoints.static_rentingActionTypes.get + isActive, httpOptions)
         .pipe(retry(1), catchError(this.errorHandl));
     }
 

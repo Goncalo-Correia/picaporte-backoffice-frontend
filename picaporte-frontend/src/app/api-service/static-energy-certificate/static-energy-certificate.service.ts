@@ -14,9 +14,9 @@ export class StaticEnergyCertificateService {
    constructor(private http: HttpClient) {}
 
   // GET ALL
-  GetAll_EnergyCertificates(httpOptions: { headers: HttpHeaders }): Observable<Static_EnergyCertificate[]> {
+  GetAll_EnergyCertificates(isActive: boolean, httpOptions: { headers: HttpHeaders }): Observable<Static_EnergyCertificate[]> {
     return this.http
-      .get<Static_EnergyCertificate[]>(this.baseurl + apiEndpoints.static_energyCertificates, httpOptions)
+      .get<Static_EnergyCertificate[]>(this.baseurl + apiEndpoints.static_energyCertificates.get + isActive, httpOptions)
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
@@ -24,7 +24,7 @@ export class StaticEnergyCertificateService {
   Post_EnergyCertificate(data: Static_EnergyCertificate, httpOptions: { headers: HttpHeaders }): Observable<Static_EnergyCertificate> {
     return this.http
       .post<Static_EnergyCertificate>(
-        this.baseurl + apiEndpoints.static_energyCertificates,
+        this.baseurl + apiEndpoints.static_energyCertificates.base,
         JSON.stringify(data),
         httpOptions
       )
@@ -35,7 +35,17 @@ export class StaticEnergyCertificateService {
   Put_EnergyCertificate(data: Static_EnergyCertificate, httpOptions: { headers: HttpHeaders }): Observable<Static_EnergyCertificate> {
     return this.http
       .put<Static_EnergyCertificate>(
-        this.baseurl + apiEndpoints.static_energyCertificates + data.id,
+        this.baseurl + apiEndpoints.static_energyCertificates.base + data.id,
+        JSON.stringify(data),
+        httpOptions
+      )
+      .pipe(retry(1), catchError(this.errorHandl));
+  }
+
+  Put_EnergyCertificates(data: Array<Static_EnergyCertificate>, httpOptions: { headers: HttpHeaders }): Observable<Static_EnergyCertificate> {
+    return this.http
+      .put<Static_EnergyCertificate>(
+        this.baseurl + apiEndpoints.static_energyCertificates.updateAll,
         JSON.stringify(data),
         httpOptions
       )
@@ -46,7 +56,7 @@ export class StaticEnergyCertificateService {
   Delete_EnergyCertificate(data: number, httpOptions: { headers: HttpHeaders }) {
     return this.http
       .delete(
-        this.baseurl + apiEndpoints.static_energyCertificates + data,
+        this.baseurl + apiEndpoints.static_energyCertificates.base + data,
         httpOptions
       )
       .pipe(retry(1), catchError(this.errorHandl));

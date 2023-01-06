@@ -166,7 +166,7 @@ export class CustomerPreferencesComponent implements OnInit {
 
   private get_staticPropertyTypes() {
     this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.static_propertyTypeService.GetAll_PropertyTypes(resolve).subscribe((data: {}) => {
+      this.static_propertyTypeService.GetAll_PropertyTypes(true, resolve).subscribe((data: {}) => {
         this.staticPropertyTypes = <Static_PropertyType[]>data;
       });
     });
@@ -174,7 +174,7 @@ export class CustomerPreferencesComponent implements OnInit {
 
   private get_staticPropertyStatuses() {
     this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.static_propertyStatusService.GetAll_PropertyStatuses(resolve).subscribe((data: {}) => {
+      this.static_propertyStatusService.GetAll_PropertyStatuses(true, resolve).subscribe((data: {}) => {
         this.staticPropertyStatuses = <Static_PropertyStatus[]>data;
       });
     });
@@ -182,7 +182,7 @@ export class CustomerPreferencesComponent implements OnInit {
 
   private get_staticPropertyTypologies() {
     this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.static_propertyTypologyService.GetAll_PropertyTypology(resolve).subscribe((data: {}) => {
+      this.static_propertyTypologyService.GetAll_PropertyTypology(true, resolve).subscribe((data: {}) => {
         this.staticPropertyTypologies = <Static_PropertyTypology[]>data;
       });
     });
@@ -190,7 +190,7 @@ export class CustomerPreferencesComponent implements OnInit {
 
   private get_staticPropertyConditionStatuses() {
     this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.static_propertyConditionStatusService.GetAll_PropertyConditionStatuses(resolve).subscribe((data: {}) => {
+      this.static_propertyConditionStatusService.GetAll_PropertyConditionStatuses(true, resolve).subscribe((data: {}) => {
         this.staticPropertyConditionStatuses = <Static_PropertyConditionStatus[]>data;
       });
     });
@@ -198,7 +198,7 @@ export class CustomerPreferencesComponent implements OnInit {
 
   private get_staticEnergyCertificates() {
     this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.static_energyCertificateService.GetAll_EnergyCertificates(resolve).subscribe((data: {}) => {
+      this.static_energyCertificateService.GetAll_EnergyCertificates(true, resolve).subscribe((data: {}) => {
         this.staticEnergyCertificates = <Static_EnergyCertificate[]>data;
       });
     });
@@ -207,7 +207,7 @@ export class CustomerPreferencesComponent implements OnInit {
   private get_amenetieTypes() {
     this.amenetieTypeStructureList = new Array<AmenetieTypeStructure>();
     this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.amenetieTypeService.GetAll_AmenetieTypes(resolve).subscribe((data: {}) => {
+      this.amenetieTypeService.GetAll_AmenetieTypes(true, resolve).subscribe((data: {}) => {
         var localAmeneties = <Static_AmenetieType[]>data;
         localAmeneties.forEach(element => {
           this.amenentieTypeStructure = new AmenetieTypeStructure();

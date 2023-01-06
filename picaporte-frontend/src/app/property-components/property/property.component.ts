@@ -182,7 +182,7 @@ export class PropertyComponent implements OnInit {
       this.propertyStructure = new PropertyStructure();
       
       this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-        this.amentieTypeService.GetAll_AmenetieTypes(resolve)
+        this.amentieTypeService.GetAll_AmenetieTypes(true, resolve)
         .pipe(
           catchError(err => {
             this.messageComponent.showMessage(err.error);

@@ -5,4 +5,5 @@ export class StaticDataStructure {
     public order: number = 0;
     public isPrimary: boolean = false;
     public isCertificate: boolean = false;
+    public isActive: boolean = false;
 }

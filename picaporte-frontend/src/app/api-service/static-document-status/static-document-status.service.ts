@@ -14,9 +14,9 @@ export class StaticDocumentStatusService {
    constructor(private http: HttpClient) {}
 
   // GET ALL
-  GetAll_DocumentStatus(httpOptions: { headers: HttpHeaders }): Observable<Static_DocumentStatus[]> {
+  GetAll_DocumentStatus(isActive: boolean, httpOptions: { headers: HttpHeaders }): Observable<Static_DocumentStatus[]> {
     return this.http
-      .get<Static_DocumentStatus[]>(this.baseurl + apiEndpoints.static_documentStatus, httpOptions)
+      .get<Static_DocumentStatus[]>(this.baseurl + apiEndpoints.static_documentStatus.get + isActive, httpOptions)
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
@@ -24,7 +24,7 @@ export class StaticDocumentStatusService {
   Post_DocumentStatus(data: Static_DocumentStatus, httpOptions: { headers: HttpHeaders }): Observable<Static_DocumentStatus> {
     return this.http
       .post<Static_DocumentStatus>(
-        this.baseurl + apiEndpoints.static_documentStatus,
+        this.baseurl + apiEndpoints.static_documentStatus.base,
         JSON.stringify(data),
         httpOptions
       )
@@ -35,7 +35,17 @@ export class StaticDocumentStatusService {
   Put_DocumentStatus(data: Static_DocumentStatus, httpOptions: { headers: HttpHeaders }): Observable<Static_DocumentStatus> {
     return this.http
       .put<Static_DocumentStatus>(
-        this.baseurl + apiEndpoints.static_documentStatus + data.id,
+        this.baseurl + apiEndpoints.static_documentStatus.base + data.id,
+        JSON.stringify(data),
+        httpOptions
+      )
+      .pipe(retry(1), catchError(this.errorHandl));
+  }
+
+  Put_DocumentStatuses(data: Array<Static_DocumentStatus>, httpOptions: { headers: HttpHeaders }): Observable<Static_DocumentStatus> {
+    return this.http
+      .put<Static_DocumentStatus>(
+        this.baseurl + apiEndpoints.static_documentStatus.updateAll,
         JSON.stringify(data),
         httpOptions
       )
@@ -46,7 +56,7 @@ export class StaticDocumentStatusService {
   Delete_DocumentStatus(data: number, httpOptions: { headers: HttpHeaders }) {
     return this.http
       .delete(
-        this.baseurl + apiEndpoints.static_documentStatus + data,
+        this.baseurl + apiEndpoints.static_documentStatus.base + data,
         httpOptions
       )
       .pipe(retry(1), catchError(this.errorHandl));

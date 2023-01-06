@@ -14,9 +14,9 @@ export class StaticAmenetieTypeService {
   constructor(private http: HttpClient) {}
 
   // GET ALL
-  GetAll_AmenetieTypes(httpOptions: { headers: HttpHeaders }): Observable<Static_AmenetieType[]> {
+  GetAll_AmenetieTypes(isActive: boolean, httpOptions: { headers: HttpHeaders }): Observable<Static_AmenetieType[]> {
     return this.http
-      .get<Static_AmenetieType[]>(this.baseurl + apiEndpoints.static_amenetieType, httpOptions)
+      .get<Static_AmenetieType[]>(this.baseurl + apiEndpoints.static_amenetieType.get + isActive, httpOptions)
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
@@ -24,7 +24,7 @@ export class StaticAmenetieTypeService {
   Post_AmenetieType(data: Static_AmenetieType, httpOptions: { headers: HttpHeaders }): Observable<Static_AmenetieType> {
     return this.http
       .post<Static_AmenetieType>(
-        this.baseurl + apiEndpoints.static_amenetieType,
+        this.baseurl + apiEndpoints.static_amenetieType.base,
         JSON.stringify(data),
         httpOptions
       )
@@ -35,7 +35,17 @@ export class StaticAmenetieTypeService {
   Put_AmenetieType(data: Static_AmenetieType, httpOptions: { headers: HttpHeaders }): Observable<Static_AmenetieType> {
     return this.http
       .put<Static_AmenetieType>(
-        this.baseurl + apiEndpoints.static_amenetieType + data.id,
+        this.baseurl + apiEndpoints.static_amenetieType.base + data.id,
+        JSON.stringify(data),
+        httpOptions
+      )
+      .pipe(retry(1), catchError(this.errorHandl));
+  }
+
+  Put_AmenetieTypes(data: Array<Static_AmenetieType>, httpOptions: { headers: HttpHeaders }): Observable<Static_AmenetieType> {
+    return this.http
+      .put<Static_AmenetieType>(
+        this.baseurl + apiEndpoints.static_amenetieType.updateAll,
         JSON.stringify(data),
         httpOptions
       )
@@ -46,7 +56,7 @@ export class StaticAmenetieTypeService {
   Delete_AmenetieType(data: number, httpOptions: { headers: HttpHeaders }) {
     return this.http
       .delete(
-        this.baseurl + apiEndpoints.static_amenetieType + data,
+        this.baseurl + apiEndpoints.static_amenetieType.base + data,
         httpOptions
       )
       .pipe(retry(1), catchError(this.errorHandl));

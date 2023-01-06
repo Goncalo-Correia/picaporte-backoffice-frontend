@@ -14,9 +14,9 @@ export class StaticPropertyStatusService {
     constructor(private http: HttpClient) {}
 
   // GET ALL
-  GetAll_PropertyStatuses(httpOptions: { headers: HttpHeaders }): Observable<Static_PropertyStatus[]> {
+  GetAll_PropertyStatuses(isActive: boolean, httpOptions: { headers: HttpHeaders }): Observable<Static_PropertyStatus[]> {
     return this.http
-      .get<Static_PropertyStatus[]>(this.baseurl + apiEndpoints.static_propertyStatus, httpOptions)
+      .get<Static_PropertyStatus[]>(this.baseurl + apiEndpoints.static_propertyStatus.get + isActive, httpOptions)
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
@@ -24,7 +24,7 @@ export class StaticPropertyStatusService {
   Post_PropertyStatus(data: Static_PropertyStatus, httpOptions: { headers: HttpHeaders }): Observable<Static_PropertyStatus> {
     return this.http
       .post<Static_PropertyStatus>(
-        this.baseurl + apiEndpoints.static_propertyStatus,
+        this.baseurl + apiEndpoints.static_propertyStatus.base,
         JSON.stringify(data),
         httpOptions
       )
@@ -35,7 +35,17 @@ export class StaticPropertyStatusService {
   Put_PropertyStatus(data: Static_PropertyStatus, httpOptions: { headers: HttpHeaders }): Observable<Static_PropertyStatus> {
     return this.http
       .put<Static_PropertyStatus>(
-        this.baseurl + apiEndpoints.static_propertyStatus + data.id,
+        this.baseurl + apiEndpoints.static_propertyStatus.base + data.id,
+        JSON.stringify(data),
+        httpOptions
+      )
+      .pipe(retry(1), catchError(this.errorHandl));
+  }
+
+  Put_PropertyStatuses(data: Array<Static_PropertyStatus>, httpOptions: { headers: HttpHeaders }): Observable<Static_PropertyStatus> {
+    return this.http
+      .put<Static_PropertyStatus>(
+        this.baseurl + apiEndpoints.static_propertyStatus.updateAll,
         JSON.stringify(data),
         httpOptions
       )
@@ -46,7 +56,7 @@ export class StaticPropertyStatusService {
   Delete_PropertyStatus(data: number, httpOptions: { headers: HttpHeaders }) {
     return this.http
       .delete(
-        this.baseurl + apiEndpoints.static_propertyStatus + data,
+        this.baseurl + apiEndpoints.static_propertyStatus.base + data,
         httpOptions
       )
       .pipe(retry(1), catchError(this.errorHandl));

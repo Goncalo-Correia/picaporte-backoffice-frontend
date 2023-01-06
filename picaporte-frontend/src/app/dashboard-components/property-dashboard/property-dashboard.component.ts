@@ -190,7 +190,7 @@ export class PropertyDashboardComponent implements OnInit {
 
   private getPropertyStatus() {
     this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.staticPropertyStatusService.GetAll_PropertyStatuses(resolve)
+      this.staticPropertyStatusService.GetAll_PropertyStatuses(true, resolve)
       .pipe(
         catchError(err => {
           this.messageComponent.showMessage(err.error);
@@ -205,7 +205,7 @@ export class PropertyDashboardComponent implements OnInit {
 
   private getPropertyTypologies() {
     this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.staticPropertyTypologyService.GetAll_PropertyTypology(resolve)
+      this.staticPropertyTypologyService.GetAll_PropertyTypology(true, resolve)
       .pipe(
         catchError(err => {
           this.messageComponent.showMessage(err.error);
@@ -220,7 +220,7 @@ export class PropertyDashboardComponent implements OnInit {
 
   private getPropertyConditionStatus() {
     this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.staticPropertyConditionStatusService.GetAll_PropertyConditionStatuses(resolve)
+      this.staticPropertyConditionStatusService.GetAll_PropertyConditionStatuses(true, resolve)
       .pipe(
         catchError(err => {
           this.messageComponent.showMessage(err.error);
@@ -235,7 +235,7 @@ export class PropertyDashboardComponent implements OnInit {
 
   private getAmenetieTypes() {
     this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.staticAmenetieTypeService.GetAll_AmenetieTypes(resolve)
+      this.staticAmenetieTypeService.GetAll_AmenetieTypes(true, resolve)
       .pipe(
         catchError(err => {
           this.messageComponent.showMessage(err.error);

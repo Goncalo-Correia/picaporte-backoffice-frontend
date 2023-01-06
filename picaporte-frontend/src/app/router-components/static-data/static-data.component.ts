@@ -24,8 +24,10 @@ export class StaticDataComponent implements OnInit, OnDestroy {
   
   subscription = new Subscription();
 
+  isDataFetched: boolean = false;
   isEditable: boolean = false;
   isToDelete: boolean = false;
+  hasSortChanges: boolean = false;
   selectedRowNumber: number = -1;
   selectedStaticDataEnum: Enum_StaticData = Enum_StaticData.PROPERTY_STATUS;
   staticDataStructureList: Array<StaticDataStructure> = new Array<StaticDataStructure>();
@@ -46,7 +48,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
     dragulaService.createGroup("STATIC_DATA", {});
 
     this.subscription.add(this.dragulaService.drop("STATIC_DATA").subscribe(() => {
-      this.saveOrder();
+      this.hasSortChanges = true;
     }));
   }
 
@@ -60,6 +62,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
   }
 
   onClick_selectStaticDataType(staticDataType: Enum_StaticData) {
+    this.isDataFetched = false;
     this.selectedStaticDataStructure = new StaticDataStructure();
     this.selectedStaticDataEnum = staticDataType;
     this.selectedRowNumber = -1;
@@ -83,6 +86,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
 
   onClick_add() {
     this.selectedStaticDataStructure = new StaticDataStructure();
+    this.selectedStaticDataStructure.isActive = true;
     this.staticDataStructureList.push(this.selectedStaticDataStructure);
 
     this.isEditable = true;
@@ -111,6 +115,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
     if (this.selectedStaticDataStructure.id == 0) {
       this.staticDataStructureList.slice(this.staticDataStructureList.length - 1, 0);
     }
+    this.isDataFetched = false;
     this.isEditable = false;
     this.isToDelete = false;
     this.fetchData();
@@ -133,6 +138,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
   }
 
   onClick_submit() {
+    this.isDataFetched = false;
     this.isEditable = false;
     this.isToDelete = false;
     this.saveData();
@@ -495,7 +501,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
   private fetchData() {
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_STATUS) {
       this.authenticationService.authorizeUser().then((resolve:any) => { 
-        this.staticPropertyStatusService.GetAll_PropertyStatuses(resolve)
+        this.staticPropertyStatusService.GetAll_PropertyStatuses(false, resolve)
         .pipe(
           catchError(err => {
             this.messageComponent.showMessage(err.error);
@@ -504,12 +510,13 @@ export class StaticDataComponent implements OnInit, OnDestroy {
         )
         .subscribe(data => {
           this.staticDataStructureList = <Array<StaticDataStructure>>data;
+          this.isDataFetched = true;
         });
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_TYPE) {
       this.authenticationService.authorizeUser().then((resolve:any) => { 
-        this.staticPropertyTypeService.GetAll_PropertyTypes(resolve)
+        this.staticPropertyTypeService.GetAll_PropertyTypes(false, resolve)
         .pipe(
           catchError(err => {
             this.messageComponent.showMessage(err.error);
@@ -518,12 +525,13 @@ export class StaticDataComponent implements OnInit, OnDestroy {
         )
         .subscribe(data => {
           this.staticDataStructureList = <Array<StaticDataStructure>>data;
+          this.isDataFetched = true;
         });
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_CONDITION_STATUS) {
       this.authenticationService.authorizeUser().then((resolve:any) => { 
-        this.staticPropertyConditionStatusService.GetAll_PropertyConditionStatuses(resolve)
+        this.staticPropertyConditionStatusService.GetAll_PropertyConditionStatuses(false, resolve)
         .pipe(
           catchError(err => {
             this.messageComponent.showMessage(err.error);
@@ -532,12 +540,13 @@ export class StaticDataComponent implements OnInit, OnDestroy {
         )
         .subscribe(data => {
           this.staticDataStructureList = <Array<StaticDataStructure>>data;
+          this.isDataFetched = true;
         });
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_TYPOLOGY) {
       this.authenticationService.authorizeUser().then((resolve:any) => { 
-        this.staticPropertyTypologyService.GetAll_PropertyTypology(resolve)
+        this.staticPropertyTypologyService.GetAll_PropertyTypology(false, resolve)
         .pipe(
           catchError(err => {
             this.messageComponent.showMessage(err.error);
@@ -546,12 +555,13 @@ export class StaticDataComponent implements OnInit, OnDestroy {
         )
         .subscribe(data => {
           this.staticDataStructureList = <Array<StaticDataStructure>>data;
+          this.isDataFetched = true;
         });
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_ENERGY_CERTIFICATE) {
       this.authenticationService.authorizeUser().then((resolve:any) => { 
-        this.staticEnergyCertificateService.GetAll_EnergyCertificates(resolve)
+        this.staticEnergyCertificateService.GetAll_EnergyCertificates(false, resolve)
         .pipe(
           catchError(err => {
             this.messageComponent.showMessage(err.error);
@@ -560,12 +570,13 @@ export class StaticDataComponent implements OnInit, OnDestroy {
         )
         .subscribe(data => {
           this.staticDataStructureList = <Array<StaticDataStructure>>data;
+          this.isDataFetched = true;
         });
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.AMENETIE_TYPE) {
       this.authenticationService.authorizeUser().then((resolve:any) => { 
-        this.staticAmenetieTypeService.GetAll_AmenetieTypes(resolve)
+        this.staticAmenetieTypeService.GetAll_AmenetieTypes(false, resolve)
         .pipe(
           catchError(err => {
             this.messageComponent.showMessage(err.error);
@@ -574,12 +585,13 @@ export class StaticDataComponent implements OnInit, OnDestroy {
         )
         .subscribe(data => {
           this.staticDataStructureList = <Array<StaticDataStructure>>data;
+          this.isDataFetched = true;
         });
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.DOCUMENT_STATUS) {
       this.authenticationService.authorizeUser().then((resolve:any) => { 
-        this.staticDocumentStatusService.GetAll_DocumentStatus(resolve)
+        this.staticDocumentStatusService.GetAll_DocumentStatus(false, resolve)
         .pipe(
           catchError(err => {
             this.messageComponent.showMessage(err.error);
@@ -588,12 +600,13 @@ export class StaticDataComponent implements OnInit, OnDestroy {
         )
         .subscribe(data => {
           this.staticDataStructureList = <Array<StaticDataStructure>>data;
+          this.isDataFetched = true;
         });
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.DOCUMENT_TYPE) {
       this.authenticationService.authorizeUser().then((resolve:any) => { 
-        this.staticDocumentTypeService.GetAll_DocumentTypes(resolve)
+        this.staticDocumentTypeService.GetAll_DocumentTypes(false, resolve)
         .pipe(
           catchError(err => {
             this.messageComponent.showMessage(err.error);
@@ -602,24 +615,23 @@ export class StaticDataComponent implements OnInit, OnDestroy {
         )
         .subscribe(data => {
           this.staticDataStructureList = <Array<StaticDataStructure>>data;
+          this.isDataFetched = true;
         });
       });
     }
   }
 
-  private saveOrder() {
+  onClick_saveOrder() {
+    this.isDataFetched = false;
+    this.hasSortChanges = false;
     var array = this.staticDataStructureList.filter(prop => prop.id != 0);
-    
-    for (var i = 0; i < array.length; i++) {
-      array[i].order = i;
-      this.saveItemData(array[i], (i == array.length - 1));
-    }
+    this.saveItemData(array);
   }
 
-  private saveItemData(item: StaticDataStructure, isLastIndex: boolean) {
+  private saveItemData(item: Array<StaticDataStructure>) {
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_STATUS) {
       this.authenticationService.authorizeUser().then((resolve:any) => { 
-        this.staticPropertyStatusService.Put_PropertyStatus(item, resolve)
+        this.staticPropertyStatusService.Put_PropertyStatuses(item, resolve)
         .pipe(
           catchError(err => {
             this.messageComponent.showMessage(err.error);
@@ -627,15 +639,13 @@ export class StaticDataComponent implements OnInit, OnDestroy {
           })
         )
         .subscribe(data => {
-          if (isLastIndex) {
-            this.fetchData();
-          }
+          this.fetchData();
         });
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_TYPE) {
       this.authenticationService.authorizeUser().then((resolve:any) => { 
-        this.staticPropertyTypeService.Put_PropertyType(item, resolve)
+        this.staticPropertyTypeService.Put_PropertyTypes(item, resolve)
         .pipe(
           catchError(err => {
             this.messageComponent.showMessage(err.error);
@@ -643,15 +653,13 @@ export class StaticDataComponent implements OnInit, OnDestroy {
           })
         )
         .subscribe(data => {
-          if (isLastIndex) {
-            this.fetchData();
-          }
+          this.fetchData();
         });
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_CONDITION_STATUS) {
       this.authenticationService.authorizeUser().then((resolve:any) => { 
-        this.staticPropertyConditionStatusService.Put_PropertyConditionStatus(item, resolve)
+        this.staticPropertyConditionStatusService.Put_PropertyConditionStatuses(item, resolve)
         .pipe(
           catchError(err => {
             this.messageComponent.showMessage(err.error);
@@ -659,15 +667,13 @@ export class StaticDataComponent implements OnInit, OnDestroy {
           })
         )
         .subscribe(data => {
-          if (isLastIndex) {
-            this.fetchData();
-          }
+          this.fetchData();
         });
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_TYPOLOGY) {
       this.authenticationService.authorizeUser().then((resolve:any) => { 
-        this.staticPropertyTypologyService.Put_PropertyTypology(item, resolve)
+        this.staticPropertyTypologyService.Put_PropertyTypologies(item, resolve)
         .pipe(
           catchError(err => {
             this.messageComponent.showMessage(err.error);
@@ -675,15 +681,13 @@ export class StaticDataComponent implements OnInit, OnDestroy {
           })
         )
         .subscribe(data => {
-          if (isLastIndex) {
-            this.fetchData();
-          }
+          this.fetchData();
         });
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_ENERGY_CERTIFICATE) {
       this.authenticationService.authorizeUser().then((resolve:any) => { 
-        this.staticEnergyCertificateService.Put_EnergyCertificate(item, resolve)
+        this.staticEnergyCertificateService.Put_EnergyCertificates(item, resolve)
         .pipe(
           catchError(err => {
             this.messageComponent.showMessage(err.error);
@@ -691,15 +695,13 @@ export class StaticDataComponent implements OnInit, OnDestroy {
           })
         )
         .subscribe(data => {
-          if (isLastIndex) {
-            this.fetchData();
-          }
+          this.fetchData();
         });
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.AMENETIE_TYPE) {
       this.authenticationService.authorizeUser().then((resolve:any) => { 
-        this.staticAmenetieTypeService.Put_AmenetieType(item, resolve)
+        this.staticAmenetieTypeService.Put_AmenetieTypes(item, resolve)
         .pipe(
           catchError(err => {
             this.messageComponent.showMessage(err.error);
@@ -707,15 +709,13 @@ export class StaticDataComponent implements OnInit, OnDestroy {
           })
         )
         .subscribe(data => {
-          if (isLastIndex) {
-            this.fetchData();
-          }
+          this.fetchData();
         });
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.DOCUMENT_STATUS) {
       this.authenticationService.authorizeUser().then((resolve:any) => { 
-        this.staticDocumentStatusService.Put_DocumentStatus(item, resolve)
+        this.staticDocumentStatusService.Put_DocumentStatuses(item, resolve)
         .pipe(
           catchError(err => {
             this.messageComponent.showMessage(err.error);
@@ -723,15 +723,13 @@ export class StaticDataComponent implements OnInit, OnDestroy {
           })
         )
         .subscribe(data => {
-          if (isLastIndex) {
-            this.fetchData();
-          }
+          this.fetchData();
         });
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.DOCUMENT_TYPE) {
       this.authenticationService.authorizeUser().then((resolve:any) => { 
-        this.staticDocumentTypeService.Put_DocumentType(item, resolve)
+        this.staticDocumentTypeService.Put_DocumentTypes(item, resolve)
         .pipe(
           catchError(err => {
             this.messageComponent.showMessage(err.error);
@@ -739,9 +737,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
           })
         )
         .subscribe(data => {
-          if (isLastIndex) {
-            this.fetchData();
-          }
+          this.fetchData();
         });
       });
     }

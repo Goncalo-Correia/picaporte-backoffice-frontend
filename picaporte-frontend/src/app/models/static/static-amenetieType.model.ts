@@ -3,4 +3,5 @@ export class Static_AmenetieType {
     public label: string = "";
     public description: string = "";
     public order: number = 0;
+    public isActive: boolean = false;
 }

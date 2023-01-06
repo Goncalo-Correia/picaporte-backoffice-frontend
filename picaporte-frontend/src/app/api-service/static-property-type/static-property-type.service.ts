@@ -14,9 +14,9 @@ export class StaticPropertyTypeService {
     constructor(private http: HttpClient) {}
 
   // GET ALL
-  GetAll_PropertyTypes(httpOptions: { headers: HttpHeaders }): Observable<Static_PropertyType[]> {
+  GetAll_PropertyTypes(isActive: boolean, httpOptions: { headers: HttpHeaders }): Observable<Static_PropertyType[]> {
     return this.http
-      .get<Static_PropertyType[]>(this.baseurl + apiEndpoints.static_propertyType, httpOptions)
+      .get<Static_PropertyType[]>(this.baseurl + apiEndpoints.static_propertyType.get + isActive, httpOptions)
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
@@ -24,7 +24,7 @@ export class StaticPropertyTypeService {
   Post_PropertyType(data: Static_PropertyType, httpOptions: { headers: HttpHeaders }): Observable<Static_PropertyType> {
     return this.http
       .post<Static_PropertyType>(
-        this.baseurl + apiEndpoints.static_propertyType,
+        this.baseurl + apiEndpoints.static_propertyType.base,
         JSON.stringify(data),
         httpOptions
       )
@@ -35,7 +35,17 @@ export class StaticPropertyTypeService {
   Put_PropertyType(data: Static_PropertyType, httpOptions: { headers: HttpHeaders }): Observable<Static_PropertyType> {
     return this.http
       .put<Static_PropertyType>(
-        this.baseurl + apiEndpoints.static_propertyType + data.id,
+        this.baseurl + apiEndpoints.static_propertyType.base + data.id,
+        JSON.stringify(data),
+        httpOptions
+      )
+      .pipe(retry(1), catchError(this.errorHandl));
+  }
+
+  Put_PropertyTypes(data: Array<Static_PropertyType>, httpOptions: { headers: HttpHeaders }): Observable<Static_PropertyType> {
+    return this.http
+      .put<Static_PropertyType>(
+        this.baseurl + apiEndpoints.static_propertyType.updateAll,
         JSON.stringify(data),
         httpOptions
       )
@@ -46,7 +56,7 @@ export class StaticPropertyTypeService {
   Delete_PropertyType(data: number, httpOptions: { headers: HttpHeaders }) {
     return this.http
       .delete(
-        this.baseurl + apiEndpoints.static_propertyType + data,
+        this.baseurl + apiEndpoints.static_propertyType.base + data,
         httpOptions
       )
       .pipe(retry(1), catchError(this.errorHandl));

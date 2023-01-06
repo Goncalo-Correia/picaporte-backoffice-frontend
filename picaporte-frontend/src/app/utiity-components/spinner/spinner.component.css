@@ -4,11 +4,14 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: black;
-    background: rgba(0, 0, 0, 0.5);
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.background {
+    background-color: black;
+    background: rgba(0, 0, 0, 0.5);
 }
 
 .spinner-icon {

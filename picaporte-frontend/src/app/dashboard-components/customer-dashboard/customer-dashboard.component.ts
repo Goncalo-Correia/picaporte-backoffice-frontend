@@ -127,7 +127,7 @@ export class CustomerDashboardComponent implements OnInit {
 
   private getFilters() {
     this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.staticAmenetieTypeService.GetAll_AmenetieTypes(resolve)
+      this.staticAmenetieTypeService.GetAll_AmenetieTypes(true, resolve)
       .pipe(
         catchError(err => {
           this.messageComponent.showMessage(err.error);

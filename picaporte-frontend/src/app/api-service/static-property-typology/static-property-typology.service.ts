@@ -14,9 +14,9 @@ export class StaticPropertyTypologyService {
     constructor(private http: HttpClient) {}
 
   // GET ALL
-  GetAll_PropertyTypology(httpOptions: { headers: HttpHeaders }): Observable<Static_PropertyTypology[]> {
+  GetAll_PropertyTypology(isActive: boolean, httpOptions: { headers: HttpHeaders }): Observable<Static_PropertyTypology[]> {
     return this.http
-      .get<Static_PropertyTypology[]>(this.baseurl + apiEndpoints.static_propertyTypology, httpOptions)
+      .get<Static_PropertyTypology[]>(this.baseurl + apiEndpoints.static_propertyTypology.get + isActive, httpOptions)
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
@@ -24,7 +24,7 @@ export class StaticPropertyTypologyService {
   Post_PropertyTypologies(data: Static_PropertyTypology, httpOptions: { headers: HttpHeaders }): Observable<Static_PropertyTypology> {
     return this.http
       .post<Static_PropertyTypology>(
-        this.baseurl + apiEndpoints.static_propertyTypology,
+        this.baseurl + apiEndpoints.static_propertyTypology.base,
         JSON.stringify(data),
         httpOptions
       )
@@ -35,18 +35,29 @@ export class StaticPropertyTypologyService {
   Put_PropertyTypology(data: Static_PropertyTypology, httpOptions: { headers: HttpHeaders }): Observable<Static_PropertyTypology> {
     return this.http
       .put<Static_PropertyTypology>(
-        this.baseurl + apiEndpoints.static_propertyTypology + data.id,
+        this.baseurl + apiEndpoints.static_propertyTypology.base + data.id,
         JSON.stringify(data),
         httpOptions
       )
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
+  Put_PropertyTypologies(data: Array<Static_PropertyTypology>, httpOptions: { headers: HttpHeaders }): Observable<Static_PropertyTypology> {
+    return this.http
+      .put<Static_PropertyTypology>(
+        this.baseurl + apiEndpoints.static_propertyTypology.updateAll,
+        JSON.stringify(data),
+        httpOptions
+      )
+      .pipe(retry(1), catchError(this.errorHandl));
+  }
+
+
   // DELETE
   Delete_PropertyTypology(data: number, httpOptions: { headers: HttpHeaders }) {
     return this.http
       .delete(
-        this.baseurl + apiEndpoints.static_propertyTypology + data,
+        this.baseurl + apiEndpoints.static_propertyTypology.base + data,
         httpOptions
       )
       .pipe(retry(1), catchError(this.errorHandl));

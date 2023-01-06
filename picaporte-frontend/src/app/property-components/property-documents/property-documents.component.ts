@@ -208,7 +208,7 @@ export class PropertyDocumentsComponent implements OnInit {
 
   private get_documentTypes() {
     this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.documentTypeService.GetAll_DocumentTypes(resolve)
+      this.documentTypeService.GetAll_DocumentTypes(true, resolve)
       .pipe(
         catchError(err => {
           this.messageComponent.showMessage(err.error);

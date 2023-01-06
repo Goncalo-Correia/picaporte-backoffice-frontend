@@ -255,3 +255,8 @@ li.timeline-item::before {
     z-index: 400;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
+
+/* FONT SIZE */
+.fs-7 {
+    font-size: 0.75rem !important;
+}

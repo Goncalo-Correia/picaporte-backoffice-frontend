@@ -23,7 +23,7 @@ export class ToDoService {
   Post_ToDos(data: ToDoStructure, httpOptions: { headers: HttpHeaders }): Observable<ToDoStructure> {
     return this.http
       .post<ToDoStructure>(
-        this.baseurl + apiEndpoints.news.post,
+        this.baseurl + apiEndpoints.toDos.post,
         JSON.stringify(data),
         httpOptions
       )
@@ -33,7 +33,7 @@ export class ToDoService {
   Delete_ToDo(id: number, httpOptions: { headers: HttpHeaders }): Observable<ToDoStructure> {
     return this.http
       .delete<ToDoStructure>(
-        this.baseurl + apiEndpoints.news.delete + id,
+        this.baseurl + apiEndpoints.toDos.delete + id,
         httpOptions
       )
   }

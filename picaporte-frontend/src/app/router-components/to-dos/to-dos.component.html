@@ -11,16 +11,23 @@
         </div>
     </div>
     <div class="col-4">
-        <div *ngFor="let item of toDoStructureList" class="w-100 p-4 rounded bg-white cursor-pointer">
+        <div *ngFor="let item of toDoStructureList; index as i" class="w-100 p-3 rounded bg-white cursor-pointer mb-3" (click)="onClick_edit(i)">
             <div class="fw-bold mb-1">{{item.toDo.title}}</div>
-            <div class="text-neutral-6 fs-4">{{item.toDo.lastModifiedOn}} - {{item.toDo.lastModifiedBy.firstName + " " + item.toDo.lastModifiedBy.lastName}}</div>
+            <div class="mb-1">
+                <label class="fs-7">Criado a:</label>
+                <div class="text-secondary fs-7">{{item.toDo.lastModifiedOn | date: 'EEEE, MMMM d, y'}}</div>
+            </div>
+            <div>
+                <label class="fs-7">Criado por:</label>
+                <div class="text-secondary fs-7">{{item.toDo.lastModifiedBy.firstName +  item.toDo.lastModifiedBy.lastName != "" ? item.toDo.lastModifiedBy.firstName + " " + item.toDo.lastModifiedBy.lastName : '-'}}</div>
+            </div>
         </div>
         <div *ngIf="toDoStructureList.length == 0 && isDataFetched" class="w-100 p-4 text-center rounded bg-white">
             Não foram encontrados To Dos
         </div>
     </div>
     <div class="col-8">
-        <div *ngIf="selectedToDoIndex != -1; else noSelectedtoDo" class="bg-white p-4 rounded h-100">
+        <div *ngIf="selectedToDoIndex != -1; else noSelectedtoDo" class="bg-white p-3 rounded">
             <form>
                 <div class="row">
                     <div class="col-12 mb-3">
@@ -44,11 +51,12 @@
                         </div>
                     </div>
                     <div *ngIf="selectedToDo.toDoItems.length != 0" class="col-12 mb-5">
-                        <div *ngFor="let item of selectedToDo.toDoItems" class="w-100 mb-2 rounded bg-white cursor-pointer">
+                        <div *ngFor="let item of selectedToDo.toDoItems; index as i" class="w-100 mb-2 rounded bg-white cursor-pointer">
                             <div class="d-flex align-items-center gap-3">
-                                <input class="form-check-input mt-0" type="checkbox" name="checkbox" [(ngModel)]="item.isChecked">
+                                <input *ngIf="!isEditable" class="form-check-input mt-0" type="checkbox" name="checkbox" [(ngModel)]="item.isChecked">
+                                <div *ngIf="isEditable" class="fw-bold mb-1">{{i + 1 + "."}}</div>
                                 <input *ngIf="isEditable" type="text" class="form-control" name="label" [(ngModel)]="item.label">
-                                <div *ngIf="!isEditable" class="fw-bold mb-1">{{item.label}}</div>
+                                <div *ngIf="!isEditable" class="mb-1">{{item.label}}</div>
                             </div>
                         </div>
                     </div>
@@ -62,7 +70,17 @@
                       <button type="submit" class="btn btn-success" data-bs-dismiss="modal" (click)="onClick_submit()">Confirmar</button>
                     </div>
                 </div>
-                <div *ngIf="!isEditable" class="d-flex justify-content-end w-100">
+                <div *ngIf="!isEditable" class="d-flex justify-content-between w-100">
+                    <div class="d-flex gap-3">
+                        <div>
+                            <label class="fs-7">Criado a:</label>
+                            <div class="text-secondary fs-7">{{selectedToDo.toDo.lastModifiedOn | date: 'EEEE, MMMM d, y'}}</div>
+                        </div>
+                        <div>
+                            <label class="fs-7">Criado por:</label>
+                            <div class="text-secondary fs-7">{{selectedToDo.toDo.lastModifiedBy.firstName +  selectedToDo.toDo.lastModifiedBy.lastName != "" ? selectedToDo.toDo.lastModifiedBy.firstName + " " + selectedToDo.toDo.lastModifiedBy.lastName : '-'}}</div>
+                        </div>
+                    </div>
                     <div>
                       <button type="submit" class="btn btn-success" (click)="onClick_editable()">Editar</button>
                     </div>

@@ -18,15 +18,14 @@ export class ToDosComponent implements OnInit {
   isDataFetched: boolean = false;
   isEditable: boolean = false;
 
-  toDoStructureList: Array<ToDoStructure>;
+  toDoStructureList: Array<ToDoStructure> = new Array<ToDoStructure>();
   selectedToDo: ToDoStructure;
   selectedToDoIndex: number = -1;
 
   constructor(
     private toDoService: ToDoService,
     private authenticationService: AuthenticationService
-  ) { 
-    this.toDoStructureList = new Array<ToDoStructure>();
+  ) {
     this.selectedToDo = new ToDoStructure();
   }
 
@@ -40,6 +39,7 @@ export class ToDosComponent implements OnInit {
 
   onClick_addNew() {
     this.selectedToDo = new ToDoStructure();
+    
     this.selectedToDoIndex = 0;
     this.isEditable = true;
   }
@@ -50,6 +50,9 @@ export class ToDosComponent implements OnInit {
 
   onClick_edit(index: number) {
     this.selectedToDo = this.toDoStructureList[index];
+    console.log(index);
+    console.log(this.selectedToDo);
+    
     this.selectedToDoIndex = index;
   }
 
@@ -81,6 +84,8 @@ export class ToDosComponent implements OnInit {
       .subscribe(data => {
         this.toDoStructureList = <ToDoStructure[]>data;
         this.isDataFetched = true;
+        console.log(this.toDoStructureList);
+        
       });
     });
   }

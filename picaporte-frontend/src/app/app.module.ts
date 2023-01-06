@@ -1,7 +1,9 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import localePt from '@angular/common/locales/pt';
+registerLocaleData(localePt);
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -47,6 +49,7 @@ import { UserDetailComponent } from './user-components/user-detail/user-detail.c
 import { NewsComponent } from './router-components/news/news.component';
 import { ToDosComponent } from './router-components/to-dos/to-dos.component';
 import { MessageComponent } from './generic-components/message/message.component';
+import { registerLocaleData } from '@angular/common';
 
 
 @NgModule({
@@ -101,7 +104,7 @@ import { MessageComponent } from './generic-components/message/message.component
     RouterModule,
     NewsComponent
   ],
-  providers: [QueriesCustomerService],
+  providers: [QueriesCustomerService,{provide: LOCALE_ID, useValue: 'pt'}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

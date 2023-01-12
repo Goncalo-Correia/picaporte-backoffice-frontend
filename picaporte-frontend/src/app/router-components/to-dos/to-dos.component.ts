@@ -50,9 +50,6 @@ export class ToDosComponent implements OnInit {
 
   onClick_edit(index: number) {
     this.selectedToDo = this.toDoStructureList[index];
-    console.log(index);
-    console.log(this.selectedToDo);
-    
     this.selectedToDoIndex = index;
   }
 
@@ -84,8 +81,6 @@ export class ToDosComponent implements OnInit {
       .subscribe(data => {
         this.toDoStructureList = <ToDoStructure[]>data;
         this.isDataFetched = true;
-        console.log(this.toDoStructureList);
-        
       });
     });
   }
@@ -116,6 +111,8 @@ export class ToDosComponent implements OnInit {
       )
       .subscribe(data => {
         this.get_toDos();
+        this.selectedToDo = new ToDoStructure();
+        this.selectedToDoIndex = -1;
       });
     });
   }

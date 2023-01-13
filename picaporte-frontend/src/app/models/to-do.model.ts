@@ -8,6 +8,6 @@ export class ToDo {
     createdOn: Date = new Date();
     lastModifiedById: number = 0;
     lastModifiedOn: Date = new Date();
-    createdBy: User = new User();
+    createdby: User = new User();
     lastModifiedBy: User = new User();
 }

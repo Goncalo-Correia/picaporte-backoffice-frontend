@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable} from 'rxjs';
+import { ToDoItem } from 'src/app/models/to-do-item.model';
 import { ToDoStructure } from 'src/app/structures/to-do.structure';
 import { apiEndpoints, environment } from 'src/environments/environment';
 
@@ -28,6 +29,16 @@ export class ToDoService {
         httpOptions
       )
   }
+
+    // POST
+    Post_ToDoItem(data: ToDoItem, httpOptions: { headers: HttpHeaders }): Observable<ToDoItem> {
+      return this.http
+        .post<ToDoItem>(
+          this.baseurl + apiEndpoints.toDos.postItem,
+          JSON.stringify(data),
+          httpOptions
+        )
+    }
 
   // DELETE
   Delete_ToDo(id: number, httpOptions: { headers: HttpHeaders }): Observable<ToDoStructure> {

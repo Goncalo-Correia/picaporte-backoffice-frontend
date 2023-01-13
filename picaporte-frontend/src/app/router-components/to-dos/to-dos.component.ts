@@ -18,7 +18,7 @@ export class ToDosComponent implements OnInit {
   isDataFetched: boolean = false;
   isEditable: boolean = false;
 
-  toDoStructureList: Array<ToDoStructure> = new Array<ToDoStructure>();
+  toDoStructureList: Array<ToDoStructure>;
   selectedToDo: ToDoStructure;
   selectedToDoIndex: number = -1;
 
@@ -26,6 +26,7 @@ export class ToDosComponent implements OnInit {
     private toDoService: ToDoService,
     private authenticationService: AuthenticationService
   ) {
+    this.toDoStructureList = new Array<ToDoStructure>();
     this.selectedToDo = new ToDoStructure();
   }
 
@@ -39,17 +40,23 @@ export class ToDosComponent implements OnInit {
 
   onClick_addNew() {
     this.selectedToDo = new ToDoStructure();
-    
-    this.selectedToDoIndex = 0;
+    this.toDoStructureList.push(this.selectedToDo);
+    this.selectedToDoIndex = this.toDoStructureList.length - 1;
     this.isEditable = true;
   }
 
   onClick_addNewItem() {
-    this.selectedToDo.toDoItems.push(new ToDoItem());
+    let toDoItem: ToDoItem = new ToDoItem();
+    this.selectedToDo.toDoItems.push(toDoItem);
+    console.log(this.selectedToDo.toDoItems);
   }
 
   onClick_edit(index: number) {
-    this.selectedToDo = this.toDoStructureList[index];
+    this.selectedToDo = new ToDoStructure();
+    this.selectedToDo.toDo = this.toDoStructureList[index].toDo;
+    this.toDoStructureList[index].toDoItems.forEach(element => {
+      this.selectedToDo.toDoItems.push(element);
+    })
     this.selectedToDoIndex = index;
   }
 
@@ -59,12 +66,20 @@ export class ToDosComponent implements OnInit {
     this.isEditable = false;
   }
 
+  onChange_checkbox(index: number) {
+    this.post_toDoItem(index);
+  }
+
   onClick_submit() {
     this.post_toDos();
   }
 
   onClick_confirmDelete() {
     this.delete_toDo();
+  }
+
+  onClick_deleteItem(index: number) {
+    this.selectedToDo.toDoItems[index].isToDelete = true;
   }
   
   private get_toDos() {
@@ -79,8 +94,23 @@ export class ToDosComponent implements OnInit {
         })
       )
       .subscribe(data => {
-        this.toDoStructureList = <ToDoStructure[]>data;
+        this.toDoStructureList = <Array<ToDoStructure>>data;
         this.isDataFetched = true;
+      });
+    });
+  }
+
+  private post_toDoItem(index: number) {
+    this.authenticationService.authorizeUser().then((resolve:any) => { 
+      this.toDoService.Post_ToDoItem(this.selectedToDo.toDoItems[index], resolve)
+      .pipe(
+        catchError(err => {
+          this.messageComponent.showMessage(err.error);
+          return err;
+        })
+      )
+      .subscribe(data => {
+        this.selectedToDo.toDoItems[index] = <ToDoItem>data;
       });
     });
   }

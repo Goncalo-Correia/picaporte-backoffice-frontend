@@ -51,6 +51,7 @@
               <td scope="row">
                 <span *ngIf="item.type == 'Cliente'" [routerLink]="['/Cliente/', item.recordId]" class="col cursor-pointer color-primary fw-bold">{{item.name}}</span>
                 <span *ngIf="item.type == 'Imóvel'" [routerLink]="['/Imovel/', item.recordId]" class="col cursor-pointer color-primary fw-bold">{{item.name}}</span>
+                <span *ngIf="item.type == 'Utilizador'" [routerLink]="['/Utilizador/', item.recordId]" class="col cursor-pointer color-primary fw-bold">{{item.name}}</span>
               </td>
               <td><span class="col">{{item.type}}</span></td>
               <td><span class="col">{{item.lastModifiedOn}}</span></td>

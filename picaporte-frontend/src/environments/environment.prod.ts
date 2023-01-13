@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: "https://192.168.10.100:5024/",
+  apiUrl: "https://109.106.244.205:5024/",
   apiKey: "REDACTED_API_KEY"
 };
 
@@ -48,20 +48,57 @@ export const apiEndpoints = {
   toDos: {
     get: "api/ToDo",
     post: "api/ToDo",
+    postItem: "api/ToDo/ToDoItem",
     delete: "api/ToDo/"
   },
   activityLog: {
     get: "api/ActivityLog/EntityReference/"
   },
-  static_amenetieType: "api/Static_AmenetieType/",
-  static_propertyType: "api/Static_PropertyType/",
-  static_propertyStatus: "api/Static_PropertyStatus/",
-  static_propertyConditionStatus: "api/Static_PropertyConditionStatus/",
-  static_propertyTypology: "api/Static_PropertyTypology/",
-  static_energyCertificates: "api/Static_PropertyEnergyCertificate/",
-  static_documentTypes: "api/Static_DocumentType/",
-  static_documentStatus: "api/Static_DocumentStatus/",
-  static_rentingActionTypes: "api/Static_RentingActionType",
+  static_amenetieType: {
+    get: "api/Static_AmenetieType/isActive/",
+    updateAll: "api/Static_AmenetieType/updateAll",
+    base: "api/Static_AmenetieType/"
+  },
+  static_propertyType: {
+    get: "api/Static_PropertyType/isActive/",
+    updateAll: "api/Static_PropertyType/updateAll",
+    base: "api/Static_PropertyType/"
+  },
+  static_propertyStatus: {
+    get: "api/Static_PropertyStatus/isActive/",
+    updateAll: "api/Static_PropertyStatus/updateAll",
+    base: "api/Static_PropertyStatus/"
+  },
+  static_propertyConditionStatus: {
+    get: "api/Static_PropertyConditionStatus/isActive/",
+    updateAll: "api/Static_PropertyConditionStatus/updateAll",
+    base: "api/Static_PropertyConditionStatus/"
+  },
+  static_propertyTypology: {
+    get: "api/Static_PropertyTypology/isActive/",
+    updateAll: "api/Static_PropertyTypology/updateAll",
+    base: "api/Static_PropertyTypology/",
+  },
+  static_energyCertificates: {
+    get: "api/Static_PropertyEnergyCertificate/isActive/",
+    updateAll: "api/Static_PropertyEnergyCertificate/updateAll",
+    base: "api/Static_PropertyEnergyCertificate/"
+  },
+  static_documentTypes: {
+    get: "api/Static_DocumentType/isActive/",
+    updateAll: "api/Static_DocumentType/updateAll",
+    base: "api/Static_DocumentType/"
+  },
+  static_documentStatus: {
+    get: "api/Static_DocumentStatus/isActive/",
+    updateAll: "api/Static_DocumentStatus/updateAll",
+    base: "api/Static_DocumentStatus/"
+  },
+  static_rentingActionTypes: {
+    get: "api/Static_RentingActionType/isActive/",
+    updateAll: "api/Static_RentingActionType/updateAll",
+    base: "api/Static_RentingActionType/"
+  },
   user: {
     authotize: "api/Users/authorize"
   }

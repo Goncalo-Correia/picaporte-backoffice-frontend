@@ -1,3 +1,7 @@
 .to-do-selected {
     background-color: var(--color-secondary);
 }
+
+.to-do-data-loader {
+    height: 500px;
+}

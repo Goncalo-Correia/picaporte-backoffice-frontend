@@ -1,4 +1,4 @@
-<div class="p-5 row">
+<div class="p-5 w-100">
     <div class="col-12 d-flex justify-content-between">
         <div class="fw-bold mb-3">To Dos</div>
         <div class="mb-3 d-flex justify-content-end">
@@ -10,88 +10,107 @@
             </div>
         </div>
     </div>
-    <div class="col-4">
-        <div *ngFor="let item of toDoStructureList; index as i" class="w-100 p-3 rounded cursor-pointer mb-3" [ngClass]="selectedToDoIndex == i ? 'to-do-selected': 'bg-white'" (click)="onClick_edit(i)">
-            <div class="fw-bold mb-1">{{item.toDo.title}}</div>
-            <div class="mb-1">
-                <label class="fs-7">Criado a:</label>
-                <!--div class="text-secondary fs-7">{{item.toDo.createdOn | date: 'EEEE, MMMM d, y'}}</div-->
-            </div>
-            <div>
-                <label class="fs-7">Criado por:</label>
-                <!--div class="text-secondary fs-7">{{item.toDo.createdBy.firstName + item.toDo.createdBy.lastName != "" ? item.toDo.createdBy.firstName + " " + item.toDo.createdBy.lastName : '-'}}</div-->
-            </div>
-        </div>
-        <div *ngIf="toDoStructureList.length == 0 && isDataFetched" class="w-100 p-4 text-center rounded bg-white">
-            Não foram encontrados To Dos
-        </div>
-    </div>
-    <div class="col-8">
-        <div *ngIf="selectedToDoIndex != -1; else noSelectedtoDo" class="bg-white p-3 rounded">
-            <form>
-                <div class="row">
-                    <div class="col-12 mb-3">
-                        <label for="reference" class="form-label fw-bold">Título</label>
-                        <input *ngIf="isEditable" type="text" class="form-control" id="reference" name="reference" [(ngModel)]="selectedToDo.toDo.title">
-                        <div *ngIf="!isEditable">{{selectedToDo.toDo.title}}</div>
-                    </div>
-                    <div class="col-12 mb-3">
-                        <label for="description" class="form-label fw-bold">Descrição</label>
-                        <textarea *ngIf="isEditable"  rows="3" class="form-control" id="description" name="description" [(ngModel)]="selectedToDo.toDo.description"></textarea>
-                        <div *ngIf="!isEditable">{{selectedToDo.toDo.description}}</div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div *ngIf="isEditable" class="col-12 mb-3">
-                        <div class="d-flex align-items-center justify-content-end fs-6 fw-bold cursor-pointer color-secondary" (click)="onClick_addNewItem()">
-                            <div class="me-2">
-                                Adicionar item
-                            </div>
-                            <i class="fa-solid fa-circle-plus"></i>
+    <div class="col-12">
+        <div class="row">
+            <div class="col-4">
+                <div *ngIf="isDataFetched; else loadingToDos">
+                    <div *ngFor="let item of toDoStructureList; index as i" class="w-100 p-3 rounded cursor-pointer mb-3" [ngClass]="selectedToDoIndex == i ? 'to-do-selected': 'bg-white'" (click)="onClick_edit(i)">
+                        <div class="fw-bold mb-1">{{item.toDo.title}}</div>
+                        <div>
+                            <label class="fs-7">Registado por:</label>
+                            <div class="text-secondary fs-7">{{item.toDo.createdby.firstName +  item.toDo.createdby.lastName != "" ? item.toDo.createdby.firstName + " " + item.toDo.createdby.lastName : '-'}}</div>
+                            <div class="text-secondary fs-7">{{item.toDo.createdOn | date: 'EEEE, MMMM d, y'}}</div>
                         </div>
                     </div>
-                    <div *ngIf="selectedToDo.toDoItems.length != 0" class="col-12 mb-5">
-                        <div *ngFor="let item of selectedToDo.toDoItems; index as i" class="w-100 mb-2 rounded bg-white cursor-pointer">
-                            <div class="d-flex align-items-center gap-3">
-                                <input *ngIf="!isEditable" class="form-check-input mt-0" type="checkbox" name="checkbox" [(ngModel)]="item.isChecked">
-                                <div *ngIf="isEditable" class="fw-bold mb-1">{{i + 1 + "."}}</div>
-                                <input *ngIf="isEditable" type="text" class="form-control" name="label" [(ngModel)]="item.label">
-                                <div *ngIf="!isEditable" class="mb-1">{{item.label}}</div>
+                    <div *ngIf="toDoStructureList.length == 0 && isDataFetched" class="w-100 p-4 text-center rounded bg-white">
+                        Não foram encontrados To Dos
+                    </div>
+                </div>
+                <ng-template #loadingToDos>
+                    <div class="position-relative to-do-data-loader bg-white rounded">
+                        <app-spinner [showBackground]="false"></app-spinner>
+                    </div>
+                </ng-template>
+            </div>
+            <div class="col-8">
+                <div *ngIf="selectedToDoIndex != -1; else noSelectedtoDo" class="bg-white p-3 rounded">
+                    <form>
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="reference" class="form-label fw-bold">Título</label>
+                                <input *ngIf="isEditable" type="text" class="form-control" id="reference" name="reference" [(ngModel)]="selectedToDo.toDo.title">
+                                <div *ngIf="!isEditable">{{selectedToDo.toDo.title}}</div>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="description" class="form-label fw-bold">Descrição</label>
+                                <textarea *ngIf="isEditable"  rows="3" class="form-control" id="description" name="description" [(ngModel)]="selectedToDo.toDo.description"></textarea>
+                                <div *ngIf="!isEditable">{{selectedToDo.toDo.description}}</div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div *ngIf="isEditable" class="d-flex justify-content-between w-100">
-                    <div>
-                      <i *ngIf="selectedToDoIndex != -1" class="fa-solid fa-trash fa-2x text-danger cursor-pointer" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></i>
-                    </div>
-                    <div>
-                      <button type="button" class="btn  me-2" data-bs-dismiss="modal" (click)="onClick_close()">Cancelar</button>
-                      <button type="submit" class="btn btn-success" data-bs-dismiss="modal" (click)="onClick_submit()">Confirmar</button>
-                    </div>
-                </div>
-                <div *ngIf="!isEditable" class="d-flex justify-content-between w-100">
-                    <div class="d-flex gap-3">
-                        <div>
-                            <label class="fs-7">Ultima alteração a:</label>
-                            <div class="text-secondary fs-7">{{selectedToDo.toDo.lastModifiedOn | date: 'EEEE, MMMM d, y'}}</div>
+                        <div class="row mb-3">
+                            <div *ngIf="isEditable" class="col-12 mb-3">
+                                <div class="d-flex align-items-center justify-content-end fs-6 fw-bold color-secondary">
+                                    <div class="cursor-pointer me-2" (click)="onClick_addNewItem()">
+                                        Adicionar item
+                                    </div>
+                                    <i class="fa-solid fa-circle-plus"></i>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div *ngFor="let item of selectedToDo.toDoItems; index as i" class="w-100 rounded bg-white cursor-pointer">
+                                    <div class="d-flex align-items-center gap-3 mb-2">
+                                        <input *ngIf="!isEditable" class="form-check-input mt-0" type="checkbox" name="checkbox" [(ngModel)]="item.isChecked" (ngModelChange)="onChange_checkbox(i)">
+                                        <div *ngIf="isEditable" class="fw-bold mb-1">
+                                            <i *ngIf="item.isToDelete" class="fa-solid fa-x text-danger"></i>
+                                            <i *ngIf="!item.isToDelete" class="fa-solid fa-check text-success"></i>
+                                        </div>
+                                        <input *ngIf="isEditable" type="text" class="form-control" name="label" [(ngModel)]="item.label">
+                                        <div *ngIf="!isEditable" class="mb-1">{{item.label}}</div>
+                                        <i *ngIf="isEditable" class="fa-solid fa-trash text-danger cursor-pointer" (click)="onClick_deleteItem(i)"></i>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <label class="fs-7">Alterado por:</label>
-                            <div class="text-secondary fs-7">{{selectedToDo.toDo.lastModifiedBy.firstName +  selectedToDo.toDo.lastModifiedBy.lastName != "" ? selectedToDo.toDo.lastModifiedBy.firstName + " " + selectedToDo.toDo.lastModifiedBy.lastName : '-'}}</div>
+                        <div *ngIf="isEditable" class="d-flex justify-content-between w-100">
+                            <div>
+                              <i *ngIf="selectedToDoIndex != -1" class="fa-solid fa-trash fa-2x text-danger cursor-pointer" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></i>
+                            </div>
+                            <div>
+                              <button type="button" class="btn  me-2" data-bs-dismiss="modal" (click)="onClick_close()">Cancelar</button>
+                              <button type="submit" class="btn btn-success" data-bs-dismiss="modal" (click)="onClick_submit()">Confirmar</button>
+                            </div>
+                        </div>
+                        <div *ngIf="!isEditable" class="d-flex justify-content-between w-100">
+                            <div class="d-flex gap-3">
+                                <div>
+                                    <label class="fs-7">Ultima atualização:</label>
+                                    <div class="text-secondary fs-7">{{selectedToDo.toDo.lastModifiedOn | date: 'EEEE, MMMM d, y'}}</div>
+                                </div>
+                                <div>
+                                    <label class="fs-7">Atualização relizada por:</label>
+                                    <div class="text-secondary fs-7">{{selectedToDo.toDo.lastModifiedBy.firstName +  selectedToDo.toDo.lastModifiedBy.lastName != "" ? selectedToDo.toDo.lastModifiedBy.firstName + " " + selectedToDo.toDo.lastModifiedBy.lastName : '-'}}</div>
+                                </div>
+                            </div>
+                            <div>
+                              <button type="submit" class="btn btn-success" (click)="onClick_editable()">Editar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <ng-template #noSelectedtoDo>
+                    <div *ngIf="isDataFetched; else loadingToDos">
+                        <div class="w-100 p-4 text-center rounded bg-white">
+                            Seleccione um To Do
                         </div>
                     </div>
-                    <div>
-                      <button type="submit" class="btn btn-success" (click)="onClick_editable()">Editar</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-        <ng-template #noSelectedtoDo>
-            <div class="w-100 p-4 text-center rounded bg-white">
-                Seleccione um To Do
+                    <ng-template #loadingToDos>
+                        <div class="position-relative to-do-data-loader bg-white rounded">
+                            <app-spinner [showBackground]="false"></app-spinner>
+                        </div>
+                    </ng-template>
+                </ng-template>
             </div>
-        </ng-template>
+        </div>
     </div>
 </div>
 

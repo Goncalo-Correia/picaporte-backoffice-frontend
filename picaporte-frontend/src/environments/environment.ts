@@ -52,6 +52,7 @@ export const apiEndpoints = {
   toDos: {
     get: "api/ToDo",
     post: "api/ToDo",
+    postItem: "api/ToDo/ToDoItem",
     delete: "api/ToDo/"
   },
   activityLog: {

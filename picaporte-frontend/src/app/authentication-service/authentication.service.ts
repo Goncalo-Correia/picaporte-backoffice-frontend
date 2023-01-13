@@ -15,7 +15,7 @@ export class AuthenticationService {
   authenticateUser() {
     this.auth.isLoading$.subscribe((data: {}) => {
       this.auth.loginWithRedirect({
-        redirect_uri: 'https://picaporte.website'
+        redirect_uri: 'http://localhost:4200'
       });
     });
   }
@@ -41,7 +41,7 @@ export class AuthenticationService {
                     this.userService.Post_AuthorizeUser(authorizeStructure, httpOptions).subscribe(userId => {
                       if (userId == 0) {
                         this.auth.logout({
-                          returnTo: 'https://picaporte.website'
+                          returnTo: 'http://localhost:4200'
                         });
                       } else {
                         resolve(httpOptions);

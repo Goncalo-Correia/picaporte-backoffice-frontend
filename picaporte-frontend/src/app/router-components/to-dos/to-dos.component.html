@@ -46,38 +46,56 @@
                                 <textarea *ngIf="isEditable"  rows="3" class="form-control" id="description" name="description" [(ngModel)]="selectedToDo.toDo.description"></textarea>
                                 <div *ngIf="!isEditable">{{selectedToDo.toDo.description}}</div>
                             </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div *ngIf="isEditable" class="col-12 mb-3">
-                                <div class="d-flex align-items-center justify-content-end fs-6 fw-bold color-secondary">
-                                    <div class="cursor-pointer me-2" (click)="onClick_addNewItem()">
-                                        Adicionar item
+                            <div *ngIf="!isEditable" class="col-12 mb-3">
+                                <div class="d-flex align-items-center justify-content-between fs-6 fw-bold color-secondary">
+                                    <div *ngIf="!isEditable">
+                                        <button type="submit" class="btn btn-picaporte-primary" (click)="onClick_editable()">Editar</button>
                                     </div>
-                                    <i class="fa-solid fa-circle-plus"></i>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div *ngFor="let item of selectedToDo.toDoItems; index as i" class="w-100 rounded bg-white cursor-pointer">
-                                    <div class="d-flex align-items-center gap-3 mb-2">
-                                        <input *ngIf="!isEditable" class="form-check-input mt-0" type="checkbox" name="checkbox" [(ngModel)]="item.isChecked" (ngModelChange)="onChange_checkbox(i)">
-                                        <div *ngIf="isEditable" class="fw-bold mb-1">
-                                            <i *ngIf="item.isToDelete" class="fa-solid fa-x text-danger"></i>
-                                            <i *ngIf="!item.isToDelete" class="fa-solid fa-check text-success"></i>
+                                    <div class="d-flex align-items-center cursor-pointer gap-2" (click)="onClick_addNewItem()">
+                                        <div>
+                                            Adicionar item
                                         </div>
-                                        <input *ngIf="isEditable" type="text" class="form-control" name="label" [(ngModel)]="item.label">
-                                        <div *ngIf="!isEditable" class="mb-1">{{item.label}}</div>
-                                        <i *ngIf="isEditable" class="fa-solid fa-trash text-danger cursor-pointer" (click)="onClick_deleteItem(i)"></i>
+                                        <i class="fa-solid fa-circle-plus"></i>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="break-line mb-3"></div>
+                        <div *ngIf="!isEditable" class="row mb-3">
+                            <div *ngIf="!isItemEditable; else editItems" class="col-12">
+                                <div *ngFor="let item of selectedToDo.toDoItems; index as i" class="w-100 form-row">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="col-auto" (click)="onChange_checkbox(i)">
+                                            <i *ngIf="!item.isChecked" class="fa-regular fa-circle fa-2x text-muted"></i>
+                                            <i *ngIf="item.isChecked" class="fa-solid fa-circle-check fa-2x text-success"></i>
+                                        </div>
+                                        <div class="col mb-1 w-100">{{item.label}}</div>
+                                        <i class="col-auto fa-solid fa-pen-to-square text-success cursor-pointer" (click)="onClick_editItem(i)"></i>
+                                        <i class="col-auto fa-solid fa-trash text-danger cursor-pointer" (click)="onClick_deleteItem(i)"></i>
+                                    </div>
+                                    <div class="break-line-small my-3"></div>
+                                </div>
+                            </div>
+                            <ng-template #editItems>
+                                <div class="col-12 mb-3">
+                                    <div class="w-100 rounded bg-white cursor-pointer">
+                                        <label for="description" class="form-label fw-bold">Introduza o To Do:</label>
+                                        <textarea rows="3" class="form-control" id="description" name="description" [(ngModel)]="selectedToDoItem.label"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12 d-flex justify-content-between">
+                                    <button type="submit" class="btn btn-danger" (click)="onClick_closeItem()">Cancelar item</button>
+                                    <button type="submit" class="btn btn-success" (click)="onClick_saveItem()">Guardar item</button>
+                                </div>
+                            </ng-template>
                         </div>
                         <div *ngIf="isEditable" class="d-flex justify-content-between w-100">
                             <div>
                               <i *ngIf="selectedToDoIndex != -1" class="fa-solid fa-trash fa-2x text-danger cursor-pointer" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></i>
                             </div>
                             <div>
-                              <button type="button" class="btn  me-2" data-bs-dismiss="modal" (click)="onClick_close()">Cancelar</button>
-                              <button type="submit" class="btn btn-success" data-bs-dismiss="modal" (click)="onClick_submit()">Confirmar</button>
+                              <button type="button" class="btn  me-2" (click)="onClick_close()">Cancelar</button>
+                              <button type="submit" class="btn btn-success" (click)="onClick_submit()">Confirmar</button>
                             </div>
                         </div>
                         <div *ngIf="!isEditable" class="d-flex justify-content-between w-100">
@@ -90,9 +108,6 @@
                                     <label class="fs-7">Atualização relizada por:</label>
                                     <div class="text-secondary fs-7">{{selectedToDo.toDo.lastModifiedBy.firstName +  selectedToDo.toDo.lastModifiedBy.lastName != "" ? selectedToDo.toDo.lastModifiedBy.firstName + " " + selectedToDo.toDo.lastModifiedBy.lastName : '-'}}</div>
                                 </div>
-                            </div>
-                            <div>
-                              <button type="submit" class="btn btn-success" (click)="onClick_editable()">Editar</button>
                             </div>
                         </div>
                     </form>

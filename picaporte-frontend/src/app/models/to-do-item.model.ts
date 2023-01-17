@@ -5,4 +5,5 @@ export class ToDoItem {
     isChecked: boolean = false;
     order: number = 0;
     isToDelete: boolean = false;
+    toDoId: number = 0;
 }

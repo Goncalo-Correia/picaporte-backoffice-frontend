@@ -23,6 +23,20 @@
     box-shadow: none !important;
 }
 
+.break-line {
+    background-color: lightgrey;
+    height: 2px;
+    border-radius: 25px;
+    width: 100%;
+}
+
+.break-line-small {
+    background-color: lightgrey;
+    height: 1px;
+    border-radius: 25px;
+    width: 100%;
+}
+
 /* BOOTSTRAP override */
 
 .btn-picaporte-primary {

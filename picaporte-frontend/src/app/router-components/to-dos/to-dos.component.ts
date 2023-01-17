@@ -17,25 +17,21 @@ export class ToDosComponent implements OnInit {
   
   isDataFetched: boolean = false;
   isEditable: boolean = false;
+  isItemEditable: boolean = false;
 
-  toDoStructureList: Array<ToDoStructure>;
-  selectedToDo: ToDoStructure;
+  toDoStructureList: Array<ToDoStructure> = new Array<ToDoStructure>();;
+  selectedToDo: ToDoStructure = new ToDoStructure();
+  selectedToDoItem: ToDoItem = new ToDoItem();
   selectedToDoIndex: number = -1;
+  selectedToDoItemIndex: number = -1;
 
   constructor(
     private toDoService: ToDoService,
     private authenticationService: AuthenticationService
-  ) {
-    this.toDoStructureList = new Array<ToDoStructure>();
-    this.selectedToDo = new ToDoStructure();
-  }
+  ) {}
 
   ngOnInit(): void {
     this.get_toDos();
-  }
-
-  onClick_editable() {
-    this.isEditable = true;
   }
 
   onClick_addNew() {
@@ -46,28 +42,61 @@ export class ToDosComponent implements OnInit {
   }
 
   onClick_addNewItem() {
-    let toDoItem: ToDoItem = new ToDoItem();
-    this.selectedToDo.toDoItems.push(toDoItem);
-    console.log(this.selectedToDo.toDoItems);
+    this.selectedToDoItem = new ToDoItem();
+    this.selectedToDoItemIndex = -1;
+    this.isItemEditable = true;
+  }
+
+  onClick_editable() {
+    this.isEditable = true;
   }
 
   onClick_edit(index: number) {
     this.selectedToDo = new ToDoStructure();
-    this.selectedToDo.toDo = this.toDoStructureList[index].toDo;
+    this.selectedToDo.toDo.id = this.toDoStructureList[index].toDo.id;
+    this.selectedToDo.toDo.title = this.toDoStructureList[index].toDo.title;
+    this.selectedToDo.toDo.description = this.toDoStructureList[index].toDo.description;
+    this.selectedToDo.toDo.createdById = this.toDoStructureList[index].toDo.createdById;
+    this.selectedToDo.toDo.lastModifiedById = this.toDoStructureList[index].toDo.lastModifiedById;
+    this.selectedToDo.toDo.createdOn = this.toDoStructureList[index].toDo.createdOn;
+    this.selectedToDo.toDo.lastModifiedOn = this.toDoStructureList[index].toDo.lastModifiedOn;
+    this.selectedToDo.toDo.createdby = this.toDoStructureList[index].toDo.createdby;
+    this.selectedToDo.toDo.lastModifiedBy = this.toDoStructureList[index].toDo.lastModifiedBy;
     this.toDoStructureList[index].toDoItems.forEach(element => {
       this.selectedToDo.toDoItems.push(element);
     })
     this.selectedToDoIndex = index;
   }
 
+  onClick_editItem(index: number) {
+    this.selectedToDoItem = new ToDoItem();
+    this.selectedToDoItem = this.selectedToDo.toDoItems[index];
+    this.selectedToDoItemIndex = index;
+    this.isItemEditable = true;
+  }
+
+  onClick_closeItem() {
+    this.isItemEditable = false;
+  }
+
   onClick_close() {
-    this.selectedToDo = new ToDoStructure();
-    this.selectedToDoIndex = -1;
+    if (this.selectedToDo.toDo.id != 0) {
+      this.selectedToDo.toDo = this.toDoStructureList[this.selectedToDoIndex].toDo;
+    } else {
+      this.selectedToDoIndex = -1;
+      this.get_toDos();
+    }
     this.isEditable = false;
   }
 
   onChange_checkbox(index: number) {
-    this.post_toDoItem(index);
+    this.selectedToDo.toDoItems[index].isChecked = !this.selectedToDo.toDoItems[index].isChecked;
+    this.post_checkToDoItem(index);
+  }
+
+  onClick_saveItem() {
+    this.selectedToDoItem.toDoId = this.selectedToDo.toDo.id;
+    this.post_toDoItem();
   }
 
   onClick_submit() {
@@ -81,7 +110,7 @@ export class ToDosComponent implements OnInit {
   onClick_deleteItem(index: number) {
     this.selectedToDo.toDoItems[index].isToDelete = true;
   }
-  
+
   private get_toDos() {
     this.isDataFetched = false;
     this.isEditable = false;
@@ -100,7 +129,7 @@ export class ToDosComponent implements OnInit {
     });
   }
 
-  private post_toDoItem(index: number) {
+  private post_checkToDoItem(index: number) {
     this.authenticationService.authorizeUser().then((resolve:any) => { 
       this.toDoService.Post_ToDoItem(this.selectedToDo.toDoItems[index], resolve)
       .pipe(
@@ -111,6 +140,27 @@ export class ToDosComponent implements OnInit {
       )
       .subscribe(data => {
         this.selectedToDo.toDoItems[index] = <ToDoItem>data;
+      });
+    });
+  }
+
+  private post_toDoItem() {
+    this.authenticationService.authorizeUser().then((resolve:any) => { 
+      this.toDoService.Post_ToDoItem(this.selectedToDoItem, resolve)
+      .pipe(
+        catchError(err => {
+          this.messageComponent.showMessage(err.error);
+          return err;
+        })
+      )
+      .subscribe(data => {
+        this.selectedToDoItem = <ToDoItem>data;
+        if (this.selectedToDoItemIndex == -1) {
+          this.selectedToDo.toDoItems.push(this.selectedToDoItem);
+        } else {
+          this.selectedToDo.toDoItems[this.selectedToDoItemIndex] = this.selectedToDoItem;
+        }
+        this.isItemEditable = false;
       });
     });
   }

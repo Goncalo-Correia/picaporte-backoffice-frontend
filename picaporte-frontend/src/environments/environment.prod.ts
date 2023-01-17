@@ -1,7 +1,8 @@
 export const environment = {
   production: true,
-  apiUrl: "https://109.106.244.205:5024/",
-  apiKey: "REDACTED_API_KEY"
+  apiUrl: "https://picaporte.website:5024/",
+  apiKey: "REDACTED_API_KEY",
+  redirectUri: "https://picaporte.website/"
 };
 
 export const apiEndpoints = {

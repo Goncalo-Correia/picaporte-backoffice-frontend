@@ -15,7 +15,7 @@ export class AuthenticationService {
   authenticateUser() {
     this.auth.isLoading$.subscribe((data: {}) => {
       this.auth.loginWithRedirect({
-        redirect_uri: 'https://picaporte.website'
+        redirect_uri: environment.redirectUri
       });
     });
   }
@@ -32,7 +32,7 @@ export class AuthenticationService {
                 authorizeStructure.accessToken = token?.__raw
                 this.auth.getUser().subscribe((data) => {
                   auth0User = data
-                  authorizeStructure.userId = auth0User.user_id;
+                  authorizeStructure.userId = auth0User.sub;
                   authorizeStructure.email = auth0User.email;
                   authorizeStructure.phoneNumber = auth0User.phone_number;
                   authorizeStructure.givenName = auth0User.given_name;
@@ -41,7 +41,7 @@ export class AuthenticationService {
                     this.userService.Post_AuthorizeUser(authorizeStructure, httpOptions).subscribe(userId => {
                       if (userId == 0) {
                         this.auth.logout({
-                          returnTo: 'https://picaporte.website'
+                          returnTo: environment.redirectUri
                         });
                       } else {
                         resolve(httpOptions);

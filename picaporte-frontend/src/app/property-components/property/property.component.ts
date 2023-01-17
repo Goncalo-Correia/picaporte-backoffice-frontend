@@ -57,6 +57,7 @@ export class PropertyComponent implements OnInit {
   
   ngOnInit(): void {
     this.getActiveRoute();
+    this.get_propertySubmenus();
     this.get_propertyStructure();
   }
 
@@ -67,6 +68,7 @@ export class PropertyComponent implements OnInit {
 
   onClick_cancel() {
     this.isEditable = false;
+    this.get_propertySubmenus();
     this.get_propertyStructure();
   }
 
@@ -175,7 +177,6 @@ export class PropertyComponent implements OnInit {
           this.propertyStructure = <PropertyStructure>data;
           this.isDataFetched = true;
           this.isLoading = false;
-          this.get_propertySubmenus();
         });
       });
     } else {
@@ -202,18 +203,14 @@ export class PropertyComponent implements OnInit {
           this.isDataFetched = true;
           this.isLoading = false;
           this.isEditable = true;
-          this.get_propertySubmenus();
         });
       });
     }
   }
 
   private get_propertySubmenus() {
-    if (!this.isEditable) {
-      var localPropertySubmenus = this.propertySubmenuFactory.getPropertySubmenus(this.isEditable);
-    } else {
-      this.propertySubmenus = this.propertySubmenuFactory.getPropertySubmenus(this.isEditable);
-    }
+    this.propertySubmenus = new Array<PropertySubMenu>();
+    this.propertySubmenus = this.propertySubmenuFactory.getPropertySubmenus(this.isEditable);
   }
 
   private getActiveRoute() {

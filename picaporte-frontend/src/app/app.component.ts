@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
+import { environment } from 'src/environments/environment';
 import { UserService } from './api-service/user/user.service';
 import { AuthenticationService } from './authentication-service/authentication.service';
 import { AuthorizeStructure } from './structures/auth0/authorize.struture';
@@ -12,6 +13,7 @@ import { AuthorizeStructure } from './structures/auth0/authorize.struture';
 export class AppComponent implements OnInit {
   title = 'picaporte-frontend';
   showSplashScreen = true;
+  redirectUri = environment.redirectUri;
 
   constructor(public auth: AuthService, public authenticationService: AuthenticationService) {}
   async ngOnInit() {
@@ -19,17 +21,12 @@ export class AppComponent implements OnInit {
       if (!isLoading) {
         this.auth.isAuthenticated$.subscribe((authenticated) => {
           if (authenticated) {
-            this.auth.buildAuthorizeUrl({
-              redirect_uri: 'https://picaporte.website'
-            }).subscribe((data) => {
-              console.log("token", data);
-              this.authenticationService.authorizeUser().then(data => {
-                this.showSplashScreen = false;
-              });
-            })
+            this.authenticationService.authorizeUser().then(data => {
+              this.showSplashScreen = false;
+            });
           } else {
             this.auth.loginWithRedirect({
-              redirect_uri: 'https://picaporte.website'
+              redirect_uri: environment.redirectUri
             });
           }
         });

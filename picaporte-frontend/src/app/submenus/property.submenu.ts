@@ -32,6 +32,7 @@ export class PropertySubMenuFactory {
     }
 
     getPropertySubmenus(isEditable: boolean): Array<PropertySubMenu> {
+        this.propertySubMenus = new Array<PropertySubMenu>();
         this.propertySubMenus.push({
             enum_propertySubMenu: Enum_PropertySubMenu.DETAILS,
             label: "Dados do imóvel",

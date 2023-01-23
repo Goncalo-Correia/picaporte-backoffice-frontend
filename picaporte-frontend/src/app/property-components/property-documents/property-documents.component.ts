@@ -56,7 +56,6 @@ export class PropertyDocumentsComponent implements OnInit {
     this.isMainDocument = true;
     this.buildDocumentTypes(true, false, false);
     this.selectedDocumentStructure = new DocumentStructure();
-    console.log(this.availableDocumentTypes);
     
   }
 
@@ -93,8 +92,6 @@ export class PropertyDocumentsComponent implements OnInit {
       event.target.files[0].binary = (reader.result);
       documentStructure.content = event.target.files[0].binary;
       documentStructure.document.filePath = event.target.files[0].name;
-      console.log(documentStructure);
-      
     };
     reader.readAsDataURL(file);
     reader.onerror = function (error) {
@@ -158,14 +155,6 @@ export class PropertyDocumentsComponent implements OnInit {
   }
 
   onClick_submit() {
-    var myFile = $('#file').prop('files')[0];
-    /*
-    if (this.selectedDocumentStructure.document.file != null) {
-      this.selectedDocumentStructure.document.file.fileBinary = myFile.binary;
-      this.selectedDocumentStructure.document.file.fileName = myFile.name;
-    }
-    */
-    
     if (this.isMainDocument) {
       if (this.selectedRowNumber > -1) {
         

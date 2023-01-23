@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: "https://picaporte.website:5024/",
+  apiUrl: "https://picaporte.website/rest/",
   apiKey: "REDACTED_API_KEY",
   redirectUri: "https://picaporte.website/"
 };

@@ -4,6 +4,7 @@ import { ImageService } from 'src/app/services/image-service/image.service';
 import { ImageStructure } from 'src/app/structures/image.structure';
 import { IAlbum, Lightbox } from 'ngx-lightbox';
 import * as $ from 'jquery';
+import { apiEndpoints, environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-property-images',
@@ -18,6 +19,8 @@ export class PropertyImagesComponent {
 
   @Output() event_updateMainImage = new EventEmitter<ImageStructure>();
   @Output() event_updateOtherImages = new EventEmitter<Array<ImageStructure>>();
+
+  url: string = environment.apiUrl + apiEndpoints.image.get
 
   lightboxImages: Array<IAlbum>;
   lightboxUrl: string = "";

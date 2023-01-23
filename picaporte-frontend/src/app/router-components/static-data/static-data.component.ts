@@ -84,6 +84,14 @@ export class StaticDataComponent implements OnInit, OnDestroy {
     }
   }
 
+  onClick_checkPrimaryDocument() {
+    this.selectedStaticDataStructure.isPrimary = !this.selectedStaticDataStructure.isPrimary;
+  }
+
+  onClick_checkCertificateDocument() {
+    this.selectedStaticDataStructure.isCertificate = !this.selectedStaticDataStructure.isCertificate;
+  }
+
   onClick_add() {
     this.selectedStaticDataStructure = new StaticDataStructure();
     this.selectedStaticDataStructure.isActive = true;
@@ -106,6 +114,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
     this.selectedStaticDataStructure.order = staticDataItem.order;
     this.selectedStaticDataStructure.isCertificate = staticDataItem.isCertificate;
     this.selectedStaticDataStructure.isPrimary = staticDataItem.isPrimary;
+    this.selectedStaticDataStructure.isActive = staticDataItem.isActive;
     this.isEditable = true;
     this.isToDelete = false;
   }
@@ -355,19 +364,21 @@ export class StaticDataComponent implements OnInit, OnDestroy {
     if (this.selectedStaticDataEnum == Enum_StaticData.DOCUMENT_TYPE) {
       if (this.selectedStaticDataStructure.id == 0) {
         this.authenticationService.authorizeUser().then((resolve:any) => { 
+          
           this.staticDocumentTypeService.Post_DocumentType(this.selectedStaticDataStructure, resolve)
           .pipe(
             catchError(err => {
               this.messageComponent.showMessage(err.error);
               return err;
             })
-          )
-          .subscribe(data => {
-            this.fetchData();
+            )
+            .subscribe(data => {
+              this.fetchData();
+            });
           });
-        });
-      } else {
-        this.authenticationService.authorizeUser().then((resolve:any) => { 
+        } else {
+          this.authenticationService.authorizeUser().then((resolve:any) => { 
+          console.log(this.selectedStaticDataStructure);
           this.staticDocumentTypeService.Put_DocumentType(this.selectedStaticDataStructure, resolve)
           .pipe(
             catchError(err => {

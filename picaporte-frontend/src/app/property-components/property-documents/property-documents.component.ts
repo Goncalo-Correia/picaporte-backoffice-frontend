@@ -93,6 +93,8 @@ export class PropertyDocumentsComponent implements OnInit {
       event.target.files[0].binary = (reader.result);
       documentStructure.content = event.target.files[0].binary;
       documentStructure.document.filePath = event.target.files[0].name;
+      console.log(documentStructure);
+      
     };
     reader.readAsDataURL(file);
     reader.onerror = function (error) {

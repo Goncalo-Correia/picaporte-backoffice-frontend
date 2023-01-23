@@ -49,6 +49,16 @@
                                     <label for="description" class="form-label fw-bold w-100">Descrição</label>
                                     <input type="text" class="form-control" id="description" name="description" [(ngModel)]="selectedStaticDataStructure.description">
                                 </div>
+                                <div *ngIf="selectedStaticDataEnum == Enum_StaticData().DOCUMENT_TYPE" class="mb-3 d-flex align-items-center gap-3">
+                                    <div>
+                                        <label for="description" class="form-label fw-bold w-100">Documento primário</label>
+                                        <input type="checkbox" class="form-check-input cursor-pointer" [checked]="selectedStaticDataStructure.isPrimary" (click)="onClick_checkPrimaryDocument()">
+                                    </div>
+                                    <div>
+                                        <label for="description" class="form-label fw-bold w-100">Certificado</label>
+                                        <input type="checkbox" class="form-check-input cursor-pointer" [checked]="selectedStaticDataStructure.isCertificate" (click)="onClick_checkCertificateDocument()">
+                                    </div>
+                                </div>
                                 <div class="d-flex align-items-center justify-content-between">
                                     <div class="d-flex align-items-center gap-2">
                                         <i *ngIf="!isToDelete" class="fa-solid fa-trash fa-lg text-danger cursor-pointer" (click)="onClick_showDelete()"></i>

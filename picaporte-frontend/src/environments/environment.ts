@@ -57,7 +57,8 @@ export const apiEndpoints = {
     delete: "api/ToDo/"
   },
   image: {
-    get: "api/Images/"
+    get: "api/Images/",
+    binary: "api/Images/binary/"
   },
   activityLog: {
     get: "api/ActivityLog/EntityReference/"

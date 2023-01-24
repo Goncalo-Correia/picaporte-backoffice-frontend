@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Image } from 'src/app/models/image.model';
 import { ImageService } from 'src/app/services/image-service/image.service';
 import { ImageStructure } from 'src/app/structures/image.structure';
 import { IAlbum, Lightbox } from 'ngx-lightbox';
@@ -20,7 +19,7 @@ export class PropertyImagesComponent {
   @Output() event_updateMainImage = new EventEmitter<ImageStructure>();
   @Output() event_updateOtherImages = new EventEmitter<Array<ImageStructure>>();
 
-  url: string = environment.apiUrl + apiEndpoints.image.get
+  url: string = environment.apiUrl + apiEndpoints.image.binary
 
   lightboxImages: Array<IAlbum>;
   lightboxUrl: string = "";
@@ -44,7 +43,7 @@ export class PropertyImagesComponent {
     reader.onload = function () {
       event.target.files[0].binary = (reader.result);
       imageStructure.content = event.target.files[0].binary;
-      imageStructure.image.filePath = event.target.files[0].name;
+      imageStructure.image.filename = event.target.files[0].name;
     };
     reader.readAsDataURL(file);
     reader.onerror = function (error) {
@@ -54,6 +53,7 @@ export class PropertyImagesComponent {
 
   onClick_editMainImage() {
     this.isMainImage = true;
+    this.selectedImageStructure = new ImageStructure();
     this.selectedImageStructure = this.imageService.mapNewImageStructure(this.mainImage);
   }
 
@@ -62,6 +62,7 @@ export class PropertyImagesComponent {
     this.selectedRowNumber = index;
     
     if (index >= 0) {
+      this.selectedImageStructure = new ImageStructure();
       this.selectedImageStructure = this.imageService.mapNewImageStructure(this.otherImages[index]);
     } else {
       this.selectedImageStructure = new ImageStructure();
@@ -69,7 +70,7 @@ export class PropertyImagesComponent {
   }
 
   onClick_showMainImageLightbox() {
-    let url = (this.mainImage.image.id == 0) ? this.mainImage.content : this.mainImage.image.filePath;
+    let url = (this.mainImage.image.id == 0) ? this.mainImage.content : this.mainImage.image.filename;
     this.lightboxUrl = (url != null) ? url : "";
 
     this.lightboxImages = new Array<IAlbum>();
@@ -89,6 +90,7 @@ export class PropertyImagesComponent {
 
   onClick_close() {
     this.selectedRowNumber = -1;
+    this.clearFileInput();
   }
 
   onClick_remove(index: number) {
@@ -107,7 +109,6 @@ export class PropertyImagesComponent {
       } else {
         this.otherImages.push(this.imageService.mapNewImageStructure(this.selectedImageStructure));
       }
-
       this.clearFileInput();
       this.checkDeleteAllOtherImages();
       this.triggerEvent_updateOtherImages();
@@ -125,7 +126,7 @@ export class PropertyImagesComponent {
   private buildLightboxImages() {
     this.lightboxImages = new Array<IAlbum>();
     this.otherImages.forEach(element => {
-      let url = (element.image.id == 0) ? element.content : element.image.filePath;
+      let url = (element.image.id == 0) ? element.content : element.image.filename;
       this.lightboxUrl = (url != null) ? url : "";
 
       this.lightboxImages?.push({

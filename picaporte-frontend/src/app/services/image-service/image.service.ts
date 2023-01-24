@@ -16,7 +16,7 @@ export class ImageService {
     this.imageStructure = new ImageStructure();
 
     this.imageStructure.image.id = imageStructure.image.id;
-    this.imageStructure.image.filePath = imageStructure.image.filePath;
+    this.imageStructure.image.filename = imageStructure.image.filename;
     this.imageStructure.image.title = imageStructure.image.title;
 
     this.imageStructure.content = imageStructure.content;

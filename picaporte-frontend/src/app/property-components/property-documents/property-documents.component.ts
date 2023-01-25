@@ -7,6 +7,7 @@ import { Document } from 'src/app/models/document.model';
 import { Static_DocumentType } from 'src/app/models/static/static-documenttype.model';
 import { DocumentService } from 'src/app/services/document-service/document.service';
 import { DocumentStructure } from 'src/app/structures/document.structure';
+import { apiEndpoints, environment } from 'src/environments/environment';
 declare let $: any;
 
 @Component({
@@ -15,6 +16,8 @@ declare let $: any;
   styleUrls: ['./property-documents.component.css']
 })
 export class PropertyDocumentsComponent implements OnInit {
+
+  url: string = environment.apiUrl + apiEndpoints.image.binary
 
   @ViewChild(MessageComponent) messageComponent!: MessageComponent;
   
@@ -91,7 +94,7 @@ export class PropertyDocumentsComponent implements OnInit {
     reader.onload = function () {
       event.target.files[0].binary = (reader.result);
       documentStructure.content = event.target.files[0].binary;
-      documentStructure.document.filePath = event.target.files[0].name;
+      documentStructure.document.filename = event.target.files[0].name;
     };
     reader.readAsDataURL(file);
     reader.onerror = function (error) {

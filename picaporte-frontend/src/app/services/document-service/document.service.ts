@@ -16,7 +16,7 @@ export class DocumentService {
 
     this.documentStructure.document.id = documentStructure.document.id;
     this.documentStructure.document.documentName = documentStructure.document.documentName;
-    this.documentStructure.document.filePath = documentStructure.document.filePath;
+    this.documentStructure.document.filename = documentStructure.document.filename;
 
     this.documentStructure.document.requestedOn = documentStructure.document.requestedOn;
     this.documentStructure.document.requestedUserId = documentStructure.document.documentTypeId;

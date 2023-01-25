@@ -131,7 +131,8 @@ export class PropertyComponent implements OnInit {
 
   private submit_property() {
     this.isLoading = true;
-
+    console.log(this.propertyStructure);
+    
     if (this.propertyStructure.property.id == 0 || this.propertyStructure.property.id == null) {
       this.authenticationService.authorizeUser().then((resolve:any) => { 
         this.queries_propertyService.Post_PropertyStructure(this.propertyStructure, resolve)

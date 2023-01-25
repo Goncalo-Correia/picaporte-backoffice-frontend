@@ -5,7 +5,10 @@
                 <div class="bg-white rounded p-3">
                     <div *ngIf="mainImage.image.filename != ''; else emptyMainImage" class="d-flex justify-content-center">
                       <div class="card">
-                        <img [src]="url + mainImage.image.filename" alt="..." class="rounded card-img-top property-image" (click)="onClick_showMainImageLightbox()">
+                        <img *ngIf="mainImage.content == null; else newMainImage" [src]="url + mainImage.image.filename + '/true'" alt="..." class="rounded card-img-top property-image" (click)="onClick_showMainImageLightbox()">
+                        <ng-template #newMainImage>
+                          <img [src]="mainImage.content" alt="..." class="rounded card-img-top property-image" (click)="onClick_showMainImageLightbox()">
+                        </ng-template>
                         <div class="card-body">
                           <div class="card-text">{{mainImage.image.title}}</div>
                           <div *ngIf="isEditable" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="color-primary fw-bold cursor-pointer" (click)="onClick_editMainImage()">Editar imagem</div>
@@ -33,7 +36,10 @@
                     <div *ngFor="let image of otherImages; index as i" [ngClass]="{'col-3' : !image.isToDelete}">
                         <div *ngIf="!image.isToDelete">
                           <div class="card">
-                            <img [src]="url + image.image.filename" class="rounded card-img-top property-image" alt="..." (click)="onClick_showOtherImageLightbox(i)">
+                            <img *ngIf="image.content == null; else newImage" [src]="url + image.image.filename + '/true'" class="rounded card-img-top property-image" alt="..." (click)="onClick_showOtherImageLightbox(i)">
+                            <ng-template #newImage>
+                              <img [src]="image.content" alt="..." class="rounded card-img-top property-image">
+                            </ng-template>
                             <div class="card-body">
                               <div class="card-text">{{image.image.filename}}</div>
                               <div *ngIf="isEditable" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="color-primary fw-bold cursor-pointer" (click)="onClick_editOtherImage(i)">Editar imagem</div>
@@ -65,8 +71,11 @@
               <label for="firstName" class="form-label fw-bold">Nome</label>
               <input type="text" class="form-control" id="firstName" name="firstName" [(ngModel)]="selectedImageStructure.image.title" required>
             </div>
-            <div class="mb-3 d-flex justify-content-center">
-                <img [src]="url + selectedImageStructure.image.filename" class="rounded modal-property-image">
+            <div *ngIf="selectedImageStructure.image.filename != ''" class="mb-3 d-flex justify-content-center">
+              <img *ngIf="selectedImageStructure.content == null; else newSelectedImage" [src]="url + selectedImageStructure.image.filename + '/true'" class="rounded modal-property-image">
+              <ng-template #newSelectedImage>
+                <img [src]="selectedImageStructure.content" alt="..." class="rounded modal-property-image">
+              </ng-template>
             </div>
             <div class="mb-3">
               <label for="firstName" class="form-label fw-bold">Ficheiro</label>

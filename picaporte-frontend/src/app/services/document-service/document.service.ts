@@ -1,35 +1,36 @@
 import { Injectable } from '@angular/core';
 import { Document } from 'src/app/models/document.model';
-import { DocumentStructure } from 'src/app/structures/document.structure';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DocumentService {
-  documentStructure: DocumentStructure = new DocumentStructure();
-  documentStructureArray: Set<DocumentStructure> = new Set<DocumentStructure>();
+  documentStructure: Document = new Document();
+  documentStructureArray: Set<Document> = new Set<Document>();
 
   constructor() { }
 
-  mapNewDocumentStructure(documentStructure: DocumentStructure): DocumentStructure {
-    this.documentStructure = new DocumentStructure();
+  mapNewDocumentStructure(documentStructure: Document): Document {
+    this.documentStructure = new Document();
 
-    this.documentStructure.document.id = documentStructure.document.id;
-    this.documentStructure.document.documentName = documentStructure.document.documentName;
-    this.documentStructure.document.filename = documentStructure.document.filename;
+    this.documentStructure.id = documentStructure.id;
+    this.documentStructure.documentName = documentStructure.documentName;
+    this.documentStructure.filename = documentStructure.filename;
+    this.documentStructure.content = documentStructure.content;
+    this.documentStructure.isToDelete = documentStructure.isToDelete;
 
-    this.documentStructure.document.requestedOn = documentStructure.document.requestedOn;
-    this.documentStructure.document.requestedUserId = documentStructure.document.documentTypeId;
-    this.documentStructure.document.uploadedOn = documentStructure.document.uploadedOn;
-    this.documentStructure.document.uploadedUserId = documentStructure.document.documentTypeId;
+    this.documentStructure.requestedOn = documentStructure.requestedOn;
+    this.documentStructure.requestedUserId = documentStructure.documentTypeId;
+    this.documentStructure.uploadedOn = documentStructure.uploadedOn;
+    this.documentStructure.uploadedUserId = documentStructure.documentTypeId;
 
-    this.documentStructure.document.documentTypeId = documentStructure.document.documentTypeId;
-    this.documentStructure.document.documentStatusId = documentStructure.document.documentTypeId;
+    this.documentStructure.documentTypeId = documentStructure.documentTypeId;
+    this.documentStructure.documentStatusId = documentStructure.documentTypeId;
 
-    this.documentStructure.document.documentType = documentStructure.document.documentType;
-    this.documentStructure.document.documentStatus = documentStructure.document.documentStatus;
-    this.documentStructure.document.uploadedByUser = documentStructure.document.uploadedByUser;
-    this.documentStructure.document.createdByUser = documentStructure.document.createdByUser;
+    this.documentStructure.documentType = documentStructure.documentType;
+    this.documentStructure.documentStatus = documentStructure.documentStatus;
+    this.documentStructure.uploadedByUser = documentStructure.uploadedByUser;
+    this.documentStructure.createdByUser = documentStructure.createdByUser;
 
     return this.documentStructure;
   }

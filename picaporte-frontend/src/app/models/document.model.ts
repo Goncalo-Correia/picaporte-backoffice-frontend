@@ -8,6 +8,8 @@ export class Document {
     public filename: string = "";
     public requestedOn: Date = new Date();
     public uploadedOn: Date = new Date();
+    public content: string = "";
+    public isToDelete: boolean = false;
     
     public documentTypeId: number = 0;
     public documentStatusId: number = 0;

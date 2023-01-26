@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ImageService } from 'src/app/services/image-service/image.service';
-import { ImageStructure } from 'src/app/structures/image.structure';
 import { IAlbum, Lightbox } from 'ngx-lightbox';
 import * as $ from 'jquery';
 import { apiEndpoints, environment } from 'src/environments/environment';
+import { Image } from 'src/app/models/image.model';
 
 @Component({
   selector: 'app-property-images',
@@ -12,18 +12,18 @@ import { apiEndpoints, environment } from 'src/environments/environment';
 })
 export class PropertyImagesComponent {
 
-  @Input() mainImage: ImageStructure = new ImageStructure();
-  @Input() otherImages: Array<ImageStructure> = new Array<ImageStructure>();
+  @Input() mainImage: Image = new Image();
+  @Input() otherImages: Array<Image> = new Array<Image>();
   @Input() isEditable: boolean = false;
 
-  @Output() event_updateMainImage = new EventEmitter<ImageStructure>();
-  @Output() event_updateOtherImages = new EventEmitter<Array<ImageStructure>>();
+  @Output() event_updateMainImage = new EventEmitter<Image>();
+  @Output() event_updateOtherImages = new EventEmitter<Array<Image>>();
 
   url: string = environment.apiUrl + apiEndpoints.image.binary
 
   lightboxImages: Array<IAlbum>;
   lightboxUrl: string = "";
-  selectedImageStructure: ImageStructure = new ImageStructure();
+  selectedImageStructure: Image = new Image();
   selectedRowNumber: number = -1;
   isMainImage: boolean = false;
 
@@ -38,12 +38,12 @@ export class PropertyImagesComponent {
     this.getBase64(file, event, this.selectedImageStructure);
   }
 
-  private getBase64(file: any, event: any, imageStructure: ImageStructure) {
+  private getBase64(file: any, event: any, imageStructure: Image) {
     var reader = new FileReader();
     reader.onload = function () {
       event.target.files[0].binary = (reader.result);
       imageStructure.content = event.target.files[0].binary;
-      imageStructure.image.filename = event.target.files[0].name;
+      imageStructure.filename = event.target.files[0].name;
     };
     reader.readAsDataURL(file);
     reader.onerror = function (error) {
@@ -53,7 +53,7 @@ export class PropertyImagesComponent {
 
   onClick_editMainImage() {
     this.isMainImage = true;
-    this.selectedImageStructure = new ImageStructure();
+    this.selectedImageStructure = new Image();
     this.selectedImageStructure = this.imageService.mapNewImageStructure(this.mainImage);
   }
 
@@ -62,21 +62,21 @@ export class PropertyImagesComponent {
     this.selectedRowNumber = index;
     
     if (index >= 0) {
-      this.selectedImageStructure = new ImageStructure();
+      this.selectedImageStructure = new Image();
       this.selectedImageStructure = this.imageService.mapNewImageStructure(this.otherImages[index]);
     } else {
-      this.selectedImageStructure = new ImageStructure();
+      this.selectedImageStructure = new Image();
     }
   }
 
   onClick_showMainImageLightbox() {
-    let url = (this.mainImage.image.id == 0) ? this.mainImage.content : this.mainImage.image.filename;
+    let url = (this.mainImage.id == 0) ? this.mainImage.content : this.mainImage.filename;
     this.lightboxUrl = (url != null) ? url : "";
 
     this.lightboxImages = new Array<IAlbum>();
     this.lightboxImages.push({
       src: this.lightboxUrl,
-      caption: this.mainImage.image.title,
+      caption: this.mainImage.title,
       thumb: ""
     });
     
@@ -126,12 +126,12 @@ export class PropertyImagesComponent {
   private buildLightboxImages() {
     this.lightboxImages = new Array<IAlbum>();
     this.otherImages.forEach(element => {
-      let url = (element.image.id == 0) ? element.content : element.image.filename;
+      let url = (element.id == 0) ? element.content : element.filename;
       this.lightboxUrl = (url != null) ? url : "";
 
       this.lightboxImages?.push({
         src: this.lightboxUrl,
-        caption: element.image.title,
+        caption: element.title,
         thumb: ""
       });
     })

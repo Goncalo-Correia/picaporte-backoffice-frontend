@@ -6,11 +6,11 @@ import { StaticAmenetieTypeService } from 'src/app/api-service/static-amenetie-t
 import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
 import { MessageComponent } from 'src/app/generic-components/message/message.component';
 import { Address } from 'src/app/models/address.model';
+import { Image } from 'src/app/models/image.model';
+import { Document } from 'src/app/models/document.model';
 import { Property } from 'src/app/models/property.model';
 import { Static_AmenetieType } from 'src/app/models/static/static-amenetieType.model';
 import { AmenetieTypeStructure } from 'src/app/structures/amenetie-type.structure';
-import { DocumentStructure } from 'src/app/structures/document.structure';
-import { ImageStructure } from 'src/app/structures/image.structure';
 import { PropertyStructure } from 'src/app/structures/main-structures/property.structure';
 import { Enum_PropertySubMenu, PropertySubMenu, PropertySubMenuFactory } from 'src/app/submenus/property.submenu';
 
@@ -101,23 +101,23 @@ export class PropertyComponent implements OnInit {
     this.propertyStructure.ameneties = data;
   }
 
-  eventHandler_updateMainPropertyDocuments(data: Array<DocumentStructure>) {
+  eventHandler_updateMainPropertyDocuments(data: Array<Document>) {
     this.propertyStructure.mainDocuments = data;
   }
 
-  eventHandler_updateCertificatePropertyDocuments(data: Array<DocumentStructure>) {
+  eventHandler_updateCertificatePropertyDocuments(data: Array<Document>) {
     this.propertyStructure.certificateDocuments = data;
   }
 
-  eventHandler_updateOtherPropertyDocuments(data: Array<DocumentStructure>) {
+  eventHandler_updateOtherPropertyDocuments(data: Array<Document>) {
     this.propertyStructure.otherDocuments = data;
   }
 
-  eventHandler_updatePropertyMainImage(data: ImageStructure) {
+  eventHandler_updatePropertyMainImage(data: Image) {
     this.propertyStructure.mainImage = data;
   }
 
-  eventHandler_updatePropertyOtherImages(data: Array<ImageStructure>) {
+  eventHandler_updatePropertyOtherImages(data: Array<Image>) {
     this.propertyStructure.images = data;
   }
 

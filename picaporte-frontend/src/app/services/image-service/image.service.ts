@@ -1,23 +1,22 @@
 import { Injectable } from '@angular/core';
 import { Image } from 'src/app/models/image.model';
-import { ImageStructure } from 'src/app/structures/image.structure';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ImageService {
 
-  imageStructure: ImageStructure = new ImageStructure();
-  preferenceStructureArray: Set<ImageStructure> = new Set<ImageStructure>();
+  imageStructure: Image = new Image();
+  preferenceStructureArray: Set<Image> = new Set<Image>();
 
   constructor() { }
 
-  mapNewImageStructure(imageStructure: ImageStructure): ImageStructure {
-    this.imageStructure = new ImageStructure();
+  mapNewImageStructure(imageStructure: Image): Image {
+    this.imageStructure = new Image();
 
-    this.imageStructure.image.id = imageStructure.image.id;
-    this.imageStructure.image.filename = imageStructure.image.filename;
-    this.imageStructure.image.title = imageStructure.image.title;
+    this.imageStructure.id = imageStructure.id;
+    this.imageStructure.filename = imageStructure.filename;
+    this.imageStructure.title = imageStructure.title;
 
     this.imageStructure.content = imageStructure.content;
 

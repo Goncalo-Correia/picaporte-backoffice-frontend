@@ -6,7 +6,6 @@ import { MessageComponent } from 'src/app/generic-components/message/message.com
 import { Document } from 'src/app/models/document.model';
 import { Static_DocumentType } from 'src/app/models/static/static-documenttype.model';
 import { DocumentService } from 'src/app/services/document-service/document.service';
-import { DocumentStructure } from 'src/app/structures/document.structure';
 import { apiEndpoints, environment } from 'src/environments/environment';
 declare let $: any;
 
@@ -21,16 +20,16 @@ export class PropertyDocumentsComponent implements OnInit {
 
   @ViewChild(MessageComponent) messageComponent!: MessageComponent;
   
-  @Input() mainDocuments: Array<DocumentStructure> = new Array<DocumentStructure>();
-  @Input() certificateDocuments: Array<DocumentStructure> = new Array<DocumentStructure>();
-  @Input() otherDocuments: Array<DocumentStructure> = new Array<DocumentStructure>();
+  @Input() mainDocuments: Array<Document> = new Array<Document>();
+  @Input() certificateDocuments: Array<Document> = new Array<Document>();
+  @Input() otherDocuments: Array<Document> = new Array<Document>();
   @Input() isEditable: boolean = false;
 
-  @Output() event_updateMainPropertyDocuments = new EventEmitter<Array<DocumentStructure>>();
-  @Output() event_updateCertificatePropertyDocuments = new EventEmitter<Array<DocumentStructure>>();
-  @Output() event_updateOtherPropertyDocuments = new EventEmitter<Array<DocumentStructure>>();
+  @Output() event_updateMainPropertyDocuments = new EventEmitter<Array<Document>>();
+  @Output() event_updateCertificatePropertyDocuments = new EventEmitter<Array<Document>>();
+  @Output() event_updateOtherPropertyDocuments = new EventEmitter<Array<Document>>();
 
-  selectedDocumentStructure: DocumentStructure = new DocumentStructure();
+  selectedDocumentStructure: Document = new Document();
   selectedDocumentTypeLabel: string = "Nenhum tipo seleccionado";
   selectedRowNumber: number = -1;
   private isMainDocument: boolean = false;
@@ -58,7 +57,7 @@ export class PropertyDocumentsComponent implements OnInit {
     this.selectedDocumentTypeLabel = "Nenhum tipo seleccionado";
     this.isMainDocument = true;
     this.buildDocumentTypes(true, false, false);
-    this.selectedDocumentStructure = new DocumentStructure();
+    this.selectedDocumentStructure = new Document();
     
   }
 
@@ -67,7 +66,7 @@ export class PropertyDocumentsComponent implements OnInit {
     this.selectedDocumentTypeLabel = "Nenhum tipo seleccionado";
     this.isCertificateDocument = true;
     this.buildDocumentTypes(false, true, false);
-    this.selectedDocumentStructure = new DocumentStructure();
+    this.selectedDocumentStructure = new Document();
   }
 
   onClick_addNewOtherDocument() {
@@ -75,13 +74,13 @@ export class PropertyDocumentsComponent implements OnInit {
     this.selectedDocumentTypeLabel = "Nenhum tipo seleccionado";
     this.isOtherDocument = true;
     this.buildDocumentTypes(false, false, true);
-    this.selectedDocumentStructure = new DocumentStructure();
+    this.selectedDocumentStructure = new Document();
   }
 
   onClick_selectDocumentType(documentType: Static_DocumentType, documentTypeLabel: string) {
     this.selectedDocumentTypeLabel = documentTypeLabel;
-    this.selectedDocumentStructure.document.documentType = documentType;
-    this.selectedDocumentStructure.document.documentTypeId = documentType.id;
+    this.selectedDocumentStructure.documentType = documentType;
+    this.selectedDocumentStructure.documentTypeId = documentType.id;
   }
 
   onChange_file(event: any) {
@@ -89,12 +88,12 @@ export class PropertyDocumentsComponent implements OnInit {
       this.getBase64(file, event, this.selectedDocumentStructure);   
   }
 
-  private getBase64(file: any, event: any, documentStructure: DocumentStructure) {
+  private getBase64(file: any, event: any, documentStructure: Document) {
     var reader = new FileReader();
     reader.onload = function () {
       event.target.files[0].binary = (reader.result);
       documentStructure.content = event.target.files[0].binary;
-      documentStructure.document.filename = event.target.files[0].name;
+      documentStructure.filename = event.target.files[0].name;
     };
     reader.readAsDataURL(file);
     reader.onerror = function (error) {
@@ -107,8 +106,8 @@ export class PropertyDocumentsComponent implements OnInit {
     this.selectedRowNumber = index;
     this.isMainDocument = true;
     this.selectedDocumentStructure = this.documentService.mapNewDocumentStructure(this.mainDocuments[index]);
-    if (this.selectedDocumentStructure.document.documentType?.label != null) {
-      this.selectedDocumentTypeLabel = this.selectedDocumentStructure.document.documentType.label;
+    if (this.selectedDocumentStructure.documentType?.label != null) {
+      this.selectedDocumentTypeLabel = this.selectedDocumentStructure.documentType.label;
     }
   }
   
@@ -116,8 +115,8 @@ export class PropertyDocumentsComponent implements OnInit {
     this.selectedRowNumber = index;
     this.isCertificateDocument = true;
     this.selectedDocumentStructure = this.documentService.mapNewDocumentStructure(this.certificateDocuments[index]);
-    if (this.selectedDocumentStructure.document.documentType?.label != null) {
-      this.selectedDocumentTypeLabel = this.selectedDocumentStructure.document.documentType.label;
+    if (this.selectedDocumentStructure.documentType?.label != null) {
+      this.selectedDocumentTypeLabel = this.selectedDocumentStructure.documentType.label;
     }
   }
 
@@ -125,8 +124,8 @@ export class PropertyDocumentsComponent implements OnInit {
     this.selectedRowNumber = index;
     this.isOtherDocument = true;
     this.selectedDocumentStructure = this.documentService.mapNewDocumentStructure(this.otherDocuments[index]);
-    if (this.selectedDocumentStructure.document.documentType?.label != null) {
-      this.selectedDocumentTypeLabel = this.selectedDocumentStructure.document.documentType.label;
+    if (this.selectedDocumentStructure.documentType?.label != null) {
+      this.selectedDocumentTypeLabel = this.selectedDocumentStructure.documentType.label;
     }
   }
 
@@ -221,7 +220,7 @@ export class PropertyDocumentsComponent implements OnInit {
       this.availableDocumentTypes = new Array<Static_DocumentType>();
       
       for (let index = 0; index < localAvailableDocumentTypes.length; index++) {
-        if (this.mainDocuments.filter(prop => prop.document.documentTypeId == localAvailableDocumentTypes[index].id && !prop.isToDelete).length == 0) {
+        if (this.mainDocuments.filter(prop => prop.documentTypeId == localAvailableDocumentTypes[index].id && !prop.isToDelete).length == 0) {
           this.availableDocumentTypes.push(localAvailableDocumentTypes[index]);
         }
       }
@@ -231,7 +230,7 @@ export class PropertyDocumentsComponent implements OnInit {
       this.availableDocumentTypes = new Array<Static_DocumentType>();
       
       for (let index = 0; index < localAvailableDocumentTypes.length; index++) {
-        if (this.certificateDocuments.filter(prop => prop.document.documentTypeId == localAvailableDocumentTypes[index].id && !prop.isToDelete).length == 0) {
+        if (this.certificateDocuments.filter(prop => prop.documentTypeId == localAvailableDocumentTypes[index].id && !prop.isToDelete).length == 0) {
           this.availableDocumentTypes.push(localAvailableDocumentTypes[index]);
         }
       }
@@ -241,7 +240,7 @@ export class PropertyDocumentsComponent implements OnInit {
       this.availableDocumentTypes = new Array<Static_DocumentType>();
       
       for (let index = 0; index < localAvailableDocumentTypes.length; index++) {
-        if (this.otherDocuments.filter(prop => prop.document.documentTypeId == localAvailableDocumentTypes[index].id && !prop.isToDelete).length == 0) {
+        if (this.otherDocuments.filter(prop => prop.documentTypeId == localAvailableDocumentTypes[index].id && !prop.isToDelete).length == 0) {
           this.availableDocumentTypes.push(localAvailableDocumentTypes[index]);
         }
       }

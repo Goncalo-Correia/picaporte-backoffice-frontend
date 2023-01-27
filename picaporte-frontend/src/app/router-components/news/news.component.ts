@@ -4,7 +4,9 @@ import { catchError } from 'rxjs';
 import { NewsService } from 'src/app/api-service/news/news.service';
 import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
 import { MessageComponent } from 'src/app/generic-components/message/message.component';
+import { Image } from 'src/app/models/image.model';
 import { News } from 'src/app/models/news.model';
+import { apiEndpoints, environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-news',
@@ -13,6 +15,8 @@ import { News } from 'src/app/models/news.model';
 })
 export class NewsComponent implements OnInit {
 
+  url: string = environment.apiUrl + apiEndpoints.image.binary
+  
   @ViewChild(MessageComponent) messageComponent!: MessageComponent;
   
   isDataFetched: boolean = false;
@@ -37,6 +41,24 @@ export class NewsComponent implements OnInit {
     this.selectedNews = new News();
   }
 
+  onChange_file(event: any) {
+    var file = event.target.files[0];
+    this.getBase64(file, event, this.selectedNews.image);
+  }
+
+  private getBase64(file: any, event: any, imageStructure: Image) {
+    var reader = new FileReader();
+    reader.onload = function () {
+      event.target.files[0].binary = (reader.result);
+      imageStructure.content = event.target.files[0].binary;
+      imageStructure.filename = event.target.files[0].name;
+    };
+    reader.readAsDataURL(file);
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
+    };
+ }
+
   onClick_addNew() {
     this.selectedNews = new News();
     this.selectedNewsIndex = -1;
@@ -58,7 +80,7 @@ export class NewsComponent implements OnInit {
   }
 
   onClick_submit() {
-    if(this.selectedNews.id == 0 || this.selectedNews.id == null) {
+    if(this.selectedNews.id == 0) {
       this.post_news();
     } else {
       this.put_news();

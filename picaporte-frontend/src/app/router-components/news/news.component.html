@@ -70,6 +70,22 @@
         <div class="bg-white p-4 rounded h-100">
             <form>
                 <div class="row">
+                    <div class="col-12 mb-3">
+                        <div class="d-flex flex-column align-items-center fs-5 fw-bold cursor-pointer color-secondary">
+                            <div *ngIf="selectedNews.image.filename != ''" class="mb-3 d-flex justify-content-center">
+                                <img *ngIf="selectedNews.image.content == null; else newSelectedImage" [src]="url + selectedNews.image.filename + '/true'" class="news-image rounded modal-property-image">
+                                <ng-template #newSelectedImage>
+                                  <img [src]="selectedNews.image.content" alt="..." class="news-image rounded modal-property-image">
+                                </ng-template>
+                              </div>
+                              <div class="w-100 mb-3">
+                                <label for="firstName" class="form-label fw-bold">Ficheiro</label>
+                                <input type="file" class="form-control" id="file" name="file" (change)="onChange_file($event)">
+                              </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col mb-3">
                         <label for="reference" class="form-label fw-bold">Título</label>
                         <input type="text" class="form-control" id="reference" name="reference"

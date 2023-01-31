@@ -71,6 +71,12 @@ export class NewsComponent implements OnInit {
     this.isOnListView = false;
   }
 
+  onClick_editOnline(index: number) {
+    this.selectedNews = this.onlineNews[index];
+    this.selectedNewsIndex = index;
+    this.isOnListView = false;
+  }
+
   onClick_selectedNewsOnline(isOnline: boolean) {
     this.selectedNews.isOnline = isOnline;
   }
@@ -80,6 +86,8 @@ export class NewsComponent implements OnInit {
   }
 
   onClick_submit() {
+    this.isDataFetched = false;
+    this.isOnListView = true;
     if(this.selectedNews.id == 0) {
       this.post_news();
     } else {
@@ -88,6 +96,8 @@ export class NewsComponent implements OnInit {
   }
 
   onClick_confirmDelete() {
+    this.isDataFetched = false;
+    this.isOnListView = true;
     this.delete_news();
   }
 
@@ -107,8 +117,9 @@ export class NewsComponent implements OnInit {
         })
       )
       .subscribe(data => {
-        this.news = <News[]>data;
-        this.onlineNews = this.news.filter(prop => prop.isOnline);
+        var tempNews = <News[]>data;
+        this.news = tempNews.filter(prop => prop.isOnline == false);
+        this.onlineNews = tempNews.filter(prop => prop.isOnline == true);
         this.isDataFetched = true;
       });
     });

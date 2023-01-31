@@ -1,4 +1,4 @@
-<div class="p-5 row">
+<div class="p-5 w-100">
     <div *ngIf="isOnListView" class="col-12 mb-3 d-flex justify-content-end">
         <div class="d-flex align-items-center fs-5 fw-bold cursor-pointer color-secondary" (click)="onClick_addNew()">
             <div class="me-2">
@@ -20,7 +20,7 @@
                         <tbody *ngIf="isDataFetched; else elseBlock">
                             <tr *ngFor="let _news of news; index as i" class="table-row cursor-pointer"
                                 (click)="onClick_edit(i)">
-                                <td><span class="col">{{_news.title}}</span></td>
+                                <td class="p-4 rounded bg-white"><span class="col">{{_news.title}}</span></td>
                             </tr>
                         </tbody>
                         <ng-template #elseBlock>
@@ -33,35 +33,34 @@
                         </ng-template>
                     </table>
                 </div>
-                <div *ngIf="news.length == 0 && isDataFetched" class="w-100 p-4 text-center rounded bg-white">
+                <div *ngIf="news.length == 0 && isDataFetched" class="w-100 p-4 text-center">
                     Não foram encontradas notícias
                 </div>
             </div>
             <div class="col-6">
-                <div class="bg-white px-4 rounded h-100">
+                <div>
                     <table class="table">
                         <thead>
                             <tr>
                                 <th scope="col">Notícias online</th>
                             </tr>
                         </thead>
-                        <tbody *ngIf="isDataFetched; else elseBlock">
-                            <tr *ngFor="let _news of onlineNews" class="table-row">
-                                <td><span class="col">{{_news.title}}</span></td>
+                        <tbody *ngIf="isDataFetched; else elseLoadingBlock">
+                            <tr *ngFor="let _news of onlineNews; index as i" class="table-row cursor-pointer" (click)="onClick_editOnline(i)">
+                                <td class="p-4 rounded bg-white"><span class="col">{{_news.title}}</span></td>
                             </tr>
                         </tbody>
-                        <ng-template #elseBlock>
+                        <ng-template #elseLoadingBlock>
                             <tbody>
-                                <tr *ngFor="let number of [0,1,2,3,4]" class="placeholder-glow table-row">
-                                    <td scope="row"><span class="placeholder col-4"></span></td>
-                                    <td><span class="placeholder col-2"></span></td>
-                                </tr>
+                                <div class="position-relative news-data-loader bg-white rounded">
+                                    <app-spinner [showBackground]="false"></app-spinner>
+                                </div>
                             </tbody>
                         </ng-template>
                     </table>
-                    <div *ngIf="onlineNews.length == 0 && isDataFetched" class="w-100 p-4 text-center">
-                        Não foram encontradas notícias online
-                    </div>
+                </div>
+                <div *ngIf="onlineNews.length == 0 && isDataFetched" class="w-100 p-4 text-center">
+                    Não foram encontradas notícias online
                 </div>
             </div>
         </div>

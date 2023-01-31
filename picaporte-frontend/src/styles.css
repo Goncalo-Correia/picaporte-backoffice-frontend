@@ -71,6 +71,7 @@
 .table {
     border-collapse: separate;
     border-spacing:0 20px;
+    margin-bottom: 0px;
 }
 
 .table-row td:first-child, .table .table-row:last-child td:first-child {

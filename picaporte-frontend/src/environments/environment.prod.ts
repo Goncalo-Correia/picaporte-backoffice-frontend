@@ -52,6 +52,10 @@ export const apiEndpoints = {
     postItem: "api/ToDo/ToDoItem",
     delete: "api/ToDo/"
   },
+  image: {
+    get: "api/Images/",
+    binary: "api/Images/binary/"
+  },
   activityLog: {
     get: "api/ActivityLog/EntityReference/"
   },

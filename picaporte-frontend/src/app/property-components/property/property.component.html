@@ -86,7 +86,7 @@
         </div>
         <div *ngIf="isOnActivityLogMenu && isDataFetched" class="row">
             <div class="col-12">
-                <app-activity-log *ngIf="isDataFetched && propertyStructure.property.id != 0" [entityReferenceId]="propertyStructure.property.id"></app-activity-log>
+                <app-activity-log [entityReferenceId]="propertyStructure.property.id"></app-activity-log>
             </div>
         </div>
     </div>

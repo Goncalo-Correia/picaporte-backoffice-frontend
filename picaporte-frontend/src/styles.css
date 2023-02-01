@@ -94,6 +94,10 @@
     overflow-y: scroll;
 }
 
+.overflow-y-auto {
+    overflow-y: auto;
+}
+
 /* SUB MENUS */
 .submenu-container {
     width: fit-content;

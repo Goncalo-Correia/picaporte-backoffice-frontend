@@ -20,7 +20,13 @@
                         <tbody *ngIf="isDataFetched; else elseBlock">
                             <tr *ngFor="let _news of news; index as i" class="table-row cursor-pointer"
                                 (click)="onClick_edit(i)">
-                                <td class="p-4 rounded bg-white"><span class="col">{{_news.title}}</span></td>
+                                <td class="p-4 rounded bg-white">
+                                    <div>
+                                        <span class="col mb-1">{{_news.title}}</span>
+                                        <div class="text-secondary fs-7">{{_news.editedBy.firstName +  _news.editedBy.lastName != "" ? _news.editedBy.firstName + " " + _news.editedBy.lastName : '-'}}</div>
+                                        <div class="text-secondary fs-7">{{_news.editedOn | date: 'EEEE, MMMM d, y'}}</div>
+                                    </div>
+                                </td>
                             </tr>
                         </tbody>
                         <ng-template #elseBlock>
@@ -47,7 +53,13 @@
                         </thead>
                         <tbody *ngIf="isDataFetched; else elseLoadingBlock">
                             <tr *ngFor="let _news of onlineNews; index as i" class="table-row cursor-pointer" (click)="onClick_editOnline(i)">
-                                <td class="p-4 rounded bg-white"><span class="col">{{_news.title}}</span></td>
+                                <td class="p-4 rounded bg-white">
+                                    <div>
+                                        <span class="col mb-1">{{_news.title}}</span>
+                                        <div class="text-secondary fs-7">{{_news.editedBy.firstName +  _news.editedBy.lastName != "" ? _news.editedBy.firstName + " " + _news.editedBy.lastName : '-'}}</div>
+                                        <div class="text-secondary fs-7">{{_news.editedOn | date: 'EEEE, MMMM d, y'}}</div>
+                                    </div>
+                                </td>
                             </tr>
                         </tbody>
                         <ng-template #elseLoadingBlock>

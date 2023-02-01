@@ -56,12 +56,9 @@ export class ToDosComponent implements OnInit {
     this.selectedToDo.toDo.id = this.toDoStructureList[index].toDo.id;
     this.selectedToDo.toDo.title = this.toDoStructureList[index].toDo.title;
     this.selectedToDo.toDo.description = this.toDoStructureList[index].toDo.description;
-    this.selectedToDo.toDo.createdById = this.toDoStructureList[index].toDo.createdById;
-    this.selectedToDo.toDo.lastModifiedById = this.toDoStructureList[index].toDo.lastModifiedById;
-    this.selectedToDo.toDo.createdOn = this.toDoStructureList[index].toDo.createdOn;
-    this.selectedToDo.toDo.lastModifiedOn = this.toDoStructureList[index].toDo.lastModifiedOn;
-    this.selectedToDo.toDo.createdby = this.toDoStructureList[index].toDo.createdby;
-    this.selectedToDo.toDo.lastModifiedBy = this.toDoStructureList[index].toDo.lastModifiedBy;
+    this.selectedToDo.toDo.editedById = this.toDoStructureList[index].toDo.editedById;
+    this.selectedToDo.toDo.editedOn = this.toDoStructureList[index].toDo.editedOn;
+    this.selectedToDo.toDo.editedBy = this.toDoStructureList[index].toDo.editedBy;
     this.toDoStructureList[index].toDoItems.forEach(element => {
       this.selectedToDo.toDoItems.push(element);
     })
@@ -109,6 +106,9 @@ export class ToDosComponent implements OnInit {
 
   onClick_deleteItem(index: number) {
     this.selectedToDo.toDoItems[index].isToDelete = true;
+    this.delete_toDoItem(this.selectedToDo.toDoItems[index].id);
+    this.selectedToDo.toDoItems = this.selectedToDo.toDoItems.filter(prop => prop.isToDelete == false);
+    this.toDoStructureList[this.selectedToDoIndex].toDoItems = this.selectedToDo.toDoItems;
   }
 
   private get_toDos() {
@@ -193,6 +193,20 @@ export class ToDosComponent implements OnInit {
         this.get_toDos();
         this.selectedToDo = new ToDoStructure();
         this.selectedToDoIndex = -1;
+      });
+    });
+  }
+
+  private delete_toDoItem(id: number) {
+    this.authenticationService.authorizeUser().then((resolve:any) => { 
+      this.toDoService.Delete_ToDoItem(id, resolve)
+      .pipe(
+        catchError(err => {
+          this.messageComponent.showMessage(err.error);
+          return err;
+        })
+      )
+      .subscribe(data => {
       });
     });
   }

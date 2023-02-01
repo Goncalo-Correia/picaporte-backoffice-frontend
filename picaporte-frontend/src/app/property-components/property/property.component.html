@@ -1,5 +1,5 @@
 <div class="d-flex h-100">
-    <div class="submenu-container h-100 overflow-y-scroll">
+    <div class="submenu-container h-100 overflow-y-auto">
         <div class="submenu-grid">
             <div *ngFor="let submenu of propertySubmenus" class="submenu-grid-item cursor-pointer" (click)="onClick_selectSubMenu(submenu.enum_propertySubMenu)" [ngClass]="{'selected': submenu.enum_propertySubMenu == selectedPropertySubMenu}">
                 <div class="px-4 py-4">
@@ -86,7 +86,7 @@
         </div>
         <div *ngIf="isOnActivityLogMenu && isDataFetched" class="row">
             <div class="col-12">
-                <app-activity-log [entityReferenceId]="propertyStructure.property.id"></app-activity-log>
+                <app-activity-log *ngIf="isDataFetched && propertyStructure.property.id != 0" [entityReferenceId]="propertyStructure.property.id"></app-activity-log>
             </div>
         </div>
     </div>

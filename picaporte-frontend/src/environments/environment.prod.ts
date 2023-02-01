@@ -57,7 +57,7 @@ export const apiEndpoints = {
     binary: "api/Images/binary/"
   },
   activityLog: {
-    get: "api/ActivityLog/EntityReference/"
+    get: "api/ActivityLogs/EntityReference/"
   },
   static_amenetieType: {
     get: "api/Static_AmenetieType/isActive/",

@@ -4,10 +4,7 @@ export class ToDo {
     id: number = 0;
     title: string = "";
     description: string = "";
-    createdById: number = 0;
-    createdOn: Date = new Date();
-    lastModifiedById: number = 0;
-    lastModifiedOn: Date = new Date();
-    createdby: User = new User();
-    lastModifiedBy: User = new User();
+    editedOn: Date = new Date();
+    editedById: number = 0;
+    editedBy: User = new User();
 }

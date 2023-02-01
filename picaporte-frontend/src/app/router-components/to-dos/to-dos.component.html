@@ -17,9 +17,9 @@
                     <div *ngFor="let item of toDoStructureList; index as i" class="w-100 p-3 rounded cursor-pointer mb-3" [ngClass]="selectedToDoIndex == i ? 'to-do-selected': 'bg-white'" (click)="onClick_edit(i)">
                         <div class="fw-bold mb-1">{{item.toDo.title}}</div>
                         <div>
-                            <label class="fs-7">Registado por:</label>
-                            <div class="text-secondary fs-7">{{item.toDo.createdby.firstName +  item.toDo.createdby.lastName != "" ? item.toDo.createdby.firstName + " " + item.toDo.createdby.lastName : '-'}}</div>
-                            <div class="text-secondary fs-7">{{item.toDo.createdOn | date: 'EEEE, MMMM d, y'}}</div>
+                            <label class="fs-7">Editado:</label>
+                            <div class="text-secondary fs-7">{{item.toDo.editedBy.firstName +  item.toDo.editedBy.lastName != "" ? item.toDo.editedBy.firstName + " " + item.toDo.editedBy.lastName : '-'}}</div>
+                            <div class="text-secondary fs-7">{{item.toDo.editedOn | date: 'EEEE, MMMM d, y'}}</div>
                         </div>
                     </div>
                     <div *ngIf="toDoStructureList.length == 0 && isDataFetched" class="w-100 p-4 text-center rounded bg-white">
@@ -96,18 +96,6 @@
                             <div>
                               <button type="button" class="btn  me-2" (click)="onClick_close()">Cancelar</button>
                               <button type="submit" class="btn btn-success" (click)="onClick_submit()">Confirmar</button>
-                            </div>
-                        </div>
-                        <div *ngIf="!isEditable" class="d-flex justify-content-between w-100">
-                            <div class="d-flex gap-3">
-                                <div>
-                                    <label class="fs-7">Ultima atualização:</label>
-                                    <div class="text-secondary fs-7">{{selectedToDo.toDo.lastModifiedOn | date: 'EEEE, MMMM d, y'}}</div>
-                                </div>
-                                <div>
-                                    <label class="fs-7">Atualização relizada por:</label>
-                                    <div class="text-secondary fs-7">{{selectedToDo.toDo.lastModifiedBy.firstName +  selectedToDo.toDo.lastModifiedBy.lastName != "" ? selectedToDo.toDo.lastModifiedBy.firstName + " " + selectedToDo.toDo.lastModifiedBy.lastName : '-'}}</div>
-                                </div>
                             </div>
                         </div>
                     </form>

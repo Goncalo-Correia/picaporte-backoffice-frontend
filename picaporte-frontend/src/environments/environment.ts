@@ -53,15 +53,16 @@ export const apiEndpoints = {
   toDos: {
     get: "api/ToDo",
     post: "api/ToDo",
+    delete: "api/ToDo/",
     postItem: "api/ToDo/ToDoItem",
-    delete: "api/ToDo/"
+    deleteItem: "api/ToDo/ToDoItem/",
   },
   image: {
     get: "api/Images/",
     binary: "api/Images/binary/"
   },
   activityLog: {
-    get: "api/ActivityLog/EntityReference/"
+    get: "api/ActivityLogs/EntityReference/"
   },
   static_amenetieType: {
     get: "api/Static_AmenetieType/isActive/",

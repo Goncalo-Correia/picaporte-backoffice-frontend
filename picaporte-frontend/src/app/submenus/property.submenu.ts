@@ -64,11 +64,11 @@ export class PropertySubMenuFactory {
                 label: "Arrendamento",
                 description: "Especificações de arrendamento"
             });
-            this.propertySubMenus.push({
+            /*this.propertySubMenus.push({
                 enum_propertySubMenu: Enum_PropertySubMenu.OBSERVATION_HISTORY,
                 label: "Histórico de Observações",
                 description: "Listagem deobservações"
-            });
+            });*/
         }
         this.propertySubMenus.push({
             enum_propertySubMenu: Enum_PropertySubMenu.HISTORY,

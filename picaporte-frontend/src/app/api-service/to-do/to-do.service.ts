@@ -48,4 +48,13 @@ export class ToDoService {
         httpOptions
       )
   }
+
+    // DELETE
+    Delete_ToDoItem(id: number, httpOptions: { headers: HttpHeaders }) {
+      return this.http
+        .delete(
+          this.baseurl + apiEndpoints.toDos.deleteItem + id,
+          httpOptions
+        )
+    }
 }

@@ -6,4 +6,5 @@ export class UserStructure {
     customerId: number = 0;
     customerName: string = "";
     preferences: Array<PreferenceStructure> = new Array<PreferenceStructure>();
+    entityReferenceId: number = 0;
 }

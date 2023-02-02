@@ -12,4 +12,5 @@ export class PropertyStructure {
     otherDocuments: Array<Document> = new Array<Document>();
     images: Array<Image> = new Array<Image>();
     ameneties: Array<AmenetieTypeStructure> = new Array<AmenetieTypeStructure>();
+    entityReferenceId: number = 0;
 }

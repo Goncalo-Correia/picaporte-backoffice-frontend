@@ -231,6 +231,7 @@ ul.timeline {
     list-style-type: none;
     position: relative;
     padding-left: 2rem;
+    max-height: 800px;
 }
 
  /* Timeline vertical line */
@@ -278,4 +279,8 @@ li.timeline-item::before {
 /* FONT SIZE */
 .fs-7 {
     font-size: 0.75rem !important;
+}
+
+.preference-list {
+    border-bottom: 1px solid var(--color-body-background);
 }

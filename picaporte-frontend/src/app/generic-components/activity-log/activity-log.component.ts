@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { catchError } from 'rxjs';
 import { ActivityLogService } from 'src/app/api-service/activity-log/activity-log.service';
 import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
@@ -15,9 +15,11 @@ export class ActivityLogComponent implements OnInit {
   @Input() entityReferenceId: number = 0;
 
   @ViewChild(MessageComponent) messageComponent!: MessageComponent;
+  @ViewChild('timelineWrapper') timelineWrapper!: ElementRef;
 
   activityLogs: Array<ActivityLogStructure>;
   isDataFetched: boolean = false;
+  maxHeight: number = 0;
 
   constructor(
     private activityLogService: ActivityLogService,

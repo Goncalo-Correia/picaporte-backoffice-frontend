@@ -60,9 +60,7 @@
             </thead>
             <tbody *ngIf="isEditable">
               <tr *ngFor="let documentStructure of certificateDocuments; index as i" class="table-row" data-bs-toggle="modal" data-bs-target="#staticBackdrop" [ngClass]="{'cursor-pointer' : isEditable}" [ngClass]="{'d-none' : documentStructure.isToDelete}" (click)="onClick_editCertificateDocuments(i)">
-                  <td *ngIf="!documentStructure.isToDelete"  scope="row" class="fw-bold color-secondary">
-                    <a [href]="url + documentStructure.filename">{{documentStructure.documentName}}</a>
-                  </td>
+                  <td *ngIf="!documentStructure.isToDelete"  scope="row" class="fw-bold color-secondary">{{documentStructure.documentName}}</td>
                   <td *ngIf="!documentStructure.isToDelete">{{documentStructure.documentType?.label}}</td>
                   <td *ngIf="!documentStructure.isToDelete">{{documentStructure.documentStatus?.label}}</td>
                   <td *ngIf="!documentStructure.isToDelete && isEditable"></td>
@@ -70,14 +68,16 @@
             </tbody>
             <tbody *ngIf="!isEditable">
               <tr *ngFor="let documentStructure of certificateDocuments; index as i" class="table-row">
-                  <td *ngIf="!documentStructure.isToDelete"  scope="row" class="fw-bold color-secondary">{{documentStructure.documentName}}</td>
+                  <td *ngIf="!documentStructure.isToDelete"  scope="row" class="fw-bold color-secondary">
+                    <a [href]="url + documentStructure.filename + '/false'" target="_blank">{{documentStructure.documentName}}</a>
+                  </td>
                   <td *ngIf="!documentStructure.isToDelete">{{documentStructure.documentType?.label}}</td>
                   <td *ngIf="!documentStructure.isToDelete">{{documentStructure.documentStatus?.label}}</td>
                   <td *ngIf="!documentStructure.isToDelete && isEditable"></td>
               </tr>
           </table>
     </div>
-    <div *ngIf="certificateDocuments.length != 0 || !allCertificateDocumentsToBeDeleted" class="bg-white text-muted p-4 rounded d-flex flex-column justify-content-center align-items-center">
+    <div *ngIf="certificateDocuments.length == 0 || allCertificateDocumentsToBeDeleted" class="bg-white text-muted p-4 rounded d-flex flex-column justify-content-center align-items-center">
       <span>Não existem certificados associados a este imóvel</span>
     </div>
 </div>
@@ -101,9 +101,7 @@
             </thead>
             <tbody *ngIf="isEditable">
               <tr *ngFor="let documentStructure of otherDocuments; index as i" class="table-row" data-bs-toggle="modal" data-bs-target="#staticBackdrop" [ngClass]="{'cursor-pointer' : isEditable}" [ngClass]="{'d-none' : documentStructure.isToDelete}" (click)="onClick_editOtherDocuments(i)">
-                  <td *ngIf="!documentStructure.isToDelete"  scope="row" class="fw-bold color-secondary">
-                    <a [href]="url + documentStructure.filename">{{documentStructure.documentName}}</a>
-                  </td>
+                  <td *ngIf="!documentStructure.isToDelete"  scope="row" class="fw-bold color-secondary">{{documentStructure.documentName}}</td>
                   <td *ngIf="!documentStructure.isToDelete">{{documentStructure.documentType?.label}}</td>
                   <td *ngIf="!documentStructure.isToDelete">{{documentStructure.documentStatus?.label}}</td>
                   <td *ngIf="!documentStructure.isToDelete && isEditable"></td>
@@ -111,7 +109,9 @@
             </tbody>
             <tbody *ngIf="!isEditable">
               <tr *ngFor="let documentStructure of otherDocuments; index as i" class="table-row">
-                  <td *ngIf="!documentStructure.isToDelete"  scope="row" class="fw-bold color-secondary">{{documentStructure.documentName}}</td>
+                  <td *ngIf="!documentStructure.isToDelete"  scope="row" class="fw-bold color-secondary">
+                    <a [href]="url + documentStructure.filename + '/false'" target="_blank">{{documentStructure.documentName}}</a>
+                  </td>
                   <td *ngIf="!documentStructure.isToDelete">{{documentStructure.documentType?.label}}</td>
                   <td *ngIf="!documentStructure.isToDelete">{{documentStructure.documentStatus?.label}}</td>
                   <td *ngIf="!documentStructure.isToDelete && isEditable"></td>

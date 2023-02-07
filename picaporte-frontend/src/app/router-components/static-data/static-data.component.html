@@ -1,4 +1,4 @@
-<div class="p-5 row gap-4 d-flex flex-nowrap">
+<div class="p-5 w-100 gap-4 d-flex flex-nowrap">
     <div class="col-4">
         <div [ngClass]="{'selected': selectedStaticDataEnum == Enum_StaticData().PROPERTY_STATUS}" class="static-data-menu-item p-3 rounded cursor-pointer mb-3" (click)="onClick_selectStaticDataType(Enum_StaticData().PROPERTY_STATUS)">
             Estados de imóvel
@@ -27,12 +27,13 @@
     </div>
     <div class="col-8 rounded h-100">
         <div class="w-100 d-flex align-items-center justify-content-end gap-3 mb-3">
+            <button class="btn btn-picaporte-secondary" (click)="onClick_displayRemoved()">{{isToDisplayRemoved ? 'Esconder items removidos' : 'Visualizar items removidos'}}</button>
             <button *ngIf="hasSortChanges" class="btn btn-success" (click)="onClick_saveOrder()">Guardar nova ordem</button>
             <button class="btn btn-picaporte-primary" (click)="onClick_add()">Adicionar novo item</button>
         </div>
         <div *ngIf="isDataFetched; else loadingData" [ngClass]="{'mb-3': staticDataStructureList.length != 0}" class="accordion accordion-flush" id="accordionFlushExample" dragula="STATIC_DATA" [(dragulaModel)]="staticDataStructureList" (dragulaModelChange)="staticDataStructureList = $event">
-            <div *ngFor="let staticDataItem of staticDataStructureList; index as i" class="accordion-item">
-                <div class="accordion-header fs-5" id="flush-headingOne" [ngClass]="{'static-data-disabled': !staticDataItem.isActive}">
+            <div *ngFor="let staticDataItem of staticDataStructureList; index as i" class="accordion-item" [ngClass]="{'hidden-static-data': !staticDataItem.isActive && !isToDisplayRemoved}">
+                <div *ngIf="staticDataItem.isActive || (!staticDataItem.isActive && isToDisplayRemoved)" class="accordion-header fs-5" id="flush-headingOne" [ngClass]="{'static-data-disabled': !staticDataItem.isActive}">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#flush' + i" [attr.aria-controls]="'#flush' + i" aria-expanded="false" (click)="onClick_selectStaticDataItem(staticDataItem.id, i)">
                         {{staticDataItem.label != "" ? staticDataItem.label : 'Não contém título'}}
                     </button>
@@ -51,7 +52,7 @@
                                 </div>
                                 <div *ngIf="selectedStaticDataEnum == Enum_StaticData().DOCUMENT_TYPE" class="mb-3 d-flex align-items-center gap-3">
                                     <div>
-                                        <label for="description" class="form-label fw-bold w-100">Documento primário</label>
+                                        <label for="description" class="form-label fw-bold w-100">Documento obrigatório</label>
                                         <input type="checkbox" class="form-check-input cursor-pointer" [checked]="selectedStaticDataStructure.isPrimary" (click)="onClick_checkPrimaryDocument()">
                                     </div>
                                     <div>

@@ -15,3 +15,7 @@
 .static-data-disabled {
     background-color: #ba5959 !important;
 }
+
+.hidden-static-data {
+    border: 0px;
+}

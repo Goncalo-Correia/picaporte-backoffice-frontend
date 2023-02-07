@@ -37,6 +37,11 @@
     width: 100%;
 }
 
+.fixed-submenu {
+    position: fixed;
+    background-color: white;
+}
+
 /* BOOTSTRAP override */
 
 .btn-picaporte-primary {

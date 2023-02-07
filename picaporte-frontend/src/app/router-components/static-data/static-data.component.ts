@@ -27,6 +27,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
   isDataFetched: boolean = false;
   isEditable: boolean = false;
   isToDelete: boolean = false;
+  isToDisplayRemoved: boolean = false;
   hasSortChanges: boolean = false;
   selectedRowNumber: number = -1;
   selectedStaticDataEnum: Enum_StaticData = Enum_StaticData.PROPERTY_STATUS;
@@ -90,6 +91,10 @@ export class StaticDataComponent implements OnInit, OnDestroy {
 
   onClick_checkCertificateDocument() {
     this.selectedStaticDataStructure.isCertificate = !this.selectedStaticDataStructure.isCertificate;
+  }
+
+  onClick_displayRemoved() {
+    this.isToDisplayRemoved = !this.isToDisplayRemoved;
   }
 
   onClick_add() {

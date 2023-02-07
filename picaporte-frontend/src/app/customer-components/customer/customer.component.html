@@ -1,13 +1,15 @@
 <div class="d-flex h-100">
-    <div class="submenu-container h-100">
-        <div class="submenu-grid">
-            <div *ngFor="let submenu of customerSubmenus" class="submenu-grid-item cursor-pointer" (click)="onClick_selectSubMenu(submenu.enum_customerSubMenu)" [ngClass]="{'selected': submenu.enum_customerSubMenu == selectedCustomerSubMenu}">
-                <div class="px-4 py-4">
-                    <div class="fs-5 fw-bold mb-2">
-                        {{submenu.label}}
-                    </div>
-                    <div class="text-muted fs-6">
-                        {{submenu.description}}
+    <div class="submenu-container">
+        <div class="fixed-submenu h-100">
+            <div class="submenu-grid">
+                <div *ngFor="let submenu of customerSubmenus" class="submenu-grid-item cursor-pointer" (click)="onClick_selectSubMenu(submenu.enum_customerSubMenu)" [ngClass]="{'selected': submenu.enum_customerSubMenu == selectedCustomerSubMenu}">
+                    <div class="px-4 py-4">
+                        <div class="fs-5 fw-bold mb-2">
+                            {{submenu.label}}
+                        </div>
+                        <div class="text-muted fs-6">
+                            {{submenu.description}}
+                        </div>
                     </div>
                 </div>
             </div>

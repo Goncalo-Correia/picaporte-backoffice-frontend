@@ -4,9 +4,12 @@
 
 export const environment = {
   production: false,
-  apiUrl: "https://localhost:7036/",
   apiKey: "REDACTED_API_KEY",
-  redirectUri: "http://localhost:4200/"
+  mapboxAccessToken: "REDACTED_MAPBOX_TOKEN",
+  apiUrl: "https://localhost:7036/",
+  redirectUri: "http://localhost:59701/"
+  //apiUrl: "https://picaporte.website/rest/",
+  //redirectUri: "https://picaporte-backoffice.site/"
 };
 
 export const apiEndpoints = {

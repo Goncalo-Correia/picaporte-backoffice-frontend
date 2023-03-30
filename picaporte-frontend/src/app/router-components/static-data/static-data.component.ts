@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { StaticAmenetieTypeService } from 'src/app/api-service/static-amenetie-type/static-amenetie-type-service.service';
 import { StaticDocumentTypeService } from 'src/app/api-service/static-document-type/static-document-type.service';
 import { StaticEnergyCertificateService } from 'src/app/api-service/static-energy-certificate/static-energy-certificate.service';
@@ -12,6 +12,7 @@ import { DragulaService } from 'ng2-dragula';
 import { catchError, Subscription } from 'rxjs';
 import { MessageComponent } from 'src/app/generic-components/message/message.component';
 import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
+import { FontawesomeIcon, FontawesomeService } from 'src/app/services/fontawesome-service/fontawesome-service.service';
 
 @Component({
   selector: 'app-static-data',
@@ -22,8 +23,10 @@ export class StaticDataComponent implements OnInit, OnDestroy {
 
   @ViewChild(MessageComponent) messageComponent!: MessageComponent;
   
+  icons: Array<FontawesomeIcon> = new Array<FontawesomeIcon>();
+  visibleIcons: Array<FontawesomeIcon> = new Array<FontawesomeIcon>();
+  iconSearchText = "";
   subscription = new Subscription();
-
   isDataFetched: boolean = false;
   isEditable: boolean = false;
   isToDelete: boolean = false;
@@ -44,7 +47,8 @@ export class StaticDataComponent implements OnInit, OnDestroy {
     private staticDocumentStatusService: StaticDocumentStatusService,
     private staticDocumentTypeService: StaticDocumentTypeService,
     private dragulaService: DragulaService,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private fontawesomeService: FontawesomeService
   ) {
     dragulaService.createGroup("STATIC_DATA", {});
 
@@ -54,6 +58,16 @@ export class StaticDataComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.icons = this.fontawesomeService.getAllIcons();
+    this.icons = this.icons.filter((icon, index, self) => {
+      return (
+        self.findIndex(
+          (i) => i.prefix === icon.prefix && i.iconName === icon.iconName
+        ) === index
+      );
+    });
+    this.visibleIcons = this.icons;
+    
     this.fetchData();
   }
 
@@ -77,12 +91,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
       this.selectedRowNumber = index;
     }
 
-    if (id == 0) {
-      this.onClick_edit(this.staticDataStructureList[index]);
-    } else {
-      this.isEditable = false;
-      this.isToDelete = false;
-    }
+    this.onClick_edit(this.staticDataStructureList[index], id == 0);
   }
 
   onClick_checkPrimaryDocument() {
@@ -111,7 +120,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
     }, 50);
   }
 
-  onClick_edit(staticDataItem: StaticDataStructure) {
+  onClick_edit(staticDataItem: StaticDataStructure, isNew: boolean) {
     this.selectedStaticDataStructure = new StaticDataStructure();
     this.selectedStaticDataStructure.id = staticDataItem.id;
     this.selectedStaticDataStructure.description = staticDataItem.description;
@@ -120,8 +129,31 @@ export class StaticDataComponent implements OnInit, OnDestroy {
     this.selectedStaticDataStructure.isCertificate = staticDataItem.isCertificate;
     this.selectedStaticDataStructure.isPrimary = staticDataItem.isPrimary;
     this.selectedStaticDataStructure.isActive = staticDataItem.isActive;
-    this.isEditable = true;
-    this.isToDelete = false;
+    this.selectedStaticDataStructure.icon = staticDataItem.icon;
+    if (isNew) {
+      this.isEditable = true;
+      this.isToDelete = false;
+    } else {
+      this.isEditable = false;
+      this.isToDelete = false;
+    }
+  }
+
+  onClick_selectIcon(icon: string) {
+    this.selectedStaticDataStructure.icon = icon;
+  }
+  
+  onClick_confirmIcon() {
+    this.iconSearchText = "";
+  }
+
+  onClick_cancelIcon() {
+    this.iconSearchText = "";
+    this.selectedStaticDataStructure.icon = "";
+  }
+
+  onChange_iconSearchText() {
+    this.visibleIcons = this.icons.filter(prop => prop.iconName.indexOf(this.iconSearchText) != -1);
   }
 
   onClick_cancel() {

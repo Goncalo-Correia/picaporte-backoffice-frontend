@@ -227,6 +227,7 @@ export class CustomerPreferencesComponent implements OnInit {
         this.staticAmenetieType.label = element.amenetieType.label;
         this.staticAmenetieType.description = element.amenetieType.description;
         this.staticAmenetieType.order = element.amenetieType.order;
+        this.staticAmenetieType.icon = element.amenetieType.icon;
         this.selectedPreferenceStructure.ameneties.push(this.staticAmenetieType);
       })
     } else {

@@ -2,7 +2,7 @@
     <div *ngFor="let amenetieStructure of ameneties; let i = index" class="col-4">
         <div class="card" [ngClass]="{'cursor-pointer' : isEditable}" [ngClass]="{'card-disabled' : !isEditable}" (click)="isEditable && onClick_checkbox(i)">
             <div class="card-body">
-                <div class="d-flex align-items-center gap-2">
+                <div class="d-flex align-items-center gap-3">
                     <input *ngIf="isEditable; else amenetieRead" class="form-check-input cursor-pointer" type="checkbox" [checked]="amenetieStructure.isSelected" id="amenetie.id">
                     <ng-template #amenetieRead>
                         <i *ngIf="amenetieStructure.isSelected; else amenetieUnchecked" class="fa-solid fa-circle-check text-success fa-xl"></i>
@@ -10,6 +10,7 @@
                             <i class="fa-solid fa-xmark fa-2x text-danger"></i>
                         </ng-template>
                     </ng-template>
+                    <div [className]="amenetieStructure.amenetieType.icon + ' fa-lg color-primary'"></div>
                     <div class="px-2">{{amenetieStructure.amenetieType.label}}</div>
                 </div>
             </div>

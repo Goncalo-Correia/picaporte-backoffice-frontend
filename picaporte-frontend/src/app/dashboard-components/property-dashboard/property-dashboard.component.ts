@@ -113,7 +113,7 @@ export class PropertyDashboardComponent implements OnInit {
   }
 
   eventHandler_searchTextChanged(searchText: string) {
-    this.propertyDashboardSearchAndFilterStructure.searchAndFilterStructure.searchText = searchText;
+    this.propertyDashboardSearchAndFilterStructure.searchAndFilter.searchText = searchText;
     this.get_propertyDashboardStructure();
   }
 
@@ -143,7 +143,7 @@ export class PropertyDashboardComponent implements OnInit {
 
   previous() {
     if(this.hasPrevious) {
-      this.propertyDashboardSearchAndFilterStructure.searchAndFilterStructure.page -= 1;
+      this.propertyDashboardSearchAndFilterStructure.searchAndFilter.page -= 1;
 
       this.get_propertyDashboardStructure();
     }
@@ -151,18 +151,18 @@ export class PropertyDashboardComponent implements OnInit {
 
   next() {
     if(this.hasNext) {
-      this.propertyDashboardSearchAndFilterStructure.searchAndFilterStructure.page += 1;
+      this.propertyDashboardSearchAndFilterStructure.searchAndFilter.page += 1;
 
       this.get_propertyDashboardStructure();
     }
   }
 
   private hasPreviousPage() {
-    this.hasPrevious = this.propertyDashboardSearchAndFilterStructure.searchAndFilterStructure.page > 0;
+    this.hasPrevious = this.propertyDashboardSearchAndFilterStructure.searchAndFilter.page > 0;
   }
 
   private hasNextPage() {
-    this.hasNext = this.propertyDashboardStructureArray.length == this.propertyDashboardSearchAndFilterStructure.searchAndFilterStructure.size;
+    this.hasNext = this.propertyDashboardStructureArray.length == this.propertyDashboardSearchAndFilterStructure.searchAndFilter.size;
   }
 
   private get_Kpis() {

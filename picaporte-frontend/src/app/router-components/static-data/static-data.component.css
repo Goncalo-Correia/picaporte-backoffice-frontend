@@ -19,3 +19,19 @@
 .hidden-static-data {
     border: 0px;
 }
+
+.static-data-icon {
+    box-shadow: 1px 2px 5px 0px lightgrey;
+}
+
+.static-data-icon:hover {
+    background-color: var(--color-primary);
+    color: white;
+    font-weight: bold;
+}
+
+.static-data-icon.selected {
+    background-color: var(--color-primary);
+    color: white;
+    font-weight: bold;
+}

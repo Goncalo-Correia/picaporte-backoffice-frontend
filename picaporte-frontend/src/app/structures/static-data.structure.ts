@@ -6,4 +6,5 @@ export class StaticDataStructure {
     public isPrimary: boolean = false;
     public isCertificate: boolean = false;
     public isActive: boolean = false;
+    public icon: string = "";
 }

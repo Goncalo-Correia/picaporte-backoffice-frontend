@@ -6,7 +6,7 @@ import { Address } from 'src/app/models/address.model';
   templateUrl: './address.component.html',
   styleUrls: ['./address.component.css']
 })
-export class AddressComponent implements OnInit {
+export class AddressComponent {
 
   @Input() address: Address = new Address();
   @Input() isEditable: boolean = false;
@@ -14,9 +14,6 @@ export class AddressComponent implements OnInit {
   @Output() event_updateAddress = new EventEmitter<Address>();
 
   constructor() {
-  }
-
-  ngOnInit(): void {
   }
   
   triggerEvent_updateAddress() {

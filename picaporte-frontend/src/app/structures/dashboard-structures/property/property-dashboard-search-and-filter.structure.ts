@@ -1,8 +1,8 @@
 import { SearchAndFilterStructure } from "../search-and-filter.structure";
 
 export class PropertyDashboardSearchAndFilterStructure {
-    searchAndFilterStructure: SearchAndFilterStructure = new SearchAndFilterStructure();
-    propertyTypeId: number = 0;
+    searchAndFilter: SearchAndFilterStructure = new SearchAndFilterStructure();
+    propertyTypeId: number | undefined;
     propertyStatusId: number | undefined;
     propertyTypologyId: number | undefined;
     propertyConditionStatusId: number | undefined;

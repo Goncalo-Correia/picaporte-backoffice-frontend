@@ -15,7 +15,17 @@ export class AddressComponent {
 
   constructor() {
   }
-  
+ 
+  eventHandler_latitude(latitude: number) {
+    this.address.latitude = latitude;
+    this.triggerEvent_updateAddress();
+  }
+
+  eventHandler_longitude(longitude: number) {
+    this.address.longitude = longitude;
+    this.triggerEvent_updateAddress();
+  }
+
   triggerEvent_updateAddress() {
     this.event_updateAddress.emit(this.address);
   }

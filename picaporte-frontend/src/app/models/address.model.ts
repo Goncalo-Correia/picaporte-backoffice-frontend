@@ -6,6 +6,6 @@ export class Address {
     public city: string = "";
     public island: string = "";
     public description: string = "";
-    public longitude: string = "";
-    public latitude: string = "";
+    public longitude: number = 0;
+    public latitude: number = 0;
 }

@@ -50,7 +50,7 @@ import { NewsComponent } from './router-components/news/news.component';
 import { ToDosComponent } from './router-components/to-dos/to-dos.component';
 import { MessageComponent } from './generic-components/message/message.component';
 import { registerLocaleData } from '@angular/common';
-import { MapboxComponent } from './generic-components/address/mapbox/mapbox.component';
+import { GoogleMapComponent } from './generic-components/google-map/google-map.component';
 
 
 @NgModule({
@@ -87,7 +87,7 @@ import { MapboxComponent } from './generic-components/address/mapbox/mapbox.comp
     NewsComponent,
     ToDosComponent,
     MessageComponent,
-    MapboxComponent
+    GoogleMapComponent
   ],
   imports: [
     BrowserModule,

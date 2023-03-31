@@ -81,7 +81,7 @@
   </div> 
   <div class="row">
     <div class="col-12">
-      <app-mapbox></app-mapbox>
+      <app-google-map [latitude]="address.latitude" [longitude]="address.longitude" (latitudeEvent)="eventHandler_latitude($event)" (logitudeEvent)="eventHandler_longitude($event)"></app-google-map>
     </div>
   </div>
 </form>

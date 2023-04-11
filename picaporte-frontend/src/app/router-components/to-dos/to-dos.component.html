@@ -37,8 +37,11 @@
                     <form>
                         <div class="row">
                             <div class="col-12 mb-3">
-                                <label for="reference" class="form-label fw-bold">Título</label>
-                                <input *ngIf="isEditable" type="text" class="form-control" id="reference" name="reference" [(ngModel)]="selectedToDo.toDo.title">
+                                <label for="reference" class="form-label fw-bold required">Título</label>
+                                <input *ngIf="isEditable" type="text" class="form-control" id="reference" name="reference" 
+                                [ngClass]="{'invalid-input' : selectedToDo.toDo.title == '' || selectedToDo.toDo.title == null}"
+                                [(ngModel)]="selectedToDo.toDo.title">
+                                <div *ngIf="selectedToDo.toDo.title == '' || selectedToDo.toDo.title == null" class="invalid-message">Campo obrigatório</div>
                                 <div *ngIf="!isEditable">{{selectedToDo.toDo.title}}</div>
                             </div>
                             <div class="col-12 mb-3">
@@ -79,8 +82,12 @@
                             <ng-template #editItems>
                                 <div class="col-12 mb-3">
                                     <div class="w-100 rounded bg-white cursor-pointer">
-                                        <label for="description" class="form-label fw-bold">Introduza o To Do:</label>
-                                        <textarea rows="3" class="form-control" id="description" name="description" [(ngModel)]="selectedToDoItem.label"></textarea>
+                                        <label for="description" class="form-label fw-bold required">Introduza o To Do:</label>
+                                        <textarea rows="3" class="form-control" id="description" name="description" 
+                                        [ngClass]="{'invalid-input' : selectedToDoItem.label == '' || selectedToDoItem.label == null}"
+                                        [(ngModel)]="selectedToDoItem.label">
+                                        </textarea>
+                                        <div *ngIf="selectedToDoItem.label == '' || selectedToDoItem.label == null" class="invalid-message">Campo obrigatório</div>
                                     </div>
                                 </div>
                                 <div class="col-12 d-flex justify-content-between">

@@ -6,6 +6,7 @@ import { AuthenticationService } from 'src/app/authentication-service/authentica
 import { MessageComponent } from 'src/app/generic-components/message/message.component';
 import { Image } from 'src/app/models/image.model';
 import { News } from 'src/app/models/news.model';
+import { NewsValidationObject, ValidationService } from 'src/app/services/validation-service/validation.service';
 import { apiEndpoints, environment } from 'src/environments/environment';
 
 @Component({
@@ -27,6 +28,7 @@ export class NewsComponent implements OnInit {
   onlineNews: Array<News>;
   selectedNews: News;
   selectedNewsIndex: number = -1;
+  newsValidationObject: NewsValidationObject = new NewsValidationObject();
 
   public model = {
     editorData: '<p>Hello, world!</p>'
@@ -34,11 +36,24 @@ export class NewsComponent implements OnInit {
 
   constructor(
     private newsService: NewsService,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private validationService: ValidationService
   ) {
     this.news = new Array<News>();
     this.onlineNews = new Array<News>();
     this.selectedNews = new News();
+  }
+
+  onFocus_file() {
+    this.newsValidationObject.isFileValid.isValid = true;
+  }
+
+  onFocus_title() {
+    this.newsValidationObject.isTitleValid.isValid = true;
+  }
+
+  onFocus_content() {
+    this.newsValidationObject.isContentValid.isValid = true;
   }
 
   onChange_file(event: any) {
@@ -86,12 +101,16 @@ export class NewsComponent implements OnInit {
   }
 
   onClick_submit() {
-    this.isDataFetched = false;
-    this.isOnListView = true;
-    if(this.selectedNews.id == 0) {
-      this.post_news();
-    } else {
-      this.put_news();
+    this.newsValidationObject = new NewsValidationObject();
+    this.newsValidationObject = this.validationService.validateNews(this.selectedNews.image.content, this.selectedNews.title, this.selectedNews.content);
+    if (this.newsValidationObject.isValid) {
+      this.isDataFetched = false;
+      this.isOnListView = true;
+      if(this.selectedNews.id == 0) {
+        this.post_news();
+      } else {
+        this.put_news();
+      }
     }
   }
 

@@ -68,8 +68,12 @@
         <div class="modal-body">
           <form>
             <div class="mb-3">
-              <label for="firstName" class="form-label fw-bold">Nome</label>
-              <input type="text" class="form-control" id="firstName" name="firstName" [(ngModel)]="selectedImageStructure.title" required>
+              <label for="firstName" class="form-label fw-bold required">Nome</label>
+              <input type="text" class="form-control" id="firstName" name="firstName" 
+              [ngClass]="{'invalid-input' : !imageValidationObject.isTitleValid.isValid}"
+              [(ngModel)]="selectedImageStructure.title"
+              (focus)="onFocus_title()">
+              <div *ngIf="!imageValidationObject.isTitleValid.isValid" class="invalid-message">{{imageValidationObject.isTitleValid.validationMessage}}</div>
             </div>
             <div *ngIf="selectedImageStructure.filename != ''" class="mb-3 d-flex justify-content-center">
               <img *ngIf="selectedImageStructure.content == null; else newSelectedImage" [src]="url + selectedImageStructure.filename + '/true'" class="rounded modal-property-image">
@@ -78,8 +82,12 @@
               </ng-template>
             </div>
             <div class="mb-3">
-              <label for="firstName" class="form-label fw-bold">Ficheiro</label>
-              <input type="file" class="form-control" id="file" name="file" (change)="onChange_file($event)">
+              <label for="firstName" class="form-label fw-bold required">Ficheiro</label>
+              <input type="file" class="form-control" id="file" name="file" 
+              [ngClass]="{'invalid-input' : !imageValidationObject.isFileValid.isValid}"
+              (change)="onChange_file($event)"
+              (focus)="onFocus_file()">
+              <div *ngIf="!imageValidationObject.isFileValid.isValid" class="invalid-message">{{imageValidationObject.isFileValid.validationMessage}}</div>
             </div>
           </form>
         </div>
@@ -90,7 +98,7 @@
             </div>
             <div>
               <button type="button" class="btn  me-2" data-bs-dismiss="modal" (click)="onClick_close()">Cancelar</button>
-              <button type="submit" class="btn btn-success" data-bs-dismiss="modal" (click)="onClick_submit()">Confirmar</button>
+              <button type="submit" class="btn btn-success" (click)="onClick_submit()">Confirmar</button>
             </div>
           </div>
         </div>

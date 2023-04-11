@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { catchError } from 'rxjs';
 import { CustomerService } from 'src/app/api-service/customer/customer.service';
 import { StaticEnergyCertificateService } from 'src/app/api-service/static-energy-certificate/static-energy-certificate.service';
@@ -15,6 +15,7 @@ import { Static_PropertyConditionStatus } from 'src/app/models/static/static-pro
 import { Static_PropertyStatus } from 'src/app/models/static/static-propertystatus.model';
 import { Static_PropertyType } from 'src/app/models/static/static-propertytype.model';
 import { Static_PropertyTypology } from 'src/app/models/static/static-propertytypology.model';
+import { PropertyValidationObject } from 'src/app/services/validation-service/validation.service';
 
 @Component({
   selector: 'app-property-detail',
@@ -27,6 +28,7 @@ export class PropertyDetailComponent implements OnInit {
   
   @Input() property: Property = <Property>{};
   @Input() isEditable: boolean = false;
+  @Input() propertyValidationObject: PropertyValidationObject = new PropertyValidationObject();
 
   @Output() event_updatePropertyDetails = new EventEmitter<Property>();
 
@@ -60,47 +62,71 @@ export class PropertyDetailComponent implements OnInit {
     this.get_staticEnergyCertificates();
   }
 
+  onFocus_reference() {
+    this.propertyValidationObject.isReferenceValid.isValid = true;
+  }
+
+  onFocus_price() {
+    this.propertyValidationObject.isPriceValid.isValid = true;
+  }
+
+  onFocus_bathrooms() {
+    this.propertyValidationObject.isBathroomsValid.isValid = true;
+  }
+
+  onFocus_constructionYear() {
+    this.propertyValidationObject.isConstructionYearValid.isValid = true;
+  }
+
+  onFocus_totalArea() {
+    this.propertyValidationObject.isTotalAreaValid.isValid = true;
+  }
+
+  onFocus_constructionArea() {
+    this.propertyValidationObject.isConstructionAreaValid.isValid = true;
+  }
+
   onClick_selectCustomer(customer: Customer, customerName: string) {
     this.selectedCustomerName = customerName;
 
     this.property.customer = customer;
     this.property.customerId = customer.id;
-
+    this.propertyValidationObject.isCustomerValid.isValid = true;
     this.triggerEvent_updatePropertyDetails();
   }
 
   onClick_selectPropertyType(propertyType: Static_PropertyType) {
     this.property.propertyTypeId = propertyType.id;
     this.property.propertyType = propertyType;
-
+    this.propertyValidationObject.isTypeValid.isValid = true;
     this.triggerEvent_updatePropertyDetails();
   }
 
   onClick_selectPropertyStatus(propertyStatus: Static_PropertyStatus) {
     this.property.propertyStatusId = propertyStatus.id;
     this.property.propertyStatus = propertyStatus;
-
+    this.propertyValidationObject.isStatusValid.isValid = true;
     this.triggerEvent_updatePropertyDetails();
   }
 
   onClick_selectPropertyConditionStatus(propertyConditionStatus: Static_PropertyConditionStatus) {
     this.property.propertyConditionStatusId = propertyConditionStatus.id;
     this.property.propertyConditionStatus = propertyConditionStatus;
-
+    this.propertyValidationObject.isStateValid.isValid = true;
     this.triggerEvent_updatePropertyDetails();
   }
 
   onClick_selectPropertyTypology(propertyTypology: Static_PropertyTypology) {
     this.property.propertyTypologyId = propertyTypology.id;
     this.property.propertyTypology = propertyTypology;
-
+    this.propertyValidationObject.isTypologyValid.isValid = true;
     this.triggerEvent_updatePropertyDetails();
   }
 
   onClick_selectEnergyCertificate(energyCertificate: Static_EnergyCertificate) {
     this.property.energyCertificateId = energyCertificate.id;
     this.property.energyCertificate = energyCertificate;
-
+    this.propertyValidationObject.isEnergyEficiencyValid.isValid = true;
     this.triggerEvent_updatePropertyDetails();
   }
 

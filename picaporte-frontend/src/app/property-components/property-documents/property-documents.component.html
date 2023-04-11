@@ -135,11 +135,15 @@
       <div class="modal-body">
         <form>
           <div class="mb-3">
-            <label for="firstName" class="form-label fw-bold">Nome</label>
-            <input type="text" class="form-control" id="firstName" name="firstName" [(ngModel)]="selectedDocumentStructure.documentName" required>
+            <label for="firstName" class="form-label fw-bold required">Nome</label>
+            <input type="text" class="form-control" id="firstName" name="firstName" 
+            [ngClass]="{'invalid-input' : !documentValidationObject.isTitleValid.isValid}"
+            [(ngModel)]="selectedDocumentStructure.documentName"
+            (focus)="onFocus_title()">
+            <div *ngIf="!documentValidationObject.isTitleValid.isValid" class="invalid-message">{{documentValidationObject.isTitleValid.validationMessage}}</div>
           </div>
           <div class="mb-3">
-            <label for="cc" class="form-label fw-bold">Tipo do documento</label>
+            <label for="cc" class="form-label fw-bold required">Tipo do documento</label>
             <div class="dropdown">
               <button class="w-100 btn btn-secondary dropdown-toggle" type="button" id="propertyType" data-bs-toggle="dropdown" aria-expanded="false">
                 {{selectedDocumentTypeLabel}}
@@ -150,10 +154,15 @@
                 </li>
               </ul>
             </div>
+            <div *ngIf="!documentValidationObject.isTypeValid.isValid" class="invalid-message">{{documentValidationObject.isTypeValid.validationMessage}}</div>
           </div>
           <div class="mb-3">
-            <label for="firstName" class="form-label fw-bold">Ficheiro</label>
-            <input type="file" class="form-control" id="file" name="file" (change)="onChange_file($event)">
+            <label for="firstName" class="form-label fw-bold required">Ficheiro</label>
+            <input type="file" class="form-control" id="file" name="file" 
+            [ngClass]="{'invalid-input' : !documentValidationObject.isFileValid.isValid}"
+            (change)="onChange_file($event)"
+            (focus)="onFocus_file()">
+            <div *ngIf="!documentValidationObject.isFileValid.isValid" class="invalid-message">{{documentValidationObject.isFileValid.validationMessage}}</div>
           </div>
         </form>
       </div>
@@ -164,7 +173,7 @@
           </div>
           <div>
             <button type="button" class="btn  me-2" data-bs-dismiss="modal" (click)="onClick_close()">Cancelar</button>
-            <button type="submit" class="btn btn-success" data-bs-dismiss="modal" (click)="onClick_submit()">Confirmar</button>
+            <button type="submit" class="btn btn-success" (click)="onClick_submit()">Confirmar</button>
           </div>
         </div>
       </div>

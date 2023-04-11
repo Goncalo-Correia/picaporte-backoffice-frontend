@@ -5,6 +5,7 @@ import { QueriesUserService } from 'src/app/api-service/queries-user/queries-use
 import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
 import { MessageComponent } from 'src/app/generic-components/message/message.component';
 import { User } from 'src/app/models/user.model';
+import { UserValidationObject, ValidationService } from 'src/app/services/validation-service/validation.service';
 import { UserStructure } from 'src/app/structures/main-structures/user.structure';
 import { PreferenceStructure } from 'src/app/structures/preference.structure';
 import { Enum_UserSubMenu, UserSubMenu, UserSubMenuFactory } from 'src/app/submenus/user.submenu';
@@ -17,16 +18,16 @@ import { Enum_UserSubMenu, UserSubMenu, UserSubMenuFactory } from 'src/app/subme
 export class UserComponent implements OnInit {
 
   @ViewChild(MessageComponent) messageComponent!: MessageComponent;
-  
   userId: number = 0;
-
+  
   isEditable: boolean = false;
   isLoading: boolean = false;
   isDataFetched: boolean = false;
-
+  
   userStructure: UserStructure;
   userSubmenus: Array<UserSubMenu>;
   selectedUserSubMenu: Enum_UserSubMenu = Enum_UserSubMenu.DETAILS;
+  userValidationObject: UserValidationObject = new UserValidationObject();
 
   isOnDetailsSubMenu: boolean = true;
   isOnPreferencesSubMenu: boolean = false;
@@ -37,7 +38,8 @@ export class UserComponent implements OnInit {
   constructor(
     public queries_userService: QueriesUserService,
     private activeRoute: ActivatedRoute,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private validationService: ValidationService
   ) { 
     this.userStructure = new UserStructure();
     this.userSubmenus = new Array<UserSubMenu>();
@@ -67,7 +69,18 @@ export class UserComponent implements OnInit {
 
   onClick_submit() {
     this.isEditable = false;
-    this.submit_user();
+    this.userValidationObject = new UserValidationObject();
+    this.userValidationObject = this.validationService.validateUser(
+      this.userStructure.user.firstName, 
+      this.userStructure.user.lastName, 
+      this.userStructure.user.email, 
+      this.userStructure.user.phoneNumber
+    );
+    if (this.userValidationObject.isValid) {
+      this.submit_user();
+    } else {
+      this.isEditable = true;
+    }
   }
 
   onClick_selectSubMenu(enum_selectedUserSubMenu: Enum_UserSubMenu | undefined) {

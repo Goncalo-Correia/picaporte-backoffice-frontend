@@ -46,8 +46,11 @@
                         <div *ngIf="isEditable; else readOnlyStaticData">
                             <form>
                                 <div class="mb-3">
-                                    <label for="label" class="form-label fw-bold w-100">Título</label>
-                                    <input type="text" class="form-control" id="label" name="label" [(ngModel)]="selectedStaticDataStructure.label">
+                                    <label for="label" class="form-label fw-bold w-100 required">Título</label>
+                                    <input type="text" class="form-control" id="label" name="label" 
+                                    [ngClass]="{'invalid-input' : selectedStaticDataStructure.label == '' || selectedStaticDataStructure.label == null}"
+                                    [(ngModel)]="selectedStaticDataStructure.label">
+                                    <div *ngIf="selectedStaticDataStructure.label == '' || selectedStaticDataStructure.label == null" class="invalid-message">Campo obrigatório</div>
                                 </div>
                                 <div *ngIf="selectedStaticDataEnum == Enum_StaticData().AMENETIE_TYPE" class="mb-3 d-flex align-items-center gap-3">
                                     <button class="btn btn-picaporte-primary fw-bold" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Escolher Icon</button>

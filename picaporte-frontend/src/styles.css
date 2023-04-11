@@ -238,3 +238,18 @@
 .preference-list {
     border-bottom: 1px solid var(--color-body-background);
 }
+
+/* VALIDATION */
+.invalid-input {
+    border-color: darkred;
+}
+
+.invalid-message {
+    font-size: 10px;
+    color: darkred;
+}
+
+.required::after {
+    content: " *";
+    color: red;
+  }

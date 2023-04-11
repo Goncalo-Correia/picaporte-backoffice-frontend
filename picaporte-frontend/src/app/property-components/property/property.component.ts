@@ -13,6 +13,7 @@ import { Static_AmenetieType } from 'src/app/models/static/static-amenetieType.m
 import { AmenetieTypeStructure } from 'src/app/structures/amenetie-type.structure';
 import { PropertyStructure } from 'src/app/structures/main-structures/property.structure';
 import { Enum_PropertySubMenu, PropertySubMenu, PropertySubMenuFactory } from 'src/app/submenus/property.submenu';
+import { PropertyValidationObject, ValidationService } from 'src/app/services/validation-service/validation.service';
 
 @Component({
   selector: 'app-property',
@@ -22,7 +23,7 @@ import { Enum_PropertySubMenu, PropertySubMenu, PropertySubMenuFactory } from 's
 export class PropertyComponent implements OnInit {
 
   @ViewChild(MessageComponent) messageComponent!: MessageComponent;
-  
+
   propertyId: number = 0;
 
   isEditable: boolean = false;
@@ -32,6 +33,7 @@ export class PropertyComponent implements OnInit {
   propertyStructure: PropertyStructure;
   propertySubmenus: Array<PropertySubMenu>;
   selectedPropertySubMenu: Enum_PropertySubMenu = Enum_PropertySubMenu.DETAILS;
+  propertyValidationObject: PropertyValidationObject = new PropertyValidationObject();
 
   isOnDetailsSubMenu: boolean = true;
   isOnTasksSubMenu: boolean = false;
@@ -42,20 +44,21 @@ export class PropertyComponent implements OnInit {
   isOnLocationSubMenu: boolean = false;
   isOnObservationHistorySubMenu: boolean = false;
   isOnActivityLogMenu: boolean = false;
-  
+
   private propertySubmenuFactory: PropertySubMenuFactory;
 
   constructor(
-    public queries_propertyService: QueriesPropertyService, 
-    private activeRoute: ActivatedRoute, 
+    public queries_propertyService: QueriesPropertyService,
+    private activeRoute: ActivatedRoute,
     public amentieTypeService: StaticAmenetieTypeService,
-    private authenticationService: AuthenticationService
-    ) {
+    private authenticationService: AuthenticationService,
+    private validationService: ValidationService
+  ) {
     this.propertyStructure = new PropertyStructure();
     this.propertySubmenus = new Array<PropertySubMenu>();
     this.propertySubmenuFactory = new PropertySubMenuFactory();
   }
-  
+
   ngOnInit(): void {
     this.getActiveRoute();
     this.get_propertySubmenus();
@@ -74,8 +77,25 @@ export class PropertyComponent implements OnInit {
   }
 
   onClick_submit() {
-    this.isEditable = false;
-    this.submit_property();
+    this.propertyValidationObject = new PropertyValidationObject();
+    this.propertyValidationObject = this.validationService.validateProperty(
+      this.propertyStructure.property.reference,
+      this.propertyStructure.property.price,
+      this.propertyStructure.property.bathrooms,
+      this.propertyStructure.property.constructionYear,
+      this.propertyStructure.property.totalConstructionArea,
+      this.propertyStructure.property.livingArea,
+      this.propertyStructure.property.propertyStatusId.toString(),
+      this.propertyStructure.property.customerId.toString(),
+      this.propertyStructure.property.propertyTypeId.toString(),
+      this.propertyStructure.property.energyCertificateId.toString(),
+      this.propertyStructure.property.propertyConditionStatusId.toString(),
+      this.propertyStructure.property.propertyTypologyId.toString()
+    )
+    if (this.propertyValidationObject.isValid) {
+      this.isEditable = false;
+      this.submit_property();
+    }
   }
 
   onClick_selectSubMenu(enum_selectedCustomerSubMenu: Enum_PropertySubMenu | undefined) {
@@ -126,40 +146,38 @@ export class PropertyComponent implements OnInit {
   }
 
   eventHandler_updatePropertyObservationHistory(data: any) {
-    
+
   }
 
   private submit_property() {
     this.isLoading = true;
-    console.log(this.propertyStructure);
-    
     if (this.propertyStructure.property.id == 0 || this.propertyStructure.property.id == null) {
-      this.authenticationService.authorizeUser().then((resolve:any) => { 
+      this.authenticationService.authorizeUser().then((resolve: any) => {
         this.queries_propertyService.Post_PropertyStructure(this.propertyStructure, resolve)
-        .pipe(
-          catchError(err => {
-            this.messageComponent.showMessage(err.error);
-            return err;
-          })
-        )
-        .subscribe(data => {
-          this.propertyStructure.property = <Property>data;
-          this.propertyId = this.propertyStructure.property.id;
-          this.get_propertyStructure();
-        });
+          .pipe(
+            catchError(err => {
+              this.messageComponent.showMessage(err.error);
+              return err;
+            })
+          )
+          .subscribe(data => {
+            this.propertyStructure.property = <Property>data;
+            this.propertyId = this.propertyStructure.property.id;
+            this.get_propertyStructure();
+          });
       });
     } else {
-      this.authenticationService.authorizeUser().then((resolve:any) => { 
+      this.authenticationService.authorizeUser().then((resolve: any) => {
         this.queries_propertyService.Put_PropertyStructure(this.propertyId, this.propertyStructure, resolve)
-        .pipe(
-          catchError(err => {
-            this.messageComponent.showMessage(err.error);
-            return err;
-          })
-        )
-        .subscribe(data => {
-          this.get_propertyStructure();
-        });
+          .pipe(
+            catchError(err => {
+              this.messageComponent.showMessage(err.error);
+              return err;
+            })
+          )
+          .subscribe(data => {
+            this.get_propertyStructure();
+          });
       });
     }
   }
@@ -167,45 +185,45 @@ export class PropertyComponent implements OnInit {
   private get_propertyStructure() {
     this.isLoading = true;
     if (this.propertyId != 0 && this.propertyId != null) {
-      this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+      this.authenticationService.refreshHttpOptions().then((resolve: any) => {
         this.queries_propertyService.Get_PropertyStructure(this.propertyId, resolve)
-        .pipe(
-          catchError(err => {
-            this.messageComponent.showMessage(err.error);
-            return err;
-          })
-        )
-        .subscribe(data => {
-          this.propertyStructure = <PropertyStructure>data;
-          this.isDataFetched = true;
-          this.isLoading = false;
-        });
+          .pipe(
+            catchError(err => {
+              this.messageComponent.showMessage(err.error);
+              return err;
+            })
+          )
+          .subscribe(data => {
+            this.propertyStructure = <PropertyStructure>data;
+            this.isDataFetched = true;
+            this.isLoading = false;
+          });
       });
     } else {
       this.propertyStructure = new PropertyStructure();
-      
-      this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+
+      this.authenticationService.refreshHttpOptions().then((resolve: any) => {
         this.amentieTypeService.GetAll_AmenetieTypes(true, resolve)
-        .pipe(
-          catchError(err => {
-            this.messageComponent.showMessage(err.error);
-            return err;
-          })
-        )
-        .subscribe(data => {
-          var amenetieTypes: Array<Static_AmenetieType> = <Array<Static_AmenetieType>>data;
-          
-          amenetieTypes.forEach(element => {
-            var amenetieTypeStructure: AmenetieTypeStructure = new AmenetieTypeStructure();
-            amenetieTypeStructure.amenetieType = element;
+          .pipe(
+            catchError(err => {
+              this.messageComponent.showMessage(err.error);
+              return err;
+            })
+          )
+          .subscribe(data => {
+            var amenetieTypes: Array<Static_AmenetieType> = <Array<Static_AmenetieType>>data;
 
-            this.propertyStructure.ameneties.push(amenetieTypeStructure);
+            amenetieTypes.forEach(element => {
+              var amenetieTypeStructure: AmenetieTypeStructure = new AmenetieTypeStructure();
+              amenetieTypeStructure.amenetieType = element;
+
+              this.propertyStructure.ameneties.push(amenetieTypeStructure);
+            });
+
+            this.isDataFetched = true;
+            this.isLoading = false;
+            this.isEditable = true;
           });
-
-          this.isDataFetched = true;
-          this.isLoading = false;
-          this.isEditable = true;
-        });
       });
     }
   }
@@ -218,7 +236,7 @@ export class PropertyComponent implements OnInit {
   private getActiveRoute() {
     this.activeRoute.paramMap.subscribe(res => {
       this.propertyId = <number><unknown>res.get('id');
-    });  
+    });
   }
 
   private checkSelectedSubMenu() {

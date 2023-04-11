@@ -34,12 +34,12 @@
         <div *ngIf="isOnDetailsSubMenu" class="row">
             <div class="col-6 px-3">
                 <div class="bg-white p-4 rounded h-100">
-                    <app-customer-detail *ngIf="isDataFetched" [customer]="customerStructure.customer" [isEditable]="isEditable" (event_updateCustomerDetails)="eventHandler_updateCustomerDetails($event)"></app-customer-detail>
+                    <app-customer-detail *ngIf="isDataFetched" [customer]="customerStructure.customer" [isEditable]="isEditable" [customerValidationObject]="customerValidationObject" (event_updateCustomerDetails)="eventHandler_updateCustomerDetails($event)"></app-customer-detail>
                 </div>
             </div>
             <div class="col-6 px-3">
                 <div class="bg-white p-4 rounded h-100">
-                    <app-address *ngIf="isDataFetched" [address]="customerStructure.customer.address" [isEditable]="isEditable" (event_updateAddress)="eventHandler_updateCustomerAddress($event)"></app-address>
+                    <app-address *ngIf="isDataFetched" [address]="customerStructure.customer.address" [isEditable]="isEditable" [addressValidationObject]="addressValidationObject" (event_updateAddress)="eventHandler_updateCustomerAddress($event)"></app-address>
                 </div>
             </div>
         </div>

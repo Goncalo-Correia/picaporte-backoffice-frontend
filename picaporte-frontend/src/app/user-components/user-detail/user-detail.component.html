@@ -16,8 +16,13 @@
     </div>
     <div class="row">
       <div class="col-6 mb-3">
-        <label for="firstName" class="form-label fw-bold w-100">Nome</label>
-        <input *ngIf="isEditable; else firstNameRead" type="text" class="form-control" id="firstName" name="firstName" [(ngModel)]="user.firstName" (change)="triggerEvent_updateUserDetails()">
+        <label for="firstName" class="form-label fw-bold w-100 required">Nome</label>
+        <input *ngIf="isEditable; else firstNameRead" type="text" class="form-control" id="firstName" name="firstName" 
+        [ngClass]="{'invalid-input' : !userValidationObject.isNameValid.isValid}"
+        [(ngModel)]="user.firstName"
+        (change)="triggerEvent_updateUserDetails()"
+        (focus)="onFocus_name()">
+        <div *ngIf="!userValidationObject.isNameValid.isValid" class="invalid-message">{{userValidationObject.isNameValid.validationMessage}}</div>
         <ng-template #firstNameRead>
             <div *ngIf="user.firstName != null; else firstNameNull">
                 {{user.firstName}}
@@ -28,8 +33,13 @@
         </ng-template>
       </div>
       <div class="col-6 mb-3">
-        <label for="lastName" class="form-label fw-bold w-100">Sobrenome</label>
-        <input *ngIf="isEditable; else lastNameRead" type="text" class="form-control" id="lastName" name="lastName" [(ngModel)]="user.lastName" (change)="triggerEvent_updateUserDetails()">
+        <label for="lastName" class="form-label fw-bold w-100 required">Sobrenome</label>
+        <input *ngIf="isEditable; else lastNameRead" type="text" class="form-control" id="lastName" name="lastName" 
+        [ngClass]="{'invalid-input' : !userValidationObject.isSurrnameValid.isValid}"
+        [(ngModel)]="user.lastName" 
+        (change)="triggerEvent_updateUserDetails()" 
+        (focus)="onFocus_surrname()">
+        <div *ngIf="!userValidationObject.isSurrnameValid.isValid" class="invalid-message">{{userValidationObject.isSurrnameValid.validationMessage}}</div>
         <ng-template #lastNameRead>
             <div *ngIf="user.lastName != null; else lastNameNull">
                 {{user.lastName}}
@@ -42,8 +52,13 @@
     </div>
     <div class="row">
       <div class="col-6 mb-3">
-        <label for="phoneNumber" class="form-label fw-bold w-100">Telemóvel</label>
-        <input *ngIf="isEditable; else phoneNumberRead" type="text" class="form-control" id="phoneNumber" name="phoneNumber" [(ngModel)]="user.phoneNumber" (change)="triggerEvent_updateUserDetails()">
+        <label for="phoneNumber" class="form-label fw-bold w-100 required">Telemóvel</label>
+        <input *ngIf="isEditable; else phoneNumberRead" type="text" class="form-control" id="phoneNumber" name="phoneNumber" 
+        [ngClass]="{'invalid-input' : !userValidationObject.isPhoneNumberValid.isValid}"
+        [(ngModel)]="user.phoneNumber" 
+        (change)="triggerEvent_updateUserDetails()" 
+        (focus)="onFocus_phoneNumber()">
+        <div *ngIf="!userValidationObject.isPhoneNumberValid.isValid" class="invalid-message">{{userValidationObject.isPhoneNumberValid.validationMessage}}</div>
         <ng-template #phoneNumberRead>
             <div *ngIf="user.phoneNumber != null; else phoneNumberNull">
                 {{user.phoneNumber}}
@@ -54,8 +69,13 @@
         </ng-template>
       </div>
       <div class="col-6 mb-3">
-        <label for="email" class="form-label fw-bold w-100">Telemóvel</label>
-        <input *ngIf="isEditable; else emailRead" type="email" class="form-control" id="email" name="email" [(ngModel)]="user.email" (change)="triggerEvent_updateUserDetails()">
+        <label for="email" class="form-label fw-bold w-100 required">Email</label>
+        <input *ngIf="isEditable; else emailRead" type="email" class="form-control" id="email" name="email" 
+        [ngClass]="{'invalid-input' : !userValidationObject.isEmailValid.isValid}"
+        [(ngModel)]="user.email" 
+        (change)="triggerEvent_updateUserDetails()" 
+        (focus)="onFocus_email()">
+        <div *ngIf="!userValidationObject.isEmailValid.isValid" class="invalid-message">{{userValidationObject.isEmailValid.validationMessage}}</div>
         <ng-template #emailRead>
             <div *ngIf="user.email != null; else emailNull">
                 {{user.email}}

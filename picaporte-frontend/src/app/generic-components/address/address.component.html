@@ -1,8 +1,13 @@
 <form>
   <div class="row">
     <div class="col mb-3">
-      <label for="street" class="form-label fw-bold w-100">Rua</label>
-      <input *ngIf="isEditable; else streetRead" type="text" class="form-control" id="street" name="street" [(ngModel)]="address.street" (change)="triggerEvent_updateAddress()">
+      <label for="street" class="form-label fw-bold w-100 required">Rua</label>
+      <input *ngIf="isEditable; else streetRead" type="text" class="form-control" id="street" name="street" 
+      [ngClass]="{'invalid-input' : !addressValidationObject.isStreetValid.isValid}"
+      [(ngModel)]="address.street" 
+      (change)="triggerEvent_updateAddress()"
+      (focus)="onFocus_street()">
+      <div *ngIf="!addressValidationObject.isStreetValid.isValid" class="invalid-message">{{addressValidationObject.isStreetValid.validationMessage}}</div>
       <ng-template #streetRead>
         <div *ngIf="address.street != null; else streetNull">
           {{address.street}}
@@ -16,7 +21,9 @@
   <div class="row">
     <div class="col-6 mb-3">
       <label for="location" class="form-label fw-bold w-100">Localização</label>
-      <input *ngIf="isEditable; else locationRead" type="text" class="form-control" id="location" name="location" [(ngModel)]="address.location" (change)="triggerEvent_updateAddress()">
+      <input *ngIf="isEditable; else locationRead" type="text" class="form-control" id="location" name="location" 
+      [(ngModel)]="address.location" 
+      (change)="triggerEvent_updateAddress()">
       <ng-template #locationRead>
         <div *ngIf="address.location != null; else locationNull">
           {{address.location}}
@@ -27,8 +34,13 @@
       </ng-template>
     </div>
     <div class="col-6 mb-3">
-      <label for="parish" class="form-label fw-bold w-100">Freguesia</label>
-      <input *ngIf="isEditable; else parishRead" type="text" class="form-control" id="parish" name="parish" [(ngModel)]="address.parish" (change)="triggerEvent_updateAddress()">
+      <label for="parish" class="form-label fw-bold w-100 required">Freguesia</label>
+      <input *ngIf="isEditable; else parishRead" type="text" class="form-control" id="parish" name="parish" 
+      [ngClass]="{'invalid-input' : !addressValidationObject.isParishValid.isValid}"
+      [(ngModel)]="address.parish" 
+      (change)="triggerEvent_updateAddress()"
+      (focus)="onFocus_parish()">
+      <div *ngIf="!addressValidationObject.isParishValid.isValid" class="invalid-message">{{addressValidationObject.isParishValid.validationMessage}}</div>
       <ng-template #parishRead>
         <div *ngIf="address.parish != null; else parishNull">
           {{address.parish}}
@@ -41,8 +53,13 @@
   </div>
   <div class="row">
     <div class="mb-3 col-6">
-      <label for="city" class="form-label fw-bold w-100">Cidade</label>
-      <input *ngIf="isEditable; else cityRead" type="text" class="form-control" id="city" name="city" [(ngModel)]="address.city" (change)="triggerEvent_updateAddress()">
+      <label for="city" class="form-label fw-bold w-100 required">Cidade</label>
+      <input *ngIf="isEditable; else cityRead" type="text" class="form-control" id="city" name="city" 
+      [ngClass]="{'invalid-input' : !addressValidationObject.isCityValid.isValid}"
+      [(ngModel)]="address.city" 
+      (change)="triggerEvent_updateAddress()"
+      (focus)="onFocus_city()">
+      <div *ngIf="!addressValidationObject.isCityValid.isValid" class="invalid-message">{{addressValidationObject.isCityValid.validationMessage}}</div>
       <ng-template #cityRead>
         <div *ngIf="address.city != null; else cityNull">
           {{address.city}}
@@ -53,8 +70,13 @@
       </ng-template>
     </div>
     <div class="mb-3 col-6">
-      <label for="island" class="form-label fw-bold w-100">Ilha</label>
-      <input *ngIf="isEditable; else islandRead" type="text" class="form-control" id="island" name="island" [(ngModel)]="address.island" (change)="triggerEvent_updateAddress()">
+      <label for="island" class="form-label fw-bold w-100 required">Ilha</label>
+      <input *ngIf="isEditable; else islandRead" type="text" class="form-control" id="island" name="island" 
+      [ngClass]="{'invalid-input' : !addressValidationObject.isIslandValid.isValid}"
+      [(ngModel)]="address.island" 
+      (change)="triggerEvent_updateAddress()"
+      (focus)="onFocus_island()">
+      <div *ngIf="!addressValidationObject.isIslandValid.isValid" class="invalid-message">{{addressValidationObject.isIslandValid.validationMessage}}</div>
       <ng-template #islandRead>
         <div *ngIf="address.island != null; else islandNull">
           {{address.island}}

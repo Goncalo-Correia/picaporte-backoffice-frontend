@@ -1,8 +1,13 @@
 <form>
   <div class="row">
     <div class="col mb-3">
-      <label for="firstName" class="form-label fw-bold w-100">Nome</label>
-      <input *ngIf="isEditable; else firstNameRead" type="text" class="form-control" id="firstName" name="firstName" [(ngModel)]="customer.firstName" (change)="triggerEvent_updateCustomerDetails()">
+      <label for="firstName" class="form-label fw-bold w-100 required">Nome</label>
+      <input *ngIf="isEditable; else firstNameRead" type="text" class="form-control" id="firstName" name="firstName" 
+      [ngClass]="{'invalid-input' : !customerValidationObject.isNameValid.isValid}"
+      [(ngModel)]="customer.firstName" 
+      (change)="triggerEvent_updateCustomerDetails()"
+      (focus)="onFocus_name()">
+      <div *ngIf="!customerValidationObject.isNameValid.isValid" class="invalid-message">{{customerValidationObject.isNameValid.validationMessage}}</div>
       <ng-template #firstNameRead>
         <div *ngIf="customer.firstName != null; else firstNameNull">
           {{customer.firstName}}
@@ -15,8 +20,13 @@
   </div>
   <div class="row">
     <div class="col mb-3">
-      <label for="lastName" class="form-label fw-bold w-100">Sobrenome</label>
-      <input *ngIf="isEditable; else lastNameRead" type="text" class="form-control" id="lastName" name="lastName" [(ngModel)]="customer.lastName" (change)="triggerEvent_updateCustomerDetails()">
+      <label for="lastName" class="form-label fw-bold w-100 required">Sobrenome</label>
+      <input *ngIf="isEditable; else lastNameRead" type="text" class="form-control" id="lastName" name="lastName" 
+      [ngClass]="{'invalid-input' : !customerValidationObject.isSurrnameValid.isValid}"
+      [(ngModel)]="customer.lastName" 
+      (change)="triggerEvent_updateCustomerDetails()"
+      (focus)="onFocus_surrname()">
+      <div *ngIf="!customerValidationObject.isSurrnameValid.isValid" class="invalid-message">{{customerValidationObject.isSurrnameValid.validationMessage}}</div>
       <ng-template #lastNameRead>
         <div *ngIf="customer.lastName != null; else lastNameNull">
           {{customer.lastName}}
@@ -29,8 +39,13 @@
   </div>
   <div class="row">
     <div class="col-6 mb-3">
-      <label for="phoneNumber" class="form-label fw-bold w-100">Telemóvel</label>
-      <input *ngIf="isEditable; else phoneNumberRead" type="text" class="form-control" id="phoneNumber" name="phoneNumber" [(ngModel)]="customer.phoneNumber" (change)="triggerEvent_updateCustomerDetails()">
+      <label for="phoneNumber" class="form-label fw-bold w-100 required">Telemóvel</label>
+      <input *ngIf="isEditable; else phoneNumberRead" type="text" class="form-control" id="phoneNumber" name="phoneNumber" 
+      [ngClass]="{'invalid-input' : !customerValidationObject.isPhoneNumberValid.isValid}"
+      [(ngModel)]="customer.phoneNumber" 
+      (change)="triggerEvent_updateCustomerDetails()"
+      (focus)="onFocus_phoneNumber()">
+      <div *ngIf="!customerValidationObject.isPhoneNumberValid.isValid" class="invalid-message">{{customerValidationObject.isPhoneNumberValid.validationMessage}}</div>
       <ng-template #phoneNumberRead>
         <div *ngIf="customer.phoneNumber != null; else phoneNumberNull">
           {{customer.phoneNumber}}
@@ -41,8 +56,13 @@
       </ng-template>
     </div>
     <div class="col-6 mb-3">
-      <label for="email" class="form-label fw-bold w-100">Email</label>
-      <input *ngIf="isEditable; else emailRead" type="text" class="form-control" id="email" name="email" [(ngModel)]="customer.email" (change)="triggerEvent_updateCustomerDetails()">
+      <label for="email" class="form-label fw-bold w-100 required">Email</label>
+      <input *ngIf="isEditable; else emailRead" type="text" class="form-control" id="email" name="email" 
+      [ngClass]="{'invalid-input' : !customerValidationObject.isEmailValid.isValid}"
+      [(ngModel)]="customer.email" 
+      (change)="triggerEvent_updateCustomerDetails()"
+      (focus)="onFocus_email()">
+      <div *ngIf="!customerValidationObject.isEmailValid.isValid" class="invalid-message">{{customerValidationObject.isEmailValid.validationMessage}}</div>
       <ng-template #emailRead>
         <div *ngIf="customer.email != null; else emailNull">
           {{customer.email}}
@@ -55,8 +75,13 @@
   </div>
   <div class="row">
     <div class="col-6 mb-3">
-      <label for="cc" class="form-label fw-bold w-100">CC</label>
-      <input *ngIf="isEditable; else ccRead" type="text" class="form-control" id="cc" name="cc" [(ngModel)]="customer.cc" (change)="triggerEvent_updateCustomerDetails()">
+      <label for="cc" class="form-label fw-bold w-100 required">CC</label>
+      <input *ngIf="isEditable; else ccRead" type="text" class="form-control" id="cc" name="cc" 
+      [ngClass]="{'invalid-input' : !customerValidationObject.isCcValid.isValid}"
+      [(ngModel)]="customer.cc" 
+      (change)="triggerEvent_updateCustomerDetails()"
+      (focus)="onFocus_cc()">
+      <div *ngIf="!customerValidationObject.isCcValid.isValid" class="invalid-message">{{customerValidationObject.isCcValid.validationMessage}}</div>
       <ng-template #ccRead>
         <div *ngIf="customer.cc != null; else ccNull">
           {{customer.cc}}
@@ -67,8 +92,13 @@
       </ng-template>
     </div>
     <div class="col-6 mb-3">
-      <label for="nif" class="form-label fw-bold w-100">NIF</label>
-      <input *ngIf="isEditable; else nifRead" type="text" class="form-control" id="nif" name="nif" [(ngModel)]="customer.nif" (change)="triggerEvent_updateCustomerDetails()">
+      <label for="nif" class="form-label fw-bold w-100 required">NIF</label>
+      <input *ngIf="isEditable; else nifRead" type="text" class="form-control" id="nif" name="nif" 
+      [ngClass]="{'invalid-input' : !customerValidationObject.isNifValid.isValid}"
+      [(ngModel)]="customer.nif" 
+      (change)="triggerEvent_updateCustomerDetails()"
+      (focus)="onFocus_nif()">
+      <div *ngIf="!customerValidationObject.isNifValid.isValid" class="invalid-message">{{customerValidationObject.isNifValid.validationMessage}}</div>
       <ng-template #nifRead>
         <div *ngIf="customer.nif != null; else nifNull">
           {{customer.nif}}

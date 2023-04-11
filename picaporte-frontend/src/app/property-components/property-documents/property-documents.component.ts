@@ -6,6 +6,7 @@ import { MessageComponent } from 'src/app/generic-components/message/message.com
 import { Document } from 'src/app/models/document.model';
 import { Static_DocumentType } from 'src/app/models/static/static-documenttype.model';
 import { DocumentService } from 'src/app/services/document-service/document.service';
+import { DocumentValidationObject, ValidationService } from 'src/app/services/validation-service/validation.service';
 import { apiEndpoints, environment } from 'src/environments/environment';
 declare let $: any;
 
@@ -38,18 +39,31 @@ export class PropertyDocumentsComponent implements OnInit {
   allCertificateDocumentsToBeDeleted: boolean = false; 
   private isOtherDocument: boolean = false;
   allOtherDocumentsToBeDeleted: boolean = false;
-  
+  documentValidationObject: DocumentValidationObject = new DocumentValidationObject();
   private documentTypes: Array<Static_DocumentType> = new Array<Static_DocumentType>();
   availableDocumentTypes: Array<Static_DocumentType> = new Array<Static_DocumentType>();
 
   constructor(
     public documentTypeService: StaticDocumentTypeService, 
     public documentService: DocumentService,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private validationService: ValidationService
   ) { }
 
   ngOnInit(): void {
     this.get_documentTypes();
+  }
+
+  onFocus_file() {
+    this.documentValidationObject.isFileValid.isValid = true;
+  }
+
+  onFocus_title() {
+    this.documentValidationObject.isTitleValid.isValid = true;
+  }
+
+  onFocus_type() {
+    this.documentValidationObject.isTypeValid.isValid = true;
   }
 
   onClick_addNewMainDocument() {
@@ -81,6 +95,7 @@ export class PropertyDocumentsComponent implements OnInit {
     this.selectedDocumentTypeLabel = documentTypeLabel;
     this.selectedDocumentStructure.documentType = documentType;
     this.selectedDocumentStructure.documentTypeId = documentType.id;
+    this.onFocus_type();
   }
 
   onChange_file(event: any) {
@@ -157,33 +172,38 @@ export class PropertyDocumentsComponent implements OnInit {
   }
 
   onClick_submit() {
-    if (this.isMainDocument) {
-      if (this.selectedRowNumber > -1) {
-        
-        this.mainDocuments[this.selectedRowNumber] = this.selectedDocumentStructure;
-      } else {
-        this.mainDocuments.push(this.selectedDocumentStructure);
+    this.documentValidationObject = new DocumentValidationObject();
+    this.documentValidationObject = this.validationService.validateDocument(this.selectedDocumentStructure.documentName, this.selectedDocumentStructure.documentType.label, this.selectedDocumentStructure.content);
+
+    if (this.documentValidationObject.isValid) {
+      if (this.isMainDocument) {
+        if (this.selectedRowNumber > -1) {
+          
+          this.mainDocuments[this.selectedRowNumber] = this.selectedDocumentStructure;
+        } else {
+          this.mainDocuments.push(this.selectedDocumentStructure);
+        }
+        this.allMainDocumentsToBeDeleted = false;
+        this.triggerEvent_updateMainPropertyDocuments();
       }
-      this.allMainDocumentsToBeDeleted = false;
-      this.triggerEvent_updateMainPropertyDocuments();
-    }
-    if (this.isCertificateDocument) {
-      if (this.selectedRowNumber > -1) {
-        this.certificateDocuments[this.selectedRowNumber] = this.selectedDocumentStructure;
-      } else {
-        this.certificateDocuments.push(this.selectedDocumentStructure);
+      if (this.isCertificateDocument) {
+        if (this.selectedRowNumber > -1) {
+          this.certificateDocuments[this.selectedRowNumber] = this.selectedDocumentStructure;
+        } else {
+          this.certificateDocuments.push(this.selectedDocumentStructure);
+        }
+        this.allCertificateDocumentsToBeDeleted = false;
+        this.triggerEvent_updateCertificatePropertyDocuments();
       }
-      this.allCertificateDocumentsToBeDeleted = false;
-      this.triggerEvent_updateCertificatePropertyDocuments();
-    }
-    if (this.isOtherDocument) {
-      if (this.selectedRowNumber > -1) {
-        this.otherDocuments[this.selectedRowNumber] = this.selectedDocumentStructure;
-      } else {
-        this.otherDocuments.push(this.selectedDocumentStructure);
+      if (this.isOtherDocument) {
+        if (this.selectedRowNumber > -1) {
+          this.otherDocuments[this.selectedRowNumber] = this.selectedDocumentStructure;
+        } else {
+          this.otherDocuments.push(this.selectedDocumentStructure);
+        }
+        this.allOtherDocumentsToBeDeleted = false;
+        this.triggerEvent_updateOtherPropertyDocuments();
       }
-      this.allOtherDocumentsToBeDeleted = false;
-      this.triggerEvent_updateOtherPropertyDocuments();
     }
   }
 

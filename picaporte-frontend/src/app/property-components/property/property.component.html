@@ -39,7 +39,7 @@
             </div>
             <div class="col-6 px-3">
                 <div class="bg-white p-4 rounded h-100">
-                    <app-property-detail *ngIf="isDataFetched" [isEditable]="isEditable" [property]="propertyStructure.property" (event_updatePropertyDetails)="eventHandler_updatePropertyDetails($event)"></app-property-detail>
+                    <app-property-detail *ngIf="isDataFetched" [isEditable]="isEditable" [property]="propertyStructure.property" [propertyValidationObject]="propertyValidationObject" (event_updatePropertyDetails)="eventHandler_updatePropertyDetails($event)"></app-property-detail>
                 </div>
             </div>
             <div class="col-6 px-3">

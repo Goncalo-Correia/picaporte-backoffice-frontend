@@ -6,6 +6,7 @@ import { AuthenticationService } from 'src/app/authentication-service/authentica
 import { MessageComponent } from 'src/app/generic-components/message/message.component';
 import { Address } from 'src/app/models/address.model';
 import { Customer } from 'src/app/models/customer.model';
+import { AddressValidationObject, CustomerValidationObject, UserValidationObject, ValidationService } from 'src/app/services/validation-service/validation.service';
 import { CustomerStructure } from 'src/app/structures/main-structures/customer.structure';
 import { PreferenceStructure } from 'src/app/structures/preference.structure';
 import { CustomerSubMenu, CustomerSubMenuFactory, Enum_CustomerSubMenu } from 'src/app/submenus/customer.submenu';
@@ -28,6 +29,8 @@ export class CustomerComponent implements OnInit {
   customerStructure: CustomerStructure;
   customerSubmenus: Array<CustomerSubMenu>;
   selectedCustomerSubMenu: Enum_CustomerSubMenu = Enum_CustomerSubMenu.DETAILS;
+  customerValidationObject: CustomerValidationObject = new CustomerValidationObject();
+  addressValidationObject: AddressValidationObject = new AddressValidationObject();
 
   isOnDetailsSubMenu: boolean = true;
   isOnTasksSubMenu: boolean = false;
@@ -40,7 +43,8 @@ export class CustomerComponent implements OnInit {
   constructor(
     public queries_customerService: QueriesCustomerService, 
     private activeRoute: ActivatedRoute,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private validationService: ValidationService
     ) { 
     this.customerStructure = new CustomerStructure();
     this.customerSubmenus = new Array<CustomerSubMenu>();
@@ -70,7 +74,27 @@ export class CustomerComponent implements OnInit {
 
   onClick_submit() {
     this.isEditable = false;
-    this.submit_customer();
+    this.customerValidationObject = new CustomerValidationObject();
+    this.customerValidationObject = this.validationService.validateCustomer(
+      this.customerStructure.customer.firstName,
+      this.customerStructure.customer.lastName,
+      this.customerStructure.customer.email,
+      this.customerStructure.customer.phoneNumber,
+      this.customerStructure.customer.cc,
+      this.customerStructure.customer.nif,
+      this.customerStructure.customer.address);
+    this.addressValidationObject = new AddressValidationObject();
+    this.addressValidationObject = this.validationService.validateAddress(
+      this.customerStructure.customer.address.street,
+      this.customerStructure.customer.address.parish,
+      this.customerStructure.customer.address.city,
+      this.customerStructure.customer.address.island
+    );
+    if (this.customerValidationObject.isValid) {
+      this.submit_customer();
+    } else {
+      this.isEditable = true;
+    }
   }
 
   onClick_selectSubMenu(enum_selectedCustomerSubMenu: Enum_CustomerSubMenu | undefined) {

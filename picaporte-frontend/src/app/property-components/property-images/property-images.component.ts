@@ -4,6 +4,7 @@ import { IAlbum, Lightbox } from 'ngx-lightbox';
 import * as $ from 'jquery';
 import { apiEndpoints, environment } from 'src/environments/environment';
 import { Image } from 'src/app/models/image.model';
+import { ImageValidationObject, ValidationService } from 'src/app/services/validation-service/validation.service';
 
 @Component({
   selector: 'app-property-images',
@@ -26,11 +27,23 @@ export class PropertyImagesComponent {
   selectedImageStructure: Image = new Image();
   selectedRowNumber: number = -1;
   isMainImage: boolean = false;
+  imageValidationObject: ImageValidationObject = new ImageValidationObject();
 
   otherImagesIsEmpty: boolean = false;
 
-  constructor(public imageService: ImageService, private _lightbox: Lightbox) { 
+  constructor(
+    public imageService: ImageService, 
+    private _lightbox: Lightbox,
+    private validationService: ValidationService) { 
     this.lightboxImages = new Array<IAlbum>();
+  }
+
+  onFocus_file() {
+    this.imageValidationObject.isFileValid.isValid = true;
+  }
+
+  onFocus_title() {
+    this.imageValidationObject.isTitleValid.isValid = true;
   }
 
   onChange_file(event: any) {
@@ -100,18 +113,22 @@ export class PropertyImagesComponent {
   }
 
   onClick_submit() {
-    if (this.isMainImage) {
-      this.mainImage = this.imageService.mapNewImageStructure(this.selectedImageStructure);
-      this.triggerEvent_updateMainImage();
-    } else {
-      if (this.selectedRowNumber >= 0) {
-        this.otherImages[this.selectedRowNumber] = this.imageService.mapNewImageStructure(this.selectedImageStructure);
+    this.imageValidationObject = new ImageValidationObject();
+    this.imageValidationObject = this.validationService.validateImage(this.selectedImageStructure.title, this.selectedImageStructure.content);
+    if (this.imageValidationObject.isValid) {
+      if (this.isMainImage) {
+        this.mainImage = this.imageService.mapNewImageStructure(this.selectedImageStructure);
+        this.triggerEvent_updateMainImage();
       } else {
-        this.otherImages.push(this.imageService.mapNewImageStructure(this.selectedImageStructure));
+        if (this.selectedRowNumber >= 0) {
+          this.otherImages[this.selectedRowNumber] = this.imageService.mapNewImageStructure(this.selectedImageStructure);
+        } else {
+          this.otherImages.push(this.imageService.mapNewImageStructure(this.selectedImageStructure));
+        }
+        this.clearFileInput();
+        this.checkDeleteAllOtherImages();
+        this.triggerEvent_updateOtherImages();
       }
-      this.clearFileInput();
-      this.checkDeleteAllOtherImages();
-      this.triggerEvent_updateOtherImages();
     }
   }
 

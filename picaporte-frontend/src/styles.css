@@ -6,6 +6,11 @@
     --color-body-background: #f3f3f3;
 }
 
+a, a:hover {
+    text-decoration: none;
+    color: var(--color-primary);
+}
+
 .color-primary {
     color: var(--color-primary);
 }
@@ -252,4 +257,10 @@
 .required::after {
     content: " *";
     color: red;
-  }
+}
+
+/* LIGHTBOX */
+.lightboxOverlay {
+    width: 100% !important;
+    height: 100% !important;
+}

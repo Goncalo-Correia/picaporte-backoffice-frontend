@@ -17,7 +17,7 @@
               </tr>
             </thead>
             <tbody *ngIf="isEditable">
-              <tr *ngFor="let documentStructure of mainDocuments; index as i" class="table-row" data-bs-toggle="modal" data-bs-target="#staticBackdrop" [ngClass]="{'cursor-pointer' : isEditable}" [ngClass]="{'d-none' : documentStructure.isToDelete}" (click)="onClick_editMainDocuments(i)">
+              <tr *ngFor="let documentStructure of mainDocuments; index as i" class="table-row cursor-pointer" data-bs-toggle="modal" data-bs-target="#staticBackdrop" [ngClass]="{'cursor-pointer' : isEditable}" [ngClass]="{'d-none' : documentStructure.isToDelete}" (click)="onClick_editMainDocuments(i)">
                 <td *ngIf="!documentStructure.isToDelete" scope="row" class="fw-bold color-secondary">{{documentStructure.documentName}}</td>
                 <td *ngIf="!documentStructure.isToDelete">{{documentStructure.documentType?.label}}</td>
                 <td *ngIf="!documentStructure.isToDelete">{{documentStructure.documentStatus?.label}}</td>
@@ -59,7 +59,7 @@
               </tr>
             </thead>
             <tbody *ngIf="isEditable">
-              <tr *ngFor="let documentStructure of certificateDocuments; index as i" class="table-row" data-bs-toggle="modal" data-bs-target="#staticBackdrop" [ngClass]="{'cursor-pointer' : isEditable}" [ngClass]="{'d-none' : documentStructure.isToDelete}" (click)="onClick_editCertificateDocuments(i)">
+              <tr *ngFor="let documentStructure of certificateDocuments; index as i" class="table-row cursor-pointer" data-bs-toggle="modal" data-bs-target="#staticBackdrop" [ngClass]="{'cursor-pointer' : isEditable}" [ngClass]="{'d-none' : documentStructure.isToDelete}" (click)="onClick_editCertificateDocuments(i)">
                   <td *ngIf="!documentStructure.isToDelete"  scope="row" class="fw-bold color-secondary">{{documentStructure.documentName}}</td>
                   <td *ngIf="!documentStructure.isToDelete">{{documentStructure.documentType?.label}}</td>
                   <td *ngIf="!documentStructure.isToDelete">{{documentStructure.documentStatus?.label}}</td>
@@ -100,7 +100,7 @@
               </tr>
             </thead>
             <tbody *ngIf="isEditable">
-              <tr *ngFor="let documentStructure of otherDocuments; index as i" class="table-row" data-bs-toggle="modal" data-bs-target="#staticBackdrop" [ngClass]="{'cursor-pointer' : isEditable}" [ngClass]="{'d-none' : documentStructure.isToDelete}" (click)="onClick_editOtherDocuments(i)">
+              <tr *ngFor="let documentStructure of otherDocuments; index as i" class="table-row cursor-pointer" data-bs-toggle="modal" data-bs-target="#staticBackdrop" [ngClass]="{'cursor-pointer' : isEditable}" [ngClass]="{'d-none' : documentStructure.isToDelete}" (click)="onClick_editOtherDocuments(i)">
                   <td *ngIf="!documentStructure.isToDelete"  scope="row" class="fw-bold color-secondary">{{documentStructure.documentName}}</td>
                   <td *ngIf="!documentStructure.isToDelete">{{documentStructure.documentType?.label}}</td>
                   <td *ngIf="!documentStructure.isToDelete">{{documentStructure.documentStatus?.label}}</td>

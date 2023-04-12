@@ -97,6 +97,8 @@ export class ToDosComponent implements OnInit {
   }
 
   onClick_submit() {
+    this.isEditable = false;
+    this.isDataFetched = false;
     this.post_toDos();
   }
 

@@ -14,7 +14,6 @@ export class FontawesomeService {
   private icons: Array<FontawesomeIcon> = new Array<FontawesomeIcon>();
 
   constructor() {
-    this.addIcons(far, 'far');
     //this.addIcons(fad, 'fad');
     //this.addIcons(fab, 'fab');
   }
@@ -31,8 +30,9 @@ export class FontawesomeService {
   }
 
   getAllIcons(): Array<FontawesomeIcon> {
-    console.log(this.icons);
-    
+    if (this.icons.length == 0) {
+      this.addIcons(far, 'far');
+    }
     return this.icons;
   }
 }

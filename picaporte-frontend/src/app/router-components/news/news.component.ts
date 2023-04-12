@@ -101,8 +101,10 @@ export class NewsComponent implements OnInit {
   }
 
   onClick_submit() {
+    console.log(this.selectedNews);
+    
     this.newsValidationObject = new NewsValidationObject();
-    this.newsValidationObject = this.validationService.validateNews(this.selectedNews.image.content, this.selectedNews.title, this.selectedNews.content);
+    this.newsValidationObject = this.validationService.validateNews(this.selectedNews.image.content == "" || this.selectedNews.image.content == null ? this.selectedNews.image.filename : this.selectedNews.image.content, this.selectedNews.title, this.selectedNews.content);
     if (this.newsValidationObject.isValid) {
       this.isDataFetched = false;
       this.isOnListView = true;

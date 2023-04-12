@@ -1,38 +1,46 @@
 <div>
-    <div routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]={exact:true} class="d-flex align-items-center p-3 fs-5 fw-bold opacity-75 sidenav-item">
-        <i class="fa fa-gauge me-3"></i>
-        <div>Dashboard</div>
+    <div routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]={exact:true} class="d-flex align-items-center p-3 gap-3 fs-5 fw-bold opacity-75 sidenav-item">
+        <i class="fa fa-gauge"></i>
+        <div *ngIf="isOpen" class="me-5">Dashboard</div>
     </div>
-    <div routerLink="/Imoveis" routerLinkActive="active-link" class="d-flex align-items-center p-3 fs-5 fw-bold opacity-75 sidenav-item">
-        <i class="fa fa-house me-3"></i>
-        <div>Imóveis</div>
+    <div routerLink="/Imoveis" routerLinkActive="active-link" class="d-flex align-items-center p-3 gap-3 fs-5 fw-bold opacity-75 sidenav-item">
+        <i class="fa fa-house"></i>
+        <div *ngIf="isOpen" class="me-5">Imóveis</div>
     </div>
-    <div routerLink="/Clientes" routerLinkActive="active-link" class="d-flex align-items-center p-3 fs-5 fw-bold opacity-75 sidenav-item">
-        <i class="fa fa-users me-3"></i>
-        <div>Clientes</div>
+    <div routerLink="/Clientes" routerLinkActive="active-link" class="d-flex align-items-center p-3 gap-3 fs-5 fw-bold opacity-75 sidenav-item">
+        <i class="fa fa-users"></i>
+        <div *ngIf="isOpen" class="me-5">Clientes</div>
     </div>
-    <div routerLink="/Utilizadores" routerLinkActive="active-link" class="d-flex align-items-center p-3 fs-5 fw-bold opacity-75 sidenav-item">
-        <i class="fa fa-users me-3"></i>
-        <div>Utilizadores</div>
+    <div routerLink="/Utilizadores" routerLinkActive="active-link" class="d-flex align-items-center p-3 gap-3 fs-5 fw-bold opacity-75 sidenav-item">
+        <i class="fa fa-users"></i>
+        <div *ngIf="isOpen" class="me-5">Utilizadores</div>
     </div>
-    <div routerLink="/Tarefas" routerLinkActive="active-link" class="d-flex align-items-center p-3 fs-5 fw-bold opacity-75 sidenav-item">
-        <i class="fa fa-list-check me-3"></i>
-        <div>Tarefas</div>
+    <div routerLink="/Tarefas" routerLinkActive="active-link" class="d-flex align-items-center p-3 gap-3 fs-5 fw-bold opacity-75 sidenav-item">
+        <i class="fa fa-list-check"></i>
+        <div *ngIf="isOpen" class="me-5">Tarefas</div>
     </div>
-    <div routerLink="/Noticias" routerLinkActive="active-link" class="d-flex align-items-center p-3 fs-5 fw-bold opacity-75 sidenav-item">
-        <i class="fa fa-newspaper me-3"></i>
-        <div>Notícias</div>
+    <div routerLink="/Noticias" routerLinkActive="active-link" class="d-flex align-items-center p-3 gap-3 fs-5 fw-bold opacity-75 sidenav-item">
+        <i class="fa fa-newspaper"></i>
+        <div *ngIf="isOpen" class="me-5">Notícias</div>
     </div>
-    <div routerLink="/ToDos" routerLinkActive="active-link" class="d-flex align-items-center p-3 fs-5 fw-bold opacity-75 sidenav-item">
-        <i class="fa fa-clipboard-list me-3"></i>
-        <div>To Do</div>
+    <div routerLink="/ToDos" routerLinkActive="active-link" class="d-flex align-items-center p-3 gap-3 fs-5 fw-bold opacity-75 sidenav-item">
+        <i class="fa fa-clipboard-list"></i>
+        <div *ngIf="isOpen" class="me-5">To Do</div>
     </div>
-    <div routerLink="/Estatisticas" routerLinkActive="active-link" class="d-flex align-items-center p-3 fs-5 fw-bold opacity-75 sidenav-item">
-        <i class="fa fa-chart-line me-3"></i>
-        <div>Estatísticas</div>
+    <div routerLink="/Links" routerLinkActive="active-link" class="d-flex align-items-center p-3 gap-3 fs-5 fw-bold opacity-75 sidenav-item">
+        <i class="fa fa-link"></i>
+        <div *ngIf="isOpen" class="me-5">Links</div>
     </div>
-    <div routerLink="/GestaoDeDados" routerLinkActive="active-link" class="d-flex align-items-center p-3 fs-5 fw-bold opacity-75 sidenav-item">
-        <i class="fa fa-database me-3"></i>
-        <div>Gestão de dados</div>
+    <div routerLink="/GestaoDeDados" routerLinkActive="active-link" class="d-flex align-items-center gap-3 p-3 fs-5 fw-bold opacity-75 sidenav-item">
+        <i class="fa fa-database"></i>
+        <div *ngIf="isOpen" class="me-5">Gestão de dados</div>
+    </div>
+    <div class="w-100 p-3 text-end bottom-0 position-absolute open-close-arrow cursor-pointer" (click)="onClick_toggle()">
+        <div *ngIf="isOpen; else closed">
+            <i class="fa-solid fa-chevrons-left"></i>
+        </div>
+        <ng-template #closed>
+            <i class="fa-solid fa-chevrons-right"></i>
+        </ng-template>
     </div>
 </div>

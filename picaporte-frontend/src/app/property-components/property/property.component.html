@@ -26,7 +26,8 @@
                 <div *ngIf="isOnRentingSubMenu" class="mb-3 fw-bold">Registo de arrendamento</div>
                 <div *ngIf="isOnActivityLogMenu" class="mb-3 fw-bold">Histórico do imóvel</div>
             </div>
-            <div *ngIf="!isOnRentingSubMenu" class="col mb-5 d-flex justify-content-end">
+            <div *ngIf="!isOnRentingSubMenu" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="col mb-5 d-flex justify-content-end gap-3">
+                <button *ngIf="!isEditable" class="btn btn-picaporte-secondary" (click)="onClick_requestDocument()">Requisitar documento</button>
                 <button *ngIf="!isEditable" class="btn btn-picaporte-secondary" (click)="onClick_edit()">Editar</button>
                 <button *ngIf="isEditable && propertyId != null && propertyId != 0" class="btn btn-danger me-3" (click)="onClick_cancel()">Cancelar</button>
                 <button *ngIf="isEditable" class="btn btn-success" (click)="onClick_submit()">Submeter dados</button>
@@ -93,6 +94,43 @@
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Requisitar documento</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="cc" class="form-label fw-bold required">Tipo do documento</label>
+              <div class="dropdown">
+                <button class="w-100 btn btn-secondary dropdown-toggle" type="button" id="propertyType" data-bs-toggle="dropdown" aria-expanded="false">
+                  {{selectedDocumentTypeLabel}}
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="propertyType">
+                  <li *ngFor="let documentType of documentTypes">
+                    <a class="dropdown-item cursor-pointer" (click)="onClick_selectDocumentType(documentType, documentType.label)">{{documentType.label}}</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <div class="d-flex justify-content-end w-100">
+            <div>
+              <button type="button" class="btn  me-2" data-bs-dismiss="modal">Cancelar</button>
+              <button type="button" class="btn btn-success" data-bs-dismiss="modal" (click)="onClick_confirmDocumentRequest()">Requisitar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <app-spinner *ngIf="isLoading"></app-spinner>
 

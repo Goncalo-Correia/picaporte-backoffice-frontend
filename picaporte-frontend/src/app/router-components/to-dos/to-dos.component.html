@@ -14,7 +14,7 @@
         <div class="row">
             <div class="col-4">
                 <div *ngIf="isDataFetched; else loadingToDos">
-                    <div *ngFor="let item of toDoStructureList; index as i" class="w-100 p-3 rounded cursor-pointer mb-3" [ngClass]="selectedToDoIndex == i ? 'to-do-selected': 'bg-white'" (click)="onClick_edit(i)">
+                    <div *ngFor="let item of toDoStructureList; index as i" class="w-100 p-3 rounded cursor-pointer mb-3" [ngClass]="selectedToDo.toDo.id == item.toDo.id ? 'to-do-selected': 'bg-white'" (click)="onClick_edit(i)">
                         <div class="fw-bold mb-1">{{item.toDo.title}}</div>
                         <div>
                             <label class="fs-7">Editado:</label>

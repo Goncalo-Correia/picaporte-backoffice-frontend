@@ -14,6 +14,8 @@ import { AmenetieTypeStructure } from 'src/app/structures/amenetie-type.structur
 import { PropertyStructure } from 'src/app/structures/main-structures/property.structure';
 import { Enum_PropertySubMenu, PropertySubMenu, PropertySubMenuFactory } from 'src/app/submenus/property.submenu';
 import { PropertyValidationObject, ValidationService } from 'src/app/services/validation-service/validation.service';
+import { Static_DocumentType } from 'src/app/models/static/static-documenttype.model';
+import { StaticDocumentTypeService } from 'src/app/api-service/static-document-type/static-document-type.service';
 
 @Component({
   selector: 'app-property',
@@ -45,6 +47,10 @@ export class PropertyComponent implements OnInit {
   isOnObservationHistorySubMenu: boolean = false;
   isOnActivityLogMenu: boolean = false;
 
+  selectedDocumentType: Static_DocumentType = new Static_DocumentType();
+  selectedDocumentTypeLabel: string = "Nenhum tipo seleccionado";
+  documentTypes: Array<Static_DocumentType> = new Array<Static_DocumentType>();
+
   private propertySubmenuFactory: PropertySubMenuFactory;
 
   constructor(
@@ -52,7 +58,8 @@ export class PropertyComponent implements OnInit {
     private activeRoute: ActivatedRoute,
     public amentieTypeService: StaticAmenetieTypeService,
     private authenticationService: AuthenticationService,
-    private validationService: ValidationService
+    private validationService: ValidationService,
+    private documentTypeService: StaticDocumentTypeService
   ) {
     this.propertyStructure = new PropertyStructure();
     this.propertySubmenus = new Array<PropertySubMenu>();
@@ -103,6 +110,26 @@ export class PropertyComponent implements OnInit {
       this.selectedPropertySubMenu = enum_selectedCustomerSubMenu;
     }
     this.checkSelectedSubMenu();
+  }
+
+  onClick_requestDocument() {
+    this.selectedDocumentType = new Static_DocumentType();
+    if (this.documentTypes.length == 0) {
+      this.get_documentTypes();
+    }
+  }
+
+  onClick_confirmDocumentRequest() {
+    this.authenticationService.authorizeUser().then((resolve: any) => {
+      this.queries_propertyService.Post_RequestDocument(this.selectedDocumentType.id, this.propertyId, resolve)
+      .subscribe(data => {
+      });
+    });
+  }
+
+  onClick_selectDocumentType(documentType: Static_DocumentType, documentTypeLabel: string) {
+    this.selectedDocumentTypeLabel = documentTypeLabel;
+    this.selectedDocumentType = documentType;
   }
 
   eventHandler_updatePropertyOnline(data: boolean) {
@@ -231,6 +258,21 @@ export class PropertyComponent implements OnInit {
   private get_propertySubmenus() {
     this.propertySubmenus = new Array<PropertySubMenu>();
     this.propertySubmenus = this.propertySubmenuFactory.getPropertySubmenus(this.isEditable);
+  }
+
+  private get_documentTypes() {
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+      this.documentTypeService.GetAll_DocumentTypes(true, resolve)
+      .pipe(
+        catchError(err => {
+          this.messageComponent.showMessage(err.error);
+          return err;
+        })
+      )
+      .subscribe(data => {
+        this.documentTypes = <Static_DocumentType[]>data;
+      });
+    });
   }
 
   private getActiveRoute() {

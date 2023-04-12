@@ -58,7 +58,6 @@ export class StaticDataComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.icons = this.fontawesomeService.getAllIcons();
     this.icons = this.icons.filter((icon, index, self) => {
       return (
         self.findIndex(
@@ -623,6 +622,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.AMENETIE_TYPE) {
+      this.icons = this.fontawesomeService.getAllIcons();
       this.authenticationService.authorizeUser().then((resolve:any) => { 
         this.staticAmenetieTypeService.GetAll_AmenetieTypes(false, resolve)
         .pipe(

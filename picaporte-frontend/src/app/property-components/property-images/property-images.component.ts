@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
 import { ImageService } from 'src/app/services/image-service/image.service';
-import { IAlbum, Lightbox } from 'ngx-lightbox';
+import { IAlbum, Lightbox, LightboxConfig } from 'ngx-lightbox';
 import * as $ from 'jquery';
 import { apiEndpoints, environment } from 'src/environments/environment';
 import { Image } from 'src/app/models/image.model';
@@ -23,7 +23,6 @@ export class PropertyImagesComponent {
   url: string = environment.apiUrl + apiEndpoints.image.binary
 
   lightboxImages: Array<IAlbum>;
-  lightboxUrl: string = "";
   selectedImageStructure: Image = new Image();
   selectedRowNumber: number = -1;
   isMainImage: boolean = false;
@@ -34,8 +33,11 @@ export class PropertyImagesComponent {
   constructor(
     public imageService: ImageService, 
     private _lightbox: Lightbox,
-    private validationService: ValidationService) { 
+    @Inject(LightboxConfig) private lightboxConfig: LightboxConfig,
+    private validationService: ValidationService
+    ) { 
     this.lightboxImages = new Array<IAlbum>();
+    lightboxConfig.centerVertically = true;
   }
 
   onFocus_file() {
@@ -83,12 +85,10 @@ export class PropertyImagesComponent {
   }
 
   onClick_showMainImageLightbox() {
-    let url = (this.mainImage.id == 0) ? this.mainImage.content : this.mainImage.filename;
-    this.lightboxUrl = (url != null) ? url : "";
-
     this.lightboxImages = new Array<IAlbum>();
+    let url = this.url + (this.mainImage.id != 0 ? this.mainImage.content : this.mainImage.filename);
     this.lightboxImages.push({
-      src: this.lightboxUrl,
+      src: url,
       caption: this.mainImage.title,
       thumb: ""
     });
@@ -143,11 +143,9 @@ export class PropertyImagesComponent {
   private buildLightboxImages() {
     this.lightboxImages = new Array<IAlbum>();
     this.otherImages.forEach(element => {
-      let url = (element.id == 0) ? element.content : element.filename;
-      this.lightboxUrl = (url != null) ? url : "";
-
-      this.lightboxImages?.push({
-        src: this.lightboxUrl,
+      let url = this.url + (element.id == 0 ? element.content : element.filename) + "/true";
+      this.lightboxImages.push({
+        src: url,
         caption: element.title,
         thumb: ""
       });
@@ -155,8 +153,6 @@ export class PropertyImagesComponent {
   }
 
   triggerEvent_updateMainImage() {
-    console.log(this.mainImage);
-    
     this.event_updateMainImage.emit(this.mainImage);
   }
 

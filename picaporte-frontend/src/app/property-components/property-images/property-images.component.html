@@ -36,7 +36,9 @@
                     <div *ngFor="let image of otherImages; index as i" [ngClass]="{'col-3' : !image.isToDelete}">
                         <div *ngIf="!image.isToDelete">
                           <div class="card">
-                            <img *ngIf="image.content == null; else newImage" [src]="url + image.filename + '/true'" class="rounded card-img-top property-image" alt="..." (click)="onClick_showOtherImageLightbox(i)">
+                            <div (click)="onClick_showOtherImageLightbox(i)">
+                              <img *ngIf="image.content == null; else newImage" [src]="url + image.filename + '/true'" class="rounded card-img-top property-image" alt="...">
+                            </div>
                             <ng-template #newImage>
                               <img [src]="image.content" alt="..." class="rounded card-img-top property-image">
                             </ng-template>

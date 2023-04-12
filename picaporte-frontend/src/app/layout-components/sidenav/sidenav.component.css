@@ -12,3 +12,8 @@
 .sidenav-item:hover {
     color: var(--color-primary);
 }
+
+.open-close-arrow {
+    color: var(--color-primary);
+    background-color: var(--color-primary-light);
+}

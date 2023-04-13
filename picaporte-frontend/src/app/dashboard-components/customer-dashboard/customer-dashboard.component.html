@@ -75,7 +75,7 @@
               class="col cursor-pointer color-primary fw-bold">{{customer.customerName}}</span></td>
           <td><span class="col">{{customer.countOfProperties}}</span></td>
           <td><span class="col">{{customer.countOfPreferences}}</span></td>
-          <td><span class="col">{{customer.lastModifiedOn}}</span></td>
+          <td><span class="col"><app-date-format [date]="customer.lastModifiedOn"></app-date-format></span></td>
           <td><span class="col">{{customer.lastModifiedBy}}</span></td>
         </tr>
       </tbody>

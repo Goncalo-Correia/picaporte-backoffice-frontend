@@ -72,7 +72,7 @@
             <td scope="row"><span [routerLink]="['/Utilizador/', user.id]" class="col cursor-pointer color-primary fw-bold">{{user.name}}</span></td>
             <td><span class="col">{{user.email}}</span></td>
             <td><span class="col">{{(user.isAdmin) ? "Administrador": "Cliente"}}</span></td>
-            <td><span class="col">{{user.lastModifiedOn}}</span></td>
+            <td><span class="col"><app-date-format [date]="user.lastModifiedOn"></app-date-format></span></td>
             <td><span class="col">{{user.lastModifiedBy}}</span></td>
           </tr>
           </tbody>

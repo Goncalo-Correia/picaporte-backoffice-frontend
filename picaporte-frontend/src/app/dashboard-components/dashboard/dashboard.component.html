@@ -54,7 +54,7 @@
                 <span *ngIf="item.type == 'Utilizador'" [routerLink]="['/Utilizador/', item.recordId]" class="col cursor-pointer color-primary fw-bold">{{item.name}}</span>
               </td>
               <td><span class="col">{{item.type}}</span></td>
-              <td><span class="col">{{item.lastModifiedOn}}</span></td>
+              <td><span class="col"><app-date-format [date]="item.lastModifiedOn"></app-date-format></span></td>
               <td><span class="col">{{item.lastModifiedBy}}</span></td>
           </tr>
       </tbody>

@@ -78,8 +78,6 @@ export class DashboardComponent implements OnInit {
       .subscribe(data => {
         this.entityReferenceList = <EntityReferenceDashboardStructure[]>data;
         this.isDataFetched = true;
-        console.log(this.entityReferenceList);
-        
         this.hasPreviousPage();
         this.hasNextPage();
       });

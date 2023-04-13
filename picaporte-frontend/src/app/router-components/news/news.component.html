@@ -24,7 +24,7 @@
                                     <div>
                                         <span class="col mb-1">{{_news.title}}</span>
                                         <div class="text-secondary fs-7">{{_news.editedBy.firstName +  _news.editedBy.lastName != "" ? _news.editedBy.firstName + " " + _news.editedBy.lastName : '-'}}</div>
-                                        <div class="text-secondary fs-7">{{_news.editedOn | date: 'EEEE, MMMM d, y'}}</div>
+                                        <div class="text-secondary fs-7"><app-date-format [date]="_news.editedOn"></app-date-format></div>
                                     </div>
                                 </td>
                             </tr>
@@ -57,7 +57,7 @@
                                     <div>
                                         <span class="col mb-1">{{_news.title}}</span>
                                         <div class="text-secondary fs-7">{{_news.editedBy.firstName +  _news.editedBy.lastName != "" ? _news.editedBy.firstName + " " + _news.editedBy.lastName : '-'}}</div>
-                                        <div class="text-secondary fs-7">{{_news.editedOn | date: 'EEEE, MMMM d, y'}}</div>
+                                        <div class="text-secondary fs-7"><app-date-format [date]="_news.editedOn"></app-date-format></div>
                                     </div>
                                 </td>
                             </tr>

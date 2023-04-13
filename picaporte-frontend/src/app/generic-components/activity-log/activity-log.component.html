@@ -3,8 +3,14 @@
         <ul class="timeline mb-5">
             <li *ngFor="let activityLog of activityLogs" class="timeline-item bg-white rounded ml-3 p-4 shadow">
                 <div class="timeline-arrow"></div>
-                <h2 class="h5 mb-0">{{activityLog.createdBy}}</h2><span class="small text-gray"><i class="fa fa-clock-o mr-1"></i>{{activityLog.createdOn}}</span>
-                <div class="text-small mt-2 font-weight-light" [innerHTML]="activityLog.log"></div>
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="fw-bold">{{activityLog.createdBy}}</div>
+                    <span class="small text-gray d-flex align-items-center gap-2">
+                        <i class="fa fa-clock-o mr-1"></i>
+                        <app-date-format [date]="activityLog.createdOn"></app-date-format>
+                    </span>
+                </div>
+                <div class="text-small mt-2 fs-7 font-weight-light" [innerHTML]="activityLog.log"></div>
             </li>
         </ul>
         <div *ngIf="activityLogs.length == 0"class="w-100 p-4 text-center rounded bg-white">

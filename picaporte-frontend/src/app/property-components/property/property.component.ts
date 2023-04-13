@@ -120,9 +120,19 @@ export class PropertyComponent implements OnInit {
   }
 
   onClick_confirmDocumentRequest() {
+    this.isLoading = true;
     this.authenticationService.authorizeUser().then((resolve: any) => {
       this.queries_propertyService.Post_RequestDocument(this.selectedDocumentType.id, this.propertyId, resolve)
+      .pipe(
+        catchError(err => {
+          this.messageComponent.showMessage("Erro a requisitar documento");
+          return err;
+        })
+      )
       .subscribe(data => {
+        this.messageComponent.isSuccess = true;
+        this.messageComponent.showMessage("Documentor requisitado");
+        this.get_propertyStructure();
       });
     });
   }
@@ -168,6 +178,10 @@ export class PropertyComponent implements OnInit {
     this.propertyStructure.images = data;
   }
 
+  eventHandler_updatePropertyVideoUrl(data: string) {
+    this.propertyStructure.property.videoUrl = data;
+  }
+
   eventHandler_updatePropertyLocation(data: any) {
 
   }
@@ -188,20 +202,12 @@ export class PropertyComponent implements OnInit {
             })
           )
           .subscribe(data => {
-            this.propertyStructure.property = <Property>data;
-            this.propertyId = this.propertyStructure.property.id;
             this.get_propertyStructure();
           });
       });
     } else {
       this.authenticationService.authorizeUser().then((resolve: any) => {
         this.queries_propertyService.Put_PropertyStructure(this.propertyId, this.propertyStructure, resolve)
-          .pipe(
-            catchError(err => {
-              this.messageComponent.showMessage(err.error);
-              return err;
-            })
-          )
           .subscribe(data => {
             this.get_propertyStructure();
           });

@@ -55,8 +55,8 @@ export class PropertySubMenuFactory {
         });
         this.propertySubMenus.push({
             enum_propertySubMenu: Enum_PropertySubMenu.IMAGES,
-            label: "Imagens",
-            description: "Listagem de imagens associadas"
+            label: "Imagens e vídeo",
+            description: "Listagem de imagens e vídeo"
         });
         if (!isEditable) {
             this.propertySubMenus.push({

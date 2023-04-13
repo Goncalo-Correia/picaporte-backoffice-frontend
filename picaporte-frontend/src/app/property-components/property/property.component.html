@@ -26,8 +26,8 @@
                 <div *ngIf="isOnRentingSubMenu" class="mb-3 fw-bold">Registo de arrendamento</div>
                 <div *ngIf="isOnActivityLogMenu" class="mb-3 fw-bold">Histórico do imóvel</div>
             </div>
-            <div *ngIf="!isOnRentingSubMenu" data-bs-toggle="modal" data-bs-target="#staticBackdrop" class="col mb-5 d-flex justify-content-end gap-3">
-                <button *ngIf="!isEditable" class="btn btn-picaporte-secondary" (click)="onClick_requestDocument()">Requisitar documento</button>
+            <div *ngIf="!isOnRentingSubMenu" class="col mb-5 d-flex justify-content-end gap-3">
+                <button *ngIf="!isEditable" data-bs-toggle="modal" data-bs-target="#requestDocumentModal" class="btn btn-picaporte-secondary" (click)="onClick_requestDocument()">Requisitar documento</button>
                 <button *ngIf="!isEditable" class="btn btn-picaporte-secondary" (click)="onClick_edit()">Editar</button>
                 <button *ngIf="isEditable && propertyId != null && propertyId != 0" class="btn btn-danger me-3" (click)="onClick_cancel()">Cancelar</button>
                 <button *ngIf="isEditable" class="btn btn-success" (click)="onClick_submit()">Submeter dados</button>
@@ -68,8 +68,8 @@
         </div>
         <div *ngIf="isOnImagesSubMenu" class="row">
             <div class="col-12">
-                <app-property-images *ngIf="isDataFetched" [isEditable]="isEditable" [mainImage]="propertyStructure.mainImage" [otherImages]="propertyStructure.images" 
-                (event_updateMainImage)="eventHandler_updatePropertyMainImage($event)" (event_updateOtherImages)="eventHandler_updatePropertyOtherImages($event)"></app-property-images>
+                <app-property-images *ngIf="isDataFetched" [isEditable]="isEditable" [mainImage]="propertyStructure.mainImage" [otherImages]="propertyStructure.images" [videoUrl]="propertyStructure.property.videoUrl" 
+                (event_updateMainImage)="eventHandler_updatePropertyMainImage($event)" (event_updateOtherImages)="eventHandler_updatePropertyOtherImages($event)" (event_updateVideoUrl)="eventHandler_updatePropertyVideoUrl($event)"></app-property-images>
             </div>
         </div>
         <div *ngIf="isOnRentingSubMenu" class="row">
@@ -96,7 +96,7 @@
 </div>
 
 <!-- Modal -->
-<div class="modal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal" id="requestDocumentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
@@ -130,7 +130,7 @@
         </div>
       </div>
     </div>
-  </div>
+</div>
 
 <app-spinner *ngIf="isLoading"></app-spinner>
 

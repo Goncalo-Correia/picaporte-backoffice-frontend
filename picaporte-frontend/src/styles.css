@@ -96,7 +96,7 @@ a, a:hover {
     background: white;
     border-bottom: none;
     padding: 20px 20px;
-    vertical-align: inherit;
+    vertical-align: middle;
 }
 
 /* OVERFLOW */

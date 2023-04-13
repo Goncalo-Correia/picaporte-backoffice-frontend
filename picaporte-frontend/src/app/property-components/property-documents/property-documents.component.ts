@@ -205,6 +205,7 @@ export class PropertyDocumentsComponent implements OnInit {
         this.triggerEvent_updateOtherPropertyDocuments();
       }
     }
+    this.closeModal();
   }
 
   triggerEvent_updateMainPropertyDocuments() {
@@ -217,6 +218,10 @@ export class PropertyDocumentsComponent implements OnInit {
 
   triggerEvent_updateOtherPropertyDocuments() {
     this.event_updateOtherPropertyDocuments.emit(this.otherDocuments);
+  }
+
+  private closeModal(): void {
+    $('#staticBackdrop').modal('hide');
   }
 
   private get_documentTypes() {

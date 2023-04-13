@@ -102,6 +102,20 @@ export class CustomerPreferencesComponent implements OnInit {
     this.selectedEnergyCertificateLabel = label;
   }
 
+  onClick_selectAllAmeneties(event: MouseEvent) {
+    event.stopPropagation();
+    this.amenetieTypeStructureList.forEach(element => {
+      element.isSelected = true;
+    });
+  }
+
+  onClick_clearAmenneties(event: MouseEvent) {
+    event.stopPropagation();
+    this.amenetieTypeStructureList.forEach(element => {
+      element.isSelected = false;
+    });
+  }
+
   onClick_close() {
     this.selectedPropertyTypeLabel = "Nenhuma opção seleccionada";
     this.selectedPropertyStatusLabel = "Nenhuma opção seleccionada";

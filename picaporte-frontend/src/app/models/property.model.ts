@@ -20,6 +20,7 @@ export class Property {
     public livingArea: number = 0;
     public hasTermiteCertificate: boolean = false;
     public constructionYear: number = 0;
+    public videoUrl: string = "";
     
     public addressId: number = 0;
     public customerId: number = 0;

@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
 import { environment } from 'src/environments/environment';
-import { UserService } from './api-service/user/user.service';
 import { AuthenticationService } from './authentication-service/authentication.service';
-import { AuthorizeStructure } from './structures/auth0/authorize.struture';
 
 @Component({
   selector: 'app-root',

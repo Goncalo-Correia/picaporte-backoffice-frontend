@@ -99,6 +99,7 @@
         <tr>
           <th scope="col">Referência</th>
           <th scope="col">Cliente</th>
+          <th scope="col">Contatos</th>
           <th scope="col">Estado do imóvel</th>
           <th scope="col">Tipo do imóvel</th>
           <th scope="col">Atualizado em</th>
@@ -110,9 +111,13 @@
           <td scope="row"><span [routerLink]="['/Imovel/', property.id]"
               class="col cursor-pointer color-primary fw-bold">{{property.reference}}</span></td>
           <td><span class="col">{{property.customerName}}</span></td>
+          <td><span class="col fs-7">
+            <div class="mb-1">{{property.customerEmail}}</div>
+            <div>{{property.customerContact}}</div>
+          </span></td>
           <td><span class="col">{{property.propertyStatusLabel}}</span></td>
           <td><span class="col">{{property.propertyTypeLabel}}</span></td>
-          <td><span class="col">{{property.lastModifiedOn}}</span></td>
+          <td><span class="col"><app-date-format [date]="property.lastModifiedOn"></app-date-format></span></td>
           <td><span class="col">{{property.lastModifiedBy}}</span></td>
         </tr>
       </tbody>
@@ -120,6 +125,7 @@
         <tbody>
           <tr *ngFor="let number of [0,1,2]" class="placeholder-glow table-row">
             <td scope="row"><span class="placeholder col-4"></span></td>
+            <td><span class="placeholder col-2"></span></td>
             <td><span class="placeholder col-2"></span></td>
             <td><span class="placeholder col-2"></span></td>
             <td><span class="placeholder col-2"></span></td>

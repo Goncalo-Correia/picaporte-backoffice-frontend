@@ -1,24 +1,29 @@
-import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ImageService } from 'src/app/services/image-service/image.service';
 import { IAlbum, Lightbox, LightboxConfig } from 'ngx-lightbox';
-import * as $ from 'jquery';
+declare let $: any;
+import 'bootstrap';
 import { apiEndpoints, environment } from 'src/environments/environment';
 import { Image } from 'src/app/models/image.model';
 import { ImageValidationObject, ValidationService } from 'src/app/services/validation-service/validation.service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-property-images',
   templateUrl: './property-images.component.html',
   styleUrls: ['./property-images.component.css']
 })
-export class PropertyImagesComponent {
-
+export class PropertyImagesComponent implements OnInit, OnChanges {
+  
   @Input() mainImage: Image = new Image();
   @Input() otherImages: Array<Image> = new Array<Image>();
   @Input() isEditable: boolean = false;
+  @Input() videoUrl: string = "";
+  videoSafeUrl: SafeResourceUrl | undefined;
 
   @Output() event_updateMainImage = new EventEmitter<Image>();
   @Output() event_updateOtherImages = new EventEmitter<Array<Image>>();
+  @Output() event_updateVideoUrl = new EventEmitter<string>();
 
   url: string = environment.apiUrl + apiEndpoints.image.binary
 
@@ -34,10 +39,20 @@ export class PropertyImagesComponent {
     public imageService: ImageService, 
     private _lightbox: Lightbox,
     @Inject(LightboxConfig) private lightboxConfig: LightboxConfig,
-    private validationService: ValidationService
+    private validationService: ValidationService,
+    private sanitizer: DomSanitizer
     ) { 
     this.lightboxImages = new Array<IAlbum>();
-    lightboxConfig.centerVertically = true;
+    this.lightboxConfig.centerVertically = true;
+  }
+  ngOnInit(): void {
+    this.videoSafeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(`https://www.youtube.com/embed/${this.videoUrl}`);
+  }
+  
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['videoUrl'] && !changes['videoUrl'].isFirstChange()) {
+      this.videoSafeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(`https://www.youtube.com/embed/${this.videoUrl}`);
+    }
   }
 
   onFocus_file() {
@@ -114,7 +129,7 @@ export class PropertyImagesComponent {
 
   onClick_submit() {
     this.imageValidationObject = new ImageValidationObject();
-    this.imageValidationObject = this.validationService.validateImage(this.selectedImageStructure.title, this.selectedImageStructure.content);
+    this.imageValidationObject = this.validationService.validateImage(this.selectedImageStructure.title, (this.selectedImageStructure.id == 0 ? this.selectedImageStructure.content : this.selectedImageStructure.filename));
     if (this.imageValidationObject.isValid) {
       if (this.isMainImage) {
         this.mainImage = this.imageService.mapNewImageStructure(this.selectedImageStructure);
@@ -129,7 +144,12 @@ export class PropertyImagesComponent {
         this.checkDeleteAllOtherImages();
         this.triggerEvent_updateOtherImages();
       }
+      this.closeModal();
     }
+  }
+
+  private closeModal(): void {
+    $('#staticBackdrop').modal('hide');
   }
 
   private checkDeleteAllOtherImages() {
@@ -160,4 +180,7 @@ export class PropertyImagesComponent {
     this.event_updateOtherImages.emit(this.otherImages);
   }
 
+  triggerEvent_updateVideoUrl() {
+    this.event_updateVideoUrl.emit(this.videoUrl);
+  }
 }

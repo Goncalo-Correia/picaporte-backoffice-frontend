@@ -10,6 +10,7 @@ export class MessageComponent implements OnInit {
   isToShowMessage: boolean = false;
 
   message: string = "";
+  isSuccess: boolean = false;
 
   showMessage(errorMessage: string) {
     this.message = errorMessage;
@@ -18,6 +19,7 @@ export class MessageComponent implements OnInit {
 
   hideMessage() {
     this.isToShowMessage = false;
+    this.isSuccess = false;
   }
 
   constructor() { }

@@ -11,6 +11,10 @@ export class Preference {
     public maxPrice: number = 0;
     public numBathrooms: number = 0;
     public constructionYear: number = 0;
+    public minLivingArea: number = 0;
+    public maxLivingArea: number = 0;
+    public minTotalArea: number = 0;
+    public maxTotalArea: number = 0;
     
     public propertyTypeId: number = 0;
     public propertyStatusId: number = 0;

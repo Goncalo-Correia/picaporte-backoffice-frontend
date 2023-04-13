@@ -1,6 +1,7 @@
 <div class="row">
   <div *ngIf="isEditable" class="col-12 mb-3 d-flex justify-content-end">
-    <div class="d-flex align-items-center fs-5 fw-bold cursor-pointer color-secondary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="onClick_addNew()">
+    <div class="d-flex align-items-center fs-5 fw-bold cursor-pointer color-secondary" data-bs-toggle="modal"
+      data-bs-target="#staticBackdrop" (click)="onClick_addNew()">
       <div class="me-2">
         Adicionar preferência
       </div>
@@ -8,65 +9,72 @@
     </div>
   </div>
 </div>
-<div *ngIf="preferences.length == 0" class="empty-card bg-white text-muted p-4 rounded d-flex flex-column justify-content-center align-items-center">
+<div *ngIf="preferences.length == 0"
+  class="empty-card bg-white text-muted p-4 rounded d-flex flex-column justify-content-center align-items-center">
   <i class="fa-solid fa-sliders fa-4x mb-3"></i>
   <span>Não existem preferências para este cliente</span>
 </div>
 <div class="row">
   <div *ngFor="let preference of preferences; index as i" class="col-4">
-    <div *ngIf="isEditable" [ngClass]="{'cursor-pointer': isEditable}" class="mb-3 bg-white rounded p-4" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="onClick_edit(i)">
+    <div *ngIf="isEditable" [ngClass]="{'cursor-pointer': isEditable}" class="mb-3 bg-white rounded p-4"
+      data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="onClick_edit(i)">
       <div class="row">
         <div class="mb-2 col-6">
-          <label class="fw-bold">Preço mínimo</label>
-          <div *ngIf="preference.preference.minPrice != null; else minPriceNull">{{preference.preference.minPrice}}</div>
-          <ng-template #minPriceNull>
+          <label class="fw-bold">Preço</label>
+          <div class="d-flex align-items-center gap-3">
+            <div *ngIf="preference.preference.minPrice != null; else minPriceNull">{{preference.preference.minPrice}}
+            </div>
+            <ng-template #minPriceNull>
+              <div>-</div>
+            </ng-template>
+            <div> - </div>
+            <div *ngIf="preference.preference.maxPrice!= null; else maxPriceNull">{{preference.preference.maxPrice}}</div>
+            <ng-template #maxPriceNull>
+              <div>-</div>
+            </ng-template>
+          </div>
+        </div>
+        <div class="mb-2 col-6">
+          <label class="fw-bold">Tipologia</label>
+          <div *ngIf="preference.preference.propertyTypology?.label != null; else propertyTypologyNull">
+            {{preference.preference.propertyTypology?.label}}</div>
+          <ng-template #propertyTypologyNull>
             <div>-</div>
           </ng-template>
         </div>
-        <div class="mb-2 col-6">
-          <label class="fw-bold">Preço máximo</label>
-          <div *ngIf="preference.preference.maxPrice!= null; else maxPriceNull">{{preference.preference.maxPrice}}</div>
-          <ng-template #maxPriceNull>
-            <div>-</div>
-          </ng-template>
-        </div>
-      </div>
-      <div class="row">
         <div class="mb-2 col-6">
           <label class="fw-bold">Casas de banho</label>
-          <div *ngIf="preference.preference.numBathrooms!= null; else numBathroomsNull">{{preference.preference.numBathrooms}}</div>
+          <div *ngIf="preference.preference.numBathrooms!= null; else numBathroomsNull">
+            {{preference.preference.numBathrooms}}</div>
           <ng-template #numBathroomsNull>
             <div>-</div>
           </ng-template>
         </div>
         <div class="mb-2 col-6">
-          <label class="fw-bold">Ano de construção:</label>
-          <div *ngIf="preference.preference.constructionYear != null; else constructionYearNull">{{preference.preference.constructionYear}}</div>
+          <label class="fw-bold">Ano de construção</label>
+          <div *ngIf="preference.preference.constructionYear != null; else constructionYearNull">
+            {{preference.preference.constructionYear}}</div>
           <ng-template #constructionYearNull>
             <div>-</div>
           </ng-template>
         </div>
       </div>
       <div class="row">
-        <div class="mb-2 col-12">
-          <label class="fw-bold">Estado de venda</label>
-          <div *ngIf="preference.preference.propertyStatus?.label != null; else propertyStatusNull">{{preference.preference.propertyStatus?.label}}</div>
-          <ng-template #propertyStatusNull>
-            <div>-</div>
-          </ng-template>
-        </div>
+        <div class="break-line my-3"></div>
       </div>
       <div class="row">
         <div class="mb-2 col-6">
-          <label class="fw-bold">Tipo</label>
-          <div *ngIf="preference.preference.propertyType?.label != null; else propretyTypeNull">{{preference.preference.propertyType?.label}}</div>
-          <ng-template #propretyTypeNull>
+          <label class="fw-bold">Estado de venda</label>
+          <div *ngIf="preference.preference.propertyStatus?.label != null; else propertyStatusNull">
+            {{preference.preference.propertyStatus?.label}}</div>
+          <ng-template #propertyStatusNull>
             <div>-</div>
           </ng-template>
         </div>
         <div class="mb-2 col-6">
           <label class="fw-bold">Estado</label>
-          <div *ngIf="preference.preference.propertyConditionStatus?.label != null; else propertyConditionStatusNull">{{preference.preference.propertyConditionStatus?.label}}</div>
+          <div *ngIf="preference.preference.propertyConditionStatus?.label != null; else propertyConditionStatusNull">
+            {{preference.preference.propertyConditionStatus?.label}}</div>
           <ng-template #propertyConditionStatusNull>
             <div>-</div>
           </ng-template>
@@ -74,24 +82,29 @@
       </div>
       <div class="row">
         <div class="mb-2 col-6">
-          <label class="fw-bold">Tipologia</label>
-          <div *ngIf="preference.preference.propertyTypology?.label != null; else propertyTypologyNull">{{preference.preference.propertyTypology?.label}}</div>
-          <ng-template #propertyTypologyNull>
+          <label class="fw-bold">Tipo</label>
+          <div *ngIf="preference.preference.propertyType?.label != null; else propretyTypeNull">
+            {{preference.preference.propertyType?.label}}</div>
+          <ng-template #propretyTypeNull>
             <div>-</div>
           </ng-template>
         </div>
         <div class="mb-2 col-6">
           <label class="fw-bold">Eficiência energética</label>
-          <div *ngIf="preference.preference.energyCertificate?.label != null; else energyCertificateNull">{{preference.preference.energyCertificate?.label}}</div>
+          <div *ngIf="preference.preference.energyCertificate?.label != null; else energyCertificateNull">
+            {{preference.preference.energyCertificate?.label}}</div>
           <ng-template #energyCertificateNull>
             <div>-</div>
           </ng-template>
         </div>
       </div>
+      <div class="row">
+        <div class="break-line my-3"></div>
+      </div>
       <div>
         <label class="fw-bold">Características:</label>
         <div *ngIf="preference.ameneties.length > 0; else amenetiesNull" class="row">
-          <div *ngFor="let amenetieType of preference.ameneties" class="col-auto d-flex align-items-center gap-3">                
+          <div *ngFor="let amenetieType of preference.ameneties" class="col-auto d-flex align-items-center gap-3">
             <div>{{amenetieType.label}}</div>
             <div [className]="amenetieType.icon + ' fa-lg color-primary'"></div>
           </div>
@@ -104,56 +117,61 @@
     <div *ngIf="!isEditable" class="mb-3 bg-white rounded p-3">
       <div class="row">
         <div class="mb-2 col-6">
-          <label class="fw-bold">Preço mínimo</label>
-          <div *ngIf="preference.preference.minPrice != null; else minPriceNull">{{preference.preference.minPrice}}</div>
-          <ng-template #minPriceNull>
-            <div>-</div>
-          </ng-template>
+          <label class="fw-bold">Preço</label>
+          <div class="d-flex align-items-center gap-3">
+            <div *ngIf="preference.preference.minPrice != null; else minPriceNull">{{preference.preference.minPrice}}
+            </div>
+            <ng-template #minPriceNull>
+              <div>-</div>
+            </ng-template>
+            <div> - </div>
+            <div *ngIf="preference.preference.maxPrice!= null; else maxPriceNull">{{preference.preference.maxPrice}}</div>
+            <ng-template #maxPriceNull>
+              <div>-</div>
+            </ng-template>
+          </div>
         </div>
         <div class="mb-2 col-6">
-          <label class="fw-bold">Preço máximo</label>
-          <div *ngIf="preference.preference.maxPrice!= null; else maxPriceNull">{{preference.preference.maxPrice}}</div>
-          <ng-template #maxPriceNull>
+          <label class="fw-bold">Tipologia</label>
+          <div *ngIf="preference.preference.propertyTypology?.label != null; else propertyTypologyNull">
+            {{preference.preference.propertyTypology?.label}}</div>
+          <ng-template #propertyTypologyNull>
             <div>-</div>
           </ng-template>
         </div>
-      </div>
-      <div class="row">
         <div class="mb-2 col-6">
           <label class="fw-bold">Casas de banho</label>
-          <div *ngIf="preference.preference.numBathrooms!= null; else numBathroomsNull">{{preference.preference.numBathrooms}}</div>
+          <div *ngIf="preference.preference.numBathrooms!= null; else numBathroomsNull">
+            {{preference.preference.numBathrooms}}</div>
           <ng-template #numBathroomsNull>
             <div>-</div>
           </ng-template>
         </div>
         <div class="mb-2 col-6">
-          <label class="fw-bold">Ano de construção:</label>
-          <div *ngIf="preference.preference.constructionYear != null; else constructionYearNull">{{preference.preference.constructionYear}}</div>
+          <label class="fw-bold">Ano de construção</label>
+          <div *ngIf="preference.preference.constructionYear != null; else constructionYearNull">
+            {{preference.preference.constructionYear}}</div>
           <ng-template #constructionYearNull>
             <div>-</div>
           </ng-template>
         </div>
       </div>
       <div class="row">
-        <div class="mb-2 col-12">
-          <label class="fw-bold">Estado de venda</label>
-          <div *ngIf="preference.preference.propertyStatus?.label != null; else propertyStatusNull">{{preference.preference.propertyStatus?.label}}</div>
-          <ng-template #propertyStatusNull>
-            <div>-</div>
-          </ng-template>
-        </div>
+        <div class="break-line my-3"></div>
       </div>
       <div class="row">
         <div class="mb-2 col-6">
-          <label class="fw-bold">Tipo</label>
-          <div *ngIf="preference.preference.propertyType?.label != null; else propretyTypeNull">{{preference.preference.propertyType?.label}}</div>
-          <ng-template #propretyTypeNull>
+          <label class="fw-bold">Estado de venda</label>
+          <div *ngIf="preference.preference.propertyStatus?.label != null; else propertyStatusNull">
+            {{preference.preference.propertyStatus?.label}}</div>
+          <ng-template #propertyStatusNull>
             <div>-</div>
           </ng-template>
         </div>
         <div class="mb-2 col-6">
           <label class="fw-bold">Estado</label>
-          <div *ngIf="preference.preference.propertyConditionStatus?.label != null; else propertyConditionStatusNull">{{preference.preference.propertyConditionStatus?.label}}</div>
+          <div *ngIf="preference.preference.propertyConditionStatus?.label != null; else propertyConditionStatusNull">
+            {{preference.preference.propertyConditionStatus?.label}}</div>
           <ng-template #propertyConditionStatusNull>
             <div>-</div>
           </ng-template>
@@ -161,24 +179,29 @@
       </div>
       <div class="row">
         <div class="mb-2 col-6">
-          <label class="fw-bold">Tipologia</label>
-          <div *ngIf="preference.preference.propertyTypology?.label != null; else propertyTypologyNull">{{preference.preference.propertyTypology?.label}}</div>
-          <ng-template #propertyTypologyNull>
+          <label class="fw-bold">Tipo</label>
+          <div *ngIf="preference.preference.propertyType?.label != null; else propretyTypeNull">
+            {{preference.preference.propertyType?.label}}</div>
+          <ng-template #propretyTypeNull>
             <div>-</div>
           </ng-template>
         </div>
         <div class="mb-2 col-6">
           <label class="fw-bold">Eficiência energética</label>
-          <div *ngIf="preference.preference.energyCertificate?.label != null; else energyCertificateNull">{{preference.preference.energyCertificate?.label}}</div>
+          <div *ngIf="preference.preference.energyCertificate?.label != null; else energyCertificateNull">
+            {{preference.preference.energyCertificate?.label}}</div>
           <ng-template #energyCertificateNull>
             <div>-</div>
           </ng-template>
         </div>
       </div>
+      <div class="row">
+        <div class="break-line my-3"></div>
+      </div>
       <div>
         <label class="fw-bold">Características:</label>
         <div *ngIf="preference.ameneties.length > 0; else amenetiesNull" class="row">
-          <div *ngFor="let amenetieType of preference.ameneties" class="col-auto d-flex align-items-center gap-2">        
+          <div *ngFor="let amenetieType of preference.ameneties" class="col-auto d-flex align-items-center gap-2">
             <div>{{amenetieType.label}}</div>
             <div [className]="amenetieType.icon + ' fa-lg color-primary'"></div>
           </div>
@@ -187,143 +210,183 @@
           <div>-</div>
         </ng-template>
       </div>
+    </div>
   </div>
-</div>
 
-<!-- Modal -->
-<div class="modal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Registar nova preferência</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="onClick_close()"></button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="row">
-            <div class="col-12">
-              <div class="row">
-                <div class="col-6 mb-3">
-                  <label for="firstName" class="form-label fw-bold">Preço mínimo</label>
-                  <input type="text" class="form-control" id="firstName" name="firstName" [(ngModel)]="selectedPreferenceStructure.preference.minPrice" required>
+  <!-- Modal -->
+  <div class="modal" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Registar nova preferência</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            (click)="onClick_close()"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="row">
+              <div class="col-12">
+                <div class="row mb-3">
+                  <div class="col-6">
+                    <label for="firstName" class="form-label fw-bold">Preço</label>
+                    <div class="input-group">
+                      <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Mínimo"
+                        [(ngModel)]="selectedPreferenceStructure.preference.minPrice">
+                      <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Máximo"
+                        [(ngModel)]="selectedPreferenceStructure.preference.maxPrice">
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <label for="email" class="form-label fw-bold">Ano de construção</label>
+                    <input type="email" class="form-control" id="email" name="email"
+                      [(ngModel)]="selectedPreferenceStructure.preference.constructionYear">
+                  </div>
+                  <div class="col-3">
+                    <label for="phoneNumber" class="form-label fw-bold">Nº de casa de banho</label>
+                    <input type="text" class="form-control" id="phoneNumber" name="phoneNumber"
+                      [(ngModel)]="selectedPreferenceStructure.preference.numBathrooms">
+                  </div>
                 </div>
-                <div class="col-6 mb-3">
-                  <label for="lastName" class="form-label fw-bold">Preço máximo</label>
-                  <input type="text" class="form-control" id="lastName" name="lastName" [(ngModel)]="selectedPreferenceStructure.preference.maxPrice">
+                <div class="row mb-3">
+                  <div class="col-6">
+                    <div>
+                      <div class="fw-bold mb-1">Área Útil</div>
+                      <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Mínimo ㎡" aria-label="Mínimo"
+                          [(ngModel)]="selectedPreferenceStructure.preference.minLivingArea">
+                        <input type="text" class="form-control" placeholder="Máximo ㎡" aria-label="Máximo"
+                          [(ngModel)]="selectedPreferenceStructure.preference.maxLivingArea">
+                      </div>
+                      <div>
+                        <div class="fw-bold mb-1">Área do Terreno</div>
+                        <div class="input-group">
+                          <input type="text" class="form-control" placeholder="Mínimo ㎡" aria-label="Mínimo"
+                            [(ngModel)]="selectedPreferenceStructure.preference.minTotalArea">
+                          <input type="text" class="form-control" placeholder="Máximo ㎡" aria-label="Máximo"
+                            [(ngModel)]="selectedPreferenceStructure.preference.maxTotalArea">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <label for="nif" class="form-label fw-bold">Tipologia do imóvel</label>
+                    <div class="d-flex flex-wrap gap-3">
+                      <div *ngFor="let typology of staticPropertyTypologies" class="p-2 btn"
+                        [ngClass]="typology.id == selectedPreferenceStructure.preference.propertyTypologyId ? 'btn-picaporte-primary' : 'btn'"
+                        (click)="onClick_selectPropertyTypology(typology, typology.label)">
+                        {{typology.label}}
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-              <div class="row">
-                <div class="col-6 mb-3">
-                  <label for="phoneNumber" class="form-label fw-bold">Nº de casa de banho</label>
-                  <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" [(ngModel)]="selectedPreferenceStructure.preference.numBathrooms">
+                <div class="break-line my-4"></div>
+                <div class="row">
+                  <div class="col-6 mb-3">
+                    <label for="nif" class="form-label fw-bold">Estado de venda do imóvel</label>
+                    <div class="dropdown">
+                      <button class="w-100 btn btn-secondary dropdown-toggle" type="button" id="propertyConditionStatus"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        {{selectedPropertyStatusLabel}}
+                      </button>
+                      <ul class="dropdown-menu" aria-labelledby="propertyType">
+                        <li *ngFor="let propertyStatus of staticPropertyStatuses">
+                          <a class="dropdown-item"
+                            (click)="onClick_selectPropertyStatus(propertyStatus, propertyStatus.label)">{{propertyStatus.label}}</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="col-6 mb-3">
+                    <label for="nif" class="form-label fw-bold">Estado do imóvel</label>
+                    <div class="dropdown">
+                      <button class="w-100 btn btn-secondary dropdown-toggle" type="button" id="propertyType"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        {{selectedPropertyConditionStatusLabel}}
+                      </button>
+                      <ul class="dropdown-menu" aria-labelledby="propertyType">
+                        <li *ngFor="let propertyConditionStatus of staticPropertyConditionStatuses">
+                          <a class="dropdown-item"
+                            (click)="onClick_selectPropertyConditionStatus(propertyConditionStatus, propertyConditionStatus.label)">{{propertyConditionStatus.label}}</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
-                <div class="col-6 mb-3">
-                  <label for="email" class="form-label fw-bold">Ano de construção</label>
-                  <input type="email" class="form-control" id="email" name="email" [(ngModel)]="selectedPreferenceStructure.preference.constructionYear">
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-6 mb-3">
-                  <label for="nif" class="form-label fw-bold">Estado de venda do imóvel</label>
-                  <div class="dropdown">
-                    <button class="w-100 btn btn-secondary dropdown-toggle" type="button" id="propertyConditionStatus" data-bs-toggle="dropdown" aria-expanded="false">
-                      {{selectedPropertyStatusLabel}}
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="propertyType">
-                      <li *ngFor="let propertyStatus of staticPropertyStatuses">
-                        <a class="dropdown-item" (click)="onClick_selectPropertyStatus(propertyStatus, propertyStatus.label)">{{propertyStatus.label}}</a>
-                      </li>
-                    </ul>
+                <div class="row">
+                  <div class="col-6 mb-3">
+                    <label for="cc" class="form-label fw-bold">Tipo do imóvel</label>
+                    <div class="dropdown">
+                      <button class="w-100 btn btn-secondary dropdown-toggle" type="button" id="propertyType"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        {{selectedPropertyTypeLabel}}
+                      </button>
+                      <ul class="dropdown-menu" aria-labelledby="propertyType">
+                        <li *ngFor="let propertyType of staticPropertyTypes">
+                          <a class="dropdown-item"
+                            (click)="onClick_selectPropertyType(propertyType, propertyType.label)">{{propertyType.label}}</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="col-6 mb-3">
+                    <label for="nif" class="form-label fw-bold">Eficiência energética do imóvel</label>
+                    <div class="dropdown">
+                      <button class="w-100 btn btn-secondary dropdown-toggle" type="button" id="propertyType"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        {{selectedEnergyCertificateLabel}}
+                      </button>
+                      <ul class="dropdown-menu" aria-labelledby="propertyType">
+                        <li *ngFor="let energyCertificate of staticEnergyCertificates">
+                          <a class="dropdown-item"
+                            (click)="onClick_selectEnergyCertificate(energyCertificate, energyCertificate.label)">{{energyCertificate.label}}</a>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div class="row">
-                <div class="col-6 mb-3">
-                  <label for="cc" class="form-label fw-bold">Tipo do imóvel</label>
-                  <div class="dropdown">
-                    <button class="w-100 btn btn-secondary dropdown-toggle" type="button" id="propertyType" data-bs-toggle="dropdown" aria-expanded="false">
-                      {{selectedPropertyTypeLabel}}
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="propertyType">
-                      <li *ngFor="let propertyType of staticPropertyTypes">
-                        <a class="dropdown-item" (click)="onClick_selectPropertyType(propertyType, propertyType.label)">{{propertyType.label}}</a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div class="col-6 mb-3">
-                  <label for="nif" class="form-label fw-bold">Estado do imóvel</label>
-                  <div class="dropdown">
-                    <button class="w-100 btn btn-secondary dropdown-toggle" type="button" id="propertyType" data-bs-toggle="dropdown" aria-expanded="false">
-                      {{selectedPropertyConditionStatusLabel}}
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="propertyType">
-                      <li *ngFor="let propertyConditionStatus of staticPropertyConditionStatuses">
-                        <a class="dropdown-item" (click)="onClick_selectPropertyConditionStatus(propertyConditionStatus, propertyConditionStatus.label)">{{propertyConditionStatus.label}}</a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
+              <div class="col-12">
+                <div class="break-line my-4"></div>
               </div>
-              <div class="row">
-                <div class="col-6 mb-3">
-                  <label for="nif" class="form-label fw-bold">Tipologia do imóvel</label>
-                  <div class="dropdown">
-                    <button class="w-100 btn btn-secondary dropdown-toggle" type="button" id="propertyType" data-bs-toggle="dropdown" aria-expanded="false">
-                      {{selectedPropertyTypologyLabel}}
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="propertyType">
-                      <li *ngFor="let propertyTypology of staticPropertyTypologies">
-                        <a class="dropdown-item" (click)="onClick_selectPropertyTypology(propertyTypology, propertyTypology.label)">{{propertyTypology.label}}</a>
-                      </li>
-                    </ul>
+              <div class="col-12">
+                <div class="row">
+                  <div class="bg-white d-flex align-items-center justify-content-between fs-7 py-2 color-primary fw-bold">
+                    <div (click)="onClick_selectAllAmeneties($event)" class="cursor-pointer">Seleccionar todos</div>
+                    <div (click)="onClick_clearAmenneties($event)" class="cursor-pointer">Limpar</div>
                   </div>
-                </div>
-                <div class="col-6 mb-3">
-                  <label for="nif" class="form-label fw-bold">Eficiência energética do imóvel</label>
-                  <div class="dropdown">
-                    <button class="w-100 btn btn-secondary dropdown-toggle" type="button" id="propertyType" data-bs-toggle="dropdown" aria-expanded="false">
-                      {{selectedEnergyCertificateLabel}}
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="propertyType">
-                      <li *ngFor="let energyCertificate of staticEnergyCertificates">
-                        <a class="dropdown-item" (click)="onClick_selectEnergyCertificate(energyCertificate, energyCertificate.label)">{{energyCertificate.label}}</a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-12">
-              <div class="row">
-                <div *ngFor="let amenetieStructure of amenetieTypeStructureList; let i = index" class="col-4 mb-2">
-                    <div class="bg-white rounded p-3">
-                      <div class="d-flex align-items-center gap-3">
+                  <div *ngFor="let amenetieStructure of amenetieTypeStructureList; let i = index" class="col-3 fs-7 mb-2">
+                    <div class="bg-white rounded py-2">
+                      <div class="d-flex align-items-center gap-2">
                         <div>
-                          <input class="form-check-input cursor-pointer" type="checkbox" [checked]="amenetieStructure.isSelected" id="amenetie.id" (change)="onChange_checkbox(i)">
+                          <input class="form-check-input cursor-pointer" type="checkbox"
+                            [checked]="amenetieStructure.isSelected" id="amenetie.id" (change)="onChange_checkbox(i)">
                         </div>
                         <div [className]="amenetieStructure.amenetieType.icon + ' fa-lg color-primary'"></div>
-                        <div class="px-2">{{amenetieStructure.amenetieType.label}}</div>
-                    </div>
+                        <div>{{amenetieStructure.amenetieType.label}}</div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <div class="d-flex justify-content-between w-100">
-          <div>
-            <i *ngIf="selectedRowNumber != -1" class="fa-solid fa-trash fa-2x text-danger cursor-pointer" data-bs-dismiss="modal" (click)="onClick_remove(selectedRowNumber)"></i>
-          </div>
-          <div>
-            <button type="button" class="btn  me-2" data-bs-dismiss="modal" (click)="onClick_close()">Cancelar</button>
-            <button type="submit" class="btn btn-success" data-bs-dismiss="modal" (click)="onClick_submit()">Confirmar</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <div class="d-flex justify-content-between w-100">
+            <div>
+              <i *ngIf="selectedRowNumber != -1" class="fa-solid fa-trash fa-2x text-danger cursor-pointer"
+                data-bs-dismiss="modal" (click)="onClick_remove(selectedRowNumber)"></i>
+            </div>
+            <div>
+              <button type="button" class="btn  me-2" data-bs-dismiss="modal"
+                (click)="onClick_close()">Cancelar</button>
+              <button type="submit" class="btn btn-success" data-bs-dismiss="modal"
+                (click)="onClick_submit()">Confirmar</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-<app-message></app-message>
+  <app-message></app-message>

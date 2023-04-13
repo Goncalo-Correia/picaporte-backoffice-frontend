@@ -26,6 +26,20 @@ export class PropertyCaracteristicsComponent implements OnInit {
     this.triggerEvent_updatePropertyCaracteristics();
   }
 
+  onClick_selectAllAmeneties(event: MouseEvent) {
+    event.stopPropagation();
+    this.ameneties.forEach(element => {
+      element.isSelected = true;
+    });
+  }
+
+  onClick_clearAmenneties(event: MouseEvent) {
+    event.stopPropagation();
+    this.ameneties.forEach(element => {
+      element.isSelected = false;
+    });
+  }
+
   triggerEvent_updatePropertyCaracteristics() {
     console.log(this.ameneties);
     

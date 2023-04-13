@@ -90,7 +90,7 @@
         <div class="col-6 mb-3">
             <label class="form-label fw-bold w-100">Último login</label>
             <div *ngIf="user.lastLogin != null; else lastLoginNull">
-                {{user.lastLogin}}
+                <app-date-format [date]="user.lastLogin"></app-date-format>
             </div>
             <ng-template #lastLoginNull>
                 -

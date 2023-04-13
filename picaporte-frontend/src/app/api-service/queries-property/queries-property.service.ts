@@ -61,10 +61,9 @@ export class QueriesPropertyService {
       return this.http
       .post(
         this.baseurl + apiEndpoints.document.requestDocument + documentTypeId + "/" + propertyId,
-        "",
+        {},
         httpOptions
-      )
-      .pipe(retry(1), catchError(this.errorHandl));
+      );
     }
 
     errorHandl(error: any) {

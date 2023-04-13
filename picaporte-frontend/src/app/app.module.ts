@@ -1,5 +1,5 @@
 import { LOCALE_ID, NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, DomSanitizer  } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import localePt from '@angular/common/locales/pt';
@@ -49,8 +49,9 @@ import { UserDetailComponent } from './user-components/user-detail/user-detail.c
 import { NewsComponent } from './router-components/news/news.component';
 import { ToDosComponent } from './router-components/to-dos/to-dos.component';
 import { MessageComponent } from './generic-components/message/message.component';
-import { registerLocaleData } from '@angular/common';
+import { DatePipe, registerLocaleData } from '@angular/common';
 import { GoogleMapComponent } from './generic-components/google-map/google-map.component';
+import { DateFormatComponent } from './generic-components/date-format/date-format.component';
 
 
 @NgModule({
@@ -87,7 +88,8 @@ import { GoogleMapComponent } from './generic-components/google-map/google-map.c
     NewsComponent,
     ToDosComponent,
     MessageComponent,
-    GoogleMapComponent
+    GoogleMapComponent,
+    DateFormatComponent
   ],
   imports: [
     BrowserModule,
@@ -106,7 +108,11 @@ import { GoogleMapComponent } from './generic-components/google-map/google-map.c
     RouterModule,
     NewsComponent
   ],
-  providers: [QueriesCustomerService,{provide: LOCALE_ID, useValue: 'pt'}],
+  providers: [
+    QueriesCustomerService,
+    {provide: LOCALE_ID, useValue: 'pt'},
+    DatePipe
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -19,25 +19,6 @@
     </div>
   </div>
   <div class="row">
-    <div class="col mb-3">
-      <label for="lastName" class="form-label fw-bold w-100 required">Sobrenome</label>
-      <input *ngIf="isEditable; else lastNameRead" type="text" class="form-control" id="lastName" name="lastName" 
-      [ngClass]="{'invalid-input' : !customerValidationObject.isSurrnameValid.isValid}"
-      [(ngModel)]="customer.lastName" 
-      (change)="triggerEvent_updateCustomerDetails()"
-      (focus)="onFocus_surrname()">
-      <div *ngIf="!customerValidationObject.isSurrnameValid.isValid" class="invalid-message">{{customerValidationObject.isSurrnameValid.validationMessage}}</div>
-      <ng-template #lastNameRead>
-        <div *ngIf="customer.lastName != null; else lastNameNull">
-          {{customer.lastName}}
-        </div>
-        <ng-template #lastNameNull>
-          -
-        </ng-template>
-      </ng-template>
-    </div>
-  </div>
-  <div class="row">
     <div class="col-6 mb-3">
       <label for="phoneNumber" class="form-label fw-bold w-100 required">Telemóvel</label>
       <input *ngIf="isEditable; else phoneNumberRead" type="text" class="form-control" id="phoneNumber" name="phoneNumber" 

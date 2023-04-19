@@ -13,6 +13,7 @@ export class Property {
     public id: number = 0;
     public reference: string = "";
     public description: string = "";
+    public prompt: string = "";
     public isOnline: boolean = false;
     public price: number = 0;
     public bathrooms: number = 0;

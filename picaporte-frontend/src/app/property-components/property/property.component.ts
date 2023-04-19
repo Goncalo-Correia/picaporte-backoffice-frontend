@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { catchError } from 'rxjs';
 import { QueriesPropertyService } from 'src/app/api-service/queries-property/queries-property.service';
 import { StaticAmenetieTypeService } from 'src/app/api-service/static-amenetie-type/static-amenetie-type-service.service';
@@ -59,7 +59,8 @@ export class PropertyComponent implements OnInit {
     public amentieTypeService: StaticAmenetieTypeService,
     private authenticationService: AuthenticationService,
     private validationService: ValidationService,
-    private documentTypeService: StaticDocumentTypeService
+    private documentTypeService: StaticDocumentTypeService,
+    private router: Router
   ) {
     this.propertyStructure = new PropertyStructure();
     this.propertySubmenus = new Array<PropertySubMenu>();
@@ -87,17 +88,7 @@ export class PropertyComponent implements OnInit {
     this.propertyValidationObject = new PropertyValidationObject();
     this.propertyValidationObject = this.validationService.validateProperty(
       this.propertyStructure.property.reference,
-      this.propertyStructure.property.price,
-      this.propertyStructure.property.bathrooms,
-      this.propertyStructure.property.constructionYear,
-      this.propertyStructure.property.totalConstructionArea,
-      this.propertyStructure.property.livingArea,
-      this.propertyStructure.property.propertyStatusId.toString(),
-      this.propertyStructure.property.customerId.toString(),
-      this.propertyStructure.property.propertyTypeId.toString(),
-      this.propertyStructure.property.energyCertificateId.toString(),
-      this.propertyStructure.property.propertyConditionStatusId.toString(),
-      this.propertyStructure.property.propertyTypologyId.toString()
+      this.propertyStructure.property.price
     )
     if (this.propertyValidationObject.isValid) {
       this.isEditable = false;
@@ -202,9 +193,11 @@ export class PropertyComponent implements OnInit {
             })
           )
           .subscribe(data => {
-             let prop = <Property>data;
-             this.propertyId = prop.id;
-            this.get_propertyStructure();
+             this.propertyStructure.property = <Property>data;
+             this.propertyId = this.propertyStructure.property.id;
+             console.log(this.propertyId);
+             
+             this.router.navigateByUrl("Imovel/" + this.propertyId);
           });
       });
     } else {

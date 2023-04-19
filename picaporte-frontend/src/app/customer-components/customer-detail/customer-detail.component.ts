@@ -26,10 +26,6 @@ export class CustomerDetailComponent implements OnInit {
     this.customerValidationObject.isNameValid.isValid = true;
   }
 
-  onFocus_surrname() {
-    this.customerValidationObject.isSurrnameValid.isValid = true;
-  }
-
   onFocus_email() {
     this.customerValidationObject.isEmailValid.isValid = true;
   }

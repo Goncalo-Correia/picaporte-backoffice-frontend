@@ -24,7 +24,6 @@ export class AddressValidationObject {
 
 export class CustomerValidationObject {
   isNameValid: ValidationObject = new ValidationObject();
-  isSurrnameValid: ValidationObject = new ValidationObject();
   isEmailValid: ValidationObject = new ValidationObject();
   isPhoneNumberValid: ValidationObject = new ValidationObject();
   isCcValid: ValidationObject = new ValidationObject();
@@ -56,16 +55,6 @@ export class ImageValidationObject {
 export class PropertyValidationObject {
   isReferenceValid: ValidationObject = new ValidationObject();
   isPriceValid: ValidationObject = new ValidationObject();
-  isBathroomsValid: ValidationObject = new ValidationObject();
-  isConstructionYearValid: ValidationObject = new ValidationObject();
-  isTotalAreaValid: ValidationObject = new ValidationObject();
-  isConstructionAreaValid: ValidationObject = new ValidationObject();
-  isStatusValid: ValidationObject = new ValidationObject();
-  isCustomerValid: ValidationObject = new ValidationObject();
-  isTypeValid: ValidationObject = new ValidationObject();
-  isEnergyEficiencyValid: ValidationObject = new ValidationObject();
-  isStateValid: ValidationObject = new ValidationObject();
-  isTypologyValid: ValidationObject = new ValidationObject();
   isValid: boolean = false;
 }
 
@@ -122,14 +111,11 @@ export class ValidationService {
     return addressValidationObject;
   }
 
-  validateCustomer(name: string, surrname: string, email: string, phoneNumber: string, cc: string, nif: string, address: Address): CustomerValidationObject {
+  validateCustomer(name: string, email: string, phoneNumber: string, cc: string, nif: string, address: Address): CustomerValidationObject {
     let customerValidationObject: CustomerValidationObject = new CustomerValidationObject();
     
     customerValidationObject.isNameValid.isValid = name != "" && name != null;
     customerValidationObject.isNameValid.validationMessage = (customerValidationObject.isNameValid.isValid ? "" : "Campo obrigatório");
-    
-    customerValidationObject.isSurrnameValid.isValid = surrname != "" && surrname != null;
-    customerValidationObject.isSurrnameValid.validationMessage = (customerValidationObject.isSurrnameValid.isValid ? "" : "Campo obrigatório");
     
     customerValidationObject.isEmailValid.isValid = email != "" && email != null;
     customerValidationObject.isEmailValid.validationMessage = (customerValidationObject.isEmailValid.isValid ? "" : "Campo obrigatório");
@@ -147,7 +133,6 @@ export class ValidationService {
   
     customerValidationObject.isValid = (
       customerValidationObject.isNameValid.isValid &&
-      customerValidationObject.isSurrnameValid.isValid &&
       customerValidationObject.isEmailValid.isValid &&
       customerValidationObject.isPhoneNumberValid.isValid &&
       customerValidationObject.isCcValid.isValid &&
@@ -217,7 +202,7 @@ export class ValidationService {
     return imageValidationObject;
   }
 
-  validateProperty(reference: string, price: number, bathrooms: number, constructionYear: number, totalArea: number, constructionArea: number, status: string, customer: string, type: string, energyEficiency: string, state: string, typology: string): PropertyValidationObject {
+  validateProperty(reference: string, price: number): PropertyValidationObject {
     let propertyValidationObject: PropertyValidationObject = new PropertyValidationObject();
     
     propertyValidationObject.isReferenceValid.isValid = reference != "" && reference != null;
@@ -226,49 +211,9 @@ export class ValidationService {
     propertyValidationObject.isPriceValid.isValid = price != null && !isNaN(price) && price > 0;
     propertyValidationObject.isPriceValid.validationMessage = (propertyValidationObject.isPriceValid.isValid ? "" : "Campo obrigatório e deve ser maior que 0");
     
-    propertyValidationObject.isBathroomsValid.isValid = bathrooms != null && !isNaN(bathrooms) && bathrooms >= 0;
-    propertyValidationObject.isBathroomsValid.validationMessage = (propertyValidationObject.isBathroomsValid.isValid ? "" : "Campo obrigatório e deve ser maior ou igual a 0");
-  
-    propertyValidationObject.isConstructionYearValid.isValid = constructionYear != null && !isNaN(constructionYear) && constructionYear > 0;
-    propertyValidationObject.isConstructionYearValid.validationMessage = (propertyValidationObject.isConstructionYearValid.isValid ? "" : "Campo obrigatório e deve ser maior que 0");
-  
-    propertyValidationObject.isTotalAreaValid.isValid = totalArea != null && !isNaN(totalArea) && totalArea > 0;
-    propertyValidationObject.isTotalAreaValid.validationMessage = (propertyValidationObject.isTotalAreaValid.isValid ? "" : "Campo obrigatório e deve ser maior que 0");
-  
-    propertyValidationObject.isConstructionAreaValid.isValid = constructionArea != null && !isNaN(constructionArea) && constructionArea > 0;
-    propertyValidationObject.isConstructionAreaValid.validationMessage = (propertyValidationObject.isConstructionAreaValid.isValid ? "" : "Campo obrigatório e deve ser maior que 0");
-  
-    propertyValidationObject.isStatusValid.isValid = status != "" && status != null;
-    propertyValidationObject.isStatusValid.validationMessage = (propertyValidationObject.isStatusValid.isValid ? "" : "Campo obrigatório");
-  
-    propertyValidationObject.isCustomerValid.isValid = customer != "" && customer != null;
-    propertyValidationObject.isCustomerValid.validationMessage = (propertyValidationObject.isCustomerValid.isValid ? "" : "Campo obrigatório");
-  
-    propertyValidationObject.isTypeValid.isValid = type != "" && type != null;
-    propertyValidationObject.isTypeValid.validationMessage = (propertyValidationObject.isTypeValid.isValid ? "" : "Campo obrigatório");
-
-    propertyValidationObject.isEnergyEficiencyValid.isValid = energyEficiency != "" && energyEficiency != null;
-    propertyValidationObject.isEnergyEficiencyValid.validationMessage = (propertyValidationObject.isEnergyEficiencyValid.isValid ? "" : "Campo obrigatório");
-  
-    propertyValidationObject.isStateValid.isValid = state != "" && state != null;
-    propertyValidationObject.isStateValid.validationMessage = (propertyValidationObject.isStateValid.isValid ? "" : "Campo obrigatório");
-  
-    propertyValidationObject.isTypologyValid.isValid = typology != "" && typology != null;
-    propertyValidationObject.isTypologyValid.validationMessage = (propertyValidationObject.isTypologyValid.isValid ? "" : "Campo obrigatório");
-  
     propertyValidationObject.isValid = (
       propertyValidationObject.isReferenceValid.isValid &&
-      propertyValidationObject.isPriceValid.isValid &&
-      propertyValidationObject.isBathroomsValid.isValid &&
-      propertyValidationObject.isConstructionYearValid.isValid &&
-      propertyValidationObject.isTotalAreaValid.isValid &&
-      propertyValidationObject.isConstructionAreaValid.isValid &&
-      propertyValidationObject.isStatusValid.isValid &&
-      propertyValidationObject.isCustomerValid.isValid &&
-      propertyValidationObject.isTypeValid.isValid &&
-      propertyValidationObject.isEnergyEficiencyValid.isValid &&
-      propertyValidationObject.isStateValid.isValid &&
-      propertyValidationObject.isTypologyValid.isValid
+      propertyValidationObject.isPriceValid.isValid
     );
   
     return propertyValidationObject;

@@ -19,16 +19,14 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-6 mb-3">
-      <label for="location" class="form-label fw-bold w-100">Localização</label>
-      <input *ngIf="isEditable; else locationRead" type="text" class="form-control" id="location" name="location" 
-      [(ngModel)]="address.location" 
-      (change)="triggerEvent_updateAddress()">
-      <ng-template #locationRead>
-        <div *ngIf="address.location != null; else locationNull">
-          {{address.location}}
+    <div *ngIf="showZipCode" class="col-6 mb-3">
+      <label for="zipCode" class="form-label fw-bold w-100">Código postal</label>
+      <input *ngIf="isEditable; else zipCodeRead" type="text" class="form-control" id="zipCode" name="zipCode" [(ngModel)]="address.zipCode" (change)="triggerEvent_updateAddress()">
+      <ng-template #zipCodeRead>
+        <div *ngIf="address.zipCode != null || address.zipCode != ''; else zipCodeNull">
+          {{address.zipCode}}
         </div>
-        <ng-template #locationNull>
+        <ng-template #zipCodeNull>
           -
         </ng-template>
       </ng-template>
@@ -89,13 +87,15 @@
   </div>
   <div class="row">
     <div class="col mb-3">
-      <label for="description" class="form-label fw-bold w-100">Descrição</label>
-      <textarea *ngIf="isEditable; else descriptionRead" type="text" rows="3" class="form-control" id="description" name="description" [(ngModel)]="address.description" (change)="triggerEvent_updateAddress()"></textarea>
-      <ng-template #descriptionRead>
-        <div *ngIf="address.description != null || address.description != ''; else descriptionNull">
-          {{address.description}}
+      <label for="location" class="form-label fw-bold w-100">Localização</label>
+      <input *ngIf="isEditable; else locationRead" type="text" class="form-control" id="location" name="location" 
+      [(ngModel)]="address.location" 
+      (change)="triggerEvent_updateAddress()">
+      <ng-template #locationRead>
+        <div *ngIf="address.location != null; else locationNull">
+          {{address.location}}
         </div>
-        <ng-template #descriptionNull>
+        <ng-template #locationNull>
           -
         </ng-template>
       </ng-template>

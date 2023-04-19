@@ -28,10 +28,18 @@ export class GoogleMapComponent implements OnInit {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position: GeolocationPosition) => {
-          const currentPosition = new google.maps.LatLng(
-            position.coords.latitude,
-            position.coords.longitude
-          );
+          let currentPosition;
+          if (this.latitude != 0 && this.longitude != 0) {
+            currentPosition = new google.maps.LatLng(
+              position.coords.latitude,
+              position.coords.longitude
+            );
+          } else {
+            currentPosition = new google.maps.LatLng(
+              this.latitude,
+              this.longitude
+            );
+          }
 
           const mapOptions: google.maps.MapOptions = {
             center: currentPosition,
@@ -69,7 +77,15 @@ export class GoogleMapComponent implements OnInit {
           // Handle geolocation error (e.g., user denied permission)
           console.error('Error obtaining user location.');
 
-          const defaultPosition = new google.maps.LatLng(38.652997388, -27.218665792);
+          let defaultPosition;
+          if (this.latitude != 0 && this.longitude != 0) {
+            defaultPosition = new google.maps.LatLng(
+              this.latitude,
+              this.longitude
+            );
+          } else {
+            defaultPosition = new google.maps.LatLng(38.652997388, -27.218665792);
+          }
 
           const mapOptions: google.maps.MapOptions = {
             center: defaultPosition,
@@ -108,7 +124,15 @@ export class GoogleMapComponent implements OnInit {
       // Geolocation API is not supported by the browser
       console.error('Geolocation API not supported.');
 
-      const defaultPosition = new google.maps.LatLng(38.652997388, -27.218665792);
+      let defaultPosition;
+      if (this.latitude != 0 && this.longitude != 0) {
+        defaultPosition = new google.maps.LatLng(
+          this.latitude,
+          this.longitude
+        );
+      } else {
+        defaultPosition = new google.maps.LatLng(38.652997388, -27.218665792);
+      }
 
       const mapOptions: google.maps.MapOptions = {
         center: defaultPosition,

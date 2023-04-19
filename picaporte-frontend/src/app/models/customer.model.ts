@@ -6,7 +6,6 @@ import { Property } from "./property.model";
 export class Customer {
     public id: number = 0;
     public firstName: string = "";
-    public lastName: string = "";
     public phoneNumber: string = "";
     public email: string = "";
     public cc: string = "";

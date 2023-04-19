@@ -27,7 +27,7 @@
                 <div *ngIf="isOnActivityLogMenu" class="mb-3 fw-bold">Histórico do imóvel</div>
             </div>
             <div *ngIf="!isOnRentingSubMenu" class="col mb-5 d-flex justify-content-end gap-3">
-                <button *ngIf="!isEditable" data-bs-toggle="modal" data-bs-target="#requestDocumentModal" class="btn btn-picaporte-secondary" (click)="onClick_requestDocument()">Requisitar documento</button>
+                <button *ngIf="!isEditable && isOnDocumentsSubMenu" data-bs-toggle="modal" data-bs-target="#requestDocumentModal" class="btn btn-picaporte-secondary" (click)="onClick_requestDocument()">Requisitar documento</button>
                 <button *ngIf="!isEditable" class="btn btn-picaporte-secondary" (click)="onClick_edit()">Editar</button>
                 <button *ngIf="isEditable && propertyId != null && propertyId != 0" class="btn btn-danger me-3" (click)="onClick_cancel()">Cancelar</button>
                 <button *ngIf="isEditable" class="btn btn-success" (click)="onClick_submit()">Submeter dados</button>

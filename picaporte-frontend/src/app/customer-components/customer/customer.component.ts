@@ -77,7 +77,6 @@ export class CustomerComponent implements OnInit {
     this.customerValidationObject = new CustomerValidationObject();
     this.customerValidationObject = this.validationService.validateCustomer(
       this.customerStructure.customer.firstName,
-      this.customerStructure.customer.lastName,
       this.customerStructure.customer.email,
       this.customerStructure.customer.phoneNumber,
       this.customerStructure.customer.cc,

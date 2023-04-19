@@ -53,7 +53,7 @@ export class PropertyDetailComponent implements OnInit {
   ngOnInit(): void {
     this.get_Customers();
     if (this.property.customerId != 0 && this.property.customerId != undefined) {
-      this.selectedCustomerName = this.property.customer?.firstName + " " + this.property.customer?.lastName;
+      this.selectedCustomerName = this.property.customer?.firstName;
     }
     this.get_staticPropertyTypes();
     this.get_staticPropertyStatuses();
@@ -70,63 +70,42 @@ export class PropertyDetailComponent implements OnInit {
     this.propertyValidationObject.isPriceValid.isValid = true;
   }
 
-  onFocus_bathrooms() {
-    this.propertyValidationObject.isBathroomsValid.isValid = true;
-  }
-
-  onFocus_constructionYear() {
-    this.propertyValidationObject.isConstructionYearValid.isValid = true;
-  }
-
-  onFocus_totalArea() {
-    this.propertyValidationObject.isTotalAreaValid.isValid = true;
-  }
-
-  onFocus_constructionArea() {
-    this.propertyValidationObject.isConstructionAreaValid.isValid = true;
-  }
 
   onClick_selectCustomer(customer: Customer, customerName: string) {
     this.selectedCustomerName = customerName;
 
     this.property.customer = customer;
     this.property.customerId = customer.id;
-    this.propertyValidationObject.isCustomerValid.isValid = true;
     this.triggerEvent_updatePropertyDetails();
   }
 
   onClick_selectPropertyType(propertyType: Static_PropertyType) {
     this.property.propertyTypeId = propertyType.id;
     this.property.propertyType = propertyType;
-    this.propertyValidationObject.isTypeValid.isValid = true;
     this.triggerEvent_updatePropertyDetails();
   }
 
   onClick_selectPropertyStatus(propertyStatus: Static_PropertyStatus) {
     this.property.propertyStatusId = propertyStatus.id;
     this.property.propertyStatus = propertyStatus;
-    this.propertyValidationObject.isStatusValid.isValid = true;
     this.triggerEvent_updatePropertyDetails();
   }
 
   onClick_selectPropertyConditionStatus(propertyConditionStatus: Static_PropertyConditionStatus) {
     this.property.propertyConditionStatusId = propertyConditionStatus.id;
     this.property.propertyConditionStatus = propertyConditionStatus;
-    this.propertyValidationObject.isStateValid.isValid = true;
     this.triggerEvent_updatePropertyDetails();
   }
 
   onClick_selectPropertyTypology(propertyTypology: Static_PropertyTypology) {
     this.property.propertyTypologyId = propertyTypology.id;
     this.property.propertyTypology = propertyTypology;
-    this.propertyValidationObject.isTypologyValid.isValid = true;
     this.triggerEvent_updatePropertyDetails();
   }
 
   onClick_selectEnergyCertificate(energyCertificate: Static_EnergyCertificate) {
     this.property.energyCertificateId = energyCertificate.id;
     this.property.energyCertificate = energyCertificate;
-    this.propertyValidationObject.isEnergyEficiencyValid.isValid = true;
     this.triggerEvent_updatePropertyDetails();
   }
 

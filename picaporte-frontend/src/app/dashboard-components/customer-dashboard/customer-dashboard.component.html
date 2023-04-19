@@ -35,12 +35,12 @@
             <button class="btn btn-secondary dropdown-toggle w-100"
               [ngClass]="{'btn-success': customerSearchAndFilterStructure.amenetieTypeIds.length != 0 && customerSearchAndFilterStructure.amenetieTypeIds != null}"
               type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              <div>Caraterísticas</div>
+              Caraterísticas
             </button>
             <ul class="dropdown-menu dropdown-menu-dark scrollable-dropdown-menu w-100">
               <li class="d-flex align-items-center justify-content-between fs-7 p-3 fw-bold">
-                <div (click)="onClick_selectAllTypes()" class="cursor-pointer">Seleccionar todos</div>
-                <div (click)="onClick_clearTypes()" class="cursor-pointer">Limpar</div>
+                <div (click)="onClick_selectAllTypes($event)" class="cursor-pointer">Seleccionar todos</div>
+                <div (click)="onClick_clearTypes($event)" class="cursor-pointer">Limpar</div>
               </li>
               <li *ngFor="let customerDashboardFilterAmenetieType of customerDashboardFilters.amenetieTypes; index as i"
                 (click)="onClick_selectAmenetieTypeFilter(i, $event)"

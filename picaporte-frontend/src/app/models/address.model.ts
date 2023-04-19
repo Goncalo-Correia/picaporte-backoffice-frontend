@@ -5,7 +5,7 @@ export class Address {
     public parish: string = "";
     public city: string = "";
     public island: string = "";
-    public description: string = "";
     public longitude: number = 0;
     public latitude: number = 0;
+    public zipCode: string = "";
 }

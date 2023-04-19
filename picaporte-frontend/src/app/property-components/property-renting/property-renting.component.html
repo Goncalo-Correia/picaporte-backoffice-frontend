@@ -80,12 +80,12 @@
             <div class="dropdown">
               <button class="w-100 btn btn-secondary dropdown-toggle" type="button" id="propertyType"
                 data-bs-toggle="dropdown" aria-expanded="false">
-                {{selectedCustomerLabel}} {{selectedRenting.customer?.lastName}}
+                {{selectedCustomerLabel}} {{selectedRenting.customer?.firstName}}
               </button>
               <ul class="dropdown-menu" aria-labelledby="propertyType">
                 <li *ngFor="let customer of customerList">
                   <a class="dropdown-item cursor-pointer"
-                    (click)="onClick_selectCustomer(customer)">{{customer.firstName}} {{customer.lastName}}</a>
+                    (click)="onClick_selectCustomer(customer)">{{customer.firstName}} {{customer.firstName}}</a>
                 </li>
               </ul>
             </div>

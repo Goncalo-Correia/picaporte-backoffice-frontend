@@ -52,13 +52,15 @@ export class CustomerDashboardComponent implements OnInit {
     this.getFilters();
   }
 
-  onClick_selectAllTypes() {
+  onClick_selectAllTypes(event: MouseEvent) {
+    event.stopPropagation();
     this.customerDashboardFilters.amenetieTypes.forEach(element => {
       element.isSelected = true;
     })
   }
 
-  onClick_clearTypes() {
+  onClick_clearTypes(event: MouseEvent) {
+    event.stopPropagation();
     this.customerDashboardFilters.amenetieTypes.forEach(element => {
       element.isSelected = false;
     })
@@ -79,7 +81,9 @@ export class CustomerDashboardComponent implements OnInit {
 
   onClick_clearFilter() {
     this.customerSearchAndFilterStructure.amenetieTypeIds = new Array<number>();
-    this.onClick_clearTypes();
+    this.customerDashboardFilters.amenetieTypes.forEach(element => {
+      element.isSelected = false;
+    })
     this.get_customerDashboardStructure();
   }
 

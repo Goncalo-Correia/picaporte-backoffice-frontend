@@ -36,14 +36,29 @@
       </div>
     </div>
     <div class="row">
-      <div class="col mb-3">
+      <div class="col-12 mb-3">
+        <label for="prompt" class="form-label fw-bold">Prompt</label>
+        <textarea *ngIf="isEditable; else promptRead" type="text" class="form-control" id="prompt" rows="2" name="prompt" 
+        [(ngModel)]="property.prompt" 
+        (change)="triggerEvent_updatePropertyDetails()">
+        </textarea>
+        <ng-template #promptRead>
+          <div *ngIf="property.prompt != null && property.prompt != ''; else promptNull">
+            {{property.prompt}}
+          </div>
+          <ng-template #promptNull>
+            <div>-</div>
+          </ng-template>
+        </ng-template>
+      </div>
+      <div class="col-12 mb-3">
         <label for="description" class="form-label fw-bold">Descrição</label>
         <textarea *ngIf="isEditable; else descriptionRead" type="text" class="form-control" id="description" rows="3" name="description" 
         [(ngModel)]="property.description" 
         (change)="triggerEvent_updatePropertyDetails()">
         </textarea>
         <ng-template #descriptionRead>
-          <div *ngIf="property.description != null; else descriptionNull">
+          <div *ngIf="property.description != null && property.description != ''; else descriptionNull">
             {{property.description}}
           </div>
           <ng-template #descriptionNull>
@@ -54,13 +69,10 @@
     </div>
     <div class="row">
       <div class="col-6 mb-3">
-        <label for="bathrooms" class="form-label fw-bold required">Nº casa de banho</label>
+        <label for="bathrooms" class="form-label fw-bold">Nº casa de banho</label>
         <input *ngIf="isEditable; else bathroomsRead" type="number" class="form-control" id="bathrooms" name="phoneNumber" 
-        [ngClass]="{'invalid-input' : !propertyValidationObject.isBathroomsValid.isValid}"
         [(ngModel)]="property.bathrooms" 
-        (change)="triggerEvent_updatePropertyDetails()"
-        (focus)="onFocus_bathrooms()">
-        <div *ngIf="!propertyValidationObject.isBathroomsValid.isValid" class="invalid-message">{{propertyValidationObject.isBathroomsValid.validationMessage}}</div>
+        (change)="triggerEvent_updatePropertyDetails()">
         <ng-template #bathroomsRead>
           <div *ngIf="property.bathrooms != null; else bathroomsNull">
             {{property.bathrooms}}
@@ -71,13 +83,10 @@
         </ng-template>
       </div>
       <div class="col-6 mb-3">
-        <label for="year" class="form-label fw-bold required">Ano de construção</label>
+        <label for="year" class="form-label fw-bold">Ano de construção</label>
         <input *ngIf="isEditable; else yearRead" type="email" class="form-control" id="year" name="year" 
-        [ngClass]="{'invalid-input' : !propertyValidationObject.isConstructionYearValid.isValid}"
         [(ngModel)]="property.constructionYear" 
-        (change)="triggerEvent_updatePropertyDetails()"
-        (focus)="onFocus_constructionYear()">
-        <div *ngIf="!propertyValidationObject.isConstructionYearValid.isValid" class="invalid-message">{{propertyValidationObject.isConstructionYearValid.validationMessage}}</div>
+        (change)="triggerEvent_updatePropertyDetails()">
         <ng-template #yearRead>
           <div *ngIf="property.constructionYear != null; else yearNull">
             {{property.constructionYear}}
@@ -90,13 +99,10 @@
     </div>
     <div class="row">
       <div class="col-6 mb-3">
-        <label for="totalarea" class="form-label fw-bold required">Área total</label>
-        <input *ngIf="isEditable; else totalAreaRead" type="text" class="form-control" id="totalarea" name="totalarea"
-        [ngClass]="{'invalid-input' : !propertyValidationObject.isTotalAreaValid.isValid}" 
+        <label for="totalarea" class="form-label fw-bold">Área total</label>
+        <input *ngIf="isEditable; else totalAreaRead" type="text" class="form-control" id="totalarea" name="totalarea" 
         [(ngModel)]="property.totalConstructionArea" 
-        (change)="triggerEvent_updatePropertyDetails()"
-        (focus)="onFocus_totalArea()">
-        <div *ngIf="!propertyValidationObject.isTotalAreaValid.isValid" class="invalid-message">{{propertyValidationObject.isTotalAreaValid.validationMessage}}</div>
+        (change)="triggerEvent_updatePropertyDetails()">
         <ng-template #totalAreaRead>
           <div *ngIf="property.totalConstructionArea!= null; else totalAreaNull">
             {{property.totalConstructionArea}}
@@ -107,13 +113,10 @@
         </ng-template>
       </div>
       <div class="col-6 mb-3">
-        <label for="livingarea" class="form-label fw-bold required">Área de construção</label>
-        <input *ngIf="isEditable; else livingAreaRead" type="text" class="form-control" id="livingarea" name="livingarea" 
-        [ngClass]="{'invalid-input' : !propertyValidationObject.isConstructionAreaValid.isValid}"
+        <label for="livingarea" class="form-label fw-bold">Área de construção</label>
+        <input *ngIf="isEditable; else livingAreaRead" type="text" class="form-control" id="livingarea" name="livingarea"
         [(ngModel)]="property.livingArea" 
-        (change)="triggerEvent_updatePropertyDetails()"
-        (focus)="onFocus_constructionArea()">
-        <div *ngIf="!propertyValidationObject.isConstructionAreaValid.isValid" class="invalid-message">{{propertyValidationObject.isConstructionAreaValid.validationMessage}}</div>
+        (change)="triggerEvent_updatePropertyDetails()">
         <ng-template #livingAreaRead>
           <div *ngIf="property.livingArea != null; else livingAreaNull">
             {{property.livingArea}}
@@ -126,8 +129,8 @@
     </div>
     <div *ngIf="isEditable; else propertyStatusRead" class="row">
       <div class="col-6 mb-3">
-        <label for="nif" class="form-label fw-bold required">Estado de venda do imóvel</label>
-        <div class="dropdown" [ngClass]="{'invalid-input' : !propertyValidationObject.isStatusValid.isValid}">
+        <label for="nif" class="form-label fw-bold">Estado de venda do imóvel</label>
+        <div class="dropdown">
           <button class="w-100 btn btn-warning dropdown-toggle" type="button" id="propertyConditionStatus" data-bs-toggle="dropdown" aria-expanded="false">
             <a *ngIf="property.propertyStatus?.label != null; else propertyStatusNullEdit">{{property.propertyStatus.label}}</a>
             <ng-template #propertyStatusNullEdit>
@@ -140,13 +143,12 @@
             </li>
           </ul>
         </div>
-        <div *ngIf="!propertyValidationObject.isStatusValid.isValid" class="invalid-message">{{propertyValidationObject.isStatusValid.validationMessage}}</div>
       </div>
     </div>
     <ng-template #propertyStatusRead>
       <div class="row">
         <div class="mb-2 col-6">
-          <label class="fw-bold required">Estado de venda</label>
+          <label class="fw-bold">Estado de venda</label>
           <div *ngIf="property.propertyStatus?.label != null; else propertyStatusNull">{{property.propertyStatus.label}}</div>
           <ng-template #propertyStatusNull>
             <div>-</div>
@@ -156,18 +158,17 @@
     </ng-template>
     <div class="row">
       <div class="col-12 mb-3">
-        <label for="nif" class="form-label fw-bold required">Proprietário</label>
-        <div *ngIf="isEditable; else clientRead" class="dropdown" [ngClass]="{'invalid-input' : !propertyValidationObject.isCustomerValid.isValid}">
+        <label for="nif" class="form-label fw-bold">Proprietário</label>
+        <div *ngIf="isEditable; else clientRead" class="dropdown" >
           <button class="w-100 btn btn-dark dropdown-toggle" type="button" id="propertyType" data-bs-toggle="dropdown" aria-expanded="false">
             {{selectedCustomerName}}
           </button>
           <ul class="dropdown-menu" aria-labelledby="propertyType">
             <li *ngFor="let customer of customers">
-              <a class="dropdown-item" (click)="onClick_selectCustomer(customer, customer.firstName + ' ' + customer.lastName)">{{customer.firstName + ' ' + customer.lastName}}</a>
+              <a class="dropdown-item" (click)="onClick_selectCustomer(customer, customer.firstName)">{{customer.firstName}}</a>
             </li>
           </ul>
         </div>
-        <div *ngIf="!propertyValidationObject.isCustomerValid.isValid" class="invalid-message">{{propertyValidationObject.isCustomerValid.validationMessage}}</div>
         <ng-template #clientRead>
           <div>{{selectedCustomerName}}</div>
         </ng-template>
@@ -175,8 +176,8 @@
     </div>
     <div *ngIf="isEditable; else propertyTypeRead" class="row">
       <div class="col-6 mb-3">
-        <label for="cc" class="form-label fw-bold required">Tipo do imóvel</label>
-        <div class="dropdown" [ngClass]="{'invalid-input' : !propertyValidationObject.isTypeValid.isValid}">
+        <label for="cc" class="form-label fw-bold">Tipo do imóvel</label>
+        <div class="dropdown">
           <button class="w-100 btn btn-secondary dropdown-toggle" type="button" id="propertyConditionStatus" data-bs-toggle="dropdown" aria-expanded="false">
             <a *ngIf="property.propertyType?.label != null; else propertyTypesNullEdit">{{property.propertyType?.label}}</a>
             <ng-template #propertyTypesNullEdit>
@@ -189,11 +190,10 @@
             </li>
           </ul>
         </div>
-        <div *ngIf="!propertyValidationObject.isTypeValid.isValid" class="invalid-message">{{propertyValidationObject.isTypeValid.validationMessage}}</div>
       </div>
       <div class="col-6 mb-3">
-        <label for="nif" class="form-label fw-bold required">Eficiência energética do imóvel</label>
-        <div class="dropdown" [ngClass]="{'invalid-input' : !propertyValidationObject.isEnergyEficiencyValid.isValid}">
+        <label for="nif" class="form-label fw-bold">Eficiência energética do imóvel</label>
+        <div class="dropdown">
           <button class="w-100 btn btn-secondary dropdown-toggle" type="button" id="propertyConditionStatus" data-bs-toggle="dropdown" aria-expanded="false">
             <a *ngIf="property.energyCertificate?.label != null; else energyCertificateNullEdit">{{property.energyCertificate?.label}}</a>
             <ng-template #energyCertificateNullEdit>
@@ -206,20 +206,19 @@
             </li>
           </ul>
         </div>
-        <div *ngIf="!propertyValidationObject.isEnergyEficiencyValid.isValid" class="invalid-message">{{propertyValidationObject.isEnergyEficiencyValid.validationMessage}}</div>
       </div>
     </div>
     <ng-template #propertyTypeRead>
       <div class="row">
         <div class="mb-2 col-6">
-          <label class="fw-bold required">Tipo do imóvel</label>
+          <label class="fw-bold">Tipo do imóvel</label>
           <div *ngIf="property.propertyType?.label != null; else propertyTypeNull">{{property.propertyType?.label}}</div>
           <ng-template #propertyTypeNull>
             <div>-</div>
           </ng-template>
         </div>
         <div class="mb-2 col-6">
-          <label class="fw-bold required">Eficiência energética do imóvel</label>
+          <label class="fw-bold">Eficiência energética do imóvel</label>
           <div *ngIf="property.energyCertificate?.label != null; else energyCertificateNull">{{property.energyCertificate?.label}}</div>
           <ng-template #energyCertificateNull>
             <div>-</div>
@@ -229,8 +228,8 @@
     </ng-template>
     <div *ngIf="isEditable; else propertyConditionStatusTypologyRead" class="row">
       <div class="col-6 mb-3">
-        <label for="nif" class="form-label fw-bold required">Estado do imóvel</label>
-        <div class="dropdown" [ngClass]="{'invalid-input' : !propertyValidationObject.isStateValid.isValid}">
+        <label for="nif" class="form-label fw-bold">Estado do imóvel</label>
+        <div class="dropdown">
           <button class="w-100 btn btn-secondary dropdown-toggle" type="button" id="propertyConditionStatus" data-bs-toggle="dropdown" aria-expanded="false">
             <a *ngIf="property.propertyConditionStatus?.label != null; else propertyConditionStatusNullEdit">{{property.propertyConditionStatus?.label}}</a>
             <ng-template #propertyConditionStatusNullEdit>
@@ -243,11 +242,10 @@
             </li>
           </ul>
         </div>
-        <div *ngIf="!propertyValidationObject.isStateValid.isValid" class="invalid-message">{{propertyValidationObject.isStateValid.validationMessage}}</div>
       </div>
       <div class="col-6 mb-3">
-        <label for="nif" class="form-label fw-bold required">Tipologia do imóvel</label>
-        <div class="dropdown" [ngClass]="{'invalid-input' : !propertyValidationObject.isTypologyValid.isValid}">
+        <label for="nif" class="form-label fw-bold">Tipologia do imóvel</label>
+        <div class="dropdown">
           <button class="w-100 btn btn-secondary dropdown-toggle" type="button" id="propertyConditionStatus" data-bs-toggle="dropdown" aria-expanded="false">
             <a *ngIf="property.propertyTypology?.label != null; else propertyTypologyNullEdit">{{property.propertyTypology?.label}}</a>
             <ng-template #propertyTypologyNullEdit>
@@ -260,20 +258,19 @@
             </li>
           </ul>
         </div>
-        <div *ngIf="!propertyValidationObject.isTypologyValid.isValid" class="invalid-message">{{propertyValidationObject.isTypologyValid.validationMessage}}</div>
       </div>
     </div>
     <ng-template #propertyConditionStatusTypologyRead>
       <div class="row">
         <div class="mb-2 col-6">
-          <label class="fw-bold required">Estado do imóvel</label>
+          <label class="fw-bold">Estado do imóvel</label>
           <div *ngIf="property.propertyConditionStatus?.label != null; else propertyConditionStatusNull">{{property.propertyConditionStatus?.label}}</div>
           <ng-template #propertyConditionStatusNull>
             <div>-</div>
           </ng-template>
         </div>
         <div class="mb-2 col-6">
-          <label class="fw-bold required">Tipologia do imóvel</label>
+          <label class="fw-bold">Tipologia do imóvel</label>
           <div *ngIf="property.propertyTypology?.label != null; else propertyTypologyNull">{{property.propertyTypology?.label}}</div>
           <ng-template #propertyTypologyNull>
             <div>-</div>

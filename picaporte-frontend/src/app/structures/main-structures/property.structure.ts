@@ -6,7 +6,6 @@ import { AmenetieTypeStructure } from "../amenetie-type.structure";
 
 export class PropertyStructure {
     property: Property = new Property();
-    mainImage: Image = new Image();
     mainDocuments: Array<Document> = new Array<Document>();
     certificateDocuments: Array<Document> = new Array<Document>();
     otherDocuments: Array<Document> = new Array<Document>();

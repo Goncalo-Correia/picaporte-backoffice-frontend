@@ -7,6 +7,7 @@ import { apiEndpoints, environment } from 'src/environments/environment';
 import { SearchAndFilterStructure } from 'src/app/structures/dashboard-structures/search-and-filter.structure';
 import { CustomerStructure } from 'src/app/structures/main-structures/customer.structure';
 import { DashboardKpiStructure } from 'src/app/structures/dashboard-structures/dashboard-kpi.structure';
+import { CustomerDashboardSearchAndFilterStructure } from 'src/app/structures/dashboard-structures/customer/customer-dashboard-search-and-filter.structure';
 
 @Injectable({
   providedIn: 'root'
@@ -50,7 +51,7 @@ export class QueriesCustomerService {
     }
 
     // POST
-    Post_SearchAndFilter_CustomerStructure(data: SearchAndFilterStructure, httpOptions: { headers: HttpHeaders }): Observable<CustomerDashboardStructure[]> {
+    Post_SearchAndFilter_CustomerStructure(data: CustomerDashboardSearchAndFilterStructure, httpOptions: { headers: HttpHeaders }): Observable<CustomerDashboardStructure[]> {
       return this.http
         .post<CustomerDashboardStructure[]>(
           this.baseurl + apiEndpoints.queries_customer.searchAndFilter,

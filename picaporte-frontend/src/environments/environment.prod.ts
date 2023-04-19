@@ -58,6 +58,9 @@ export const apiEndpoints = {
     get: "api/Images/",
     binary: "api/Images/binary/"
   },
+  document: {
+    requestDocument: "api/Documents/RequestDocument/"
+  },
   activityLog: {
     get: "api/ActivityLogs/EntityReference/"
   },

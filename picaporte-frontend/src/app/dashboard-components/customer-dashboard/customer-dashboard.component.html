@@ -27,21 +27,26 @@
   <div class="col-12">
     <app-search-and-filter-bar [searchText]="customerSearchAndFilterStructure.searchAndFilterStructure.searchText"
       [buttonLabel]="'Novo cliente'" [showButton]="true" [placeholder]="'Pesquise por um cliente'" [hasFilters]="true"
-      [hasSelectedFilter]="(customerSearchAndFilterStructure.amenetieTypeId != 0 && customerSearchAndFilterStructure.amenetieTypeId != null)"
+      [hasSelectedFilter]="(customerSearchAndFilterStructure.amenetieTypeIds.length != 0 && customerSearchAndFilterStructure.amenetieTypeIds != null)"
       (searchTextChanged)="eventHandler_searchTextChanged($event)" (buttonClicked)="eventHandler_buttonClicked()">
       <div>
         <div class="row mb-3">
           <div class="dropdown col-4 px-3">
             <button class="btn btn-secondary dropdown-toggle w-100"
-              [ngClass]="{'btn-success': customerSearchAndFilterStructure.amenetieTypeId != 0 && customerSearchAndFilterStructure.amenetieTypeId != null}"
+              [ngClass]="{'btn-success': customerSearchAndFilterStructure.amenetieTypeIds.length != 0 && customerSearchAndFilterStructure.amenetieTypeIds != null}"
               type="button" data-bs-toggle="dropdown" aria-expanded="false">
-              {{amenetieTypeFilterLabel}}
+              <div>Caraterísticas</div>
             </button>
             <ul class="dropdown-menu dropdown-menu-dark scrollable-dropdown-menu w-100">
-              <li *ngFor="let customerDashboardFilterAmenetieType of customerDashboardFilters.amenetieTypes"
-                (click)="onClick_selectAmenetieTypeFilter(customerDashboardFilterAmenetieType.id, customerDashboardFilterAmenetieType.label)"
-                class="cursor-pointer">
-                <div class="dropdown-item">{{customerDashboardFilterAmenetieType.label}}</div>
+              <li class="d-flex align-items-center justify-content-between fs-7 p-3 fw-bold">
+                <div (click)="onClick_selectAllTypes()" class="cursor-pointer">Seleccionar todos</div>
+                <div (click)="onClick_clearTypes()" class="cursor-pointer">Limpar</div>
+              </li>
+              <li *ngFor="let customerDashboardFilterAmenetieType of customerDashboardFilters.amenetieTypes; index as i"
+                (click)="onClick_selectAmenetieTypeFilter(i, $event)"
+                class="cursor-pointer d-flex align-items-center justify-content-between px-3 py-2">
+                <div>{{customerDashboardFilterAmenetieType.label}}</div>
+                <input class="form-check-input" type="checkbox" [(ngModel)]="customerDashboardFilterAmenetieType.isSelected">
               </li>
             </ul>
           </div>

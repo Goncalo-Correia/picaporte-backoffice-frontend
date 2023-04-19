@@ -7,4 +7,5 @@ export class StaticDataStructure {
     public isCertificate: boolean = false;
     public isActive: boolean = false;
     public icon: string = "";
+    public isSelected: boolean = false;
 }

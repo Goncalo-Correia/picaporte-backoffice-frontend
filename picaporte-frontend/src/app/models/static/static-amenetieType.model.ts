@@ -5,4 +5,5 @@ export class Static_AmenetieType {
     public order: number = 0;
     public isActive: boolean = false;
     public icon: string = "";
+    public isSelected: boolean = false;
 }

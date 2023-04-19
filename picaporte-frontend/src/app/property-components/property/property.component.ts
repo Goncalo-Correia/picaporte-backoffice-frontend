@@ -171,7 +171,7 @@ export class PropertyComponent implements OnInit {
   }
 
   eventHandler_updatePropertyMainImage(data: Image) {
-    this.propertyStructure.mainImage = data;
+    this.propertyStructure.property.mainImage = data;
   }
 
   eventHandler_updatePropertyOtherImages(data: Array<Image>) {
@@ -202,6 +202,8 @@ export class PropertyComponent implements OnInit {
             })
           )
           .subscribe(data => {
+             let prop = <Property>data;
+             this.propertyId = prop.id;
             this.get_propertyStructure();
           });
       });

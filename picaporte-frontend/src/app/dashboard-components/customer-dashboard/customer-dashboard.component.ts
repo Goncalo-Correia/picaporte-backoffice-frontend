@@ -29,7 +29,6 @@ export class CustomerDashboardComponent implements OnInit {
   hasNext: boolean = true;
 
   customerDashboardFilters: CustomerDashboardFilterStructure;
-  amenetieTypeFilterLabel: string = "Caraterísticas";
 
   isDataFetched: boolean = false;
   isKpiDataFetched: boolean = false;
@@ -53,18 +52,34 @@ export class CustomerDashboardComponent implements OnInit {
     this.getFilters();
   }
 
-  onClick_selectAmenetieTypeFilter(amenetieTypeId: number, label: string) {
-    this.customerSearchAndFilterStructure.amenetieTypeId = amenetieTypeId;
-    this.amenetieTypeFilterLabel = label;
+  onClick_selectAllTypes() {
+    this.customerDashboardFilters.amenetieTypes.forEach(element => {
+      element.isSelected = true;
+    })
+  }
+
+  onClick_clearTypes() {
+    this.customerDashboardFilters.amenetieTypes.forEach(element => {
+      element.isSelected = false;
+    })
+  }
+
+  onClick_selectAmenetieTypeFilter(index: number, event: MouseEvent) {
+    event.stopPropagation();
+    this.customerDashboardFilters.amenetieTypes[index].isSelected = !this.customerDashboardFilters.amenetieTypes[index].isSelected;
   }
 
   onClick_confirmFilter() {
+    this.customerSearchAndFilterStructure.amenetieTypeIds = new Array<number>();
+    this.customerDashboardFilters.amenetieTypes.filter(prop => prop.isSelected).forEach(element => {
+      this.customerSearchAndFilterStructure.amenetieTypeIds.push(element.id);
+    });
     this.get_customerDashboardStructure();
   }
 
   onClick_clearFilter() {
-    this.customerSearchAndFilterStructure.amenetieTypeId = 0;
-    this.amenetieTypeFilterLabel = "Características";
+    this.customerSearchAndFilterStructure.amenetieTypeIds = new Array<number>();
+    this.onClick_clearTypes();
     this.get_customerDashboardStructure();
   }
 
@@ -92,7 +107,7 @@ export class CustomerDashboardComponent implements OnInit {
   get_customerDashboardStructure() {
     this.isDataFetched = false;
     this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.queries_customerService.Post_SearchAndFilter_CustomerStructure(this.customerSearchAndFilterStructure.searchAndFilterStructure, resolve)
+      this.queries_customerService.Post_SearchAndFilter_CustomerStructure(this.customerSearchAndFilterStructure, resolve)
       .pipe(
         catchError(err => {
           this.messageComponent.showMessage(err.error);

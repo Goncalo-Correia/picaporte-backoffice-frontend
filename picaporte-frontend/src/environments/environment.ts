@@ -6,10 +6,10 @@ export const environment = {
   production: false,
   apiKey: "REDACTED_API_KEY",
   mapboxAccessToken: "REDACTED_MAPBOX_TOKEN",
-  apiUrl: "https://localhost:7036/",
-  redirectUri: "http://localhost:59701/"
-  //apiUrl: "https://picaporte.website/rest/",
-  //redirectUri: "https://picaporte-backoffice.site/"
+  //apiUrl: "https://localhost:7036/",
+  //redirectUri: "http://localhost:59701/"
+  apiUrl: "https://picaporte.website/rest/",
+  redirectUri: "https://picaporte-backoffice.site/"
 };
 
 export const apiEndpoints = {
@@ -74,6 +74,11 @@ export const apiEndpoints = {
     get: "api/Static_AmenetieType/isActive/",
     updateAll: "api/Static_AmenetieType/updateAll",
     base: "api/Static_AmenetieType/"
+  },
+  static_propertyLocationType: {
+    get: "api/Static_PropertyLocationType/isActive/",
+    updateAll: "api/Static_PropertyLocationType/updateAll",
+    base: "api/Static_PropertyLocationType/"
   },
   static_propertyType: {
     get: "api/Static_PropertyType/isActive/",

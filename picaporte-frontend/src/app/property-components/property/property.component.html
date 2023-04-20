@@ -23,6 +23,7 @@
                 <div *ngIf="isOnCaracteristicsSubMenu" class="mb-3 me-3 fw-bold">Características</div>
                 <div *ngIf="isOnDocumentsSubMenu" class="mb-3 fw-bold">Documentos associados</div>
                 <div *ngIf="isOnImagesSubMenu" class="mb-3 fw-bold">Imagens associadas</div>
+                <div *ngIf="isOnRecommendedSubMenu" class="mb-3 fw-bold">Imóveis recomendados</div>
                 <div *ngIf="isOnRentingSubMenu" class="mb-3 fw-bold">Registo de arrendamento</div>
                 <div *ngIf="isOnActivityLogMenu" class="mb-3 fw-bold">Histórico do imóvel</div>
             </div>
@@ -77,9 +78,9 @@
                 <app-property-renting [propertyId]="propertyId"></app-property-renting>
             </div>
         </div>
-        <div *ngIf="isOnLocationSubMenu" class="row">
+        <div *ngIf="isOnRecommendedSubMenu" class="row">
             <div class="col-12">
-                <!--<app-customer-properties [properties]="customerStructure.properties" (event_updateCustomerProperties)="eventHandler_updatePropertyLocation($event)"></app-customer-properties>-->
+                <app-recommended-properties [isEditable]="isEditable" [recommendedProperties]="propertyStructure.recommendedProperties" (event_updateRecommendedProperties)="eventHandler_updateRecommendedProperties($event)"></app-recommended-properties>
             </div>
         </div>
         <div *ngIf="isOnObservationHistorySubMenu" class="row">

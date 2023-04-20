@@ -17,7 +17,6 @@ import { CKEditorModule } from 'ckeditor4-angular';
 import { AuthModule } from '@auth0/auth0-angular';
 
 import { Auth0ServiceComponent } from './services/auth0-service/auth0-service.component';
-import { HeaderComponent } from './layout-components/header/header.component';
 import { SidenavComponent } from './layout-components/sidenav/sidenav.component';
 import { CustomerComponent } from './customer-components/customer/customer.component';
 import { CustomerPropertiesComponent } from './customer-components/customer-properties/customer-properties.component';
@@ -52,13 +51,13 @@ import { MessageComponent } from './generic-components/message/message.component
 import { DatePipe, registerLocaleData } from '@angular/common';
 import { GoogleMapComponent } from './generic-components/google-map/google-map.component';
 import { DateFormatComponent } from './generic-components/date-format/date-format.component';
+import { RecommendedPropertiesComponent } from './property-components/recommended-properties/recommended-properties.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     Auth0ServiceComponent,
-    HeaderComponent,
     SidenavComponent,
     CustomerComponent,
     CustomerPropertiesComponent,
@@ -89,7 +88,8 @@ import { DateFormatComponent } from './generic-components/date-format/date-forma
     ToDosComponent,
     MessageComponent,
     GoogleMapComponent,
-    DateFormatComponent
+    DateFormatComponent,
+    RecommendedPropertiesComponent
   ],
   imports: [
     BrowserModule,

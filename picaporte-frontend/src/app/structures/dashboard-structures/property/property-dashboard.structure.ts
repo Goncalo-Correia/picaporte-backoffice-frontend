@@ -6,6 +6,10 @@ export class PropertyDashboardStructure {
     customerContact: string = "";
     propertyTypeLabel: string = "";
     propertyStatusLabel: string = "";
+    propertyConditionStatusLabel: string = "";
+    propertyLocationTypeLabel: string = "";
     lastModifiedOn: Date = new Date();
     lastModifiedBy: string = "";
+    mainImageFilename: string = "";
+    isSelected: boolean = false;
 }

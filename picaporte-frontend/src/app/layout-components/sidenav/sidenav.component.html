@@ -1,41 +1,47 @@
-<div>
-    <div routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]={exact:true} class="d-flex align-items-center p-3 gap-3 fs-5 fw-bold opacity-75 sidenav-item">
+<div class="text-white">
+    <div routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]={exact:true} class="d-flex align-items-center p-3 gap-3 fs-5 fw-bold sidenav-item">
         <i class="fa fa-gauge"></i>
-        <div *ngIf="isOpen" class="me-5">Dashboard</div>
+        <div *ngIf="isOpen" class="pb-1">Dashboard</div>
     </div>
-    <div routerLink="/Imoveis" routerLinkActive="active-link" class="d-flex align-items-center p-3 gap-3 fs-5 fw-bold opacity-75 sidenav-item">
+    <div routerLink="/Imoveis" routerLinkActive="active-link" class="d-flex align-items-center p-3 gap-3 fs-5 fw-bold sidenav-item">
         <i class="fa fa-house"></i>
         <div *ngIf="isOpen" class="me-5">Imóveis</div>
     </div>
-    <div routerLink="/Clientes" routerLinkActive="active-link" class="d-flex align-items-center p-3 gap-3 fs-5 fw-bold opacity-75 sidenav-item">
+    <div routerLink="/Clientes" routerLinkActive="active-link" class="d-flex align-items-center p-3 gap-3 fs-5 fw-bold sidenav-item">
         <i class="fa fa-users"></i>
         <div *ngIf="isOpen" class="me-5">Clientes</div>
     </div>
-    <div routerLink="/Utilizadores" routerLinkActive="active-link" class="d-flex align-items-center p-3 gap-3 fs-5 fw-bold opacity-75 sidenav-item">
+    <div routerLink="/Utilizadores" routerLinkActive="active-link" class="d-flex align-items-center p-3 gap-3 fs-5 fw-bold sidenav-item">
         <i class="fa fa-users"></i>
         <div *ngIf="isOpen" class="me-5">Utilizadores</div>
     </div>
-    <div routerLink="/Tarefas" routerLinkActive="active-link" class="d-flex align-items-center p-3 gap-3 fs-5 fw-bold opacity-75 sidenav-item">
+    <div routerLink="/Tarefas" routerLinkActive="active-link" class="d-flex align-items-center p-3 gap-3 fs-5 fw-bold sidenav-item">
         <i class="fa fa-list-check"></i>
         <div *ngIf="isOpen" class="me-5">Tarefas</div>
     </div>
-    <div routerLink="/Noticias" routerLinkActive="active-link" class="d-flex align-items-center p-3 gap-3 fs-5 fw-bold opacity-75 sidenav-item">
+    <div routerLink="/Noticias" routerLinkActive="active-link" class="d-flex align-items-center p-3 gap-3 fs-5 fw-bold sidenav-item">
         <i class="fa fa-newspaper"></i>
         <div *ngIf="isOpen" class="me-5">Notícias</div>
     </div>
-    <div routerLink="/ToDos" routerLinkActive="active-link" class="d-flex align-items-center p-3 gap-3 fs-5 fw-bold opacity-75 sidenav-item">
+    <div routerLink="/ToDos" routerLinkActive="active-link" class="d-flex align-items-center p-3 gap-3 fs-5 fw-bold sidenav-item">
         <i class="fa fa-clipboard-list"></i>
         <div *ngIf="isOpen" class="me-5">To Do</div>
     </div>
-    <div routerLink="/Links" routerLinkActive="active-link" class="d-flex align-items-center p-3 gap-3 fs-5 fw-bold opacity-75 sidenav-item">
+    <div routerLink="/Links" routerLinkActive="active-link" class="d-flex align-items-center p-3 gap-3 fs-5 fw-bold sidenav-item">
         <i class="fa fa-link"></i>
         <div *ngIf="isOpen" class="me-5">Links</div>
     </div>
-    <div routerLink="/GestaoDeDados" routerLinkActive="active-link" class="d-flex align-items-center gap-3 p-3 fs-5 fw-bold opacity-75 sidenav-item">
+    <div routerLink="/GestaoDeDados" routerLinkActive="active-link" class="d-flex align-items-center gap-3 p-3 fs-5 fw-bold sidenav-item">
         <i class="fa fa-database"></i>
         <div *ngIf="isOpen" class="me-5">Gestão de dados</div>
     </div>
     <div class="w-100 p-3 text-end bottom-0 position-absolute open-close-arrow cursor-pointer" (click)="onClick_toggle()">
+        <div *ngIf="isOpen" class="mb-3 text-center">
+            <img src="/assets/images/logo20anos.png" alt="picaporte 20 anos" style="width: 50%;">
+        </div>
+        <div class="mb-3">
+            <app-auth0 [isOpen]="isOpen"></app-auth0>
+        </div>
         <div *ngIf="isOpen; else closed">
             <i class="fa-solid fa-chevrons-left"></i>
         </div>

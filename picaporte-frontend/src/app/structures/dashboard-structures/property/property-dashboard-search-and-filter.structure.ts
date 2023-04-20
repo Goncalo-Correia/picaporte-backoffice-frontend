@@ -2,9 +2,10 @@ import { SearchAndFilterStructure } from "../search-and-filter.structure";
 
 export class PropertyDashboardSearchAndFilterStructure {
     searchAndFilter: SearchAndFilterStructure = new SearchAndFilterStructure();
-    propertyTypeId: number | undefined;
-    propertyStatusId: number | undefined;
-    propertyTypologyId: number | undefined;
-    propertyConditionStatusId: number | undefined;
-    amenetieTypeId: number | undefined;
+    propertyTypeId: number = 0;
+    propertyStatusId: number = 0;
+    propertyLocationTypeId: number = 0;
+    propertyTypologyId: number = 0;
+    propertyConditionStatusId: number = 0;
+    amenetieTypeIds: Array<number> = new Array<number>();
 }

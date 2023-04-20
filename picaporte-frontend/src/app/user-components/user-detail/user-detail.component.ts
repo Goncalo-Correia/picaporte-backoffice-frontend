@@ -34,10 +34,6 @@ export class UserDetailComponent implements OnInit {
     this.userValidationObject.isEmailValid.isValid = true;
   }
 
-  onFocus_phoneNumber() {
-    this.userValidationObject.isPhoneNumberValid.isValid = true;
-  }
-
   onClick_selectUserRole(isAdmin: boolean) {
     this.user.isAdmin = isAdmin;
     this.triggerEvent_updateUserDetails();

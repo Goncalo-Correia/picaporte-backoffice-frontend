@@ -15,6 +15,10 @@ import { StaticEnergyCertificateService } from 'src/app/api-service/static-energ
 import { Static_PropertyConditionStatus } from 'src/app/models/static/static-propertyconditionstatus.model';
 import { StaticPropertyConditionStatusService } from 'src/app/api-service/static-property-condition-status/property-condition-status.service';
 import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
+import { Static_PropertyLocationType } from 'src/app/models/static/static-propertylocationtype.model';
+import { StaticPropertyLocationTypeService } from 'src/app/api-service/static-property-location-type/property-location-type.service';
+import { PropertyTypeSelection } from 'src/app/structures/utility-structures/property-type-selection.structure';
+import { PropertyTypologySelection } from 'src/app/structures/utility-structures/property-typology-selection.structure copy';
 
 
 @Component({
@@ -31,17 +35,19 @@ export class CustomerPreferencesComponent implements OnInit {
 
   selectedPreferenceStructure: PreferenceStructure;
   selectedRowNumber: number = -1;
-  selectedPropertyTypeLabel: string = "Nenhuma opção seleccionada";
-  selectedPropertyStatusLabel: string = "Nenhuma opção seleccionada";
-  selectedPropertyConditionStatusLabel: string = "Nenhuma opção seleccionada";
-  selectedPropertyTypologyLabel: string = "Nenhuma opção seleccionada";
-  selectedEnergyCertificateLabel: string = "Nenhuma opção seleccionada";
+  selectedPropertyTypeLabel: string = "Seleccione opção";
+  selectedPropertyStatusLabel: string = "Seleccione opção";
+  selectedPropertyLocationTypeLabel: string = "Seleccione opção";
+  selectedPropertyConditionStatusLabel: string = "Seleccione opção";
+  selectedPropertyTypologyLabel: string = "Seleccione opção";
+  selectedEnergyCertificateLabel: string = "Seleccione opção";
 
-  staticPropertyTypes: Static_PropertyType[] = [];
   staticPropertyStatuses: Static_PropertyStatus[] = [];
+  staticPropertyLocationTypes: Static_PropertyLocationType[] = [];
   staticPropertyConditionStatuses: Static_PropertyConditionStatus[] = [];
-  staticPropertyTypologies: Static_PropertyTypology[] = [];
   staticEnergyCertificates: Static_EnergyCertificate[] = [];
+  staticPropertyTypes: PropertyTypeSelection[] = [];
+  staticPropertyTypologies: PropertyTypologySelection[] = [];
 
   amenetieTypeStructureList: Array<AmenetieTypeStructure>;
   private amenentieTypeStructure: AmenetieTypeStructure;
@@ -50,6 +56,7 @@ export class CustomerPreferencesComponent implements OnInit {
   constructor(
     public static_propertyTypeService: StaticPropertyTypeService, 
     public static_propertyStatusService: StaticPropertyStatusService, 
+    public static_propertyLocationTypeService: StaticPropertyLocationTypeService, 
     public static_propertyConditionStatusService: StaticPropertyConditionStatusService, 
     public static_propertyTypologyService: StaticPropertyTypologyService,
     public static_energyCertificateService: StaticEnergyCertificateService,
@@ -66,16 +73,30 @@ export class CustomerPreferencesComponent implements OnInit {
   ngOnInit(): void {
     this.get_staticPropertyTypes();
     this.get_staticPropertyStatuses();
+    this.get_staticPropertyLocationTypes();
     this.get_staticPropertyConditionStatuses();
     this.get_staticPropertyTypologies();
     this.get_staticEnergyCertificates();
     this.get_amenetieTypes();
   }
 
-  onClick_selectPropertyType(propertyType: Static_PropertyType, label: string) {
-    this.selectedPreferenceStructure.preference.propertyTypeId = propertyType.id;
-    this.selectedPreferenceStructure.preference.propertyType = propertyType;
-    this.selectedPropertyTypeLabel = label;
+  onClick_selectPropertyType(index: number, event: MouseEvent) {
+    event.stopPropagation();
+    this.staticPropertyTypes[index].isSelected = !this.staticPropertyTypes[index].isSelected;
+  }
+  
+  onClick_selectAllTypes(event: MouseEvent) {
+    event.stopPropagation();
+    this.staticPropertyTypes.forEach(element => {
+      element.isSelected = true;
+    })
+  }
+
+  onClick_clearTypes(event: MouseEvent) {
+    event.stopPropagation();
+    this.staticPropertyTypes.forEach(element => {
+      element.isSelected = false;
+    })
   }
 
   onClick_selectPropertyStatus(propertyStatus: Static_PropertyStatus, label: string) {
@@ -84,16 +105,35 @@ export class CustomerPreferencesComponent implements OnInit {
     this.selectedPropertyStatusLabel = label;
   }
 
+  onClick_selectPropertyLocationType(propertyLocationType: Static_PropertyLocationType, label: string) {
+    this.selectedPreferenceStructure.preference.propertyLocationTypeId = propertyLocationType.id;
+    this.selectedPreferenceStructure.preference.propertyLocationType = propertyLocationType;
+    this.selectedPropertyLocationTypeLabel = label;
+  }
+
   onClick_selectPropertyConditionStatus(propertyConditionStatus: Static_PropertyConditionStatus, label: string) {
     this.selectedPreferenceStructure.preference.propertyConditionStatusId = propertyConditionStatus.id;
     this.selectedPreferenceStructure.preference.propertyConditionStatus = propertyConditionStatus;
     this.selectedPropertyConditionStatusLabel = label;
   }
 
-  onClick_selectPropertyTypology(propertyTypology: Static_PropertyTypology, label: string) {
-    this.selectedPreferenceStructure.preference.propertyTypologyId = propertyTypology.id;
-    this.selectedPreferenceStructure.preference.propertyTypology = propertyTypology;
-    this.selectedPropertyTypologyLabel = label;
+  onClick_selectPropertyTypology(index: number, event: MouseEvent) {
+    event.stopPropagation();
+    this.staticPropertyTypologies[index].isSelected = !this.staticPropertyTypologies[index].isSelected;
+  }
+
+  onClick_selectAllTypologies(event: MouseEvent) {
+    event.stopPropagation();
+    this.staticPropertyTypologies.forEach(element => {
+      element.isSelected = true;
+    })
+  }
+
+  onClick_clearTypologies(event: MouseEvent) {
+    event.stopPropagation();
+    this.staticPropertyTypologies.forEach(element => {
+      element.isSelected = false;
+    })
   }
 
   onClick_selectEnergyCertificate(energyCertificate: Static_EnergyCertificate, label: string) {
@@ -117,11 +157,12 @@ export class CustomerPreferencesComponent implements OnInit {
   }
 
   onClick_close() {
-    this.selectedPropertyTypeLabel = "Nenhuma opção seleccionada";
-    this.selectedPropertyStatusLabel = "Nenhuma opção seleccionada";
-    this.selectedPropertyConditionStatusLabel = "Nenhuma opção seleccionada";
-    this.selectedPropertyTypologyLabel = "Nenhuma opção seleccionada";
-    this.selectedEnergyCertificateLabel = "Nenhuma opção seleccionada";
+    this.selectedPropertyTypeLabel = "Seleccione opção";
+    this.selectedPropertyStatusLabel = "Seleccione opção";
+    this.selectedPropertyLocationTypeLabel = "Seleccione opção";
+    this.selectedPropertyConditionStatusLabel = "Seleccione opção";
+    this.selectedPropertyTypologyLabel = "Seleccione opção";
+    this.selectedEnergyCertificateLabel = "Seleccione opção";
   }
 
   onClick_addNew() {
@@ -131,22 +172,26 @@ export class CustomerPreferencesComponent implements OnInit {
   }
 
   onClick_edit(rowNumber: number) {
+    
     if (this.isEditable) {
       this.selectedRowNumber = rowNumber;
       this.selectedPreferenceStructure = this.preferenceService.mapNewPreferenceStructure(this.preferences[rowNumber]);
       this.buildAmenetieTypeStructure(false);
   
-      if (this.selectedPreferenceStructure.preference.propertyType != null) {
-        this.selectedPropertyTypeLabel = this.selectedPreferenceStructure.preference.propertyType.label;
+      if (this.selectedPreferenceStructure.propertyTypes.length > 0) {
+        this.selectedPropertyTypeLabel = "Tipos seleccionados";
       }
       if (this.selectedPreferenceStructure.preference.propertyStatus != null) {
         this.selectedPropertyStatusLabel = this.selectedPreferenceStructure.preference.propertyStatus?.label;
       }
+      if (this.selectedPreferenceStructure.preference.propertyLocationType != null) {
+        this.selectedPropertyLocationTypeLabel = this.selectedPreferenceStructure.preference.propertyLocationType?.label;
+      }
       if (this.selectedPreferenceStructure.preference.propertyConditionStatus != null) {
         this.selectedPropertyConditionStatusLabel = this.selectedPreferenceStructure.preference.propertyConditionStatus?.label;
       }
-      if (this.selectedPreferenceStructure.preference.propertyTypology != null) {
-        this.selectedPropertyTypologyLabel = this.selectedPreferenceStructure.preference.propertyTypology?.label;
+      if (this.selectedPreferenceStructure.propertyTypologies.length > 0) {
+        this.selectedPropertyTypologyLabel = "Tipologies seleccioandas";
       }
       if (this.selectedPreferenceStructure.preference.energyCertificate != null) {
         this.selectedEnergyCertificateLabel = this.selectedPreferenceStructure.preference.energyCertificate?.label;
@@ -156,6 +201,16 @@ export class CustomerPreferencesComponent implements OnInit {
 
   onClick_submit() {
     this.buildAmenetieTypeStructure(true);
+
+    this.selectedPreferenceStructure.propertyTypes = new Array<Static_PropertyType>();
+    this.staticPropertyTypes.filter(prop => prop.isSelected).forEach(element => {
+      this.selectedPreferenceStructure.propertyTypes.push(element.propertyType);
+    });
+    this.selectedPreferenceStructure.propertyTypologies = new Array<Static_PropertyTypology>();
+    this.staticPropertyTypologies.filter(prop => prop.isSelected).forEach(element => {
+      this.selectedPreferenceStructure.propertyTypologies.push(element.propertyTypology);
+    });
+
     if (this.selectedRowNumber == -1) {
       this.preferences.push(this.selectedPreferenceStructure);
     } else {
@@ -181,7 +236,16 @@ export class CustomerPreferencesComponent implements OnInit {
   private get_staticPropertyTypes() {
     this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
       this.static_propertyTypeService.GetAll_PropertyTypes(true, resolve).subscribe((data: {}) => {
-        this.staticPropertyTypes = <Static_PropertyType[]>data;
+        let propertyTypes: Array<Static_PropertyType> = new Array<Static_PropertyType>();
+        propertyTypes = <Static_PropertyType[]>data;
+
+        this.staticPropertyTypes = new Array<PropertyTypeSelection>();
+        propertyTypes.forEach(element => {
+          this.staticPropertyTypes.push({
+            propertyType: element,
+            isSelected: false
+          });
+        })
       });
     });
   }
@@ -194,10 +258,27 @@ export class CustomerPreferencesComponent implements OnInit {
     });
   }
 
+  private get_staticPropertyLocationTypes() {
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+      this.static_propertyLocationTypeService.GetAll_PropertyLocationTypes(true, resolve).subscribe((data: {}) => {
+        this.staticPropertyLocationTypes = <Static_PropertyLocationType[]>data;
+      });
+    });
+  }
+
   private get_staticPropertyTypologies() {
     this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
       this.static_propertyTypologyService.GetAll_PropertyTypology(true, resolve).subscribe((data: {}) => {
-        this.staticPropertyTypologies = <Static_PropertyTypology[]>data;
+        let propertyTypologies: Array<Static_PropertyTypology> = new Array<Static_PropertyTypology>();
+        propertyTypologies = <Static_PropertyType[]>data;
+
+        this.staticPropertyTypologies = new Array<PropertyTypologySelection>();
+        propertyTypologies.forEach(element => {
+          this.staticPropertyTypologies.push({
+            propertyTypology: element,
+            isSelected: false
+          });
+        })
       });
     });
   }

@@ -11,7 +11,7 @@ export class AddressComponent {
 
   @Input() address: Address = new Address();
   @Input() isEditable: boolean = false;
-  @Input() showZipCode: boolean = false;
+  @Input() isCustomer: boolean = false;
   @Input() addressValidationObject: AddressValidationObject = new AddressValidationObject();
 
   @Output() event_updateAddress = new EventEmitter<Address>();

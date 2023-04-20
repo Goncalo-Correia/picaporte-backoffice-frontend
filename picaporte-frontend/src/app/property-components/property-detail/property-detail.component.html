@@ -9,11 +9,11 @@
         (focus)="onFocus_reference()">
         <div *ngIf="!propertyValidationObject.isReferenceValid.isValid" class="invalid-message">{{propertyValidationObject.isReferenceValid.validationMessage}}</div>
         <ng-template #referenceRead>
-          <div *ngIf="property.reference != null; else referenceNull">
+          <div *ngIf="property.reference != null && property.reference != ''; else referenceNull">
             {{property.reference}}
           </div>
           <ng-template #referenceNull>
-            -
+            <div>-</div>
           </ng-template>
         </ng-template>
       </div>
@@ -26,11 +26,11 @@
         (focus)="onFocus_price()">
         <div *ngIf="!propertyValidationObject.isPriceValid.isValid" class="invalid-message">{{propertyValidationObject.isPriceValid.validationMessage}}</div>
         <ng-template #priceRead>
-          <div *ngIf="property.price != null; else priceNull">
+          <div *ngIf="property.price != null && property.price != 0; else priceNull">
             {{property.price}}
           </div>
           <ng-template #priceNull>
-            -
+            <div>-</div>
           </ng-template>
         </ng-template>
       </div>
@@ -62,7 +62,7 @@
             {{property.description}}
           </div>
           <ng-template #descriptionNull>
-            -
+            <div>-</div>
           </ng-template>
         </ng-template>
       </div>
@@ -74,11 +74,11 @@
         [(ngModel)]="property.bathrooms" 
         (change)="triggerEvent_updatePropertyDetails()">
         <ng-template #bathroomsRead>
-          <div *ngIf="property.bathrooms != null; else bathroomsNull">
+          <div *ngIf="property.bathrooms != null && property.bathrooms != 0; else bathroomsNull">
             {{property.bathrooms}}
           </div>
           <ng-template #bathroomsNull>
-            -
+            <div>-</div>
           </ng-template>
         </ng-template>
       </div>
@@ -88,11 +88,11 @@
         [(ngModel)]="property.constructionYear" 
         (change)="triggerEvent_updatePropertyDetails()">
         <ng-template #yearRead>
-          <div *ngIf="property.constructionYear != null; else yearNull">
+          <div *ngIf="property.constructionYear != null && property.constructionYear != 0; else yearNull">
             {{property.constructionYear}}
           </div>
           <ng-template #yearNull>
-            -
+            <div>-</div>
           </ng-template>
         </ng-template>
       </div>
@@ -104,11 +104,11 @@
         [(ngModel)]="property.totalConstructionArea" 
         (change)="triggerEvent_updatePropertyDetails()">
         <ng-template #totalAreaRead>
-          <div *ngIf="property.totalConstructionArea!= null; else totalAreaNull">
+          <div *ngIf="property.totalConstructionArea!= null && property.totalConstructionArea!= 0; else totalAreaNull">
             {{property.totalConstructionArea}}
           </div>
           <ng-template #totalAreaNull>
-            -
+            <div>-</div>
           </ng-template>
         </ng-template>
       </div>
@@ -118,11 +118,11 @@
         [(ngModel)]="property.livingArea" 
         (change)="triggerEvent_updatePropertyDetails()">
         <ng-template #livingAreaRead>
-          <div *ngIf="property.livingArea != null; else livingAreaNull">
+          <div *ngIf="property.livingArea != null && property.livingArea != 0; else livingAreaNull">
             {{property.livingArea}}
           </div>
           <ng-template #livingAreaNull>
-            -
+            <div>-</div>
           </ng-template>
         </ng-template>
       </div>
@@ -132,7 +132,7 @@
         <label for="nif" class="form-label fw-bold">Estado de venda do imóvel</label>
         <div class="dropdown">
           <button class="w-100 btn btn-warning dropdown-toggle" type="button" id="propertyConditionStatus" data-bs-toggle="dropdown" aria-expanded="false">
-            <a *ngIf="property.propertyStatus?.label != null; else propertyStatusNullEdit">{{property.propertyStatus.label}}</a>
+            <a *ngIf="property.propertyStatus?.label != null && property.propertyStatus?.label != ''; else propertyStatusNullEdit">{{property.propertyStatus.label}}</a>
             <ng-template #propertyStatusNullEdit>
               <a>Nenhuma opção seleccionada</a>
             </ng-template>
@@ -149,7 +149,7 @@
       <div class="row">
         <div class="mb-2 col-6">
           <label class="fw-bold">Estado de venda</label>
-          <div *ngIf="property.propertyStatus?.label != null; else propertyStatusNull">{{property.propertyStatus.label}}</div>
+          <div *ngIf="property.propertyStatus?.label != null && property.propertyStatus?.label != ''; else propertyStatusNull">{{property.propertyStatus.label}}</div>
           <ng-template #propertyStatusNull>
             <div>-</div>
           </ng-template>
@@ -179,7 +179,7 @@
         <label for="cc" class="form-label fw-bold">Tipo do imóvel</label>
         <div class="dropdown">
           <button class="w-100 btn btn-secondary dropdown-toggle" type="button" id="propertyConditionStatus" data-bs-toggle="dropdown" aria-expanded="false">
-            <a *ngIf="property.propertyType?.label != null; else propertyTypesNullEdit">{{property.propertyType?.label}}</a>
+            <a *ngIf="property.propertyType?.label != null && property.propertyType?.label != ''; else propertyTypesNullEdit">{{property.propertyType?.label}}</a>
             <ng-template #propertyTypesNullEdit>
               <a>Nenhuma opção seleccionada</a>
             </ng-template>
@@ -195,7 +195,7 @@
         <label for="nif" class="form-label fw-bold">Eficiência energética do imóvel</label>
         <div class="dropdown">
           <button class="w-100 btn btn-secondary dropdown-toggle" type="button" id="propertyConditionStatus" data-bs-toggle="dropdown" aria-expanded="false">
-            <a *ngIf="property.energyCertificate?.label != null; else energyCertificateNullEdit">{{property.energyCertificate?.label}}</a>
+            <a *ngIf="property.energyCertificate?.label != null && property.energyCertificate?.label != ''; else energyCertificateNullEdit">{{property.energyCertificate?.label}}</a>
             <ng-template #energyCertificateNullEdit>
               <a>Nenhuma opção seleccionada</a>
             </ng-template>
@@ -212,7 +212,7 @@
       <div class="row">
         <div class="mb-2 col-6">
           <label class="fw-bold">Tipo do imóvel</label>
-          <div *ngIf="property.propertyType?.label != null; else propertyTypeNull">{{property.propertyType?.label}}</div>
+          <div *ngIf="property.propertyType?.label != null && property.propertyType?.label != ''; else propertyTypeNull">{{property.propertyType?.label}}</div>
           <ng-template #propertyTypeNull>
             <div>-</div>
           </ng-template>
@@ -231,7 +231,7 @@
         <label for="nif" class="form-label fw-bold">Estado do imóvel</label>
         <div class="dropdown">
           <button class="w-100 btn btn-secondary dropdown-toggle" type="button" id="propertyConditionStatus" data-bs-toggle="dropdown" aria-expanded="false">
-            <a *ngIf="property.propertyConditionStatus?.label != null; else propertyConditionStatusNullEdit">{{property.propertyConditionStatus?.label}}</a>
+            <a *ngIf="property.propertyConditionStatus?.label != null && property.propertyConditionStatus?.label != ''; else propertyConditionStatusNullEdit">{{property.propertyConditionStatus?.label}}</a>
             <ng-template #propertyConditionStatusNullEdit>
               <a>Nenhuma opção seleccionada</a>
             </ng-template>
@@ -247,7 +247,7 @@
         <label for="nif" class="form-label fw-bold">Tipologia do imóvel</label>
         <div class="dropdown">
           <button class="w-100 btn btn-secondary dropdown-toggle" type="button" id="propertyConditionStatus" data-bs-toggle="dropdown" aria-expanded="false">
-            <a *ngIf="property.propertyTypology?.label != null; else propertyTypologyNullEdit">{{property.propertyTypology?.label}}</a>
+            <a *ngIf="property.propertyTypology?.label != null && property.propertyTypology?.label != ''; else propertyTypologyNullEdit">{{property.propertyTypology?.label}}</a>
             <ng-template #propertyTypologyNullEdit>
               <a>Nenhuma opção seleccionada</a>
             </ng-template>
@@ -264,14 +264,14 @@
       <div class="row">
         <div class="mb-2 col-6">
           <label class="fw-bold">Estado do imóvel</label>
-          <div *ngIf="property.propertyConditionStatus?.label != null; else propertyConditionStatusNull">{{property.propertyConditionStatus?.label}}</div>
+          <div *ngIf="property.propertyConditionStatus?.label != null && property.propertyConditionStatus?.label != ''; else propertyConditionStatusNull">{{property.propertyConditionStatus?.label}}</div>
           <ng-template #propertyConditionStatusNull>
             <div>-</div>
           </ng-template>
         </div>
         <div class="mb-2 col-6">
           <label class="fw-bold">Tipologia do imóvel</label>
-          <div *ngIf="property.propertyTypology?.label != null; else propertyTypologyNull">{{property.propertyTypology?.label}}</div>
+          <div *ngIf="property.propertyTypology?.label != null && property.propertyTypology?.label != ''; else propertyTypologyNull">{{property.propertyTypology?.label}}</div>
           <ng-template #propertyTypologyNull>
             <div>-</div>
           </ng-template>

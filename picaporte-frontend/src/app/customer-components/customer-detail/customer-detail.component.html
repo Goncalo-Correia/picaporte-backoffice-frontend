@@ -20,15 +20,12 @@
   </div>
   <div class="row">
     <div class="col-6 mb-3">
-      <label for="phoneNumber" class="form-label fw-bold w-100 required">Telemóvel</label>
+      <label for="phoneNumber" class="form-label fw-bold w-100">Telemóvel</label>
       <input *ngIf="isEditable; else phoneNumberRead" type="text" class="form-control" id="phoneNumber" name="phoneNumber" 
-      [ngClass]="{'invalid-input' : !customerValidationObject.isPhoneNumberValid.isValid}"
       [(ngModel)]="customer.phoneNumber" 
-      (change)="triggerEvent_updateCustomerDetails()"
-      (focus)="onFocus_phoneNumber()">
-      <div *ngIf="!customerValidationObject.isPhoneNumberValid.isValid" class="invalid-message">{{customerValidationObject.isPhoneNumberValid.validationMessage}}</div>
+      (change)="triggerEvent_updateCustomerDetails()">
       <ng-template #phoneNumberRead>
-        <div *ngIf="customer.phoneNumber != null; else phoneNumberNull">
+        <div *ngIf="customer.phoneNumber != null && customer.phoneNumber != ''; else phoneNumberNull">
           {{customer.phoneNumber}}
         </div>
         <ng-template #phoneNumberNull>
@@ -37,15 +34,12 @@
       </ng-template>
     </div>
     <div class="col-6 mb-3">
-      <label for="email" class="form-label fw-bold w-100 required">Email</label>
+      <label for="email" class="form-label fw-bold w-100">Email</label>
       <input *ngIf="isEditable; else emailRead" type="text" class="form-control" id="email" name="email" 
-      [ngClass]="{'invalid-input' : !customerValidationObject.isEmailValid.isValid}"
       [(ngModel)]="customer.email" 
-      (change)="triggerEvent_updateCustomerDetails()"
-      (focus)="onFocus_email()">
-      <div *ngIf="!customerValidationObject.isEmailValid.isValid" class="invalid-message">{{customerValidationObject.isEmailValid.validationMessage}}</div>
+      (change)="triggerEvent_updateCustomerDetails()">
       <ng-template #emailRead>
-        <div *ngIf="customer.email != null; else emailNull">
+        <div *ngIf="customer.email != null && customer.email != ''; else emailNull">
           {{customer.email}}
         </div>
         <ng-template #emailNull>
@@ -56,15 +50,12 @@
   </div>
   <div class="row">
     <div class="col-6 mb-3">
-      <label for="cc" class="form-label fw-bold w-100 required">CC</label>
-      <input *ngIf="isEditable; else ccRead" type="text" class="form-control" id="cc" name="cc" 
-      [ngClass]="{'invalid-input' : !customerValidationObject.isCcValid.isValid}"
+      <label for="cc" class="form-label fw-bold w-100">CC</label>
+      <input *ngIf="isEditable; else ccRead" type="text" class="form-control" id="cc" name="cc"
       [(ngModel)]="customer.cc" 
-      (change)="triggerEvent_updateCustomerDetails()"
-      (focus)="onFocus_cc()">
-      <div *ngIf="!customerValidationObject.isCcValid.isValid" class="invalid-message">{{customerValidationObject.isCcValid.validationMessage}}</div>
+      (change)="triggerEvent_updateCustomerDetails()">
       <ng-template #ccRead>
-        <div *ngIf="customer.cc != null; else ccNull">
+        <div *ngIf="customer.cc != null && customer.cc != ''; else ccNull">
           {{customer.cc}}
         </div>
         <ng-template #ccNull>
@@ -73,15 +64,12 @@
       </ng-template>
     </div>
     <div class="col-6 mb-3">
-      <label for="nif" class="form-label fw-bold w-100 required">NIF</label>
+      <label for="nif" class="form-label fw-bold w-100">NIF</label>
       <input *ngIf="isEditable; else nifRead" type="text" class="form-control" id="nif" name="nif" 
-      [ngClass]="{'invalid-input' : !customerValidationObject.isNifValid.isValid}"
       [(ngModel)]="customer.nif" 
-      (change)="triggerEvent_updateCustomerDetails()"
-      (focus)="onFocus_nif()">
-      <div *ngIf="!customerValidationObject.isNifValid.isValid" class="invalid-message">{{customerValidationObject.isNifValid.validationMessage}}</div>
+      (change)="triggerEvent_updateCustomerDetails()">
       <ng-template #nifRead>
-        <div *ngIf="customer.nif != null; else nifNull">
+        <div *ngIf="customer.nif != null && customer.nif != ''; else nifNull">
           {{customer.nif}}
         </div>
         <ng-template #nifNull>

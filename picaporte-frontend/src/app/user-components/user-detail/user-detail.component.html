@@ -52,13 +52,10 @@
     </div>
     <div class="row">
       <div class="col-6 mb-3">
-        <label for="phoneNumber" class="form-label fw-bold w-100 required">Telemóvel</label>
-        <input *ngIf="isEditable; else phoneNumberRead" type="text" class="form-control" id="phoneNumber" name="phoneNumber" 
-        [ngClass]="{'invalid-input' : !userValidationObject.isPhoneNumberValid.isValid}"
+        <label for="phoneNumber" class="form-label fw-bold w-100">Telemóvel</label>
+        <input *ngIf="isEditable; else phoneNumberRead" type="text" class="form-control" id="phoneNumber" name="phoneNumber"
         [(ngModel)]="user.phoneNumber" 
-        (change)="triggerEvent_updateUserDetails()" 
-        (focus)="onFocus_phoneNumber()">
-        <div *ngIf="!userValidationObject.isPhoneNumberValid.isValid" class="invalid-message">{{userValidationObject.isPhoneNumberValid.validationMessage}}</div>
+        (change)="triggerEvent_updateUserDetails()">
         <ng-template #phoneNumberRead>
             <div *ngIf="user.phoneNumber != null; else phoneNumberNull">
                 {{user.phoneNumber}}

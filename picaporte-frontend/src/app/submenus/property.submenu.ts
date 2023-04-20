@@ -5,7 +5,7 @@ export enum Enum_PropertySubMenu {
     DOCUMENTS,
     IMAGES,
     RENTING,
-    LOCATION,
+    RECOMMENDED,
     OBSERVATION_HISTORY,
     HISTORY
 }
@@ -58,17 +58,17 @@ export class PropertySubMenuFactory {
             label: "Imagens e vídeo",
             description: "Listagem de imagens e vídeo"
         });
+        this.propertySubMenus.push({
+            enum_propertySubMenu: Enum_PropertySubMenu.RECOMMENDED,
+            label: "Imóveis recomendados",
+            description: "Listagem de imóveis associados"
+        });
         if (!isEditable) {
             this.propertySubMenus.push({
                 enum_propertySubMenu: Enum_PropertySubMenu.RENTING,
                 label: "Arrendamento",
                 description: "Especificações de arrendamento"
-            });
-            /*this.propertySubMenus.push({
-                enum_propertySubMenu: Enum_PropertySubMenu.OBSERVATION_HISTORY,
-                label: "Histórico de Observações",
-                description: "Listagem deobservações"
-            });*/
+        });
         }
         this.propertySubMenus.push({
             enum_propertySubMenu: Enum_PropertySubMenu.HISTORY,

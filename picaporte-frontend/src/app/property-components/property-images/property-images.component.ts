@@ -25,10 +25,12 @@ export class PropertyImagesComponent implements OnInit, OnChanges {
   @Output() event_updateOtherImages = new EventEmitter<Array<Image>>();
   @Output() event_updateVideoUrl = new EventEmitter<string>();
 
-  url: string = environment.apiUrl + apiEndpoints.image.binary
+  url: string = environment.apiUrl + apiEndpoints.image.binary;
 
   lightboxImages: Array<IAlbum>;
   selectedImageStructure: Image = new Image();
+  multipleImageStructure: Array<Image> = new Array<Image>();
+  selectedFiles: FileList | null = null;
   selectedRowNumber: number = -1;
   isMainImage: boolean = false;
   imageValidationObject: ImageValidationObject = new ImageValidationObject();
@@ -65,15 +67,28 @@ export class PropertyImagesComponent implements OnInit, OnChanges {
 
   onChange_file(event: any) {
     var file = event.target.files[0];
-    this.getBase64(file, event, this.selectedImageStructure);
+    this.getBase64(file, this.selectedImageStructure, false, this.otherImages);
   }
 
-  private getBase64(file: any, event: any, imageStructure: Image) {
+  onChange_files(event: any) {
+    if (event.target.files) {
+      for (let i = 0; i < event.target.files.length; i++) {
+        let imageStructure: Image = new Image();
+        this.getBase64(event.target.files[i], imageStructure, true, this.multipleImageStructure);
+      }
+    }
+  }
+
+  private getBase64(file: any, imageStructure: Image, isBulk: boolean, multipleImages: Array<Image>) {
     var reader = new FileReader();
     reader.onload = function () {
-      event.target.files[0].binary = (reader.result);
-      imageStructure.content = event.target.files[0].binary;
-      imageStructure.filename = event.target.files[0].name;
+      file.binary = (reader.result);
+      imageStructure.content = file.binary;
+      imageStructure.filename = file.name;
+      if (isBulk) {
+        imageStructure.title = "Imagem " + multipleImages.length;
+        multipleImages.push(imageStructure);
+      }
     };
     reader.readAsDataURL(file);
     reader.onerror = function (error) {
@@ -101,7 +116,7 @@ export class PropertyImagesComponent implements OnInit, OnChanges {
 
   onClick_showMainImageLightbox() {
     this.lightboxImages = new Array<IAlbum>();
-    let url = this.url + (this.mainImage.id != 0 ? this.mainImage.content : this.mainImage.filename);
+    let url = this.url + (this.mainImage.id == 0 ? this.mainImage.content : this.mainImage.filename) + "/true";
     this.lightboxImages.push({
       src: url,
       caption: this.mainImage.title,
@@ -119,6 +134,10 @@ export class PropertyImagesComponent implements OnInit, OnChanges {
   onClick_close() {
     this.selectedRowNumber = -1;
     this.clearFileInput();
+  }
+
+  onClick_closeMultiple() {
+    this.selectedFiles = new FileList();
   }
 
   onClick_remove(index: number) {
@@ -148,8 +167,23 @@ export class PropertyImagesComponent implements OnInit, OnChanges {
     }
   }
 
+  onClick_submitMultiple() {
+    if (this.multipleImageStructure.length > 0) {
+      this.multipleImageStructure.forEach(element => {
+        this.otherImages.push(element);
+      })
+      this.checkDeleteAllOtherImages();
+      this.triggerEvent_updateOtherImages();
+      this.closeMultipleModal();
+    }
+  }
+
   private closeModal(): void {
     $('#staticBackdrop').modal('hide');
+  }
+
+  private closeMultipleModal(): void {
+    $('#multipleUpload').modal('hide');
   }
 
   private checkDeleteAllOtherImages() {

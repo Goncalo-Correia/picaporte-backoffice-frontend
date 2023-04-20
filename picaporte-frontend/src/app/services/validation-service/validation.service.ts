@@ -10,7 +10,6 @@ export class UserValidationObject {
   isNameValid: ValidationObject = new ValidationObject();
   isSurrnameValid: ValidationObject = new ValidationObject();
   isEmailValid: ValidationObject = new ValidationObject();
-  isPhoneNumberValid: ValidationObject = new ValidationObject();
   isValid: boolean = false;
 }
 
@@ -24,10 +23,6 @@ export class AddressValidationObject {
 
 export class CustomerValidationObject {
   isNameValid: ValidationObject = new ValidationObject();
-  isEmailValid: ValidationObject = new ValidationObject();
-  isPhoneNumberValid: ValidationObject = new ValidationObject();
-  isCcValid: ValidationObject = new ValidationObject();
-  isNifValid: ValidationObject = new ValidationObject();
   isAddressValid: boolean = false;
   isValid: boolean = false;
 }
@@ -55,6 +50,8 @@ export class ImageValidationObject {
 export class PropertyValidationObject {
   isReferenceValid: ValidationObject = new ValidationObject();
   isPriceValid: ValidationObject = new ValidationObject();
+  isCustomerValid: ValidationObject = new ValidationObject();
+  isAddressValid: boolean = false;
   isValid: boolean = false;
 }
 
@@ -65,7 +62,7 @@ export class ValidationService {
 
   constructor() { }
 
-  validateUser(name: string, surrname: string, email: string, phoneNumber: string): UserValidationObject {
+  validateUser(name: string, surrname: string, email: string): UserValidationObject {
     let userValidationObject: UserValidationObject = new UserValidationObject();
     userValidationObject.isNameValid.isValid = name != "" && name != null;
     userValidationObject.isNameValid.validationMessage = (userValidationObject.isNameValid.isValid ? "" : "Campo obrigatório");
@@ -73,14 +70,11 @@ export class ValidationService {
     userValidationObject.isSurrnameValid.validationMessage = (userValidationObject.isSurrnameValid.isValid ? "" : "Campo obrigatório");
     userValidationObject.isEmailValid.isValid = email != "" && email != null;
     userValidationObject.isEmailValid.validationMessage = (userValidationObject.isEmailValid.isValid ? "" : "Campo obrigatório");
-    userValidationObject.isPhoneNumberValid.isValid = phoneNumber != "" && phoneNumber != null;
-    userValidationObject.isPhoneNumberValid.validationMessage = (userValidationObject.isPhoneNumberValid.isValid ? "" : "Campo obrigatório");
 
     userValidationObject.isValid = (
       userValidationObject.isNameValid.isValid &&
       userValidationObject.isSurrnameValid.isValid &&
-      userValidationObject.isEmailValid.isValid &&
-      userValidationObject.isPhoneNumberValid.isValid
+      userValidationObject.isEmailValid.isValid
     )
 
     return userValidationObject;
@@ -116,27 +110,11 @@ export class ValidationService {
     
     customerValidationObject.isNameValid.isValid = name != "" && name != null;
     customerValidationObject.isNameValid.validationMessage = (customerValidationObject.isNameValid.isValid ? "" : "Campo obrigatório");
-    
-    customerValidationObject.isEmailValid.isValid = email != "" && email != null;
-    customerValidationObject.isEmailValid.validationMessage = (customerValidationObject.isEmailValid.isValid ? "" : "Campo obrigatório");
-    
-    customerValidationObject.isPhoneNumberValid.isValid = phoneNumber != "" && phoneNumber != null;
-    customerValidationObject.isPhoneNumberValid.validationMessage = (customerValidationObject.isPhoneNumberValid.isValid ? "" : "Campo obrigatório");
-  
-    customerValidationObject.isCcValid.isValid = cc != "" && cc != null;
-    customerValidationObject.isCcValid.validationMessage = (customerValidationObject.isCcValid.isValid ? "" : "Campo obrigatório");
-    
-    customerValidationObject.isNifValid.isValid = nif != "" && nif != null;
-    customerValidationObject.isNifValid.validationMessage = (customerValidationObject.isNifValid.isValid ? "" : "Campo obrigatório");
 
     customerValidationObject.isAddressValid = this.validateAddress(address.street, address.parish, address.city, address.island).isValid;
   
     customerValidationObject.isValid = (
       customerValidationObject.isNameValid.isValid &&
-      customerValidationObject.isEmailValid.isValid &&
-      customerValidationObject.isPhoneNumberValid.isValid &&
-      customerValidationObject.isCcValid.isValid &&
-      customerValidationObject.isNifValid.isValid &&
       customerValidationObject.isAddressValid
     )
   
@@ -202,7 +180,7 @@ export class ValidationService {
     return imageValidationObject;
   }
 
-  validateProperty(reference: string, price: number): PropertyValidationObject {
+  validateProperty(reference: string, price: number, customerId: number, address: Address): PropertyValidationObject {
     let propertyValidationObject: PropertyValidationObject = new PropertyValidationObject();
     
     propertyValidationObject.isReferenceValid.isValid = reference != "" && reference != null;
@@ -210,10 +188,17 @@ export class ValidationService {
     
     propertyValidationObject.isPriceValid.isValid = price != null && !isNaN(price) && price > 0;
     propertyValidationObject.isPriceValid.validationMessage = (propertyValidationObject.isPriceValid.isValid ? "" : "Campo obrigatório e deve ser maior que 0");
+
+    propertyValidationObject.isCustomerValid.isValid = customerId > 0;
+    propertyValidationObject.isCustomerValid.validationMessage = (propertyValidationObject.isCustomerValid.isValid ? "" : "Campo obrigatório");
+
+    propertyValidationObject.isAddressValid = this.validateAddress(address.street, address.parish, address.city, address.island).isValid;
     
     propertyValidationObject.isValid = (
       propertyValidationObject.isReferenceValid.isValid &&
-      propertyValidationObject.isPriceValid.isValid
+      propertyValidationObject.isPriceValid.isValid && 
+      propertyValidationObject.isCustomerValid.isValid &&
+      propertyValidationObject.isAddressValid
     );
   
     return propertyValidationObject;

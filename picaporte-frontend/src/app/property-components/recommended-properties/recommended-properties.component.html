@@ -1,0 +1,232 @@
+<div>
+    <div *ngIf="isEditable" class="mb-4">
+        <div class="btn-group btn-group-lg w-100" role="group" aria-label="Basic checkbox toggle button group">
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+            <label class="btn btn-outline-primary" for="btnradio1" (click)="onClick_selectMode(false)">Visualizar recomendados</label>
+          
+            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+            <label class="btn btn-outline-primary" for="btnradio2" (click)="onClick_selectMode(true)">Adicionar recomendados</label>
+        </div>
+    </div>
+    <div *ngIf="!isAddNewMode; else addNew">
+        <div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th *ngIf="isEditable" scope="col" class="p-3"></th>
+                        <th scope="col" class="p-3">Referência</th>
+                        <th scope="col" class="p-3">Detalhes</th>
+                        <th scope="col" class="text-end p-3">Imagem</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let property of recommendedProperties; index as i" class="table-row">
+                        <td *ngIf="isEditable">
+                            <span>
+                                <div (click)="onClick_removeRecommended(i)" class="text-danger cursor-pointer">
+                                    <i class="fa-solid fa-trash fa-lg"></i>
+                                </div>
+                            </span>
+                        </td>
+                        <td scope="row"><span [routerLink]="['/Imovel/', property.id]" class="col cursor-pointer color-primary fw-bold">{{property.reference}}</span></td>
+                        <td>
+                            <span class="col fs-7">
+                                <div class="mb-1">{{property.propertyStatus?.label}}</div>
+                                <div class="mb-1">{{property.propertyConditionStatus?.label}}</div>
+                                <div class="mb-1">{{property.propertyType?.label}}</div>
+                                <div>{{property.propertyLocationType?.label}}</div>
+                            </span>
+                        </td>
+                        <td class="text-end">
+                            <span class="col">
+                                <img [src]="url + property.mainImage.filename + '/true'" alt="..." class="rounded card-img-top recommended-image" (click)="onClick_showMainImageLightbox(i)">
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf="recommendedProperties.length == 0"
+            class="w-100 p-4 text-center rounded bg-white">
+            Não foram encontrados imóveis recomendados
+        </div>
+    </div>
+    <ng-template #addNew>
+        <app-search-and-filter-bar [searchText]="propertyDashboardSearchAndFilterStructure.searchAndFilter.searchText"
+            [buttonLabel]="'Novo imóvel'" [showButton]="true" [placeholder]="'Pesquise por um imóvel'"
+            [hasFilters]="true"
+            [hasSelectedFilter]="(propertyDashboardSearchAndFilterStructure.propertyStatusId != 0 && propertyDashboardSearchAndFilterStructure.propertyStatusId != null) ||
+          propertyDashboardSearchAndFilterStructure.propertyTypologyId != 0 && propertyDashboardSearchAndFilterStructure.propertyTypologyId != null ||
+          propertyDashboardSearchAndFilterStructure.propertyConditionStatusId != 0 && propertyDashboardSearchAndFilterStructure.propertyConditionStatusId != null ||
+          propertyDashboardSearchAndFilterStructure.amenetieTypeIds.length != 0 && propertyDashboardSearchAndFilterStructure.amenetieTypeIds != null"
+            (searchTextChanged)="eventHandler_searchTextChanged($event)" (buttonClicked)="eventHandler_buttonClicked()">
+            <div>
+                <div class="row mb-3">
+                    <div class="dropdown col-3 px-3">
+                        <button class="btn btn-secondary dropdown-toggle w-100"
+                            [ngClass]="{'btn-success': propertyDashboardSearchAndFilterStructure.propertyStatusId != 0 && propertyDashboardSearchAndFilterStructure.propertyStatusId != null}"
+                            type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{statusFilterLabel}}
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-dark w-100">
+                            <li *ngFor="let propertyDashboardFilterStatuses of propertyDashboardFilters.statuses"
+                                (click)="onClick_selectStatusFilter(propertyDashboardFilterStatuses.id, propertyDashboardFilterStatuses.label)"
+                                class="cursor-pointer">
+                                <div class="dropdown-item">{{propertyDashboardFilterStatuses.label}}</div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="dropdown col-3 px-3">
+                        <button class="btn btn-secondary dropdown-toggle w-100"
+                            [ngClass]="{'btn-success': propertyDashboardSearchAndFilterStructure.propertyTypologyId != 0 && propertyDashboardSearchAndFilterStructure.propertyTypologyId != null}"
+                            type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{typologyFilterLabel}}
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-dark w-100">
+                            <li *ngFor="let propertyDashboardFilterTypologies of propertyDashboardFilters.tipologies"
+                                (click)="onClick_selectTypologyFilter(propertyDashboardFilterTypologies.id, propertyDashboardFilterTypologies.label)"
+                                class="cursor-pointer">
+                                <div class="dropdown-item">{{propertyDashboardFilterTypologies.label}}</div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="dropdown col-3 px-3">
+                        <button class="btn btn-secondary dropdown-toggle w-100"
+                            [ngClass]="{'btn-success': propertyDashboardSearchAndFilterStructure.propertyConditionStatusId != 0 && propertyDashboardSearchAndFilterStructure.propertyConditionStatusId != null}"
+                            type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{conditionStatusFilterLabel}}
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-dark w-100">
+                            <li *ngFor="let propertyDashboardFilterConditionStatuses of propertyDashboardFilters.statuses"
+                                (click)="onClick_selectConditionStatusFilter(propertyDashboardFilterConditionStatuses.id, propertyDashboardFilterConditionStatuses.label)"
+                                class="cursor-pointer">
+                                <div class="dropdown-item">{{propertyDashboardFilterConditionStatuses.label}}</div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="dropdown col-3 px-3">
+                        <button class="btn btn-secondary dropdown-toggle w-100"
+                            [ngClass]="{'btn-success': propertyDashboardSearchAndFilterStructure.amenetieTypeIds.length != 0 && propertyDashboardSearchAndFilterStructure.amenetieTypeIds != null}"
+                            type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{amenetieTypeFilterLabel}}
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-dark scrollable-dropdown-menu w-100">
+                            <li class="d-flex align-items-center justify-content-between fs-7 p-3 fw-bold">
+                                <div (click)="onClick_selectAllTypes($event)" class="cursor-pointer">Seleccionar todos
+                                </div>
+                                <div (click)="onClick_clearTypes($event)" class="cursor-pointer">Limpar</div>
+                            </li>
+                            <li *ngFor="let propertyDashboardFilterAmenetieType of propertyDashboardFilters.amenetieTypes; index as i"
+                                (click)="onClick_selectAmenetieTypeFilter(i, $event)"
+                                class="cursor-pointer d-flex align-items-center justify-content-between px-3 py-2">
+                                <div>{{propertyDashboardFilterAmenetieType.label}}</div>
+                                <input class="form-check-input" type="checkbox"
+                                    [(ngModel)]="propertyDashboardFilterAmenetieType.isSelected">
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="dropdown col-3 px-3">
+                        <button class="btn btn-secondary dropdown-toggle w-100"
+                            [ngClass]="{'btn-success': propertyDashboardSearchAndFilterStructure.propertyLocationTypeId != 0 && propertyDashboardSearchAndFilterStructure.propertyLocationTypeId != null}"
+                            type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{propertyLocationTypeFilterLabel}}
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-dark w-100">
+                            <li *ngFor="let propertyDashboardFilterLocationType of propertyDashboardFilters.locationTypes"
+                                (click)="onClick_selectPropertyLocationTypeFilter(propertyDashboardFilterLocationType.id, propertyDashboardFilterLocationType.label)"
+                                class="cursor-pointer">
+                                <div class="dropdown-item">{{propertyDashboardFilterLocationType.label}}</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row justify-content-end">
+                    <div class="col-auto px-3">
+                        <button type="button" class="btn btn-light" (click)="onClick_clearFilter()">Limpar
+                            filtros</button>
+                    </div>
+                    <div class="col-auto px-3">
+                        <button type="button" class="btn btn-picaporte-secondary"
+                            (click)="onClick_confirmFilter()">Confirmar filtros</button>
+                    </div>
+                </div>
+            </div>
+        </app-search-and-filter-bar>
+        <div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" class="p-3"></th>
+                        <th scope="col" class="p-3">Referência</th>
+                        <th scope="col" class="p-3">Cliente</th>
+                        <th scope="col" class="p-3">Detalhes</th>
+                        <th scope="col" class="text-end p-3">Imagem</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="isDataFetched; else elseBlock">
+                    <tr *ngFor="let property of propertyDashboardStructureArray; index as i" class="table-row">
+                        <td>
+                            <span>
+                                <div>
+                                    <input class="form-check-input" type="checkbox" [(ngModel)]="property.isSelected" (change)="onClick_addRecommended(i)">
+                                </div>
+                            </span>
+                        </td>
+                        <td scope="row"><span [routerLink]="['/Imovel/', property.id]" class="col cursor-pointer color-primary fw-bold">{{property.reference}}</span></td>
+                        <td><span class="col fs-7">
+                                <div class="mb-1 fw-bold">{{property.customerName}}</div>
+                                <div class="mb-1">{{property.customerEmail}}</div>
+                                <div>{{property.customerContact}}</div>
+                            </span>
+                        </td>
+                        <td>
+                            <span class="col fs-7">
+                                <div class="mb-1">{{property.propertyStatusLabel}}</div>
+                                <div class="mb-1">{{property.propertyConditionStatusLabel}}</div>
+                                <div class="mb-1">{{property.propertyTypeLabel}}</div>
+                                <div>{{property.propertyLocationTypeLabel}}</div>
+                            </span>
+                        </td>
+                        <td class="text-end">
+                            <span class="col">
+                                <img [src]="url + property.mainImageFilename + '/true'" alt="..." class="rounded card-img-top recommended-image" (click)="onClick_showMainImageLightbox(i)">
+                            </span>
+                        </td>
+                    </tr>
+                </tbody>
+                <ng-template #elseBlock>
+                    <tbody>
+                        <tr *ngFor="let number of [0,1,2]" class="placeholder-glow table-row">
+                            <td scope="row"><span class="placeholder col-4"></span></td>
+                            <td><span class="placeholder col-2"></span></td>
+                            <td><span class="placeholder col-2"></span></td>
+                            <td><span class="placeholder col-2"></span></td>
+                            <td><span class="placeholder col-2"></span></td>
+                            <td><span class="placeholder col-2"></span></td>
+                        </tr>
+                    </tbody>
+                </ng-template>
+            </table>
+        </div>
+        <div *ngIf="propertyDashboardStructureArray.length == 0 && isDataFetched"
+            class="w-100 p-4 text-center rounded bg-white">
+            Não foram encontrados imóveis
+        </div>
+        <div *ngIf="isDataFetched">
+            <nav>
+                <ul class="pagination justify-content-end">
+                    <li *ngIf="hasPrevious" class="page-item" (click)="previous()">
+                        <a class="page-link color-primary">Anterior</a>
+                    </li>
+                    <li *ngIf="hasNext" class="page-item" (click)="next()">
+                        <a class="page-link color-primary">Seguinte</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </ng-template>
+</div>
+
+<app-message></app-message>

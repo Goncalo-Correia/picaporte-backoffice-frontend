@@ -26,22 +26,6 @@ export class CustomerDetailComponent implements OnInit {
     this.customerValidationObject.isNameValid.isValid = true;
   }
 
-  onFocus_email() {
-    this.customerValidationObject.isEmailValid.isValid = true;
-  }
-
-  onFocus_phoneNumber() {
-    this.customerValidationObject.isPhoneNumberValid.isValid = true;
-  }
-
-  onFocus_cc() {
-    this.customerValidationObject.isCcValid.isValid = true;
-  }
-
-  onFocus_nif() {
-    this.customerValidationObject.isNifValid.isValid = true;
-  }
-
   triggerEvent_updateCustomerDetails() {
     this.event_updateCustomerDetails.emit(this.customer);
   }

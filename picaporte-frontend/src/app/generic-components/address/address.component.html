@@ -9,7 +9,7 @@
       (focus)="onFocus_street()">
       <div *ngIf="!addressValidationObject.isStreetValid.isValid" class="invalid-message">{{addressValidationObject.isStreetValid.validationMessage}}</div>
       <ng-template #streetRead>
-        <div *ngIf="address.street != null; else streetNull">
+        <div *ngIf="address.street != null && address.street != ''; else streetNull">
           {{address.street}}
         </div>
         <ng-template #streetNull>
@@ -19,11 +19,11 @@
     </div>
   </div>
   <div class="row">
-    <div *ngIf="showZipCode" class="col-6 mb-3">
+    <div *ngIf="isCustomer" class="col-6 mb-3">
       <label for="zipCode" class="form-label fw-bold w-100">Código postal</label>
       <input *ngIf="isEditable; else zipCodeRead" type="text" class="form-control" id="zipCode" name="zipCode" [(ngModel)]="address.zipCode" (change)="triggerEvent_updateAddress()">
       <ng-template #zipCodeRead>
-        <div *ngIf="address.zipCode != null || address.zipCode != ''; else zipCodeNull">
+        <div *ngIf="address.zipCode != null && address.zipCode != ''; else zipCodeNull">
           {{address.zipCode}}
         </div>
         <ng-template #zipCodeNull>
@@ -40,7 +40,7 @@
       (focus)="onFocus_parish()">
       <div *ngIf="!addressValidationObject.isParishValid.isValid" class="invalid-message">{{addressValidationObject.isParishValid.validationMessage}}</div>
       <ng-template #parishRead>
-        <div *ngIf="address.parish != null; else parishNull">
+        <div *ngIf="address.parish != null && address.parish != ''; else parishNull">
           {{address.parish}}
         </div>
         <ng-template #parishNull>
@@ -59,7 +59,7 @@
       (focus)="onFocus_city()">
       <div *ngIf="!addressValidationObject.isCityValid.isValid" class="invalid-message">{{addressValidationObject.isCityValid.validationMessage}}</div>
       <ng-template #cityRead>
-        <div *ngIf="address.city != null; else cityNull">
+        <div *ngIf="address.city != null && address.city != ''; else cityNull">
           {{address.city}}
         </div>
         <ng-template #cityNull>
@@ -76,7 +76,7 @@
       (focus)="onFocus_island()">
       <div *ngIf="!addressValidationObject.isIslandValid.isValid" class="invalid-message">{{addressValidationObject.isIslandValid.validationMessage}}</div>
       <ng-template #islandRead>
-        <div *ngIf="address.island != null; else islandNull">
+        <div *ngIf="address.island != null && address.island != ''; else islandNull">
           {{address.island}}
         </div>
         <ng-template #islandNull>
@@ -85,14 +85,14 @@
       </ng-template>
     </div>
   </div>
-  <div class="row">
+  <div *ngIf="!isCustomer" class="row">
     <div class="col mb-3">
       <label for="location" class="form-label fw-bold w-100">Localização</label>
       <input *ngIf="isEditable; else locationRead" type="text" class="form-control" id="location" name="location" 
       [(ngModel)]="address.location" 
       (change)="triggerEvent_updateAddress()">
       <ng-template #locationRead>
-        <div *ngIf="address.location != null; else locationNull">
+        <div *ngIf="address.location != null && address.location != ''; else locationNull">
           {{address.location}}
         </div>
         <ng-template #locationNull>
@@ -101,7 +101,7 @@
       </ng-template>
     </div>
   </div> 
-  <div class="row">
+  <div *ngIf="!isCustomer" class="row">
     <div class="col-12">
       <app-google-map [latitude]="address.latitude" [longitude]="address.longitude" (latitudeEvent)="eventHandler_latitude($event)" (logitudeEvent)="eventHandler_longitude($event)"></app-google-map>
     </div>

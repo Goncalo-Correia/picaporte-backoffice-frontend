@@ -43,7 +43,7 @@ export class PropertyComponent implements OnInit {
   isOnDocumentsSubMenu: boolean = false;
   isOnImagesSubMenu: boolean = false;
   isOnRentingSubMenu: boolean = false;
-  isOnLocationSubMenu: boolean = false;
+  isOnRecommendedSubMenu: boolean = false;
   isOnObservationHistorySubMenu: boolean = false;
   isOnActivityLogMenu: boolean = false;
 
@@ -88,11 +88,15 @@ export class PropertyComponent implements OnInit {
     this.propertyValidationObject = new PropertyValidationObject();
     this.propertyValidationObject = this.validationService.validateProperty(
       this.propertyStructure.property.reference,
-      this.propertyStructure.property.price
+      this.propertyStructure.property.price,
+      this.propertyStructure.property.customerId,
+      this.propertyStructure.property.address
     )
     if (this.propertyValidationObject.isValid) {
       this.isEditable = false;
       this.submit_property();
+    } else {
+      this.onClick_selectSubMenu(Enum_PropertySubMenu.DETAILS);
     }
   }
 
@@ -173,8 +177,8 @@ export class PropertyComponent implements OnInit {
     this.propertyStructure.property.videoUrl = data;
   }
 
-  eventHandler_updatePropertyLocation(data: any) {
-
+  eventHandler_updateRecommendedProperties(data: Array<Property>) {
+    this.propertyStructure.recommendedProperties = data;
   }
 
   eventHandler_updatePropertyObservationHistory(data: any) {
@@ -195,8 +199,6 @@ export class PropertyComponent implements OnInit {
           .subscribe(data => {
              this.propertyStructure.property = <Property>data;
              this.propertyId = this.propertyStructure.property.id;
-             console.log(this.propertyId);
-             
              this.router.navigateByUrl("Imovel/" + this.propertyId);
           });
       });
@@ -205,6 +207,7 @@ export class PropertyComponent implements OnInit {
         this.queries_propertyService.Put_PropertyStructure(this.propertyId, this.propertyStructure, resolve)
           .subscribe(data => {
             this.get_propertyStructure();
+            this.onClick_selectSubMenu(Enum_PropertySubMenu.DETAILS);
           });
       });
     }
@@ -289,7 +292,7 @@ export class PropertyComponent implements OnInit {
     this.isOnDocumentsSubMenu = this.selectedPropertySubMenu == Enum_PropertySubMenu.DOCUMENTS;
     this.isOnImagesSubMenu = this.selectedPropertySubMenu == Enum_PropertySubMenu.IMAGES;
     this.isOnRentingSubMenu = this.selectedPropertySubMenu == Enum_PropertySubMenu.RENTING;
-    this.isOnLocationSubMenu = this.selectedPropertySubMenu == Enum_PropertySubMenu.LOCATION;
+    this.isOnRecommendedSubMenu = this.selectedPropertySubMenu == Enum_PropertySubMenu.RECOMMENDED;
     this.isOnObservationHistorySubMenu = this.selectedPropertySubMenu == Enum_PropertySubMenu.OBSERVATION_HISTORY;
     this.isOnActivityLogMenu = this.selectedPropertySubMenu == Enum_PropertySubMenu.HISTORY;
   }

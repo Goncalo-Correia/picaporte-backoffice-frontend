@@ -35,7 +35,7 @@
       [hasSelectedFilter]="(propertyDashboardSearchAndFilterStructure.propertyStatusId != 0 && propertyDashboardSearchAndFilterStructure.propertyStatusId != null) ||
       propertyDashboardSearchAndFilterStructure.propertyTypologyId != 0 && propertyDashboardSearchAndFilterStructure.propertyTypologyId != null ||
       propertyDashboardSearchAndFilterStructure.propertyConditionStatusId != 0 && propertyDashboardSearchAndFilterStructure.propertyConditionStatusId != null ||
-      propertyDashboardSearchAndFilterStructure.amenetieTypeId != 0 && propertyDashboardSearchAndFilterStructure.amenetieTypeId != null"
+      propertyDashboardSearchAndFilterStructure.amenetieTypeIds.length != 0 && propertyDashboardSearchAndFilterStructure.amenetieTypeIds != null"
       (searchTextChanged)="eventHandler_searchTextChanged($event)"
       (buttonClicked)="eventHandler_buttonClicked()"
     >
@@ -72,12 +72,31 @@
             </ul>
           </div>
           <div class="dropdown col-3 px-3">
-            <button class="btn btn-secondary dropdown-toggle w-100" [ngClass]="{'btn-success': propertyDashboardSearchAndFilterStructure.amenetieTypeId != 0 && propertyDashboardSearchAndFilterStructure.amenetieTypeId != null}" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <button class="btn btn-secondary dropdown-toggle w-100" [ngClass]="{'btn-success': propertyDashboardSearchAndFilterStructure.amenetieTypeIds.length != 0 && propertyDashboardSearchAndFilterStructure.amenetieTypeIds != null}" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               {{amenetieTypeFilterLabel}}
             </button>
             <ul class="dropdown-menu dropdown-menu-dark scrollable-dropdown-menu w-100">
-              <li *ngFor="let propertyDashboardFilterAmenetieType of propertyDashboardFilters.amenetieTypes" (click)="onClick_selectAmenetieTypeFilter(propertyDashboardFilterAmenetieType.id, propertyDashboardFilterAmenetieType.label)" class="cursor-pointer">
-                <div class="dropdown-item">{{propertyDashboardFilterAmenetieType.label}}</div>
+              <li class="d-flex align-items-center justify-content-between fs-7 p-3 fw-bold">
+                <div (click)="onClick_selectAllTypes($event)" class="cursor-pointer">Seleccionar todos</div>
+                <div (click)="onClick_clearTypes($event)" class="cursor-pointer">Limpar</div>
+              </li>
+              <li *ngFor="let propertyDashboardFilterAmenetieType of propertyDashboardFilters.amenetieTypes; index as i"
+                (click)="onClick_selectAmenetieTypeFilter(i, $event)"
+                class="cursor-pointer d-flex align-items-center justify-content-between px-3 py-2">
+                <div>{{propertyDashboardFilterAmenetieType.label}}</div>
+                <input class="form-check-input" type="checkbox" [(ngModel)]="propertyDashboardFilterAmenetieType.isSelected">
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="dropdown col-3 px-3">
+            <button class="btn btn-secondary dropdown-toggle w-100" [ngClass]="{'btn-success': propertyDashboardSearchAndFilterStructure.propertyLocationTypeId != 0 && propertyDashboardSearchAndFilterStructure.propertyLocationTypeId != null}" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {{propertyLocationTypeFilterLabel}}
+            </button>
+            <ul class="dropdown-menu dropdown-menu-dark w-100">
+              <li *ngFor="let propertyDashboardFilterLocationType of propertyDashboardFilters.locationTypes" (click)="onClick_selectPropertyLocationTypeFilter(propertyDashboardFilterLocationType.id, propertyDashboardFilterLocationType.label)" class="cursor-pointer">
+                <div class="dropdown-item">{{propertyDashboardFilterLocationType.label}}</div>
               </li>
             </ul>
           </div>
@@ -102,8 +121,8 @@
           <th scope="col">Contatos</th>
           <th scope="col">Estado do imóvel</th>
           <th scope="col">Tipo do imóvel</th>
-          <th scope="col">Atualizado em</th>
-          <th scope="col">Atualizado por</th>
+          <th scope="col">Localização</th>
+          <th scope="col">Atualizado</th>
         </tr>
       </thead>
       <tbody *ngIf="isDataFetched; else elseBlock">
@@ -117,8 +136,13 @@
           </span></td>
           <td><span class="col">{{property.propertyStatusLabel}}</span></td>
           <td><span class="col">{{property.propertyTypeLabel}}</span></td>
-          <td><span class="col"><app-date-format [date]="property.lastModifiedOn"></app-date-format></span></td>
-          <td><span class="col">{{property.lastModifiedBy}}</span></td>
+          <td><span class="col">{{property.propertyLocationTypeLabel}}</span></td>
+          <td><span class="col">
+            <div>
+              {{property.lastModifiedBy}}
+            </div>
+            <app-date-format [date]="property.lastModifiedOn"></app-date-format>
+          </span></td>
         </tr>
       </tbody>
       <ng-template #elseBlock>

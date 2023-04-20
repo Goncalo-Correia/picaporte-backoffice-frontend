@@ -69,6 +69,11 @@ export const apiEndpoints = {
     updateAll: "api/Static_AmenetieType/updateAll",
     base: "api/Static_AmenetieType/"
   },
+  static_propertyLocationType: {
+    get: "api/Static_PropertyLocationType/isActive/",
+    updateAll: "api/Static_PropertyLocationType/updateAll",
+    base: "api/Static_PropertyLocationType/"
+  },
   static_propertyType: {
     get: "api/Static_PropertyType/isActive/",
     updateAll: "api/Static_PropertyType/updateAll",

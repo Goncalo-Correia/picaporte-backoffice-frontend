@@ -73,8 +73,7 @@ export class UserComponent implements OnInit {
     this.userValidationObject = this.validationService.validateUser(
       this.userStructure.user.firstName, 
       this.userStructure.user.lastName, 
-      this.userStructure.user.email, 
-      this.userStructure.user.phoneNumber
+      this.userStructure.user.email
     );
     if (this.userValidationObject.isValid) {
       this.submit_user();

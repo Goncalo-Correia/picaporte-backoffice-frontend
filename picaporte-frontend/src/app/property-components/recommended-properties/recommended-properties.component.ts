@@ -1,42 +1,51 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Route, Router } from '@angular/router';
+import { Component, EventEmitter, Inject, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
+import { IAlbum, Lightbox, LightboxConfig } from 'ngx-lightbox';
+import { catchError } from 'rxjs';
 import { QueriesPropertyService } from 'src/app/api-service/queries-property/queries-property.service';
-import { DashboardKpiStructure } from 'src/app/structures/dashboard-structures/dashboard-kpi.structure';
+import { StaticAmenetieTypeService } from 'src/app/api-service/static-amenetie-type/static-amenetie-type-service.service';
+import { StaticPropertyConditionStatusService } from 'src/app/api-service/static-property-condition-status/property-condition-status.service';
+import { StaticPropertyLocationTypeService } from 'src/app/api-service/static-property-location-type/property-location-type.service';
+import { StaticPropertyStatusService } from 'src/app/api-service/static-property-status/static-property-status.service';
+import { StaticPropertyTypologyService } from 'src/app/api-service/static-property-typology/static-property-typology.service';
+import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
+import { MessageComponent } from 'src/app/generic-components/message/message.component';
+import { Property } from 'src/app/models/property.model';
+import { Static_AmenetieType } from 'src/app/models/static/static-amenetieType.model';
+import { Static_PropertyConditionStatus } from 'src/app/models/static/static-propertyconditionstatus.model';
+import { Static_PropertyLocationType } from 'src/app/models/static/static-propertylocationtype.model';
+import { Static_PropertyStatus } from 'src/app/models/static/static-propertystatus.model';
+import { Static_PropertyTypology } from 'src/app/models/static/static-propertytypology.model';
+import { PropertyDashboardFilterStructure } from 'src/app/structures/dashboard-structures/property/property-dashboard-filter.structure';
 import { PropertyDashboardSearchAndFilterStructure } from 'src/app/structures/dashboard-structures/property/property-dashboard-search-and-filter.structure';
 import { PropertyDashboardStructure } from 'src/app/structures/dashboard-structures/property/property-dashboard.structure';
 import { SearchAndFilterStructure } from 'src/app/structures/dashboard-structures/search-and-filter.structure';
-import { PropertyDashboardFilterStructure } from 'src/app/structures/dashboard-structures/property/property-dashboard-filter.structure';
-import { StaticPropertyStatusService } from 'src/app/api-service/static-property-status/static-property-status.service';
-import { StaticPropertyTypologyService } from 'src/app/api-service/static-property-typology/static-property-typology.service';
-import { StaticPropertyConditionStatusService } from 'src/app/api-service/static-property-condition-status/property-condition-status.service';
-import { Static_PropertyStatus } from 'src/app/models/static/static-propertystatus.model';
-import { Static_PropertyTypology } from 'src/app/models/static/static-propertytypology.model';
-import { Static_PropertyConditionStatus } from 'src/app/models/static/static-propertyconditionstatus.model';
-import { StaticAmenetieTypeService } from 'src/app/api-service/static-amenetie-type/static-amenetie-type-service.service';
-import { Static_AmenetieType } from 'src/app/models/static/static-amenetieType.model';
-import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
-import { catchError } from 'rxjs';
-import { MessageComponent } from 'src/app/generic-components/message/message.component';
-import { StaticPropertyLocationTypeService } from 'src/app/api-service/static-property-location-type/property-location-type.service';
-import { Static_PropertyLocationType } from 'src/app/models/static/static-propertylocationtype.model';
+import { apiEndpoints, environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-property-dashboard',
-  templateUrl: './property-dashboard.component.html',
-  styleUrls: ['./property-dashboard.component.css']
+  selector: 'app-recommended-properties',
+  templateUrl: './recommended-properties.component.html',
+  styleUrls: ['./recommended-properties.component.css']
 })
-export class PropertyDashboardComponent implements OnInit {
+export class RecommendedPropertiesComponent implements OnInit {
 
   @ViewChild(MessageComponent) messageComponent!: MessageComponent;
   
-  dashboardKpis: Array<DashboardKpiStructure>;
-  placeholderDashboardKpi: DashboardKpiStructure;
+  url: string = environment.apiUrl + apiEndpoints.image.binary;
+  
+  @Input() isEditable: boolean = false;
+  @Input() recommendedProperties: Array<Property> = new Array<Property>();
+  @Output() event_updateRecommendedProperties = new EventEmitter<Array<Property>>();
 
-  propertyDashboardStructureArray: PropertyDashboardStructure[];
-  propertyDashboardSearchAndFilterStructure: PropertyDashboardSearchAndFilterStructure;
-  next_searchAndFilterStructure: SearchAndFilterStructure;
+  isAddNewMode: boolean = false;
 
-  propertyDashboardFilters: PropertyDashboardFilterStructure;
+  propertyDashboardStructureArray: Array<PropertyDashboardStructure> = new Array<PropertyDashboardStructure>();
+  propertyDashboardSearchAndFilterStructure: PropertyDashboardSearchAndFilterStructure = new PropertyDashboardSearchAndFilterStructure();
+  next_searchAndFilterStructure: SearchAndFilterStructure = new SearchAndFilterStructure();
+
+  lightboxImages: Array<IAlbum> = new Array<IAlbum>();
+
+  propertyDashboardFilters: PropertyDashboardFilterStructure = new PropertyDashboardFilterStructure();
   statusFilterLabel: string = "Estado de venda";
   propertyLocationTypeFilterLabel: string = "Localização";
   typologyFilterLabel: string = "Tipologia";
@@ -47,9 +56,10 @@ export class PropertyDashboardComponent implements OnInit {
   hasNext: boolean = true;
   
   isDataFetched: boolean = false;
-  isKpiDataFetched: boolean = false;
 
   constructor(
+    private _lightbox: Lightbox,
+    @Inject(LightboxConfig) private lightboxConfig: LightboxConfig,
     public queries_propertyService: QueriesPropertyService, 
     public staticPropertyStatusService: StaticPropertyStatusService, 
     public staticPropertyLocationTypeService: StaticPropertyLocationTypeService, 
@@ -58,19 +68,76 @@ export class PropertyDashboardComponent implements OnInit {
     public staticAmenetieTypeService: StaticAmenetieTypeService,
     public router: Router,
     private authenticationService: AuthenticationService
-    ) {
-    this.dashboardKpis = new Array<DashboardKpiStructure>();
-    this.placeholderDashboardKpi = new DashboardKpiStructure();
-    this.propertyDashboardFilters = new PropertyDashboardFilterStructure();
-    this.propertyDashboardStructureArray = new Array<PropertyDashboardStructure>();
-    this.propertyDashboardSearchAndFilterStructure = new PropertyDashboardSearchAndFilterStructure();
-    this.next_searchAndFilterStructure = new SearchAndFilterStructure();
+  ) {
+    this.lightboxConfig.centerVertically = true;
   }
 
   ngOnInit(): void {
-    this.get_Kpis();
     this.get_propertyDashboardStructure();
     this.initFilterOptions();
+  }
+
+  onClick_selectMode(mode: boolean) {
+    this.isAddNewMode = mode;
+  }
+
+  onClick_cancel() {
+    this.isAddNewMode = false;
+  }
+
+  onClick_confirm() {
+    this.isAddNewMode = false;
+  }
+
+  onClick_removeRecommended(index: number) {
+    this.recommendedProperties.splice(index, 1);
+    this.propertyDashboardStructureArray.forEach(element => {
+      let isRecommendedProperty = this.recommendedProperties.filter(prop => prop.id == element.id).length != 0;
+      element.isSelected = isRecommendedProperty;
+    })
+    this.triggerEvent_updateRecommendedProperties();
+  }
+
+  onClick_addRecommended(index: number) {
+    let newRecommendedProperty: Property = new Property();
+    newRecommendedProperty.id = this.propertyDashboardStructureArray[index].id;
+    newRecommendedProperty.reference = this.propertyDashboardStructureArray[index].reference;
+    newRecommendedProperty.propertyType.label = this.propertyDashboardStructureArray[index].propertyTypeLabel;
+    newRecommendedProperty.propertyStatus.label = this.propertyDashboardStructureArray[index].propertyStatusLabel;
+    newRecommendedProperty.propertyConditionStatus.label = this.propertyDashboardStructureArray[index].propertyConditionStatusLabel;
+    newRecommendedProperty.propertyLocationType.label = this.propertyDashboardStructureArray[index].propertyLocationTypeLabel;
+    newRecommendedProperty.mainImage.filename = this.propertyDashboardStructureArray[index].mainImageFilename;
+    if (this.propertyDashboardStructureArray[index].isSelected) {
+      this.recommendedProperties.push(newRecommendedProperty);
+    } else {
+      let indexToRemove = -1;
+      for (let i = 0; i < this.recommendedProperties.length; i++) {
+        
+        if (this.recommendedProperties[i].id == this.propertyDashboardStructureArray[index].id) {
+          indexToRemove = i;
+        }
+      }
+      if (indexToRemove >= 0) {
+        this.recommendedProperties.splice(indexToRemove, 1);
+      }
+    }
+    this.triggerEvent_updateRecommendedProperties();
+  }
+
+  onClick_showMainImageLightbox(index: number) {
+    this.lightboxImages = new Array<IAlbum>();
+    let url = this.url + this.propertyDashboardStructureArray[index].mainImageFilename + "/true";
+    this.lightboxImages.push({
+      src: url,
+      caption: this.propertyDashboardStructureArray[index].reference,
+      thumb: ""
+    });
+    
+    this._lightbox.open(this.lightboxImages, 0);
+  }
+
+  triggerEvent_updateRecommendedProperties() {
+    this.event_updateRecommendedProperties.emit(this.recommendedProperties);
   }
 
   onClick_selectStatusFilter(propertyStatusId: number, label: string) {
@@ -163,6 +230,12 @@ export class PropertyDashboardComponent implements OnInit {
       )
       .subscribe(data => {
         this.propertyDashboardStructureArray = <PropertyDashboardStructure[]>data;
+        this.propertyDashboardStructureArray.forEach(element => {
+          let isRecommendedProperty = this.recommendedProperties.filter(prop => prop.id == element.id).length != 0;
+          if (isRecommendedProperty) {
+            element.isSelected = true;
+          }
+        })
         this.isDataFetched = true;
         this.hasPreviousPage();
         this.hasNextPage();
@@ -192,22 +265,6 @@ export class PropertyDashboardComponent implements OnInit {
 
   private hasNextPage() {
     this.hasNext = this.propertyDashboardStructureArray.length == this.propertyDashboardSearchAndFilterStructure.searchAndFilter.size;
-  }
-
-  private get_Kpis() {
-    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.queries_propertyService.Get_Kpis(resolve)
-      .pipe(
-        catchError(err => {
-          this.messageComponent.showMessage(err.error);
-          return err;
-        })
-      )
-      .subscribe(data => {
-        this.dashboardKpis = <DashboardKpiStructure[]>data;
-        this.isKpiDataFetched = true;
-      });
-    });
   }
 
   private initFilterOptions() {
@@ -292,4 +349,5 @@ export class PropertyDashboardComponent implements OnInit {
       });
     });
   }
+
 }

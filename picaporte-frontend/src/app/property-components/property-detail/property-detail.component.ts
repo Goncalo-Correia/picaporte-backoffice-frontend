@@ -3,6 +3,7 @@ import { catchError } from 'rxjs';
 import { CustomerService } from 'src/app/api-service/customer/customer.service';
 import { StaticEnergyCertificateService } from 'src/app/api-service/static-energy-certificate/static-energy-certificate.service';
 import { StaticPropertyConditionStatusService } from 'src/app/api-service/static-property-condition-status/property-condition-status.service';
+import { StaticPropertyLocationTypeService } from 'src/app/api-service/static-property-location-type/property-location-type.service';
 import { StaticPropertyStatusService } from 'src/app/api-service/static-property-status/static-property-status.service';
 import { StaticPropertyTypeService } from 'src/app/api-service/static-property-type/static-property-type.service';
 import { StaticPropertyTypologyService } from 'src/app/api-service/static-property-typology/static-property-typology.service';
@@ -12,6 +13,7 @@ import { Customer } from 'src/app/models/customer.model';
 import { Property } from 'src/app/models/property.model';
 import { Static_EnergyCertificate } from 'src/app/models/static/static-energycertificate.model';
 import { Static_PropertyConditionStatus } from 'src/app/models/static/static-propertyconditionstatus.model';
+import { Static_PropertyLocationType } from 'src/app/models/static/static-propertylocationtype.model';
 import { Static_PropertyStatus } from 'src/app/models/static/static-propertystatus.model';
 import { Static_PropertyType } from 'src/app/models/static/static-propertytype.model';
 import { Static_PropertyTypology } from 'src/app/models/static/static-propertytypology.model';
@@ -37,6 +39,7 @@ export class PropertyDetailComponent implements OnInit {
 
   staticPropertyTypes: Static_PropertyType[] = [];
   staticPropertyStatuses: Static_PropertyStatus[] = [];
+  staticPropertyLocationTypes: Static_PropertyLocationType[] = [];
   staticPropertyConditionStatuses: Static_PropertyConditionStatus[] = [];
   staticPropertyTypologies: Static_PropertyTypology[] = [];
   staticEnergyCertificates: Static_EnergyCertificate[] = [];
@@ -44,6 +47,7 @@ export class PropertyDetailComponent implements OnInit {
   constructor(public customerService: CustomerService,
     public static_propertyTypeService: StaticPropertyTypeService, 
     public static_propertyStatusService: StaticPropertyStatusService, 
+    public static_propertyLocationTypeService: StaticPropertyLocationTypeService, 
     public static_propertyConditionStatusService: StaticPropertyConditionStatusService, 
     public static_propertyTypologyService: StaticPropertyTypologyService,
     public static_energyCertificateService: StaticEnergyCertificateService,
@@ -60,6 +64,7 @@ export class PropertyDetailComponent implements OnInit {
     this.get_staticPropertyConditionStatuses();
     this.get_staticPropertyTypologies();
     this.get_staticEnergyCertificates();
+    this.get_staticPropertyLocationTypes();
   }
 
   onFocus_reference() {
@@ -69,7 +74,6 @@ export class PropertyDetailComponent implements OnInit {
   onFocus_price() {
     this.propertyValidationObject.isPriceValid.isValid = true;
   }
-
 
   onClick_selectCustomer(customer: Customer, customerName: string) {
     this.selectedCustomerName = customerName;
@@ -88,6 +92,12 @@ export class PropertyDetailComponent implements OnInit {
   onClick_selectPropertyStatus(propertyStatus: Static_PropertyStatus) {
     this.property.propertyStatusId = propertyStatus.id;
     this.property.propertyStatus = propertyStatus;
+    this.triggerEvent_updatePropertyDetails();
+  }
+
+  onClick_selectPropertyLocationType(propertyLocationType: Static_PropertyLocationType) {
+    this.property.propertyLocationTypeId = propertyLocationType.id,
+    this.property.propertyLocationType = propertyLocationType;
     this.triggerEvent_updatePropertyDetails();
   }
 
@@ -139,6 +149,7 @@ export class PropertyDetailComponent implements OnInit {
       )
       .subscribe(data => {
         this.staticPropertyTypes = <Static_PropertyType[]>data;
+        this.staticPropertyTypes.push(new Static_PropertyType());
       });
     });
   }
@@ -154,6 +165,7 @@ export class PropertyDetailComponent implements OnInit {
       )
       .subscribe(data => {
         this.staticPropertyStatuses = <Static_PropertyStatus[]>data;
+        this.staticPropertyStatuses.push(new Static_PropertyStatus());
       });
     });
   }
@@ -169,6 +181,7 @@ export class PropertyDetailComponent implements OnInit {
       )
       .subscribe(data => {
         this.staticPropertyTypologies = <Static_PropertyTypology[]>data;
+        this.staticPropertyTypologies.push(new Static_PropertyTypology());
       });
     });
   }
@@ -184,6 +197,7 @@ export class PropertyDetailComponent implements OnInit {
       )
       .subscribe(data => {
         this.staticPropertyConditionStatuses = <Static_PropertyConditionStatus[]>data;
+        this.staticPropertyConditionStatuses.push(new Static_PropertyConditionStatus());
       });
     });
   }
@@ -199,8 +213,25 @@ export class PropertyDetailComponent implements OnInit {
       )
       .subscribe(data => {
         this.staticEnergyCertificates = <Static_EnergyCertificate[]>data;
+        this.staticEnergyCertificates.push(new Static_EnergyCertificate());
       });
     });
   }
 
+
+  private get_staticPropertyLocationTypes() {
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+      this.static_propertyLocationTypeService.GetAll_PropertyLocationTypes(true, resolve)
+      .pipe(
+        catchError(err => {
+          this.messageComponent.showMessage(err.error);
+          return err;
+        })
+      )
+      .subscribe(data => {
+        this.staticPropertyLocationTypes = <Static_PropertyLocationType[]>data;
+        this.staticPropertyLocationTypes.push(new Static_PropertyLocationType());
+      });
+    });
+  }
 }

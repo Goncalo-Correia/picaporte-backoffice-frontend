@@ -1,4 +1,7 @@
-<div class="p-5 w-100">
+<div class="px-5 py-3 w-100">
+  <div class="text-center mb-4">
+    <img src="/assets/images/picaporte_logo.png" alt="" style="height: 100px;">
+  </div>
   <div class="col-12 mb-3">
     <div *ngIf="isKpiDataFetched else kpiElseBlock" class="row">
       <div *ngFor="let dashboardKpi of dashboardKpis" class="col-2 p-2">

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { catchError } from 'rxjs';
 import { QueriesUserService } from 'src/app/api-service/queries-user/queries-user.service';
 import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
@@ -39,7 +39,8 @@ export class UserComponent implements OnInit {
     public queries_userService: QueriesUserService,
     private activeRoute: ActivatedRoute,
     private authenticationService: AuthenticationService,
-    private validationService: ValidationService
+    private validationService: ValidationService,
+    private router: Router
   ) { 
     this.userStructure = new UserStructure();
     this.userSubmenus = new Array<UserSubMenu>();
@@ -141,7 +142,7 @@ export class UserComponent implements OnInit {
         .subscribe(data => {
           this.userStructure.user = <User>data;
           this.userId = this.userStructure.user.id;
-          this.get_userStructure();
+          this.router.navigateByUrl("Utilizador/" + this.userId);
         });
       });
     } else {

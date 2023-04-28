@@ -70,6 +70,8 @@ export class PropertyDocumentsComponent implements OnInit {
     this.selectedRowNumber = -1;
     this.selectedDocumentTypeLabel = "Nenhum tipo seleccionado";
     this.isMainDocument = true;
+    this.isCertificateDocument = false;
+    this.isOtherDocument = false;
     this.buildDocumentTypes(true, false, false);
     this.selectedDocumentStructure = new Document();
     
@@ -78,7 +80,9 @@ export class PropertyDocumentsComponent implements OnInit {
   onClick_addNewCertificateDocument() {
     this.selectedRowNumber = -1;
     this.selectedDocumentTypeLabel = "Nenhum tipo seleccionado";
+    this.isMainDocument = false;
     this.isCertificateDocument = true;
+    this.isOtherDocument = false;
     this.buildDocumentTypes(false, true, false);
     this.selectedDocumentStructure = new Document();
   }
@@ -86,6 +90,8 @@ export class PropertyDocumentsComponent implements OnInit {
   onClick_addNewOtherDocument() {
     this.selectedRowNumber = -1;
     this.selectedDocumentTypeLabel = "Nenhum tipo seleccionado";
+    this.isMainDocument = false;
+    this.isCertificateDocument = false;
     this.isOtherDocument = true;
     this.buildDocumentTypes(false, false, true);
     this.selectedDocumentStructure = new Document();
@@ -120,6 +126,8 @@ export class PropertyDocumentsComponent implements OnInit {
   onClick_editMainDocuments(index: number) {
     this.selectedRowNumber = index;
     this.isMainDocument = true;
+    this.isCertificateDocument = false;
+    this.isOtherDocument = false;
     this.selectedDocumentStructure = this.documentService.mapNewDocumentStructure(this.mainDocuments[index]);
     if (this.selectedDocumentStructure.documentType?.label != null) {
       this.selectedDocumentTypeLabel = this.selectedDocumentStructure.documentType.label;
@@ -128,7 +136,9 @@ export class PropertyDocumentsComponent implements OnInit {
   
   onClick_editCertificateDocuments(index: number) {
     this.selectedRowNumber = index;
+    this.isMainDocument = false;
     this.isCertificateDocument = true;
+    this.isOtherDocument = false;
     this.selectedDocumentStructure = this.documentService.mapNewDocumentStructure(this.certificateDocuments[index]);
     if (this.selectedDocumentStructure.documentType?.label != null) {
       this.selectedDocumentTypeLabel = this.selectedDocumentStructure.documentType.label;
@@ -137,6 +147,8 @@ export class PropertyDocumentsComponent implements OnInit {
 
   onClick_editOtherDocuments(index: number) {
     this.selectedRowNumber = index;
+    this.isMainDocument = false;
+    this.isCertificateDocument = false;
     this.isOtherDocument = true;
     this.selectedDocumentStructure = this.documentService.mapNewDocumentStructure(this.otherDocuments[index]);
     if (this.selectedDocumentStructure.documentType?.label != null) {

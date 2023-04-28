@@ -29,6 +29,7 @@ export class Property {
     public mainImageId: number = 0;
     public propertyTypeId: number = 0;
     public propertyStatusId: number = 0;
+    public propertyLocationTypeId: number = 0;
     public propertyConditionStatusId: number = 0;
     public propertyTypologyId: number = 0;
     public energyCertificateId: number = 0;

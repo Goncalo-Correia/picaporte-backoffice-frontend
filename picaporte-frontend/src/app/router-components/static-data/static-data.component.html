@@ -1,121 +1,126 @@
-<div class="p-5 w-100 gap-4 d-flex flex-nowrap">
-    <div class="col-4">
-        <div [ngClass]="{'selected': selectedStaticDataEnum == Enum_StaticData().PROPERTY_STATUS}" class="static-data-menu-item p-3 rounded cursor-pointer mb-3" (click)="onClick_selectStaticDataType(Enum_StaticData().PROPERTY_STATUS)">
-            Estados de imóvel
-        </div>
-        <div [ngClass]="{'selected': selectedStaticDataEnum == Enum_StaticData().PROPERTY_TYPE}" class="static-data-menu-item p-3 rounded cursor-pointer mb-3" (click)="onClick_selectStaticDataType(Enum_StaticData().PROPERTY_TYPE)">
-            Tipos de imóvel
-        </div>
-        <div [ngClass]="{'selected': selectedStaticDataEnum == Enum_StaticData().PROPERTY_CONDITION_STATUS}" class="static-data-menu-item p-3 rounded cursor-pointer mb-3" (click)="onClick_selectStaticDataType(Enum_StaticData().PROPERTY_CONDITION_STATUS)">
-            Estados de condição do imóvel
-        </div>
-        <div [ngClass]="{'selected': selectedStaticDataEnum == Enum_StaticData().PROPERTY_TYPOLOGY}" class="static-data-menu-item p-3 rounded cursor-pointer mb-3" (click)="onClick_selectStaticDataType(Enum_StaticData().PROPERTY_TYPOLOGY)">
-            Tipologia de imóvel
-        </div>
-        <div [ngClass]="{'selected': selectedStaticDataEnum == Enum_StaticData().PROPERTY_ENERGY_CERTIFICATE}" class="static-data-menu-item p-3 rounded cursor-pointer mb-3" (click)="onClick_selectStaticDataType(Enum_StaticData().PROPERTY_ENERGY_CERTIFICATE)">
-            Certificados de energias
-        </div>
-        <div [ngClass]="{'selected': selectedStaticDataEnum == Enum_StaticData().AMENETIE_TYPE}" class="static-data-menu-item p-3 rounded cursor-pointer mb-3" (click)="onClick_selectStaticDataType(Enum_StaticData().AMENETIE_TYPE)">
-            Caracteristícas
-        </div>
-        <div [ngClass]="{'selected': selectedStaticDataEnum == Enum_StaticData().DOCUMENT_STATUS}" class="static-data-menu-item p-3 rounded cursor-pointer mb-3" (click)="onClick_selectStaticDataType(Enum_StaticData().DOCUMENT_STATUS)">
-            Estados de documento
-        </div>
-        <div [ngClass]="{'selected': selectedStaticDataEnum == Enum_StaticData().DOCUMENT_TYPE}" class="static-data-menu-item p-3 rounded cursor-pointer mb-3" (click)="onClick_selectStaticDataType(Enum_StaticData().DOCUMENT_TYPE)">
-            Tipos de documento
-        </div>
+<div class="px-5 py-3 w-100">
+    <div class="text-center mb-4">
+      <img src="/assets/images/picaporte_logo.png" alt="" style="height: 100px;">
     </div>
-    <div class="col-8 rounded h-100">
-        <div class="w-100 d-flex align-items-center justify-content-end gap-3 mb-3">
-            <button class="btn btn-picaporte-secondary" (click)="onClick_displayRemoved()">{{isToDisplayRemoved ? 'Esconder items removidos' : 'Visualizar items removidos'}}</button>
-            <button *ngIf="hasSortChanges" class="btn btn-success" (click)="onClick_saveOrder()">Guardar nova ordem</button>
-            <button class="btn btn-picaporte-primary" (click)="onClick_add()">Adicionar novo item</button>
+    <div class="row">
+        <div class="col-4">
+            <div [ngClass]="{'selected': selectedStaticDataEnum == Enum_StaticData().PROPERTY_STATUS}" class="static-data-menu-item p-3 rounded cursor-pointer mb-3" (click)="onClick_selectStaticDataType(Enum_StaticData().PROPERTY_STATUS)">
+                Estados de imóvel
+            </div>
+            <div [ngClass]="{'selected': selectedStaticDataEnum == Enum_StaticData().PROPERTY_TYPE}" class="static-data-menu-item p-3 rounded cursor-pointer mb-3" (click)="onClick_selectStaticDataType(Enum_StaticData().PROPERTY_TYPE)">
+                Tipos de imóvel
+            </div>
+            <div [ngClass]="{'selected': selectedStaticDataEnum == Enum_StaticData().PROPERTY_CONDITION_STATUS}" class="static-data-menu-item p-3 rounded cursor-pointer mb-3" (click)="onClick_selectStaticDataType(Enum_StaticData().PROPERTY_CONDITION_STATUS)">
+                Estados de condição do imóvel
+            </div>
+            <div [ngClass]="{'selected': selectedStaticDataEnum == Enum_StaticData().PROPERTY_TYPOLOGY}" class="static-data-menu-item p-3 rounded cursor-pointer mb-3" (click)="onClick_selectStaticDataType(Enum_StaticData().PROPERTY_TYPOLOGY)">
+                Tipologia de imóvel
+            </div>
+            <div [ngClass]="{'selected': selectedStaticDataEnum == Enum_StaticData().PROPERTY_ENERGY_CERTIFICATE}" class="static-data-menu-item p-3 rounded cursor-pointer mb-3" (click)="onClick_selectStaticDataType(Enum_StaticData().PROPERTY_ENERGY_CERTIFICATE)">
+                Certificados de energias
+            </div>
+            <div [ngClass]="{'selected': selectedStaticDataEnum == Enum_StaticData().AMENETIE_TYPE}" class="static-data-menu-item p-3 rounded cursor-pointer mb-3" (click)="onClick_selectStaticDataType(Enum_StaticData().AMENETIE_TYPE)">
+                Caracteristícas
+            </div>
+            <div [ngClass]="{'selected': selectedStaticDataEnum == Enum_StaticData().DOCUMENT_STATUS}" class="static-data-menu-item p-3 rounded cursor-pointer mb-3" (click)="onClick_selectStaticDataType(Enum_StaticData().DOCUMENT_STATUS)">
+                Estados de documento
+            </div>
+            <div [ngClass]="{'selected': selectedStaticDataEnum == Enum_StaticData().DOCUMENT_TYPE}" class="static-data-menu-item p-3 rounded cursor-pointer mb-3" (click)="onClick_selectStaticDataType(Enum_StaticData().DOCUMENT_TYPE)">
+                Tipos de documento
+            </div>
         </div>
-        <div *ngIf="isDataFetched; else loadingData" [ngClass]="{'mb-3': staticDataStructureList.length != 0}" class="accordion accordion-flush" id="accordionFlushExample" dragula="STATIC_DATA" [(dragulaModel)]="staticDataStructureList" (dragulaModelChange)="staticDataStructureList = $event">
-            <div *ngFor="let staticDataItem of staticDataStructureList; index as i" class="accordion-item" [ngClass]="{'hidden-static-data': !staticDataItem.isActive && !isToDisplayRemoved}">
-                <div *ngIf="staticDataItem.isActive || (!staticDataItem.isActive && isToDisplayRemoved)" class="accordion-header fs-5" id="flush-headingOne" [ngClass]="{'static-data-disabled': !staticDataItem.isActive}">
-                    <button class="accordion-button collapsed d-flex align-items-center gap-3" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#flush' + i" [attr.aria-controls]="'#flush' + i" aria-expanded="false" (click)="onClick_selectStaticDataItem(staticDataItem.id, i)">
-                        <div [className]="staticDataItem.icon"></div>
-                        <div>
-                            {{staticDataItem.label != "" ? staticDataItem.label : 'Não contém título'}}
+        <div class="col-8 rounded h-100">
+            <div class="w-100 d-flex align-items-center justify-content-end gap-3 mb-3">
+                <button class="btn btn-picaporte-secondary" (click)="onClick_displayRemoved()">{{isToDisplayRemoved ? 'Esconder items removidos' : 'Visualizar items removidos'}}</button>
+                <button *ngIf="hasSortChanges" class="btn btn-success" (click)="onClick_saveOrder()">Guardar nova ordem</button>
+                <button class="btn btn-picaporte-primary" (click)="onClick_add()">Adicionar novo item</button>
+            </div>
+            <div *ngIf="isDataFetched; else loadingData" [ngClass]="{'mb-3': staticDataStructureList.length != 0}" class="accordion accordion-flush" id="accordionFlushExample" dragula="STATIC_DATA" [(dragulaModel)]="staticDataStructureList" (dragulaModelChange)="staticDataStructureList = $event">
+                <div *ngFor="let staticDataItem of staticDataStructureList; index as i" class="accordion-item" [ngClass]="{'hidden-static-data': !staticDataItem.isActive && !isToDisplayRemoved}">
+                    <div *ngIf="staticDataItem.isActive || (!staticDataItem.isActive && isToDisplayRemoved)" class="accordion-header fs-5" id="flush-headingOne" [ngClass]="{'static-data-disabled': !staticDataItem.isActive}">
+                        <button class="accordion-button collapsed d-flex align-items-center gap-3" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#flush' + i" [attr.aria-controls]="'#flush' + i" aria-expanded="false" (click)="onClick_selectStaticDataItem(staticDataItem.id, i)">
+                            <div [className]="staticDataItem.icon"></div>
+                            <div>
+                                {{staticDataItem.label != "" ? staticDataItem.label : 'Não contém título'}}
+                            </div>
+                        </button>
+                    </div>
+                    <div *ngIf="staticDataItem.isActive" [attr.id]="'flush' + i" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                        <div class="accordion-body">
+                            <div *ngIf="isEditable; else readOnlyStaticData">
+                                <form>
+                                    <div class="mb-3">
+                                        <label for="label" class="form-label fw-bold w-100 required">Título</label>
+                                        <input type="text" class="form-control" id="label" name="label" 
+                                        [ngClass]="{'invalid-input' : selectedStaticDataStructure.label == '' || selectedStaticDataStructure.label == null}"
+                                        [(ngModel)]="selectedStaticDataStructure.label">
+                                        <div *ngIf="selectedStaticDataStructure.label == '' || selectedStaticDataStructure.label == null" class="invalid-message">Campo obrigatório</div>
+                                    </div>
+                                    <div *ngIf="selectedStaticDataEnum == Enum_StaticData().AMENETIE_TYPE" class="mb-3 d-flex align-items-center gap-3">
+                                        <button class="btn btn-picaporte-primary fw-bold" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Escolher Icon</button>
+                                        <div [className]="selectedStaticDataStructure.icon"></div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="description" class="form-label fw-bold w-100">Descrição</label>
+                                        <input type="text" class="form-control" id="description" name="description" [(ngModel)]="selectedStaticDataStructure.description">
+                                    </div>
+                                    <div *ngIf="selectedStaticDataEnum == Enum_StaticData().DOCUMENT_TYPE" class="mb-3 d-flex align-items-center gap-3">
+                                        <div>
+                                            <label for="description" class="form-label fw-bold w-100">Documento obrigatório</label>
+                                            <input type="checkbox" class="form-check-input cursor-pointer" [checked]="selectedStaticDataStructure.isPrimary" (click)="onClick_checkPrimaryDocument()">
+                                        </div>
+                                        <div>
+                                            <label for="description" class="form-label fw-bold w-100">Certificado</label>
+                                            <input type="checkbox" class="form-check-input cursor-pointer" [checked]="selectedStaticDataStructure.isCertificate" (click)="onClick_checkCertificateDocument()">
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <i *ngIf="!isToDelete" class="fa-solid fa-trash fa-lg text-danger cursor-pointer" (click)="onClick_showDelete()"></i>
+                                            <div *ngIf="isToDelete" class="fw-bold">Deseja mesmo remover o item?</div>
+                                            <button *ngIf="isToDelete" class="btn btn-small" (click)="onClick_delete(true)">Sim</button>
+                                            <button *ngIf="isToDelete" class="btn btn-small btn-dark" (click)="onClick_delete(false)">Não</button>
+                                        </div>                                    
+                                        <div class="d-flex gap-3">
+                                            <button *ngIf="isEditable && !isToDelete" class="btn btn-small" (click)="onClick_cancel()">Cancelar</button>
+                                            <button *ngIf="isEditable && !isToDelete" class="btn btn-small btn-success" (click)="onClick_submit()">Submeter dados</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <ng-template #readOnlyStaticData>
+                                <form>
+                                    <div class="mb-3">
+                                        <label for="label" class="form-label fw-bold w-100">Título</label>
+                                        <div>{{staticDataItem.label}}</div>
+                                    </div>
+                                    <div *ngIf="selectedStaticDataEnum == Enum_StaticData().AMENETIE_TYPE" class="mb-3">
+                                        <label for="label" class="form-label fw-bold w-100">Icon</label>
+                                        <div [className]="staticDataItem.icon"></div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="description" class="form-label fw-bold w-100">Descrição</label>
+                                        <div>{{staticDataItem.description}}</div>
+                                    </div>
+                                    <div class="d-flex justify-content-end mb-3">
+                                        <i class="fa-solid fa-pen-to-square fa-lg cursor-pointer" (click)="onClick_edit(staticDataItem, true)"></i>
+                                    </div>
+                                </form>
+                            </ng-template>
                         </div>
-                    </button>
-                </div>
-                <div *ngIf="staticDataItem.isActive" [attr.id]="'flush' + i" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                    <div class="accordion-body">
-                        <div *ngIf="isEditable; else readOnlyStaticData">
-                            <form>
-                                <div class="mb-3">
-                                    <label for="label" class="form-label fw-bold w-100 required">Título</label>
-                                    <input type="text" class="form-control" id="label" name="label" 
-                                    [ngClass]="{'invalid-input' : selectedStaticDataStructure.label == '' || selectedStaticDataStructure.label == null}"
-                                    [(ngModel)]="selectedStaticDataStructure.label">
-                                    <div *ngIf="selectedStaticDataStructure.label == '' || selectedStaticDataStructure.label == null" class="invalid-message">Campo obrigatório</div>
-                                </div>
-                                <div *ngIf="selectedStaticDataEnum == Enum_StaticData().AMENETIE_TYPE" class="mb-3 d-flex align-items-center gap-3">
-                                    <button class="btn btn-picaporte-primary fw-bold" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Escolher Icon</button>
-                                    <div [className]="selectedStaticDataStructure.icon"></div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="description" class="form-label fw-bold w-100">Descrição</label>
-                                    <input type="text" class="form-control" id="description" name="description" [(ngModel)]="selectedStaticDataStructure.description">
-                                </div>
-                                <div *ngIf="selectedStaticDataEnum == Enum_StaticData().DOCUMENT_TYPE" class="mb-3 d-flex align-items-center gap-3">
-                                    <div>
-                                        <label for="description" class="form-label fw-bold w-100">Documento obrigatório</label>
-                                        <input type="checkbox" class="form-check-input cursor-pointer" [checked]="selectedStaticDataStructure.isPrimary" (click)="onClick_checkPrimaryDocument()">
-                                    </div>
-                                    <div>
-                                        <label for="description" class="form-label fw-bold w-100">Certificado</label>
-                                        <input type="checkbox" class="form-check-input cursor-pointer" [checked]="selectedStaticDataStructure.isCertificate" (click)="onClick_checkCertificateDocument()">
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <div class="d-flex align-items-center gap-2">
-                                        <i *ngIf="!isToDelete" class="fa-solid fa-trash fa-lg text-danger cursor-pointer" (click)="onClick_showDelete()"></i>
-                                        <div *ngIf="isToDelete" class="fw-bold">Deseja mesmo remover o item?</div>
-                                        <button *ngIf="isToDelete" class="btn btn-small" (click)="onClick_delete(true)">Sim</button>
-                                        <button *ngIf="isToDelete" class="btn btn-small btn-dark" (click)="onClick_delete(false)">Não</button>
-                                    </div>                                    
-                                    <div class="d-flex gap-3">
-                                        <button *ngIf="isEditable && !isToDelete" class="btn btn-small" (click)="onClick_cancel()">Cancelar</button>
-                                        <button *ngIf="isEditable && !isToDelete" class="btn btn-small btn-success" (click)="onClick_submit()">Submeter dados</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <ng-template #readOnlyStaticData>
-                            <form>
-                                <div class="mb-3">
-                                    <label for="label" class="form-label fw-bold w-100">Título</label>
-                                    <div>{{staticDataItem.label}}</div>
-                                </div>
-                                <div *ngIf="selectedStaticDataEnum == Enum_StaticData().AMENETIE_TYPE" class="mb-3">
-                                    <label for="label" class="form-label fw-bold w-100">Icon</label>
-                                    <div [className]="staticDataItem.icon"></div>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="description" class="form-label fw-bold w-100">Descrição</label>
-                                    <div>{{staticDataItem.description}}</div>
-                                </div>
-                                <div class="d-flex justify-content-end mb-3">
-                                    <i class="fa-solid fa-pen-to-square fa-lg cursor-pointer" (click)="onClick_edit(staticDataItem, true)"></i>
-                                </div>
-                            </form>
-                        </ng-template>
                     </div>
                 </div>
+                <div *ngIf="staticDataStructureList.length != 0" class="separator mb-3"></div>
+                <div class="w-100 d-flex align-items-center" [ngClass]="{'justify-content-end': staticDataStructureList.length != 0 , 'justify-content-between': staticDataStructureList.length == 0}">
+                    <div *ngIf="staticDataStructureList.length == 0">Não existem dados para a entidade seleccionada</div>
+                </div>
             </div>
-            <div *ngIf="staticDataStructureList.length != 0" class="separator mb-3"></div>
-            <div class="w-100 d-flex align-items-center" [ngClass]="{'justify-content-end': staticDataStructureList.length != 0 , 'justify-content-between': staticDataStructureList.length == 0}">
-                <div *ngIf="staticDataStructureList.length == 0">Não existem dados para a entidade seleccionada</div>
-            </div>
+            <ng-template #loadingData>
+                <div class="position-relative static-data-loader bg-white">
+                    <app-spinner [showBackground]="false"></app-spinner>
+                </div>
+            </ng-template>
         </div>
-        <ng-template #loadingData>
-            <div class="position-relative static-data-loader bg-white">
-                <app-spinner [showBackground]="false"></app-spinner>
-            </div>
-        </ng-template>
     </div>
 </div>
 <app-message></app-message>

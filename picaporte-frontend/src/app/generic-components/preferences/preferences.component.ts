@@ -254,6 +254,7 @@ export class CustomerPreferencesComponent implements OnInit {
     this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
       this.static_propertyStatusService.GetAll_PropertyStatuses(true, resolve).subscribe((data: {}) => {
         this.staticPropertyStatuses = <Static_PropertyStatus[]>data;
+        this.staticPropertyStatuses.push(new Static_PropertyStatus());
       });
     });
   }
@@ -262,6 +263,7 @@ export class CustomerPreferencesComponent implements OnInit {
     this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
       this.static_propertyLocationTypeService.GetAll_PropertyLocationTypes(true, resolve).subscribe((data: {}) => {
         this.staticPropertyLocationTypes = <Static_PropertyLocationType[]>data;
+        this.staticPropertyLocationTypes.push(new Static_PropertyLocationType());
       });
     });
   }
@@ -287,6 +289,7 @@ export class CustomerPreferencesComponent implements OnInit {
     this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
       this.static_propertyConditionStatusService.GetAll_PropertyConditionStatuses(true, resolve).subscribe((data: {}) => {
         this.staticPropertyConditionStatuses = <Static_PropertyConditionStatus[]>data;
+        this.staticPropertyConditionStatuses.push(new Static_PropertyConditionStatus());
       });
     });
   }
@@ -295,6 +298,7 @@ export class CustomerPreferencesComponent implements OnInit {
     this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
       this.static_energyCertificateService.GetAll_EnergyCertificates(true, resolve).subscribe((data: {}) => {
         this.staticEnergyCertificates = <Static_EnergyCertificate[]>data;
+        this.staticEnergyCertificates.push(new Static_EnergyCertificate());
       });
     });
   }

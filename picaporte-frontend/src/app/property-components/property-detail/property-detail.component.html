@@ -121,7 +121,7 @@
   </div>
   <div class="row">
     <div class="col-12 mb-3">
-      <label for="nif" class="form-label fw-bold">Proprietário</label>
+      <label for="nif" class="form-label fw-bold required">Proprietário</label>
       <div *ngIf="isEditable; else clientRead" class="dropdown">
         <button class="w-100 btn btn-dark dropdown-toggle" type="button" id="propertyType" data-bs-toggle="dropdown"
           aria-expanded="false">
@@ -141,7 +141,7 @@
   </div>
   <div *ngIf="isEditable; else propertyStatusRead" class="row">
     <div class="col-6 mb-3">
-      <label for="nif" class="form-label fw-bold">Estado de venda do imóvel</label>
+      <label for="propertyStatus" class="form-label fw-bold">Estado de venda do imóvel</label>
       <div class="dropdown">
         <button class="w-100 btn btn-warning dropdown-toggle" type="button" id="propertyStatus"
           data-bs-toggle="dropdown" aria-expanded="false">
@@ -159,10 +159,10 @@
     </div>
     <div class="col-6 mb-3">
       <label for="location" class="form-label fw-bold">Localização</label>
-      <div class="dropdown">
+      <div class="propertyLocationType">
         <button class="w-100 btn btn-secondary dropdown-toggle" type="button" id="propertyLocationType"
           data-bs-toggle="dropdown" aria-expanded="false">
-          <a *ngIf="property.propertyStatus?.label != null && property.propertyLocationType?.label != ''; else propertyLocationTypeNullEdit">{{property.propertyLocationType.label}}</a>
+          <a *ngIf="property.propertyLocationType?.label != null && property.propertyLocationType?.label != ''; else propertyLocationTypeNullEdit">{{property.propertyLocationType.label}}</a>
           <ng-template #propertyLocationTypeNullEdit>
             <a>Nenhuma opção seleccionada</a>
           </ng-template>

@@ -83,6 +83,7 @@ export class CustomerPreferencesComponent implements OnInit {
   onClick_selectPropertyType(index: number, event: MouseEvent) {
     event.stopPropagation();
     this.staticPropertyTypes[index].isSelected = !this.staticPropertyTypes[index].isSelected;
+    this.buildPropertyTypes();
   }
   
   onClick_selectAllTypes(event: MouseEvent) {
@@ -90,6 +91,7 @@ export class CustomerPreferencesComponent implements OnInit {
     this.staticPropertyTypes.forEach(element => {
       element.isSelected = true;
     })
+    this.buildPropertyTypes();
   }
 
   onClick_clearTypes(event: MouseEvent) {
@@ -97,6 +99,7 @@ export class CustomerPreferencesComponent implements OnInit {
     this.staticPropertyTypes.forEach(element => {
       element.isSelected = false;
     })
+    this.buildPropertyTypes();
   }
 
   onClick_selectPropertyStatus(propertyStatus: Static_PropertyStatus, label: string) {
@@ -120,20 +123,23 @@ export class CustomerPreferencesComponent implements OnInit {
   onClick_selectPropertyTypology(index: number, event: MouseEvent) {
     event.stopPropagation();
     this.staticPropertyTypologies[index].isSelected = !this.staticPropertyTypologies[index].isSelected;
+    this.buildPropertyTypologies();
   }
 
   onClick_selectAllTypologies(event: MouseEvent) {
     event.stopPropagation();
     this.staticPropertyTypologies.forEach(element => {
       element.isSelected = true;
-    })
+    });
+    this.buildPropertyTypologies();
   }
 
   onClick_clearTypologies(event: MouseEvent) {
     event.stopPropagation();
     this.staticPropertyTypologies.forEach(element => {
       element.isSelected = false;
-    })
+    });
+    this.buildPropertyTypologies();
   }
 
   onClick_selectEnergyCertificate(energyCertificate: Static_EnergyCertificate, label: string) {
@@ -168,7 +174,7 @@ export class CustomerPreferencesComponent implements OnInit {
   onClick_addNew() {
     this.selectedRowNumber = -1;
     this.selectedPreferenceStructure = new PreferenceStructure();
-    this.buildAmenetieTypeStructure(false);
+    this.buildAmenetieTypes();
   }
 
   onClick_edit(rowNumber: number) {
@@ -176,10 +182,12 @@ export class CustomerPreferencesComponent implements OnInit {
     if (this.isEditable) {
       this.selectedRowNumber = rowNumber;
       this.selectedPreferenceStructure = this.preferenceService.mapNewPreferenceStructure(this.preferences[rowNumber]);
-      this.buildAmenetieTypeStructure(false);
+      this.initAmenetieTypes();
+      this.initPropertyTypes();
+      this.initPropertyTypologies();
   
       if (this.selectedPreferenceStructure.propertyTypes.length > 0) {
-        this.selectedPropertyTypeLabel = "Tipos seleccionados";
+        this.selectedPropertyTypeLabel = this.selectedPreferenceStructure.propertyTypes.length + (this.selectedPreferenceStructure.propertyTypes.length > 1 ? " tipos seleccionados" : " tipo seleccionado");
       }
       if (this.selectedPreferenceStructure.preference.propertyStatus != null) {
         this.selectedPropertyStatusLabel = this.selectedPreferenceStructure.preference.propertyStatus?.label;
@@ -191,7 +199,7 @@ export class CustomerPreferencesComponent implements OnInit {
         this.selectedPropertyConditionStatusLabel = this.selectedPreferenceStructure.preference.propertyConditionStatus?.label;
       }
       if (this.selectedPreferenceStructure.propertyTypologies.length > 0) {
-        this.selectedPropertyTypologyLabel = "Tipologies seleccioandas";
+        this.selectedPropertyTypologyLabel = this.selectedPreferenceStructure.propertyTypes.length + (this.selectedPreferenceStructure.propertyTypologies.length > 1 ? " tipologias seleccionadas" : " tipologia seleccionada");
       }
       if (this.selectedPreferenceStructure.preference.energyCertificate != null) {
         this.selectedEnergyCertificateLabel = this.selectedPreferenceStructure.preference.energyCertificate?.label;
@@ -200,16 +208,9 @@ export class CustomerPreferencesComponent implements OnInit {
   }
 
   onClick_submit() {
-    this.buildAmenetieTypeStructure(true);
-
-    this.selectedPreferenceStructure.propertyTypes = new Array<Static_PropertyType>();
-    this.staticPropertyTypes.filter(prop => prop.isSelected).forEach(element => {
-      this.selectedPreferenceStructure.propertyTypes.push(element.propertyType);
-    });
-    this.selectedPreferenceStructure.propertyTypologies = new Array<Static_PropertyTypology>();
-    this.staticPropertyTypologies.filter(prop => prop.isSelected).forEach(element => {
-      this.selectedPreferenceStructure.propertyTypologies.push(element.propertyTypology);
-    });
+    this.buildAmenetieTypes();
+    this.buildPropertyTypes();
+    this.buildPropertyTypologies();
 
     if (this.selectedRowNumber == -1) {
       this.preferences.push(this.selectedPreferenceStructure);
@@ -231,6 +232,74 @@ export class CustomerPreferencesComponent implements OnInit {
 
   triggerEvent_updatePreferences() {
     this.event_updatePreferences.emit(this.preferences);
+  }
+
+  private buildPropertyTypes() {
+    this.selectedPreferenceStructure.propertyTypes = new Array<Static_PropertyType>();
+    this.staticPropertyTypes.filter(prop => prop.isSelected).forEach(element => {
+      this.selectedPreferenceStructure.propertyTypes.push(element.propertyType);
+    });
+
+    if (this.selectedPreferenceStructure.propertyTypes.length > 0) {
+      this.selectedPropertyTypeLabel = this.selectedPreferenceStructure.propertyTypes.length + (this.selectedPreferenceStructure.propertyTypes.length > 1 ? " tipos seleccionados" : " tipo seleccionado");
+    } else {
+      this.selectedPropertyTypeLabel = "Seleccione opção";
+    }
+  }
+
+  private initPropertyTypes() {
+    for (let index = 0; index < this.selectedPreferenceStructure.propertyTypes.length; index++) {
+      if (this.selectedPreferenceStructure.propertyTypes.findIndex(prop => prop.id == this.staticPropertyTypes[index].propertyType.id) == -1) {
+        this.staticPropertyTypes[index].isSelected = false;
+      } else {
+        this.staticPropertyTypes[index].isSelected = true;
+      }
+    }
+  }
+
+  private buildPropertyTypologies() {
+    this.selectedPreferenceStructure.propertyTypologies = new Array<Static_PropertyTypology>();
+    this.staticPropertyTypologies.filter(prop => prop.isSelected).forEach(element => {
+      this.selectedPreferenceStructure.propertyTypologies.push(element.propertyTypology);
+    });
+    if (this.selectedPreferenceStructure.propertyTypologies.length > 0) {
+      this.selectedPropertyTypologyLabel = this.selectedPreferenceStructure.propertyTypologies.length + (this.selectedPreferenceStructure.propertyTypologies.length > 1 ? " tipologias seleccionadas" : " tipologia seleccionada");
+    } else {
+      this.selectedPropertyTypologyLabel = "Seleccione opção";
+    }
+  }
+
+  private initPropertyTypologies() {
+    for (let index = 0; index < this.selectedPreferenceStructure.propertyTypologies.length; index++) {
+      if (this.selectedPreferenceStructure.propertyTypologies.findIndex(prop => prop.id == this.staticPropertyTypologies[index].propertyTypology.id) == -1) {
+        this.staticPropertyTypologies[index].isSelected = false;
+      } else {
+        this.staticPropertyTypologies[index].isSelected = true;
+      }
+    }
+  }
+
+  private buildAmenetieTypes() {
+    this.selectedPreferenceStructure.ameneties = new Array<Static_AmenetieType>();
+    this.amenetieTypeStructureList.filter(prop => prop.isSelected == true).forEach(element => {
+      this.staticAmenetieType = new Static_AmenetieType();
+      this.staticAmenetieType.id = element.amenetieType.id;
+      this.staticAmenetieType.label = element.amenetieType.label;
+      this.staticAmenetieType.description = element.amenetieType.description;
+      this.staticAmenetieType.order = element.amenetieType.order;
+      this.staticAmenetieType.icon = element.amenetieType.icon;
+      this.selectedPreferenceStructure.ameneties.push(this.staticAmenetieType);
+    })
+  }
+
+  private initAmenetieTypes() {
+    for (let index = 0; index < this.amenetieTypeStructureList.length; index++) {
+      if (this.selectedPreferenceStructure.ameneties.findIndex(prop => prop.id == this.amenetieTypeStructureList[index].amenetieType.id) == -1) {
+        this.amenetieTypeStructureList[index].isSelected = false;
+      } else {
+        this.amenetieTypeStructureList[index].isSelected = true;
+      }
+    }
   }
 
   private get_staticPropertyTypes() {
@@ -316,28 +385,4 @@ export class CustomerPreferencesComponent implements OnInit {
       });
     });
   }
-
-  private buildAmenetieTypeStructure(isSubmit: boolean) {
-    if (isSubmit) {
-      this.selectedPreferenceStructure.ameneties = new Array<Static_AmenetieType>();
-      this.amenetieTypeStructureList.filter(prop => prop.isSelected == true).forEach(element => {
-        this.staticAmenetieType = new Static_AmenetieType();
-        this.staticAmenetieType.id = element.amenetieType.id;
-        this.staticAmenetieType.label = element.amenetieType.label;
-        this.staticAmenetieType.description = element.amenetieType.description;
-        this.staticAmenetieType.order = element.amenetieType.order;
-        this.staticAmenetieType.icon = element.amenetieType.icon;
-        this.selectedPreferenceStructure.ameneties.push(this.staticAmenetieType);
-      })
-    } else {
-      for (let index = 0; index < this.amenetieTypeStructureList.length; index++) {
-        if (this.selectedPreferenceStructure.ameneties.findIndex(prop => prop.id == this.amenetieTypeStructureList[index].amenetieType.id) == -1) {
-          this.amenetieTypeStructureList[index].isSelected = false;
-        } else {
-          this.amenetieTypeStructureList[index].isSelected = true;
-        }
-      }
-    }
-  }
-
 }

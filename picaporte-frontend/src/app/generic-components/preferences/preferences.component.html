@@ -64,7 +64,7 @@
           </ng-template>
         </div>
         <div class="mb-2 col-6">
-          <label class="fw-bold">Estado</label>
+          <label class="fw-bold">Estado do imóvel</label>
           <div *ngIf="preference.preference.propertyConditionStatus?.label != null && preference.preference.propertyConditionStatus?.label != ''; else propertyConditionStatusNull">
             {{preference.preference.propertyConditionStatus?.label}}</div>
           <ng-template #propertyConditionStatusNull>
@@ -177,7 +177,7 @@
           </ng-template>
         </div>
         <div class="mb-2 col-6">
-          <label class="fw-bold">Estado</label>
+          <label class="fw-bold">Estado do imóvel</label>
           <div *ngIf="preference.preference.propertyConditionStatus?.label != null && preference.preference.propertyConditionStatus?.label != ''; else propertyConditionStatusNull">
             {{preference.preference.propertyConditionStatus?.label}}</div>
           <ng-template #propertyConditionStatusNull>
@@ -339,22 +339,31 @@
                 </div>
                 <div class="row">
                   <div class="col-6 mb-3">
-                    <label for="cc" class="form-label fw-bold">Tipo do imóvel</label>
+                    <label for="nif" class="form-label fw-bold">Eficiência energética do imóvel</label>
                     <div class="dropdown">
                       <button class="w-100 btn btn-secondary dropdown-toggle" type="button" id="propertyType"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                        {{selectedPropertyTypeLabel}}
+                        {{selectedEnergyCertificateLabel}}
                       </button>
                       <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="propertyType">
-                        <li class="d-flex align-items-center justify-content-between fs-7 p-3 fw-bold">
-                          <div (click)="onClick_selectAllTypes($event)" class="cursor-pointer">Seleccionar todos</div>
-                          <div (click)="onClick_clearTypes($event)" class="cursor-pointer">Limpar</div>
+                        <li *ngFor="let energyCertificate of staticEnergyCertificates">
+                          <a class="dropdown-item"
+                            (click)="onClick_selectEnergyCertificate(energyCertificate, energyCertificate.label)">{{energyCertificate.label}}</a>
                         </li>
-                        <li *ngFor="let type of staticPropertyTypes; index as i"
-                          (click)="onClick_selectPropertyType(i, $event)"
-                          class="cursor-pointer d-flex align-items-center justify-content-between gap-3 p-3">
-                          <div>{{type.propertyType.label}}</div>
-                          <input class="form-check-input" type="checkbox" [name]="type.propertyType.label" [(ngModel)]="type.isSelected">
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="col-6 mb-3">
+                    <label for="location" class="form-label fw-bold">Localização</label>
+                    <div class="dropdown">
+                      <button class="w-100 btn btn-secondary dropdown-toggle" type="button" id="location"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        {{selectedPropertyLocationTypeLabel}}
+                      </button>
+                      <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="location">
+                        <li *ngFor="let location of staticPropertyLocationTypes">
+                          <a class="dropdown-item"
+                            (click)="onClick_selectPropertyLocationType(location, location.label)">{{location.label}}</a>
                         </li>
                       </ul>
                     </div>
@@ -381,31 +390,22 @@
                     </div>
                   </div>
                   <div class="col-6 mb-3">
-                    <label for="nif" class="form-label fw-bold">Eficiência energética do imóvel</label>
+                    <label for="cc" class="form-label fw-bold">Tipo do imóvel</label>
                     <div class="dropdown">
                       <button class="w-100 btn btn-secondary dropdown-toggle" type="button" id="propertyType"
                         data-bs-toggle="dropdown" aria-expanded="false">
-                        {{selectedEnergyCertificateLabel}}
+                        {{selectedPropertyTypeLabel}}
                       </button>
                       <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="propertyType">
-                        <li *ngFor="let energyCertificate of staticEnergyCertificates">
-                          <a class="dropdown-item"
-                            (click)="onClick_selectEnergyCertificate(energyCertificate, energyCertificate.label)">{{energyCertificate.label}}</a>
+                        <li class="d-flex align-items-center justify-content-between fs-7 p-3 fw-bold">
+                          <div (click)="onClick_selectAllTypes($event)" class="cursor-pointer">Seleccionar todos</div>
+                          <div (click)="onClick_clearTypes($event)" class="cursor-pointer">Limpar</div>
                         </li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div class="col-6 mb-3">
-                    <label for="location" class="form-label fw-bold">Localização</label>
-                    <div class="dropdown">
-                      <button class="w-100 btn btn-secondary dropdown-toggle" type="button" id="location"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        {{selectedPropertyLocationTypeLabel}}
-                      </button>
-                      <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="location">
-                        <li *ngFor="let location of staticPropertyLocationTypes">
-                          <a class="dropdown-item"
-                            (click)="onClick_selectPropertyLocationType(location, location.label)">{{location.label}}</a>
+                        <li *ngFor="let type of staticPropertyTypes; index as i"
+                          (click)="onClick_selectPropertyType(i, $event)"
+                          class="cursor-pointer d-flex align-items-center justify-content-between gap-3 p-3">
+                          <div>{{type.propertyType.label}}</div>
+                          <input class="form-check-input" type="checkbox" [name]="type.propertyType.label" [(ngModel)]="type.isSelected">
                         </li>
                       </ul>
                     </div>

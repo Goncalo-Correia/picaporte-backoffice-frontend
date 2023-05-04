@@ -12,7 +12,6 @@ import { DragulaService } from 'ng2-dragula';
 import { catchError, Subscription } from 'rxjs';
 import { MessageComponent } from 'src/app/generic-components/message/message.component';
 import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
-import { FontawesomeIcon, FontawesomeService } from 'src/app/services/fontawesome-service/fontawesome-service.service';
 
 @Component({
   selector: 'app-static-data',
@@ -23,9 +22,6 @@ export class StaticDataComponent implements OnInit, OnDestroy {
 
   @ViewChild(MessageComponent) messageComponent!: MessageComponent;
   
-  icons: Array<FontawesomeIcon> = new Array<FontawesomeIcon>();
-  visibleIcons: Array<FontawesomeIcon> = new Array<FontawesomeIcon>();
-  iconSearchText = "";
   subscription = new Subscription();
   isDataFetched: boolean = false;
   isEditable: boolean = false;
@@ -47,8 +43,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
     private staticDocumentStatusService: StaticDocumentStatusService,
     private staticDocumentTypeService: StaticDocumentTypeService,
     private dragulaService: DragulaService,
-    private authenticationService: AuthenticationService,
-    private fontawesomeService: FontawesomeService
+    private authenticationService: AuthenticationService
   ) {
     dragulaService.createGroup("STATIC_DATA", {});
 
@@ -58,15 +53,6 @@ export class StaticDataComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.icons = this.icons.filter((icon, index, self) => {
-      return (
-        self.findIndex(
-          (i) => i.prefix === icon.prefix && i.iconName === icon.iconName
-        ) === index
-      );
-    });
-    this.visibleIcons = this.icons;
-    
     this.fetchData();
   }
 
@@ -140,19 +126,6 @@ export class StaticDataComponent implements OnInit, OnDestroy {
 
   onClick_selectIcon(icon: string) {
     this.selectedStaticDataStructure.icon = icon;
-  }
-  
-  onClick_confirmIcon() {
-    this.iconSearchText = "";
-  }
-
-  onClick_cancelIcon() {
-    this.iconSearchText = "";
-    this.selectedStaticDataStructure.icon = "";
-  }
-
-  onChange_iconSearchText() {
-    this.visibleIcons = this.icons.filter(prop => prop.iconName.indexOf(this.iconSearchText) != -1);
   }
 
   onClick_cancel() {
@@ -622,7 +595,6 @@ export class StaticDataComponent implements OnInit, OnDestroy {
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.AMENETIE_TYPE) {
-      this.icons = this.fontawesomeService.getAllIcons();
       this.authenticationService.authorizeUser().then((resolve:any) => { 
         this.staticAmenetieTypeService.GetAll_AmenetieTypes(false, resolve)
         .pipe(

@@ -137,9 +137,9 @@
             <div class="mb-1">{{property.customerEmail}}</div>
             <div>{{property.customerContact}}</div>
           </span></td>
-          <td><span class="col">{{property.propertyStatusLabel}}</span></td>
-          <td><span class="col">{{property.propertyTypeLabel}}</span></td>
-          <td><span class="col">{{property.propertyLocationTypeLabel}}</span></td>
+          <td><span class="col">{{property.propertyStatusLabel != "" && property.propertyStatusLabel != null ? property.propertyStatusLabel : "-"}}</span></td>
+          <td><span class="col">{{property.propertyTypeLabel != "" && property.propertyTypeLabel != null ? property.propertyTypeLabel : "-"}}</span></td>
+          <td><span class="col">{{property.propertyLocationTypeLabel != "" && property.propertyLocationTypeLabel != null ? property.propertyLocationTypeLabel : "-"}}</span></td>
           <td><span class="col">
             <div>
               {{property.lastModifiedBy}}

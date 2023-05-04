@@ -31,6 +31,10 @@
         </div>
         <div class="col-8 rounded h-100">
             <div class="w-100 d-flex align-items-center justify-content-end gap-3 mb-3">
+                <a *ngIf="selectedStaticDataEnum == Enum_StaticData().AMENETIE_TYPE" class="btn btn-info d-flex align-items-center gap-3" href="https://fontawesome.com/search" target="https://fontawesome.com/search">
+                    <div>Consultar a biblioteca de icons</div>
+                    <i class="fa-solid fa-icons"></i>
+                </a>
                 <button class="btn btn-picaporte-secondary" (click)="onClick_displayRemoved()">{{isToDisplayRemoved ? 'Esconder items removidos' : 'Visualizar items removidos'}}</button>
                 <button *ngIf="hasSortChanges" class="btn btn-success" (click)="onClick_saveOrder()">Guardar nova ordem</button>
                 <button class="btn btn-picaporte-primary" (click)="onClick_add()">Adicionar novo item</button>
@@ -39,10 +43,16 @@
                 <div *ngFor="let staticDataItem of staticDataStructureList; index as i" class="accordion-item" [ngClass]="{'hidden-static-data': !staticDataItem.isActive && !isToDisplayRemoved}">
                     <div *ngIf="staticDataItem.isActive || (!staticDataItem.isActive && isToDisplayRemoved)" class="accordion-header fs-5" id="flush-headingOne" [ngClass]="{'static-data-disabled': !staticDataItem.isActive}">
                         <button class="accordion-button collapsed d-flex align-items-center gap-3" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#flush' + i" [attr.aria-controls]="'#flush' + i" aria-expanded="false" (click)="onClick_selectStaticDataItem(staticDataItem.id, i)">
-                            <div [className]="staticDataItem.icon"></div>
-                            <div>
+                            <div *ngIf="staticDataItem.icon != null && staticDataItem.icon != ''" [innerHtml]="staticDataItem.icon"></div>
+                            <div *ngIf="selectedStaticDataEnum == Enum_StaticData().DOCUMENT_TYPE && staticDataItem.isPrimary">Documento obrigatório  ></div>
+                            <div *ngIf="selectedStaticDataEnum == Enum_StaticData().DOCUMENT_TYPE && staticDataItem.isCertificate">Certificado  ></div>
+                            <div *ngIf="selectedStaticDataEnum == Enum_StaticData().DOCUMENT_TYPE && !staticDataItem.isPrimary && !staticDataItem.isCertificate">Documento opcional  ></div>
+                            <div *ngIf="staticDataItem.label != null && staticDataItem.label != ''; else labelNull">
                                 {{staticDataItem.label != "" ? staticDataItem.label : 'Não contém título'}}
                             </div>
+                            <ng-template #labelNull>
+                                -
+                            </ng-template>
                         </button>
                     </div>
                     <div *ngIf="staticDataItem.isActive" [attr.id]="'flush' + i" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
@@ -56,9 +66,12 @@
                                         [(ngModel)]="selectedStaticDataStructure.label">
                                         <div *ngIf="selectedStaticDataStructure.label == '' || selectedStaticDataStructure.label == null" class="invalid-message">Campo obrigatório</div>
                                     </div>
-                                    <div *ngIf="selectedStaticDataEnum == Enum_StaticData().AMENETIE_TYPE" class="mb-3 d-flex align-items-center gap-3">
-                                        <button class="btn btn-picaporte-primary fw-bold" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Escolher Icon</button>
-                                        <div [className]="selectedStaticDataStructure.icon"></div>
+                                    <div *ngIf="selectedStaticDataEnum == Enum_StaticData().AMENETIE_TYPE" class="mb-3">
+                                        <label for="icon" class="form-label fw-bold w-100 required">Icon</label>
+                                        <div class="d-flex align-items-center gap-5">
+                                            <input type="text" class="form-control" id="icon" name="icon" [(ngModel)]="selectedStaticDataStructure.icon">
+                                            <div [innerHtml]="selectedStaticDataStructure.icon"></div>
+                                        </div>
                                     </div>
                                     <div class="mb-3">
                                         <label for="description" class="form-label fw-bold w-100">Descrição</label>
@@ -92,15 +105,26 @@
                                 <form>
                                     <div class="mb-3">
                                         <label for="label" class="form-label fw-bold w-100">Título</label>
-                                        <div>{{staticDataItem.label}}</div>
+                                        <div *ngIf="staticDataItem.label != null && staticDataItem.label != ''; else labelNull">
+                                            {{staticDataItem.label}}
+                                        </div>
+                                        <ng-template #labelNull>
+                                            -
+                                        </ng-template>
                                     </div>
                                     <div *ngIf="selectedStaticDataEnum == Enum_StaticData().AMENETIE_TYPE" class="mb-3">
                                         <label for="label" class="form-label fw-bold w-100">Icon</label>
-                                        <div [className]="staticDataItem.icon"></div>
+                                        <div *ngIf="staticDataItem.icon != null && staticDataItem.icon != ''; else iconNull" [innerHtml]="staticDataItem.icon"></div>
+                                        <ng-template #iconNull>
+                                            -
+                                        </ng-template>
                                     </div>
                                     <div class="mb-3">
                                         <label for="description" class="form-label fw-bold w-100">Descrição</label>
-                                        <div>{{staticDataItem.description}}</div>
+                                        <div *ngIf="staticDataItem.description != null && staticDataItem.description != ''; else descriptionNull">{{staticDataItem.description}}</div>
+                                        <ng-template #descriptionNull>
+                                            -
+                                        </ng-template>
                                     </div>
                                     <div class="d-flex justify-content-end mb-3">
                                         <i class="fa-solid fa-pen-to-square fa-lg cursor-pointer" (click)="onClick_edit(staticDataItem, true)"></i>
@@ -124,25 +148,3 @@
     </div>
 </div>
 <app-message></app-message>
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-    <div class="offcanvas-header background-primary-light color-primary fw-bold">
-      <div class="offcanvas-title fs-4" id="offcanvasRightLabel">Escolher icon</div>
-      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body position-relative">
-        <div class="mb-3">
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Pesquise por um icon" aria-label="Icon" [(ngModel)]="iconSearchText" (change)="onChange_iconSearchText()">
-            </div>
-        </div>
-        <div class="mb-3 row g-3">
-            <div *ngFor="let icon of visibleIcons" class="col-3 p-3 rounded static-data-icon cursor-pointer text-center" [ngClass]="{'selected': icon.prefix + ' fa-' + icon.iconName == selectedStaticDataStructure.icon}" (click)="onClick_selectIcon(icon.prefix + ' fa-' + icon.iconName)">
-                <i [ngClass]="icon.prefix + ' fa-' + icon.iconName + ' fa-2x'"></i>
-            </div>
-        </div>
-    </div>
-    <div class="filter-buttons d-flex align-items-center justify-content-between p-3">
-        <div data-bs-dismiss="offcanvas" class="px-3 py-2 btn btn-picaporte-secondary" (click)="onClick_cancelIcon()">Cancelar</div>
-        <div data-bs-dismiss="offcanvas" class="px-3 py-2 btn btn-picaporte-primary" (click)="onClick_confirmIcon()">Confirmar</div>
-    </div>
-</div>

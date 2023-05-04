@@ -3,7 +3,7 @@
         <div class="text-white" *ngIf="auth.user$ | async as user">{{ user.name }}</div>
     </div>
     <ng-container *ngIf="auth.isAuthenticated$ | async; else loggedOut">
-        <button class="btn btn-info" (click)="auth.logout({ returnTo: document.location.origin })">
+        <button class="btn btn-info" (click)="auth.logout()">
             <div class="d-flex align-items-center gap-3">
                 <i class="fa-solid fa-user"></i>
                 <div *ngIf="isOpen">Log out</div>
@@ -12,9 +12,7 @@
     </ng-container>
     
     <ng-template #loggedOut>
-        <button class="btn btn-info" (click)="auth.loginWithRedirect({
-            redirect_uri: 'redirectUri'
-          })">
+        <button class="btn btn-info" (click)="auth.loginWithRedirect()">
             <div class="d-flex align-items-center gap-3">
                 <i class="fa-solid fa-user"></i>
                 <div *ngIf="isOpen">Log in</div>

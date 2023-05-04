@@ -7,7 +7,7 @@ export const environment = {
   apiKey: "REDACTED_API_KEY",
   mapboxAccessToken: "REDACTED_MAPBOX_TOKEN",
   //apiUrl: "https://localhost:7036/",
-  //redirectUri: "http://localhost:59701/"
+  //redirectUri: "http://localhost:59701/",
   apiUrl: "https://picaportebackoffice.online/rest/",
   redirectUri: "https://picaportebackoffice.online/"
 };

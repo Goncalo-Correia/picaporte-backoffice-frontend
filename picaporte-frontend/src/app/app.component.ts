@@ -23,9 +23,7 @@ export class AppComponent implements OnInit {
               this.showSplashScreen = false;
             });
           } else {
-            this.auth.loginWithRedirect({
-              redirect_uri: environment.redirectUri
-            });
+            this.auth.loginWithRedirect();
           }
         });
       }      

@@ -14,9 +14,7 @@ export class AuthenticationService {
 
   authenticateUser() {
     this.auth.isLoading$.subscribe((data: {}) => {
-      this.auth.loginWithRedirect({
-        redirect_uri: environment.redirectUri
-      });
+      this.auth.loginWithRedirect();
     });
   }
 
@@ -40,9 +38,7 @@ export class AuthenticationService {
                   this.refreshHttpOptions().then((httpOptions:any) => {
                     this.userService.Post_AuthorizeUser(authorizeStructure, httpOptions).subscribe(userId => {
                       if (userId == 0) {
-                        this.auth.logout({
-                          returnTo: environment.redirectUri
-                        });
+                        this.auth.logout();
                       } else {
                         resolve(httpOptions);
                       }

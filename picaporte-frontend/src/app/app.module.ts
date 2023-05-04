@@ -100,9 +100,12 @@ import { RecommendedPropertiesComponent } from './property-components/recommende
     CKEditorModule,
     DragulaModule.forRoot(),
     AuthModule.forRoot({
-      domain: 'REDACTED_AUTH0_DOMAIN_OLD',
-      clientId: 'REDACTED_AUTH0_CLIENT_ID_OLD'
-    })
+      domain: 'REDACTED_AUTH0_DOMAIN',
+      clientId: 'REDACTED_AUTH0_CLIENT_ID',
+      authorizationParams: {
+        redirect_uri: window.location.origin
+      }
+    }),
   ],
   exports: [
     RouterModule,

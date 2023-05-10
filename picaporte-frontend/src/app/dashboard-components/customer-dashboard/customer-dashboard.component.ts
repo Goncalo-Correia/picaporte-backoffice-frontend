@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { QueriesCustomerService } from 'src/app/api-service/queries-customer/queries-customer.service';
 import { CustomerDashboardFilterStructure } from 'src/app/structures/dashboard-structures/customer/customer-dashboard-filters.structure';
@@ -10,6 +10,9 @@ import { catchError } from 'rxjs';
 import { MessageComponent } from 'src/app/generic-components/message/message.component';
 import { StaticAmenetieTypeService } from 'src/app/api-service/static-amenetie-type/static-amenetie-type-service.service';
 import { Static_AmenetieType } from 'src/app/models/static/static-amenetieType.model';
+import { DOCUMENT } from '@angular/common';
+import { QueriesExportService } from 'src/app/api-service/queries-export/queries-export.service';
+import { ExportStructure } from 'src/app/structures/export-structure';
 
 @Component({
   selector: 'app-customer-dashboard',
@@ -33,11 +36,15 @@ export class CustomerDashboardComponent implements OnInit {
   isDataFetched: boolean = false;
   isKpiDataFetched: boolean = false;
 
+  exportStructure: ExportStructure = new ExportStructure();
+
   constructor(
     public queries_customerService: QueriesCustomerService,
+    private queries_export: QueriesExportService,
     public router: Router,
     private authenticationService: AuthenticationService,
-    private staticAmenetieTypeService: StaticAmenetieTypeService
+    private staticAmenetieTypeService: StaticAmenetieTypeService,
+    @Inject(DOCUMENT) private document: Document
     ) {
     this.dashboardKpis = new Array<DashboardKpiStructure>();
     this.placeholderDashboardKpi = new DashboardKpiStructure();
@@ -87,6 +94,21 @@ export class CustomerDashboardComponent implements OnInit {
     this.get_customerDashboardStructure();
   }
 
+  onClick_export() {
+    this.get_export();
+  }
+
+  onClick_copy() {
+    const textToCopy = this.document.getElementById('exportDiv')?.innerText;
+    if (textToCopy != null) {
+      navigator.clipboard.writeText(textToCopy).then(function() {
+        console.log('Copying to clipboard was successful!');
+      }, function(err) {
+        console.error('Could not copy text: ', err);
+      });
+    }
+  }
+
   eventHandler_dashboardKpiClicked(index: number) {
     if (index == 0 && this.customerSearchAndFilterStructure.customersWithUser) {
       this.customerSearchAndFilterStructure.customersWithUser = false;
@@ -125,7 +147,21 @@ export class CustomerDashboardComponent implements OnInit {
         this.hasNextPage();
       });
     });
-    
+  }
+
+  get_export() {
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+      this.queries_export.ExportCustomer(this.customerSearchAndFilterStructure, resolve)
+      .pipe(
+        catchError(err => {
+          this.messageComponent.showMessage(err.error);
+          return err;
+        })
+      )
+      .subscribe(data => {
+        this.exportStructure = <ExportStructure>data;
+      });
+    });
   }
 
   previous() {

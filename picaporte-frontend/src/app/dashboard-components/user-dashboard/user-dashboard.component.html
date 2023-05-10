@@ -63,7 +63,7 @@
       </tbody>
       <ng-template #elseBlock>
         <tbody>
-          <tr *ngFor="let number of [0,1,2,3,4]" class="placeholder-glow table-row">
+          <tr *ngFor="let number of [0,1,2,3,4,5]" class="placeholder-glow table-row">
             <td scope="row"><span class="placeholder col-4"></span></td>
             <td><span class="placeholder col-2"></span></td>
             <td><span class="placeholder col-2"></span></td>
@@ -79,17 +79,50 @@
       Não foram encontrados utilizadores
     </div>
   </div>
-  <div *ngIf="isDataFetched">
-    <nav>
-      <ul class="pagination justify-content-end">
-        <li *ngIf="hasPrevious" class="page-item" (click)="previous()">
-          <a class="page-link color-primary">Anterior</a>
-        </li>
-        <li *ngIf="hasNext" class="page-item" (click)="next()">
-          <a class="page-link color-primary">Seguinte</a>
-        </li>
-      </ul>
-    </nav>
+  <div class="row">
+    <div class="col-auto">
+      <button class="btn btn-picaporte-primary" data-bs-toggle="modal" data-bs-target="#exportModal" (click)="onClick_export()">Exportar emails</button>
+    </div>
+    <div *ngIf="isDataFetched" class="col">
+      <nav>
+        <ul class="pagination justify-content-end">
+          <li *ngIf="hasPrevious" class="page-item" (click)="previous()">
+            <a class="page-link color-primary">Anterior</a>
+          </li>
+          <li *ngIf="hasNext" class="page-item" (click)="next()">
+            <a class="page-link color-primary">Seguinte</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
   </div>
 </div>
+
+<!-- Modal -->
+<div class="modal" id="exportModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Lista de utilizadores</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div id="exportDiv">
+            {{exportStructure.export}}
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div class="d-flex justify-content-between w-100">
+          <div>
+            <button type="submit" class="btn btn-success" (click)="onClick_copy()">Copiar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <app-message></app-message>

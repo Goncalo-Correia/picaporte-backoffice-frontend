@@ -52,7 +52,8 @@ import { DatePipe, registerLocaleData } from '@angular/common';
 import { GoogleMapComponent } from './generic-components/google-map/google-map.component';
 import { DateFormatComponent } from './generic-components/date-format/date-format.component';
 import { RecommendedPropertiesComponent } from './property-components/recommended-properties/recommended-properties.component';
-
+import { CommaToDotDirective } from './generic-components/comma-to-dot.directive';
+import { TaskComponent } from './task/task.component';
 
 @NgModule({
   declarations: [
@@ -89,7 +90,9 @@ import { RecommendedPropertiesComponent } from './property-components/recommende
     MessageComponent,
     GoogleMapComponent,
     DateFormatComponent,
-    RecommendedPropertiesComponent
+    RecommendedPropertiesComponent,
+    CommaToDotDirective,
+    TaskComponent
   ],
   imports: [
     BrowserModule,

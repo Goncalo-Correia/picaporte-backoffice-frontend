@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { Route, Router } from '@angular/router';
 import { QueriesPropertyService } from 'src/app/api-service/queries-property/queries-property.service';
 import { DashboardKpiStructure } from 'src/app/structures/dashboard-structures/dashboard-kpi.structure';
@@ -19,6 +19,9 @@ import { catchError } from 'rxjs';
 import { MessageComponent } from 'src/app/generic-components/message/message.component';
 import { StaticPropertyLocationTypeService } from 'src/app/api-service/static-property-location-type/property-location-type.service';
 import { Static_PropertyLocationType } from 'src/app/models/static/static-propertylocationtype.model';
+import { ExportStructure } from 'src/app/structures/export-structure';
+import { QueriesExportService } from 'src/app/api-service/queries-export/queries-export.service';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-property-dashboard',
@@ -49,15 +52,20 @@ export class PropertyDashboardComponent implements OnInit {
   isDataFetched: boolean = false;
   isKpiDataFetched: boolean = false;
 
+  exportStructure: ExportStructure = new ExportStructure();
+
+
   constructor(
     public queries_propertyService: QueriesPropertyService, 
+    private queries_export: QueriesExportService,
     public staticPropertyStatusService: StaticPropertyStatusService, 
     public staticPropertyLocationTypeService: StaticPropertyLocationTypeService, 
     public staticPropertyTypologyService: StaticPropertyTypologyService,
     public staticPropertyConditionStatusService: StaticPropertyConditionStatusService,
     public staticAmenetieTypeService: StaticAmenetieTypeService,
     public router: Router,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    @Inject(DOCUMENT) private document: Document
     ) {
     this.dashboardKpis = new Array<DashboardKpiStructure>();
     this.placeholderDashboardKpi = new DashboardKpiStructure();
@@ -134,6 +142,21 @@ export class PropertyDashboardComponent implements OnInit {
     this.get_propertyDashboardStructure();
   }
 
+  onClick_export() {
+    this.get_export();
+  }
+
+  onClick_copy() {
+    const textToCopy = this.document.getElementById('exportDiv')?.innerText;
+    if (textToCopy != null) {
+      navigator.clipboard.writeText(textToCopy).then(function() {
+        console.log('Copying to clipboard was successful!');
+      }, function(err) {
+        console.error('Could not copy text: ', err);
+      });
+    }
+  }
+
   eventHandler_dashboardKpiClicked(clickedPropertyTypeId: number) {
     if (this.propertyDashboardSearchAndFilterStructure.propertyTypeId != clickedPropertyTypeId) {
       this.propertyDashboardSearchAndFilterStructure.propertyTypeId = clickedPropertyTypeId;
@@ -166,6 +189,21 @@ export class PropertyDashboardComponent implements OnInit {
         this.isDataFetched = true;
         this.hasPreviousPage();
         this.hasNextPage();
+      });
+    });
+  }
+
+  get_export() {
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+      this.queries_export.ExportProperty(this.propertyDashboardSearchAndFilterStructure, resolve)
+      .pipe(
+        catchError(err => {
+          this.messageComponent.showMessage(err.error);
+          return err;
+        })
+      )
+      .subscribe(data => {
+        this.exportStructure = <ExportStructure>data;
       });
     });
   }

@@ -34,6 +34,11 @@ export const apiEndpoints = {
     searchAndFilter: "api/Queries_Property/SearchAndFilter",
     kpi: "api/Queries_Property/Kpi"
   },
+  queries_export: {
+    exportUser: "api/Queries_Export/ExportUser",
+    exportCustomer: "api/Queries_Export/ExportCustomer",
+    exportProperty: "api/Queries_Export/ExportProperty"
+  },
   customer: {
     getAll: "api/Customers"
   },

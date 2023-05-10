@@ -29,7 +29,7 @@ export class GoogleMapComponent implements OnInit {
       navigator.geolocation.getCurrentPosition(
         (position: GeolocationPosition) => {
           let currentPosition;
-          if (this.latitude != 0 && this.longitude != 0) {
+          if (this.latitude == 0 && this.longitude == 0) {
             currentPosition = new google.maps.LatLng(
               position.coords.latitude,
               position.coords.longitude

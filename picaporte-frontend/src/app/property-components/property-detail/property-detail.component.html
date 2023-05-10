@@ -18,7 +18,7 @@
     </div>
     <div class="col-6 mb-3">
       <label for="price" class="form-label fw-bold required">Preço</label>
-      <input *ngIf="isEditable; else priceRead" type="text" class="form-control" id="price" name="price"
+      <input appCommaToDot *ngIf="isEditable; else priceRead" type="text" class="form-control" id="price" name="price"
         [ngClass]="{'invalid-input' : !propertyValidationObject.isPriceValid.isValid}" [(ngModel)]="property.price"
         (change)="triggerEvent_updatePropertyDetails()" (focus)="onFocus_price()">
       <div *ngIf="!propertyValidationObject.isPriceValid.isValid" class="invalid-message">
@@ -66,7 +66,7 @@
   <div class="row">
     <div class="col-6 mb-3">
       <label for="bathrooms" class="form-label fw-bold">Nº casa de banho</label>
-      <input *ngIf="isEditable; else bathroomsRead" type="number" class="form-control" id="bathrooms" name="phoneNumber"
+      <input *ngIf="isEditable; else bathroomsRead" type="number" class="form-control" id="bathrooms" name="bathrooms"
         [(ngModel)]="property.bathrooms" (change)="triggerEvent_updatePropertyDetails()">
       <ng-template #bathroomsRead>
         <div *ngIf="property.bathrooms != null && property.bathrooms != 0; else bathroomsNull">
@@ -79,7 +79,7 @@
     </div>
     <div class="col-6 mb-3">
       <label for="year" class="form-label fw-bold">Ano de construção</label>
-      <input *ngIf="isEditable; else yearRead" type="email" class="form-control" id="year" name="year"
+      <input *ngIf="isEditable; else yearRead" type="number" class="form-control" id="year" name="year"
         [(ngModel)]="property.constructionYear" (change)="triggerEvent_updatePropertyDetails()">
       <ng-template #yearRead>
         <div *ngIf="property.constructionYear != null && property.constructionYear != 0; else yearNull">
@@ -94,7 +94,7 @@
   <div class="row">
     <div class="col-6 mb-3">
       <label for="totalarea" class="form-label fw-bold">Área total</label>
-      <input *ngIf="isEditable; else totalAreaRead" type="text" class="form-control" id="totalarea" name="totalarea"
+      <input appCommaToDot *ngIf="isEditable; else totalAreaRead" type="text" class="form-control" id="totalarea" name="totalarea"
         [(ngModel)]="property.totalConstructionArea" (change)="triggerEvent_updatePropertyDetails()">
       <ng-template #totalAreaRead>
         <div *ngIf="property.totalConstructionArea!= null && property.totalConstructionArea!= 0; else totalAreaNull">
@@ -107,7 +107,7 @@
     </div>
     <div class="col-6 mb-3">
       <label for="livingarea" class="form-label fw-bold">Área de construção</label>
-      <input *ngIf="isEditable; else livingAreaRead" type="text" class="form-control" id="livingarea" name="livingarea"
+      <input appCommaToDot *ngIf="isEditable; else livingAreaRead" type="text" class="form-control" id="livingarea" name="livingarea"
         [(ngModel)]="property.livingArea" (change)="triggerEvent_updatePropertyDetails()">
       <ng-template #livingAreaRead>
         <div *ngIf="property.livingArea != null && property.livingArea != 0; else livingAreaNull">

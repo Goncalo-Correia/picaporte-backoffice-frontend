@@ -1,12 +1,15 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError } from 'rxjs';
+import { QueriesExportService } from 'src/app/api-service/queries-export/queries-export.service';
 import { QueriesUserService } from 'src/app/api-service/queries-user/queries-user.service';
 import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
 import { MessageComponent } from 'src/app/generic-components/message/message.component';
 import { DashboardKpiStructure } from 'src/app/structures/dashboard-structures/dashboard-kpi.structure';
 import { UserDashboardSearchAndFilterStructure } from 'src/app/structures/dashboard-structures/user/user-dashboard-search-and-filter.structure';
 import { UserDashboardStructure } from 'src/app/structures/dashboard-structures/user/user-dashboard.structure';
+import { ExportStructure } from 'src/app/structures/export-structure';
 
 @Component({
   selector: 'app-user-dashboard',
@@ -29,10 +32,14 @@ export class UserDashboardComponent implements OnInit {
   isDataFetched: boolean = false;
   isKpiDataFetched: boolean = false;
 
+  exportStructure: ExportStructure = new ExportStructure();
+
   constructor(
     public queries_userService: QueriesUserService, 
+    private queries_export: QueriesExportService,
     public router: Router,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    @Inject(DOCUMENT) private document: Document
     ) { 
     this.dashboardKpis = new Array<DashboardKpiStructure>();
     this.placeholderDashboardKpi = new DashboardKpiStructure();
@@ -63,6 +70,21 @@ export class UserDashboardComponent implements OnInit {
     }
   }
 
+  onClick_export() {
+    this.get_export();
+  }
+
+  onClick_copy() {
+    const textToCopy = this.document.getElementById('exportDiv')?.innerText;
+    if (textToCopy != null) {
+      navigator.clipboard.writeText(textToCopy).then(function() {
+        console.log('Copying to clipboard was successful!');
+      }, function(err) {
+        console.error('Could not copy text: ', err);
+      });
+    }
+  }
+
   eventHandler_searchTextChanged(searchText: string) {
     this.userSearchAndFilterStructure.searchAndFilterStructure.searchText = searchText;
     this.get_userDashboardStructure();
@@ -89,6 +111,21 @@ export class UserDashboardComponent implements OnInit {
         this.hasPreviousPage();
         this.hasNextPage();
       }); 
+    });
+  }
+
+  get_export() {
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+      this.queries_export.ExportUsers(this.userSearchAndFilterStructure, resolve)
+      .pipe(
+        catchError(err => {
+          this.messageComponent.showMessage(err.error);
+          return err;
+        })
+      )
+      .subscribe(data => {
+        this.exportStructure = <ExportStructure>data;
+      });
     });
   }
 

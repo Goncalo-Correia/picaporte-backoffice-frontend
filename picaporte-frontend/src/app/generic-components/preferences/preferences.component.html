@@ -263,20 +263,20 @@
                   <div class="col-6">
                     <label for="firstName" class="form-label fw-bold">Preço</label>
                     <div class="input-group">
-                      <input type="text" class="form-control" id="firstName" name="firstName" placeholder="Mínimo"
+                      <input appCommaToDot type="text" class="form-control" id="firstName" name="firstName" placeholder="Mínimo"
                         [(ngModel)]="selectedPreferenceStructure.preference.minPrice">
-                      <input type="text" class="form-control" id="lastName" name="lastName" placeholder="Máximo"
+                      <input appCommaToDot type="text" class="form-control" id="lastName" name="lastName" placeholder="Máximo"
                         [(ngModel)]="selectedPreferenceStructure.preference.maxPrice">
                     </div>
                   </div>
                   <div class="col-3">
-                    <label for="email" class="form-label fw-bold">Ano de construção</label>
-                    <input type="email" class="form-control" id="email" name="email"
+                    <label for="constructionYear" class="form-label fw-bold">Ano de construção</label>
+                    <input type="number" class="form-control" id="constructionYear" name="constructionYear"
                       [(ngModel)]="selectedPreferenceStructure.preference.constructionYear">
                   </div>
                   <div class="col-3">
-                    <label for="phoneNumber" class="form-label fw-bold">Nº de casa de banho</label>
-                    <input type="text" class="form-control" id="phoneNumber" name="phoneNumber"
+                    <label for="wc" class="form-label fw-bold">Nº de casa de banho</label>
+                    <input type="number" class="form-control" id="wc" name="wc"
                       [(ngModel)]="selectedPreferenceStructure.preference.numBathrooms">
                   </div>
                 </div>
@@ -286,18 +286,18 @@
                       <div class="col-6">
                         <div class="fw-bold mb-1">Área Útil</div>
                         <div class="input-group mb-3">
-                          <input type="text" class="form-control" placeholder="Mínimo ㎡" aria-label="Mínimo"
+                          <input appCommaToDot type="text" class="form-control" placeholder="Mínimo ㎡" aria-label="Mínimo"
                             [(ngModel)]="selectedPreferenceStructure.preference.minLivingArea">
-                          <input type="text" class="form-control" placeholder="Máximo ㎡" aria-label="Máximo"
+                          <input appCommaToDot type="text" class="form-control" placeholder="Máximo ㎡" aria-label="Máximo"
                             [(ngModel)]="selectedPreferenceStructure.preference.maxLivingArea">
                         </div>
                       </div>
                       <div class="col-6">
                         <div class="fw-bold mb-1">Área do Terreno</div>
                         <div class="input-group">
-                          <input type="text" class="form-control" placeholder="Mínimo ㎡" aria-label="Mínimo"
+                          <input appCommaToDot type="text" class="form-control" placeholder="Mínimo ㎡" aria-label="Mínimo"
                             [(ngModel)]="selectedPreferenceStructure.preference.minTotalArea">
-                          <input type="text" class="form-control" placeholder="Máximo ㎡" aria-label="Máximo"
+                          <input appCommaToDot type="text" class="form-control" placeholder="Máximo ㎡" aria-label="Máximo"
                             [(ngModel)]="selectedPreferenceStructure.preference.maxTotalArea">
                         </div>
                       </div>

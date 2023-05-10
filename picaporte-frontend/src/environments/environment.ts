@@ -6,10 +6,10 @@ export const environment = {
   production: false,
   apiKey: "REDACTED_API_KEY",
   mapboxAccessToken: "REDACTED_MAPBOX_TOKEN",
-  //apiUrl: "https://localhost:7036/",
-  //redirectUri: "http://localhost:4200/",
-  apiUrl: "https://picaporte.website/rest/",
-  redirectUri: "https://picaporte-backoffice.site/"
+  apiUrl: "https://localhost:7036/",
+  redirectUri: "http://localhost:4200/",
+  //apiUrl: "https://picaporte.website/rest/",
+  //redirectUri: "https://picaporte-backoffice.site/"
   //apiUrl: "https://picaportebackoffice.online/rest/",
   //redirectUri: "https://picaportebackoffice.online/"
 };
@@ -32,6 +32,11 @@ export const apiEndpoints = {
     put: "api/Queries_Users/",
     searchAndFilter: "api/Queries_Users/SearchAndFilter",
     kpi: "api/Queries_Users/Kpi"
+  },
+  queries_export: {
+    exportUser: "api/Queries_Export/ExportUser",
+    exportCustomer: "api/Queries_Export/ExportCustomer",
+    exportProperty: "api/Queries_Export/ExportProperty"
   },
   queries_property: {
     get: "api/Queries_Property/",

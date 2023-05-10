@@ -57,7 +57,7 @@
         [(ngModel)]="user.phoneNumber" 
         (change)="triggerEvent_updateUserDetails()">
         <ng-template #phoneNumberRead>
-            <div *ngIf="user.phoneNumber != null; else phoneNumberNull">
+            <div *ngIf="user.phoneNumber != null && user.phoneNumber != ''; else phoneNumberNull">
                 {{user.phoneNumber}}
             </div>
             <ng-template #phoneNumberNull>

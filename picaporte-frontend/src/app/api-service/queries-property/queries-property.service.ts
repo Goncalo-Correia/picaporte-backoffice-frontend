@@ -12,72 +12,72 @@ import { DashboardKpiStructure } from 'src/app/structures/dashboard-structures/d
 })
 export class QueriesPropertyService {
 
-    // Base url
-    baseurl = environment.apiUrl;
-    constructor(private http: HttpClient) {}
-    
-    // GET
-    Get_PropertyStructure(id: number, httpOptions: { headers: HttpHeaders }): Observable<PropertyStructure> {
-      return this.http
-        .get<PropertyStructure>(this.baseurl + apiEndpoints.queries_property.get + id);
-    }
-        
-    // PUT
-    Put_PropertyStructure(id: number, data: PropertyStructure, httpOptions: { headers: HttpHeaders }): Observable<PropertyStructure> {
-      return this.http
-        .put<PropertyStructure>(
-          this.baseurl + apiEndpoints.queries_property.put + id,
-            JSON.stringify(data),
-            httpOptions
-          );
-    }
+  // Base url
+  baseurl = environment.apiUrl;
+  constructor(private http: HttpClient) { }
 
-    // POST
-    Post_PropertyStructure(data: PropertyStructure, httpOptions: { headers: HttpHeaders }): Observable<PropertyStructure> {
-      return this.http
-        .post<PropertyStructure>(
-          this.baseurl + apiEndpoints.queries_property.post,
-          JSON.stringify(data),
-          httpOptions
-        );
-    }
+  // GET
+  Get_PropertyStructure(id: number, httpOptions: { headers: HttpHeaders }): Observable<PropertyStructure> {
+    return this.http
+      .get<PropertyStructure>(this.baseurl + apiEndpoints.queries_property.get + id);
+  }
 
-    // POST
-    Post_SearchAndFilter_PropertyStructure(data: PropertyDashboardSearchAndFilterStructure, httpOptions: { headers: HttpHeaders }): Observable<PropertyDashboardStructure[]> {
-      return this.http
-        .post<PropertyDashboardStructure[]>(
-          this.baseurl + apiEndpoints.queries_property.searchAndFilter,
-          JSON.stringify(data),
-          httpOptions
-        );
-    }
+  // PUT
+  Put_PropertyStructure(id: number, data: PropertyStructure, httpOptions: { headers: HttpHeaders }): Observable<PropertyStructure> {
+    return this.http
+      .put<PropertyStructure>(
+        this.baseurl + apiEndpoints.queries_property.put + id,
+        JSON.stringify(data),
+        httpOptions
+      );
+  }
 
-    Get_Kpis(httpOptions: { headers: HttpHeaders }) {
-      return this.http
-        .get<DashboardKpiStructure[]>(this.baseurl + apiEndpoints.queries_property.kpi, httpOptions);
-    }
+  // POST
+  Post_PropertyStructure(data: PropertyStructure, httpOptions: { headers: HttpHeaders }): Observable<PropertyStructure> {
+    return this.http
+      .post<PropertyStructure>(
+        this.baseurl + apiEndpoints.queries_property.post,
+        JSON.stringify(data),
+        httpOptions
+      );
+  }
 
-    Post_RequestDocument(documentTypeId: number, propertyId: number, httpOptions: { headers: HttpHeaders }) {
-      return this.http
+  // POST
+  Post_SearchAndFilter_PropertyStructure(data: PropertyDashboardSearchAndFilterStructure, httpOptions: { headers: HttpHeaders }): Observable<PropertyDashboardStructure[]> {
+    return this.http
+      .post<PropertyDashboardStructure[]>(
+        this.baseurl + apiEndpoints.queries_property.searchAndFilter,
+        JSON.stringify(data),
+        httpOptions
+      );
+  }
+
+  Get_Kpis(httpOptions: { headers: HttpHeaders }) {
+    return this.http
+      .get<DashboardKpiStructure[]>(this.baseurl + apiEndpoints.queries_property.kpi, httpOptions);
+  }
+
+  Post_RequestDocument(documentTypeId: number, propertyId: number, httpOptions: { headers: HttpHeaders }) {
+    return this.http
       .post(
         this.baseurl + apiEndpoints.document.requestDocument + documentTypeId + "/" + propertyId,
         {},
         httpOptions
       );
-    }
+  }
 
-    errorHandl(error: any) {
-      let errorMessage = '';
-      if (error.error instanceof ErrorEvent) {
-        // Get client-side error
-        errorMessage = error.error.message;
-      } else {
-        // Get server-side error
-        errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-      }
-      console.log(errorMessage);
-      return throwError(() => {
-        return errorMessage;
-      });
+  errorHandl(error: any) {
+    let errorMessage = '';
+    if (error.error instanceof ErrorEvent) {
+      // Get client-side error
+      errorMessage = error.error.message;
+    } else {
+      // Get server-side error
+      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
+    console.log(errorMessage);
+    return throwError(() => {
+      return errorMessage;
+    });
+  }
 }

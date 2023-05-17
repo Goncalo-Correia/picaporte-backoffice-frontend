@@ -31,6 +31,16 @@ export class NewsService {
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
+  Approve_News(data: News, httpOptions: { headers: HttpHeaders }): Observable<News> {
+    return this.http
+      .post<News>(
+        this.baseurl + apiEndpoints.news.approve + data.id,
+        JSON.stringify(data),
+        httpOptions
+      );
+  }
+
+
   // PUT
   Put_News(id: number, data: News, httpOptions: { headers: HttpHeaders }): Observable<News> {
     return this.http

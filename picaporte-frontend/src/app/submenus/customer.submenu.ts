@@ -35,11 +35,6 @@ export class CustomerSubMenuFactory {
             description: "Detalhes gerais e morada"
         });
         this.customerSubMenus.push({
-            enum_customerSubMenu: Enum_CustomerSubMenu.TASKS,
-            label: "Tarefas",
-            description: "Tarefas de gestão de dados"
-        });
-        this.customerSubMenus.push({
             enum_customerSubMenu: Enum_CustomerSubMenu.PREFERENCES,
             label: "Preferências",
             description: "Listagem de preferências de imóvel"

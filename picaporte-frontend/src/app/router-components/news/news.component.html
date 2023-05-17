@@ -12,7 +12,7 @@
     </div>
     <div *ngIf="isOnListView; else isOnDetailView" class="col-12">
         <div class="row">
-            <div class="col-6">
+            <div class="col-4">
                 <div>
                     <table class="table">
                         <thead>
@@ -46,7 +46,44 @@
                     Não foram encontradas notícias
                 </div>
             </div>
-            <div class="col-6">
+            <div class="col-4">
+                <div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Notícias para aprovação</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="isDataFetched; else elseApprovalBlock">
+                            <tr *ngFor="let _news of approvalNews; index as i" class="table-row">
+                                <td class="p-4 rounded bg-white">
+                                    <div class="mb-3">
+                                        <span class="col mb-1">{{_news.title}}</span>
+                                        <div class="text-secondary fs-7">{{_news.editedBy.firstName +  _news.editedBy.lastName != "" ? _news.editedBy.firstName + " " + _news.editedBy.lastName : '-'}}</div>
+                                        <div class="text-secondary fs-7"><app-date-format [date]="_news.editedOn"></app-date-format></div>
+                                    </div>
+                                    <div *ngIf="_news.editedBy.email != userEmail" class="d-flex gap-3">
+                                        <button type="button" class="btn btn-success" (click)="onClick_approveNews(true, i)">Aprovar</button>
+                                        <button type="button" class="btn btn-danger" (click)="onClick_approveNews(false, i)">Cancelar</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <ng-template #elseApprovalBlock>
+                            <tbody>
+                                <tr *ngFor="let number of [0,1,2,3,4]" class="placeholder-glow table-row">
+                                    <td scope="row"><span class="placeholder col-4"></span></td>
+                                    <td><span class="placeholder col-2"></span></td>
+                                </tr>
+                            </tbody>
+                        </ng-template>
+                    </table>
+                </div>
+                <div *ngIf="approvalNews.length == 0 && isDataFetched" class="w-100 p-4 text-center">
+                    Não foram encontradas notícias para aprovação
+                </div>
+            </div>
+            <div class="col-4">
                 <div>
                     <table class="table">
                         <thead>

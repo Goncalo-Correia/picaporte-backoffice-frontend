@@ -1,1 +1,103 @@
-<p>tasks works!</p>
+<div class="px-5 py-3 w-100">
+    <div class="text-center mb-4">
+        <img src="/assets/images/picaporte_logo.png" alt="" style="height: 100px;">
+    </div>
+    <div class="col-12 mb-3">
+        <div *ngIf="isKpiDataFetched else kpiTypeElseBlock" class="row">
+            <div *ngFor="let dashboardKpi of dashboardKpis.taskTypeKpis" class="col-3 p-2">
+                <app-dashboard-kpi [dashboardKpiStructure]="dashboardKpi"
+                    [isSelected]="taskSearchAndFilterStructure.taskTypeId == dashboardKpi.id"
+                    [isPlaceholder]="false" (dashboardKpiClicked)="eventHandler_typeDashboardKpiClicked(dashboardKpi.id)">
+                </app-dashboard-kpi>
+            </div>
+        </div>
+        <ng-template #kpiTypeElseBlock>
+            <div class="row">
+                <div *ngFor="let number of [0,1,2,3]" class="col-3 p-2">
+                    <app-dashboard-kpi [dashboardKpiStructure]="placeholderDashboardKpi" [isSelected]="false"
+                        [isPlaceholder]="true" (dashboardKpiClicked)="eventHandler_typeDashboardKpiClicked(0)">
+                    </app-dashboard-kpi>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+    <div class="col-12 mb-3">
+        <div *ngIf="isKpiDataFetched else kpiStatusElseBlock" class="row">
+            <div *ngFor="let dashboardKpi of dashboardKpis.taskStatusKpis" class="col-3 p-2">
+                <app-dashboard-kpi [dashboardKpiStructure]="dashboardKpi"
+                    [isSelected]="taskSearchAndFilterStructure.taskStatusId == dashboardKpi.id"
+                    [isPlaceholder]="false" (dashboardKpiClicked)="eventHandler_statusDashboardKpiClicked(dashboardKpi.id)">
+                </app-dashboard-kpi>
+            </div>
+        </div>
+        <ng-template #kpiStatusElseBlock>
+            <div class="row">
+                <div *ngFor="let number of [0,1,2,3]" class="col-3 p-2">
+                    <app-dashboard-kpi [dashboardKpiStructure]="placeholderDashboardKpi" [isSelected]="false"
+                        [isPlaceholder]="true" (dashboardKpiClicked)="eventHandler_statusDashboardKpiClicked(0)">
+                    </app-dashboard-kpi>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+    <div class="col-12">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Entidade</th>
+                    <th scope="col">Tipo da entidade</th>
+                    <th scope="col">Tipo da tarefa</th>
+                    <th scope="col">Estado da tarefa</th>
+                    <th scope="col">Data de registo</th>
+                    <th scope="col">Data de finalização</th>
+                    <th scope="col">Utilizador</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="isDataFetched; else elseBlock">
+                <tr *ngFor="let task of tasks" class="table-row">
+                    <td scope="row"><span [routerLink]="['/Imovel/', task.entityReference.recordId]" class="col cursor-pointer color-primary fw-bold">{{task.recordId}}</span></td>
+                    <td><span class="col">{{task.entityReference.entityType.label}}</span></td>
+                    <td><span class="col">{{task.taskType.label}}</span></td>
+                    <td><span class="col">{{task.taskStatus.label}}</span></td>
+                    <td><span class="col"><app-date-format [date]="task.createdOn"></app-date-format></span></td>
+                    <td><span class="col"><app-date-format [date]="task.completedOn"></app-date-format></span></td>
+                    <td><span class="col">{{task.user == null ? "-" : task.user.firstName + " " + task.user.lastName}}</span></td>
+                </tr>
+            </tbody>
+            <ng-template #elseBlock>
+                <tbody>
+                    <tr *ngFor="let number of [0,1,2,3,4,5]" class="placeholder-glow table-row">
+                        <td scope="row"><span class="placeholder col-4"></span></td>
+                        <td><span class="placeholder col-2"></span></td>
+                        <td><span class="placeholder col-2"></span></td>
+                        <td><span class="placeholder col-2"></span></td>
+                        <td><span class="placeholder col-2"></span></td>
+                        <td><span class="placeholder col-2"></span></td>
+                        <td><span class="placeholder col-2"></span></td>
+                    </tr>
+                </tbody>
+            </ng-template>
+        </table>
+    </div>
+    <div *ngIf="tasks.length == 0 && isDataFetched" class="col-12">
+        <div class="p-4 text-center rounded bg-white">
+            Não foram encontradas tarefas
+        </div>
+    </div>
+    <div class="row">
+        <div *ngIf="isDataFetched" class="col">
+            <nav>
+                <ul class="pagination justify-content-end">
+                    <li *ngIf="hasPrevious" class="page-item" (click)="previous()">
+                        <a class="page-link color-primary">Anterior</a>
+                    </li>
+                    <li *ngIf="hasNext" class="page-item" (click)="next()">
+                        <a class="page-link color-primary">Seguinte</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<app-message></app-message>

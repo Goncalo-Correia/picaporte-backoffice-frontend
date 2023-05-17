@@ -6,6 +6,7 @@ export class News {
     title: string = "";
     content: string = "";
     isOnline: boolean = false;
+    isApproved: boolean = false;
     order: number = 0;
     imageId: number = 0;
     editedById: number = 0;

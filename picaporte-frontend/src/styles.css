@@ -266,7 +266,7 @@ a, a:hover {
 }
 
 .preference-list {
-    border-bottom: 1px solid var(--color-body-background);
+    margin-bottom: 10px;
 }
 
 /* VALIDATION */

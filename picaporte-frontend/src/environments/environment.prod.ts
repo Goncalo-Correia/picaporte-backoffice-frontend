@@ -2,13 +2,16 @@ export const environment = {
   production: true,
   mapboxAccessToken: "REDACTED_MAPBOX_TOKEN",
   apiKey: "REDACTED_API_KEY",
-  apiUrl: "https://picaporte.website/rest/",
-  redirectUri: "https://picaporte-backoffice.site/"
-  //apiUrl: "https://picaportebackoffice.online/rest/",
-  //redirectUri: "https://picaportebackoffice.online/"
+  //apiUrl: "https://picaporte.website/rest/",
+  //redirectUri: "https://picaporte-backoffice.site/"
+  apiUrl: "https://picaportebackoffice.online/rest/",
+  redirectUri: "https://picaportebackoffice.online/"
 };
 
 export const apiEndpoints = {
+  backup: {
+    download: "api/Backup/downloadBackup"
+  },
   queries_entityReference: {
     searchAndFilter: "api/Queries_EntityReference/SearchAndFilter",
     kpi: "api/Queries_EntityReference/Kpi"
@@ -27,17 +30,24 @@ export const apiEndpoints = {
     searchAndFilter: "api/Queries_Users/SearchAndFilter",
     kpi: "api/Queries_Users/Kpi"
   },
+  queries_export: {
+    exportUser: "api/Queries_Export/ExportUser",
+    exportCustomer: "api/Queries_Export/ExportCustomer",
+    exportProperty: "api/Queries_Export/ExportProperty"
+  },
+  queries_task: {
+    getByRecordId: "api/Queries_Task/Tasks/",
+    allocate: "api/Queries_Task/Allocate/",
+    update: "api/Queries_Task/Update",
+    searchAndFilter: "api/Queries_Task/SearchAndFilter",
+    kpi: "api/Queries_Task/Kpi"
+  },
   queries_property: {
     get: "api/Queries_Property/",
     post: "api/Queries_Property/",
     put: "api/Queries_Property/",
     searchAndFilter: "api/Queries_Property/SearchAndFilter",
     kpi: "api/Queries_Property/Kpi"
-  },
-  queries_export: {
-    exportUser: "api/Queries_Export/ExportUser",
-    exportCustomer: "api/Queries_Export/ExportCustomer",
-    exportProperty: "api/Queries_Export/ExportProperty"
   },
   customer: {
     getAll: "api/Customers"
@@ -51,6 +61,7 @@ export const apiEndpoints = {
   news: {
     get: "api/News",
     post: "api/News",
+    approve: "api/News/Approve/",
     put: "api/News/",
     delete: "api/News/"
   },
@@ -123,5 +134,8 @@ export const apiEndpoints = {
   },
   user: {
     authotize: "api/Users/authorize"
+  },
+  notification: {
+    newsletter: "api/Notification/Newsletter"
   }
 };

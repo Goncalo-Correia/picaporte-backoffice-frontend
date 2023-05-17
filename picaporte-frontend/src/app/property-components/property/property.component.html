@@ -50,8 +50,8 @@
                 </div>
             </div>
         </div>
-        <div *ngIf="isOnTasksSubMenu" class="row">
-            
+        <div *ngIf="isOnTasksSubMenu && isDataFetched" class="row">
+            <app-task [recordId]="propertyStructure.property.id"></app-task>
         </div>
         <div *ngIf="isOnCaracteristicsSubMenu" class="row">
             <div class="col-12 px-3">
@@ -81,11 +81,6 @@
         <div *ngIf="isOnRecommendedSubMenu" class="row">
             <div class="col-12">
                 <app-recommended-properties [isEditable]="isEditable" [recommendedProperties]="propertyStructure.recommendedProperties" (event_updateRecommendedProperties)="eventHandler_updateRecommendedProperties($event)"></app-recommended-properties>
-            </div>
-        </div>
-        <div *ngIf="isOnObservationHistorySubMenu" class="row">
-            <div class="col-12">
-                <!--<app-customer-properties [properties]="customerStructure.properties" (event_updateCustomerProperties)="eventHandler_updatePropertyObservationHistory($event)"></app-customer-properties>-->
             </div>
         </div>
         <div *ngIf="isOnActivityLogMenu && isDataFetched" class="row">

@@ -53,7 +53,8 @@ import { GoogleMapComponent } from './generic-components/google-map/google-map.c
 import { DateFormatComponent } from './generic-components/date-format/date-format.component';
 import { RecommendedPropertiesComponent } from './property-components/recommended-properties/recommended-properties.component';
 import { CommaToDotDirective } from './generic-components/comma-to-dot.directive';
-import { TaskComponent } from './task/task.component';
+import { TasksComponent } from './router-components/tasks/tasks.component';
+import { TaskComponent } from './property-components/property/task/task.component';
 
 @NgModule({
   declarations: [
@@ -92,6 +93,7 @@ import { TaskComponent } from './task/task.component';
     DateFormatComponent,
     RecommendedPropertiesComponent,
     CommaToDotDirective,
+    TasksComponent,
     TaskComponent
   ],
   imports: [
@@ -103,10 +105,10 @@ import { TaskComponent } from './task/task.component';
     CKEditorModule,
     DragulaModule.forRoot(),
     AuthModule.forRoot({
-      //domain: 'REDACTED_AUTH0_DOMAIN',
-      //clientId: 'REDACTED_AUTH0_CLIENT_ID',
-      domain: 'REDACTED_AUTH0_DOMAIN_OLD',
-      clientId: 'REDACTED_AUTH0_CLIENT_ID_OLD',
+      domain: 'REDACTED_AUTH0_DOMAIN',
+      clientId: 'REDACTED_AUTH0_CLIENT_ID',
+      //domain: 'REDACTED_AUTH0_DOMAIN_OLD',
+      //clientId: 'REDACTED_AUTH0_CLIENT_ID_OLD',
       authorizationParams: {
         redirect_uri: window.location.origin
       }

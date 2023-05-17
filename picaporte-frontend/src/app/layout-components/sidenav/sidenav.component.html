@@ -37,18 +37,54 @@
             <div *ngIf="isOpen" class="me-5">Gestão de dados</div>
         </div>
     </div>
-    <div class="w-100 p-3 text-end bottom-0 open-close-arrow cursor-pointer" (click)="onClick_toggle()">
+    <div class="w-100 p-3 text-end bottom-0 open-close-arrow cursor-pointer">
+        <div *ngIf="isOpen" class="mb-4 text-center">
+            <button class="btn btn-picaporte-primary" data-bs-toggle="modal" data-bs-target="#newsletterModal">Enviar newsletter</button>
+        </div>
         <div *ngIf="isOpen" class="mb-3 text-center">
-            <img src="/assets/images/logo20anos.png" alt="picaporte 20 anos" style="width: 150px;">
+            <img src="/assets/images/logo20anos.png" alt="picaporte 20 anos" style="width: 100px;">
         </div>
         <div class="mb-3">
             <app-auth0 [isOpen]="isOpen"></app-auth0>
         </div>
-        <div *ngIf="isOpen; else closed">
-            <i class="fa-solid fa-chevrons-left"></i>
+        <div *ngIf="isOpen" class="mb-3 text-center">
+            <button class="btn btn-danger" (click)="onClick_downloadBackup()">Download backup</button>
         </div>
-        <ng-template #closed>
-            <i class="fa-solid fa-chevrons-right"></i>
-        </ng-template>
+        <div (click)="onClick_toggle()">
+            <div *ngIf="isOpen; else closed">
+                <i class="fa-solid fa-chevrons-left"></i>
+            </div>
+            <ng-template #closed>
+                <i class="fa-solid fa-chevrons-right"></i>
+            </ng-template>
+        </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal" id="newsletterModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Enviar newsletter</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div id="exportDiv" style="word-break: break-all;">
+            A newsletter será enviada para todos os clientes com email associado. Deseja continuar?
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <div class="d-flex justify-content-end w-100 gap-3">
+            <button class="btn btn-danger" data-bs-dismiss="modal">Cancelar</button>
+            <button class="btn btn-success" (click)="onClick_sendNewsletter()">Enviar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-message></app-message>

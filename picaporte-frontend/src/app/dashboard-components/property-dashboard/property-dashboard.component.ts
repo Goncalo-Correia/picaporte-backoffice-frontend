@@ -54,7 +54,6 @@ export class PropertyDashboardComponent implements OnInit {
 
   exportStructure: ExportStructure = new ExportStructure();
 
-
   constructor(
     public queries_propertyService: QueriesPropertyService, 
     private queries_export: QueriesExportService,

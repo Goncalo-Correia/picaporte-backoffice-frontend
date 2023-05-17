@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { AuthService } from '@auth0/auth0-angular';
 import { CKEditorModule } from 'ckeditor4-angular';
 import { catchError } from 'rxjs';
 import { NewsService } from 'src/app/api-service/news/news.service';
@@ -25,23 +26,31 @@ export class NewsComponent implements OnInit {
   isOnListView: boolean = true;
 
   news: Array<News>;
+  approvalNews: Array<News>;
   onlineNews: Array<News>;
   selectedNews: News;
   selectedNewsIndex: number = -1;
   newsValidationObject: NewsValidationObject = new NewsValidationObject();
 
-  public model = {
-    editorData: '<p>Hello, world!</p>'
-  };
+  userEmail: string | undefined = "";
 
   constructor(
     private newsService: NewsService,
     private authenticationService: AuthenticationService,
-    private validationService: ValidationService
+    private validationService: ValidationService,
+    private authService: AuthService
   ) {
     this.news = new Array<News>();
+    this.approvalNews = new Array<News>();
     this.onlineNews = new Array<News>();
     this.selectedNews = new News();
+  }
+
+  ngOnInit(): void {
+    this.get_news();
+    this.authService.getUser().subscribe(user => {
+      this.userEmail = user?.email;
+    })
   }
 
   onFocus_file() {
@@ -101,8 +110,6 @@ export class NewsComponent implements OnInit {
   }
 
   onClick_submit() {
-    console.log(this.selectedNews);
-    
     this.newsValidationObject = new NewsValidationObject();
     this.newsValidationObject = this.validationService.validateNews(this.selectedNews.image.content == "" || this.selectedNews.image.content == null ? this.selectedNews.image.filename : this.selectedNews.image.content, this.selectedNews.title, this.selectedNews.content);
     if (this.newsValidationObject.isValid) {
@@ -122,8 +129,11 @@ export class NewsComponent implements OnInit {
     this.delete_news();
   }
 
-  ngOnInit(): void {
-    this.get_news();
+  onClick_approveNews(isApproved: boolean, index: number) {
+    this.selectedNews = this.approvalNews[index];
+    this.selectedNews.isApproved = isApproved;
+    this.selectedNews.isOnline = isApproved;
+    this.approve_news()
   }
 
   private get_news() {
@@ -140,7 +150,8 @@ export class NewsComponent implements OnInit {
       .subscribe(data => {
         var tempNews = <News[]>data;
         this.news = tempNews.filter(prop => prop.isOnline == false);
-        this.onlineNews = tempNews.filter(prop => prop.isOnline == true);
+        this.approvalNews = tempNews.filter(prop => prop.isOnline == true && prop.isApproved == false);
+        this.onlineNews = tempNews.filter(prop => prop.isOnline == true && prop.isApproved == true);
         this.isDataFetched = true;
       });
     });
@@ -157,6 +168,22 @@ export class NewsComponent implements OnInit {
       )
       .subscribe(() => {
         this.get_news();
+      });
+    });
+  }
+
+  private approve_news() {
+    this.authenticationService.authorizeUser().then((resolve:any) => { 
+      this.newsService.Approve_News(this.selectedNews, resolve)
+      .pipe(
+        catchError(err => {
+          this.messageComponent.showMessage(err.error);
+          return err;
+        })
+      )
+      .subscribe(() => {
+        this.get_news();
+        this.selectedNews = new News();
       });
     });
   }

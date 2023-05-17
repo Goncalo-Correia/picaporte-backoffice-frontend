@@ -16,7 +16,7 @@ export class DateFormatComponent implements OnInit {
 
   formatDate(date: Date): string {
     // Use 'Z' for UTC, or provide a specific timezone, e.g., '+0200' or 'Australia/Sydney'
-    let formattedDate: string | null = this.datePipe.transform(date, 'MMMM d, y hh:mm', 'Z');
+    let formattedDate: string | null = this.datePipe.transform(date, 'MMMM d, y HH:mm', 'Z');
     let finalDate: string = "";
     if (formattedDate != null) {
       finalDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);

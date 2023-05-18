@@ -95,6 +95,12 @@ export class NewsComponent implements OnInit {
     this.isOnListView = false;
   }
 
+  onClick_editApproval(index: number) {
+    this.selectedNews = this.approvalNews[index];
+    this.selectedNewsIndex = index;
+    this.isOnListView = false;
+  }
+
   onClick_editOnline(index: number) {
     this.selectedNews = this.onlineNews[index];
     this.selectedNewsIndex = index;

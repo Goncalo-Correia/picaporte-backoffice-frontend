@@ -55,7 +55,7 @@
                             </tr>
                         </thead>
                         <tbody *ngIf="isDataFetched; else elseApprovalBlock">
-                            <tr *ngFor="let _news of approvalNews; index as i" class="table-row">
+                            <tr *ngFor="let _news of approvalNews; index as i" class="table-row" (click)="onClick_editApproval(i)">
                                 <td class="p-4 rounded bg-white">
                                     <div class="mb-3">
                                         <span class="col mb-1">{{_news.title}}</span>

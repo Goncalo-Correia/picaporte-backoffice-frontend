@@ -23,5 +23,4 @@ export class Preference {
     public propertyLocationType: Static_PropertyLocationType = new Static_PropertyLocationType();
     public propertyConditionStatus: Static_PropertyConditionStatus = new Static_PropertyConditionStatus();
     public energyCertificate: Static_EnergyCertificate = new Static_EnergyCertificate();
-    //public ameneties: Array<Static_AmenetieType> = new Array<Static_AmenetieType();
 }

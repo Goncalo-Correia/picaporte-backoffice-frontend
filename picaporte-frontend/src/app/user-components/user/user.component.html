@@ -33,7 +33,7 @@
         <div *ngIf="isOnDetailsSubMenu" class="row">
             <div class="col-12 px-3">
                 <div class="bg-white p-4 rounded h-100">
-                    <app-user-detail *ngIf="isDataFetched" [user]="userStructure.user" [isEditable]="isEditable" [userValidationObject]="userValidationObject" (event_updateUserDetails)="eventHandler_updateUserDetails($event)"></app-user-detail>
+                    <app-user-detail *ngIf="isDataFetched" [user]="userStructure.user" [customerId]="userStructure.customerId" [customerName]="userStructure.customerName" [isEditable]="isEditable" [userValidationObject]="userValidationObject" (event_updateUserDetails)="eventHandler_updateUserDetails($event)"></app-user-detail>
                 </div>
             </div>
         </div>

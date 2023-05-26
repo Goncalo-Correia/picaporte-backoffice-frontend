@@ -105,10 +105,10 @@ import { TaskComponent } from './property-components/property/task/task.componen
     CKEditorModule,
     DragulaModule.forRoot(),
     AuthModule.forRoot({
-      domain: 'REDACTED_AUTH0_DOMAIN',
-      clientId: 'REDACTED_AUTH0_CLIENT_ID',
-      //domain: 'REDACTED_AUTH0_DOMAIN_OLD',
-      //clientId: 'REDACTED_AUTH0_CLIENT_ID_OLD',
+      //domain: 'REDACTED_AUTH0_DOMAIN',
+      //clientId: 'REDACTED_AUTH0_CLIENT_ID',
+      domain: 'REDACTED_AUTH0_DOMAIN_OLD',
+      clientId: 'REDACTED_AUTH0_CLIENT_ID_OLD',
       authorizationParams: {
         redirect_uri: window.location.origin
       }

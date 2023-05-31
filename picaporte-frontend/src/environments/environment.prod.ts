@@ -2,10 +2,10 @@ export const environment = {
   production: true,
   mapboxAccessToken: "REDACTED_MAPBOX_TOKEN",
   apiKey: "REDACTED_API_KEY",
-  apiUrl: "https://picaporte.website/rest/",
-  redirectUri: "https://picaporte-backoffice.site/"
-  //apiUrl: "https://picaportebackoffice.online/rest/",
-  //redirectUri: "https://picaportebackoffice.online/"
+  //apiUrl: "https://picaporte.website/rest/",
+  //redirectUri: "https://picaporte-backoffice.site/"
+  apiUrl: "https://picaportebackoffice.online/rest/",
+  redirectUri: "https://picaportebackoffice.online/"
 };
 
 export const apiEndpoints = {

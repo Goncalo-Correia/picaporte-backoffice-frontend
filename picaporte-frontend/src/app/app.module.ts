@@ -55,6 +55,7 @@ import { RecommendedPropertiesComponent } from './property-components/recommende
 import { CommaToDotDirective } from './generic-components/comma-to-dot.directive';
 import { TasksComponent } from './router-components/tasks/tasks.component';
 import { TaskComponent } from './property-components/property/task/task.component';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -110,7 +111,7 @@ import { TaskComponent } from './property-components/property/task/task.componen
       //domain: 'REDACTED_AUTH0_DOMAIN_OLD',
       //clientId: 'REDACTED_AUTH0_CLIENT_ID_OLD',
       authorizationParams: {
-        redirect_uri: window.location.origin
+        redirect_uri: environment.redirectUri
       }
     }),
   ],

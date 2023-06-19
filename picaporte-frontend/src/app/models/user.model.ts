@@ -9,4 +9,5 @@ export class User {
     public lastLogin: Date = new Date();
     public auth0AccessToken: string = "";
     public isAdmin: boolean = false;
+    public birthDate: Date = new Date();
 }

@@ -17,7 +17,7 @@ declare let $: any;
 })
 export class PropertyDocumentsComponent implements OnInit {
 
-  url: string = environment.apiUrl + apiEndpoints.image.binary
+  url: string = environment.apiUrl + apiEndpoints.image.binary;
 
   @ViewChild(MessageComponent) messageComponent!: MessageComponent;
   

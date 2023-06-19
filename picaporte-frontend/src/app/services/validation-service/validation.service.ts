@@ -55,6 +55,13 @@ export class PropertyValidationObject {
   isValid: boolean = false;
 }
 
+export class RentingValidationObject {
+  isTitleValid: ValidationObject = new ValidationObject();
+  isCustomerValid: ValidationObject = new ValidationObject();
+  isCommentValid: ValidationObject = new ValidationObject();
+  isValid: boolean = false;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -202,5 +209,26 @@ export class ValidationService {
     );
   
     return propertyValidationObject;
+  }
+
+  validateRenting(title: string, customerId: number, comment: string): RentingValidationObject {
+    let rentingValidationObject: RentingValidationObject = new RentingValidationObject();
+    
+    rentingValidationObject.isTitleValid.isValid = title != "" && title != null;
+    rentingValidationObject.isTitleValid.validationMessage = (rentingValidationObject.isTitleValid.isValid ? "" : "Campo obrigatório");
+
+    rentingValidationObject.isCustomerValid.isValid = customerId != 0 && customerId != null;
+    rentingValidationObject.isCustomerValid.validationMessage = (rentingValidationObject.isCustomerValid.isValid ? "" : "Campo obrigatório");
+
+    rentingValidationObject.isCommentValid.isValid = comment != "" && comment != null;
+    rentingValidationObject.isCommentValid.validationMessage = (rentingValidationObject.isCommentValid.isValid ? "" : "Campo obrigatório");
+  
+    rentingValidationObject.isValid = (
+      rentingValidationObject.isTitleValid.isValid &&
+      rentingValidationObject.isCustomerValid.isValid &&
+      rentingValidationObject.isCommentValid.isValid
+    )
+  
+    return rentingValidationObject;
   }
 }

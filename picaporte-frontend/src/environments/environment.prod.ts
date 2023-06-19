@@ -74,7 +74,8 @@ export const apiEndpoints = {
   },
   image: {
     get: "api/Images/",
-    binary: "api/Images/binary/"
+    binary: "api/Images/Binary/",
+    renting: "api/Images/Binary/Renting/"
   },
   document: {
     requestDocument: "api/Documents/RequestDocument/"

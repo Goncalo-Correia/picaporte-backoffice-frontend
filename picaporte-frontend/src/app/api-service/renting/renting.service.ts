@@ -39,8 +39,7 @@ export class RentingService {
         this.baseurl + apiEndpoints.renting.put + id,
           JSON.stringify(data),
           httpOptions
-        )
-      .pipe(retry(1), catchError(this.errorHandl));
+        );
   }
 
   // PUT
@@ -49,8 +48,7 @@ export class RentingService {
       .delete<Renting>(
         this.baseurl + apiEndpoints.renting.delete + id,
         httpOptions
-      )
-      .pipe(retry(1), catchError(this.errorHandl));
+      );
   }
 
   // Error handling

@@ -1,4 +1,3 @@
-import { Identifiers } from '@angular/compiler/src/render3/r3_identifiers';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { catchError } from 'rxjs';
 import { CustomerService } from 'src/app/api-service/customer/customer.service';
@@ -7,6 +6,9 @@ import { AuthenticationService } from 'src/app/authentication-service/authentica
 import { MessageComponent } from 'src/app/generic-components/message/message.component';
 import { Customer } from 'src/app/models/customer.model';
 import { Renting } from 'src/app/models/renting.model';
+import { RentingValidationObject, ValidationService } from 'src/app/services/validation-service/validation.service';
+import { apiEndpoints, environment } from 'src/environments/environment';
+declare let $: any;
 
 @Component({
   selector: 'app-property-renting',
@@ -15,14 +17,20 @@ import { Renting } from 'src/app/models/renting.model';
 })
 export class PropertyRentingComponent implements OnInit {
 
+  url: string = environment.apiUrl + apiEndpoints.image.renting;
+  
   @ViewChild(MessageComponent) messageComponent!: MessageComponent;
   
   @Input() propertyId: number = 0;
+
+  isDataFetched: boolean = false;
 
   rentingList: Array<Renting> = new Array<Renting>();
   selectedRenting: Renting = new Renting();
   selectedRowNumber: number = -1;
   selectedRentiongActionTypeLabel: string = ""
+
+  rentingValidationObject: RentingValidationObject = new RentingValidationObject();
 
   toDeleteRenting: Renting = new Renting();
   toDeleteRowNumber: number = -1;
@@ -37,7 +45,8 @@ export class PropertyRentingComponent implements OnInit {
   constructor(
     public customerService: CustomerService,
     public rentingService: RentingService,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private validationService: ValidationService
     ) { }
 
   ngOnInit(): void {
@@ -45,8 +54,20 @@ export class PropertyRentingComponent implements OnInit {
     this.get_RentingsByProperty();
   }
 
+  onFocus_title() {
+    this.rentingValidationObject.isTitleValid.isValid = true;
+  }
+
+  onFocus_comment() {
+    this.rentingValidationObject.isCommentValid.isValid = true;
+  }
+
   onClick_close() {
+    this.rentingValidationObject.isTitleValid.isValid = true;
+    this.rentingValidationObject.isCommentValid.isValid = true;
+    this.rentingValidationObject.isCustomerValid.isValid = true;
     this.selectedRowNumber = -1;
+    this.selectedRenting = new Renting();
   }
   
   onClick_closeDelete() {
@@ -54,8 +75,28 @@ export class PropertyRentingComponent implements OnInit {
   }
 
   onClick_selectCustomer(customer: Customer) {
+    this.rentingValidationObject.isCustomerValid.isValid = true;
+    this.selectedRenting.customerId = customer.id;
     this.selectedRenting.customer = customer;
   }
+
+  onChange_file(event: any) {
+    var file = event.target.files[0];
+    this.getBase64(file, this.selectedRenting);
+  }
+
+  private getBase64(file: any, renting: Renting) {
+    var reader = new FileReader();
+    reader.onload = function () {
+      file.binary = (reader.result);
+      renting.content = file.binary;
+      renting.filename = file.name;
+    };
+    reader.readAsDataURL(file);
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
+    };
+ }
 
   onClick_remove(index: number) {
     this.toDeleteRenting = new Renting();
@@ -64,16 +105,22 @@ export class PropertyRentingComponent implements OnInit {
   }
 
   onClick_submit() {
-    if (this.selectedRowNumber == -1) {
+    this.rentingValidationObject = this.validationService.validateRenting(this.selectedRenting.title, this.selectedRenting.customerId, this.selectedRenting.comment);
+    if (this.rentingValidationObject.isValid) {
+      this.isDataFetched = false;
       this.selectedRenting.propertyId = this.propertyId;
-      this.post_Renting();
-    } else {
-      this.put_Renting();
+      if (this.selectedRowNumber == -1) {
+        this.post_Renting();
+      } else {
+        this.put_Renting();
+      }
+      this.closeRentingModal();
     }
   }
 
   onClick_submitDelete() {
-
+    this.isDataFetched = false;
+    this.delete_Renting();
   }
 
   onClick_showModal_newRenting(rentingActionTypeId: number) {
@@ -85,14 +132,14 @@ export class PropertyRentingComponent implements OnInit {
     } else {
       this.selectedRentiongActionTypeLabel = "Observação";
     }
-    this.selectedRenting.rentingActionType.id = rentingActionTypeId;
+    this.selectedRenting.staticRentingActionTypeId = rentingActionTypeId;
     this.selectedRowNumber = -1;
   }
 
   onClick_showModal_editRenting(index: number) {
     this.selectedRentiongActionTypeLabel = ""
     this.selectedRenting = new Renting();
-    this.selectedRenting = this.rentingList[index];
+    this.selectedRenting = this.mapRenting(this.rentingList[index]);
     this.selectedRowNumber = index;
   }
 
@@ -100,6 +147,33 @@ export class PropertyRentingComponent implements OnInit {
     this.toDeleteRenting = new Renting();
     this.toDeleteRenting = this.rentingList[index];
     this.toDeleteRowNumber = index;
+  }
+
+  private closeRentingModal(): void {
+    $('#createUpdateModal').modal('hide');
+  }
+
+  private mapRenting(inputRenting: Renting): Renting {
+    let outputRenting = new Renting();
+
+    outputRenting.id = inputRenting.id;
+    outputRenting.staticRentingActionTypeId = inputRenting.staticRentingActionTypeId;
+    outputRenting.customerId = inputRenting.customerId;
+    outputRenting.propertyId = inputRenting.propertyId;
+    outputRenting.title = inputRenting.title;
+    outputRenting.comment = inputRenting.comment;
+    outputRenting.filename = inputRenting.filename;
+    outputRenting.createdById = inputRenting.createdById;
+    outputRenting.createdOn = inputRenting.createdOn;
+    outputRenting.lastModifiedById = inputRenting.lastModifiedById;
+    outputRenting.lastModifiedOn = inputRenting.lastModifiedOn;
+
+    outputRenting.staticRentingActionType = inputRenting.staticRentingActionType;
+    outputRenting.customer = inputRenting.customer;
+    outputRenting.createdBy = inputRenting.createdBy;
+    outputRenting.lastModifiedBy = inputRenting.lastModifiedBy;
+
+    return outputRenting;
   }
 
   private get_Customers() {
@@ -118,6 +192,7 @@ export class PropertyRentingComponent implements OnInit {
   }
 
   private get_RentingsByProperty() {
+    this.isDataFetched = false;
     this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
       this.rentingService.GetRentingsByPropertyId(this.propertyId, resolve)
       .pipe(
@@ -128,6 +203,7 @@ export class PropertyRentingComponent implements OnInit {
       )
       .subscribe(data => {
         this.rentingList = <Renting[]>data;
+        this.isDataFetched = true;
       });
     });
   }
@@ -142,7 +218,8 @@ export class PropertyRentingComponent implements OnInit {
         })
       )
       .subscribe(data => {
-        
+        this.get_RentingsByProperty();
+        this.selectedRenting = new Renting();
       });
     });
   }
@@ -158,7 +235,26 @@ export class PropertyRentingComponent implements OnInit {
           })
         )
         .subscribe(data => {
-          
+          this.get_RentingsByProperty();
+          this.selectedRenting = new Renting();
+        });
+      });
+    }
+  }
+
+  private delete_Renting() {
+    if (this.selectedRenting.id != null) {
+      this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.rentingService.Delete_Renting(this.toDeleteRenting.id, resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          this.get_RentingsByProperty();
+          this.selectedRenting = new Renting();
         });
       });
     }
@@ -167,6 +263,7 @@ export class PropertyRentingComponent implements OnInit {
 }
 
 export enum Enum_RentingEvent {
+  NONE,
   NEW_CONTRACT,
   CLOSE_CONTRACT,
   OBSERVATION

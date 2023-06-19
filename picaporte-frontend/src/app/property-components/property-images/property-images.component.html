@@ -113,8 +113,7 @@
             <input type="file" class="form-control" id="file" name="file"
               [ngClass]="{'invalid-input' : !imageValidationObject.isFileValid.isValid}"
               (change)="onChange_file($event)" (focus)="onFocus_file()">
-            <div *ngIf="!imageValidationObject.isFileValid.isValid" class="invalid-message">
-              {{imageValidationObject.isFileValid.validationMessage}}</div>
+            <div *ngIf="!imageValidationObject.isFileValid.isValid" class="invalid-message">{{imageValidationObject.isFileValid.validationMessage}}</div>
           </div>
         </form>
       </div>

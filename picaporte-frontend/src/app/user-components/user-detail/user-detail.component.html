@@ -82,6 +82,20 @@
             </ng-template>
         </ng-template>
       </div>
+      <div class="col-6 mb-3">
+        <label for="birthdate" class="form-label fw-bold w-100">Data de nascimento</label>
+        <input *ngIf="isEditable; else birthDateRead" type="date" class="form-control" id="birthdate" name="birthdate" 
+        [(ngModel)]="user.birthDate"
+        (change)="triggerEvent_updateUserDetails()">
+        <ng-template #birthDateRead>
+            <div *ngIf="user.birthDate != null; else birthDateNull">
+                <app-date-format [date]="user.birthDate" [showTime]="false"></app-date-format>
+            </div>
+            <ng-template #birthDateNull>
+                -
+            </ng-template>
+        </ng-template>
+      </div>
     </div>
     <div class="row">
         <div class="col-6 mb-3">

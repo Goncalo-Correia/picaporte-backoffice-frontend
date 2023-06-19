@@ -9,6 +9,8 @@ import { Component, Input, OnInit } from '@angular/core';
 export class DateFormatComponent implements OnInit {
 
   @Input() date: Date = new Date();
+  @Input() showTime: boolean = true;
+
   constructor(private datePipe: DatePipe) { }
 
   ngOnInit(): void {
@@ -16,7 +18,7 @@ export class DateFormatComponent implements OnInit {
 
   formatDate(date: Date): string {
     // Use 'Z' for UTC, or provide a specific timezone, e.g., '+0200' or 'Australia/Sydney'
-    let formattedDate: string | null = this.datePipe.transform(date, 'MMMM d, y HH:mm', 'Z');
+    let formattedDate: string | null = (this.showTime ? this.datePipe.transform(date, 'MMMM d, y HH:mm', 'Z') : this.datePipe.transform(date, 'MMMM d, y', 'Z'));
     let finalDate: string = "";
     if (formattedDate != null) {
       finalDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);

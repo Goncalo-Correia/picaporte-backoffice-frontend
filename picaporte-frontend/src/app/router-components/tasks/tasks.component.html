@@ -55,8 +55,8 @@
             </thead>
             <tbody *ngIf="isDataFetched; else elseBlock">
                 <tr *ngFor="let task of tasks" class="table-row">
-                    <td scope="row"><span [routerLink]="['/Imovel/', task.entityReference.recordId]" class="col cursor-pointer color-primary fw-bold">{{task.recordId}}</span></td>
-                    <td><span class="col">{{task.entityReference.entityType.label}}</span></td>
+                    <td scope="row"><span [routerLink]="['/Imovel/', task.entityId]" class="col cursor-pointer color-primary fw-bold">{{task.entityId}}</span></td>
+                    <td><span class="col">{{task.entityTypeLabel}}</span></td>
                     <td><span class="col">{{task.taskType.label}}</span></td>
                     <td><span class="col">{{task.taskStatus.label}}</span></td>
                     <td><span class="col"><app-date-format [date]="task.createdOn"></app-date-format></span></td>

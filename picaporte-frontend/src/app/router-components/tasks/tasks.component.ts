@@ -44,6 +44,7 @@ export class TasksComponent implements OnInit {
     } else {
       this.taskSearchAndFilterStructure.taskTypeId = taskTypeId;
     }
+    this.taskSearchAndFilterStructure.searchAndFilter.page = 0;
     this.get_Tasks();
   }
 
@@ -82,8 +83,8 @@ export class TasksComponent implements OnInit {
         })
       )
       .subscribe(data => {
+        console.log(data);
         this.tasks = <Array<Task>>data;
-        console.log(this.tasks);
         
         this.isDataFetched = true;
         this.hasPreviousPage();

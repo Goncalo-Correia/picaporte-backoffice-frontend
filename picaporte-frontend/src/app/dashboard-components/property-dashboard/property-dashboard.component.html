@@ -35,10 +35,11 @@
       [showButton]="true"
       [placeholder]="'Pesquise por um imóvel'"
       [hasFilters]="true"
-      [hasSelectedFilter]="(propertyDashboardSearchAndFilterStructure.propertyStatusId != 0 && propertyDashboardSearchAndFilterStructure.propertyStatusId != null) ||
+      [hasSelectedFilter]="propertyDashboardSearchAndFilterStructure.propertyStatusId != 0 && propertyDashboardSearchAndFilterStructure.propertyStatusId != null ||
       propertyDashboardSearchAndFilterStructure.propertyTypologyId != 0 && propertyDashboardSearchAndFilterStructure.propertyTypologyId != null ||
       propertyDashboardSearchAndFilterStructure.propertyConditionStatusId != 0 && propertyDashboardSearchAndFilterStructure.propertyConditionStatusId != null ||
-      propertyDashboardSearchAndFilterStructure.amenetieTypeIds.length != 0 && propertyDashboardSearchAndFilterStructure.amenetieTypeIds != null"
+      propertyDashboardSearchAndFilterStructure.amenetieTypeIds.length != 0 && propertyDashboardSearchAndFilterStructure.amenetieTypeIds != null ||
+      propertyDashboardSearchAndFilterStructure.isOnline"
       (searchTextChanged)="eventHandler_searchTextChanged($event)"
       (buttonClicked)="eventHandler_buttonClicked()"
     >
@@ -102,6 +103,14 @@
                 <div class="dropdown-item">{{propertyDashboardFilterLocationType.label}}</div>
               </li>
             </ul>
+          </div>
+          <div class="col-3 px-3">
+            <div class="form-check d-flex align-items-center gap-3">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" [(ngModel)]="propertyDashboardSearchAndFilterStructure.isOnline">
+              <label class="form-check-label" for="flexCheckDefault">
+                Imóveis online
+              </label>
+            </div>
           </div>
         </div>
         <div class="row justify-content-end">

@@ -133,6 +133,7 @@ export class PropertyDashboardComponent implements OnInit {
     this.propertyDashboardSearchAndFilterStructure.propertyConditionStatusId = 0;
     this.propertyDashboardSearchAndFilterStructure.amenetieTypeIds = new Array<number>();
     this.propertyDashboardSearchAndFilterStructure.propertyLocationTypeId = 0;
+    this.propertyDashboardSearchAndFilterStructure.isOnline = false;
     this.statusFilterLabel = "Estado de venda";
     this.propertyLocationTypeFilterLabel = "Localização";
     this.typologyFilterLabel = "Tipologia";

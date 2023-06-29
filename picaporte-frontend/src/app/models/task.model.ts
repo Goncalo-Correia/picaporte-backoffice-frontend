@@ -15,5 +15,6 @@ export class Task {
     taskType: Static_TaskType = new Static_TaskType();
     taskStatus: Static_TaskStatus = new Static_TaskStatus();
     user: User = new User();
-    entityReference: EntityReference = new EntityReference()
+    entityId: number = 0;
+    entityTypeLabel: string = "";
 }

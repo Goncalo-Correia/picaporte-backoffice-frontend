@@ -93,27 +93,27 @@
   </div>
   <div class="row">
     <div class="col-6 mb-3">
-      <label for="totalarea" class="form-label fw-bold">Área total</label>
-      <input appCommaToDot *ngIf="isEditable; else totalAreaRead" type="text" class="form-control" id="totalarea" name="totalarea"
-        [(ngModel)]="property.totalConstructionArea" (change)="triggerEvent_updatePropertyDetails()">
-      <ng-template #totalAreaRead>
-        <div *ngIf="property.totalConstructionArea!= null && property.totalConstructionArea!= 0; else totalAreaNull">
-          {{property.totalConstructionArea}}
+      <label for="totalarea" class="form-label fw-bold">Área útil</label>
+      <input appCommaToDot *ngIf="isEditable; else livingAreaRead" type="text" class="form-control" id="totalarea" name="totalarea"
+        [(ngModel)]="property.livingArea" (change)="triggerEvent_updatePropertyDetails()">
+      <ng-template #livingAreaRead>
+        <div *ngIf="property.livingArea!= null && property.livingArea!= 0; else livingAreaNull">
+          {{property.livingArea}}
         </div>
-        <ng-template #totalAreaNull>
+        <ng-template #livingAreaNull>
           <div>-</div>
         </ng-template>
       </ng-template>
     </div>
     <div class="col-6 mb-3">
-      <label for="livingarea" class="form-label fw-bold">Área de construção</label>
-      <input appCommaToDot *ngIf="isEditable; else livingAreaRead" type="text" class="form-control" id="livingarea" name="livingarea"
-        [(ngModel)]="property.livingArea" (change)="triggerEvent_updatePropertyDetails()">
-      <ng-template #livingAreaRead>
-        <div *ngIf="property.livingArea != null && property.livingArea != 0; else livingAreaNull">
-          {{property.livingArea}}
+      <label for="livingarea" class="form-label fw-bold">Área bruta</label>
+      <input appCommaToDot *ngIf="isEditable; else totalAreaRead" type="text" class="form-control" id="livingarea" name="livingarea"
+        [(ngModel)]="property.totalConstructionArea" (change)="triggerEvent_updatePropertyDetails()">
+      <ng-template #totalAreaRead>
+        <div *ngIf="property.totalConstructionArea != null && property.totalConstructionArea != 0; else totalAreaNull">
+          {{property.totalConstructionArea}}
         </div>
-        <ng-template #livingAreaNull>
+        <ng-template #totalAreaNull>
           <div>-</div>
         </ng-template>
       </ng-template>

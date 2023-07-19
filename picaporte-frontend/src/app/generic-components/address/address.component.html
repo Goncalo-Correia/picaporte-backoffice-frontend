@@ -67,20 +67,30 @@
         </ng-template>
       </ng-template>
     </div>
-    <div class="mb-3 col-6">
-      <label for="island" class="form-label fw-bold w-100 required">Ilha</label>
-      <input *ngIf="isEditable; else islandRead" type="text" class="form-control" id="island" name="island" 
-      [ngClass]="{'invalid-input' : !addressValidationObject.isIslandValid.isValid}"
-      [(ngModel)]="address.island" 
-      (change)="triggerEvent_updateAddress()"
-      (focus)="onFocus_island()">
-      <div *ngIf="!addressValidationObject.isIslandValid.isValid" class="invalid-message">{{addressValidationObject.isIslandValid.validationMessage}}</div>
+    <div class="col-6 mb-3">
+      <label for="propertyStatus" class="form-label fw-bold">Ilha</label>
+      <div *ngIf="isEditable; else islandRead" class="dropdown">
+        <button class="w-100 btn btn-warning dropdown-toggle" type="button" id="propertyStatus"
+          data-bs-toggle="dropdown" aria-expanded="false">
+          <a *ngIf="address.island?.label != null && address.island?.label != ''; else propertyStatusNullEdit">{{address.island.label}}</a>
+          <ng-template #propertyStatusNullEdit>
+            <a>Nenhuma opção seleccionada</a>
+          </ng-template>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="propertyStatus">
+          <li *ngFor="let island of islands" class="cursor-pointer">
+            <a class="dropdown-item" (click)="onClick_selectIsland(island)">{{island.label}}</a>
+          </li>
+        </ul>
+      </div>
       <ng-template #islandRead>
-        <div *ngIf="address.island != null && address.island != ''; else islandNull">
-          {{address.island}}
+        <div *ngIf="address.islandId != null && address.islandId >= 0; else islandNull">
+          {{address.island.label}}
         </div>
         <ng-template #islandNull>
-          -
+          <div>
+            -
+          </div>
         </ng-template>
       </ng-template>
     </div>

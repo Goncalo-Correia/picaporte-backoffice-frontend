@@ -217,6 +217,11 @@ export class CustomerPreferencesComponent implements OnInit {
     } else {
       this.preferences[this.selectedRowNumber] = this.selectedPreferenceStructure;
     }
+
+    console.log(this.selectedPreferenceStructure);
+    console.log(this.preferences);
+    
+    
     this.onClick_close();
     this.triggerEvent_updatePreferences();
   }

@@ -93,7 +93,7 @@
   </div>
   <div class="row">
     <div class="col-6 mb-3">
-      <label for="totalarea" class="form-label fw-bold">Área útil</label>
+      <label for="totalarea" class="form-label fw-bold">Área total</label>
       <input appCommaToDot *ngIf="isEditable; else livingAreaRead" type="text" class="form-control" id="totalarea" name="totalarea"
         [(ngModel)]="property.livingArea" (change)="triggerEvent_updatePropertyDetails()">
       <ng-template #livingAreaRead>

@@ -94,6 +94,9 @@ export const apiEndpoints = {
     updateAll: "api/Static_AmenetieType/updateAll",
     base: "api/Static_AmenetieType/"
   },
+  static_island: {
+    get: "api/Static_Island/",
+  },
   static_propertyLocationType: {
     get: "api/Static_PropertyLocationType/isActive/",
     updateAll: "api/Static_PropertyLocationType/updateAll",

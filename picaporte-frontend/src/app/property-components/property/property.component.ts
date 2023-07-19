@@ -44,7 +44,6 @@ export class PropertyComponent implements OnInit {
   isOnImagesSubMenu: boolean = false;
   isOnRentingSubMenu: boolean = false;
   isOnRecommendedSubMenu: boolean = false;
-  isOnObservationHistorySubMenu: boolean = false;
   isOnActivityLogMenu: boolean = false;
 
   selectedDocumentType: Static_DocumentType = new Static_DocumentType();
@@ -291,9 +290,8 @@ export class PropertyComponent implements OnInit {
     this.isOnCaracteristicsSubMenu = this.selectedPropertySubMenu == Enum_PropertySubMenu.CARACTERISTICS;
     this.isOnDocumentsSubMenu = this.selectedPropertySubMenu == Enum_PropertySubMenu.DOCUMENTS;
     this.isOnImagesSubMenu = this.selectedPropertySubMenu == Enum_PropertySubMenu.IMAGES;
-    this.isOnRentingSubMenu = this.selectedPropertySubMenu == Enum_PropertySubMenu.RENTING;
+    this.isOnRentingSubMenu = this.selectedPropertySubMenu == Enum_PropertySubMenu.RENTING_OBSERVATIONS;
     this.isOnRecommendedSubMenu = this.selectedPropertySubMenu == Enum_PropertySubMenu.RECOMMENDED;
-    this.isOnObservationHistorySubMenu = this.selectedPropertySubMenu == Enum_PropertySubMenu.OBSERVATION_HISTORY;
     this.isOnActivityLogMenu = this.selectedPropertySubMenu == Enum_PropertySubMenu.HISTORY;
   }
 

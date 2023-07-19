@@ -83,6 +83,9 @@ export const apiEndpoints = {
   activityLog: {
     get: "api/ActivityLogs/EntityReference/"
   },
+  static_island: {
+    get: "api/Static_Island/",
+  },
   static_amenetieType: {
     get: "api/Static_AmenetieType/isActive/",
     updateAll: "api/Static_AmenetieType/updateAll",

@@ -87,7 +87,7 @@ export class CustomerComponent implements OnInit {
       this.customerStructure.customer.address.street,
       this.customerStructure.customer.address.parish,
       this.customerStructure.customer.address.city,
-      this.customerStructure.customer.address.island
+      this.customerStructure.customer.address.islandId
     );
     if (this.customerValidationObject.isValid) {
       this.submit_customer();

@@ -4,9 +4,8 @@ export enum Enum_PropertySubMenu {
     CARACTERISTICS,
     DOCUMENTS,
     IMAGES,
-    RENTING,
+    RENTING_OBSERVATIONS,
     RECOMMENDED,
-    OBSERVATION_HISTORY,
     HISTORY
 }
 
@@ -65,9 +64,9 @@ export class PropertySubMenuFactory {
         });
         if (!isEditable) {
             this.propertySubMenus.push({
-                enum_propertySubMenu: Enum_PropertySubMenu.RENTING,
-                label: "Arrendamento",
-                description: "Especificações de arrendamento"
+                enum_propertySubMenu: Enum_PropertySubMenu.RENTING_OBSERVATIONS,
+                label: "Arrendamento e observações",
+                description: "Especificações de arrendamento e observações"
         });
         }
         this.propertySubMenus.push({

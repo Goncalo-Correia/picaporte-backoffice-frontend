@@ -12,7 +12,7 @@
   </div>
 
   <div *ngIf="isDataFetched; else loadingData" class="col-12">
-    <div class="p-4 rounded h-100">
+    <div class="h-100">
       <section *ngIf="rentingList.length > 0; else emptyRentingList" class="timer-section">
         <div class="container">
           <div class="timer-container">
@@ -64,9 +64,9 @@
         </div>
       </section>
       <ng-template #emptyRentingList>
-        <div class="d-flex flex-column align-items-center my-5">
+        <div class="w-100 py-4 text-center rounded bg-white">
           <i class="fa-solid fa-timeline fa-4x"></i>
-          <div>Sem registos de arrendamento</div>
+          <div>Sem registos de arrendamento e observações</div>
         </div>
       </ng-template>
     </div>

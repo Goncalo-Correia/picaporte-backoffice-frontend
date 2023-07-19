@@ -87,7 +87,7 @@ export class ValidationService {
     return userValidationObject;
   }
 
-  validateAddress(street: string, parish: string, city: string, island: string): AddressValidationObject {
+  validateAddress(street: string, parish: string, city: string, islandId: number): AddressValidationObject {
     let addressValidationObject: AddressValidationObject = new AddressValidationObject();
     
     addressValidationObject.isStreetValid.isValid = street != "" && street != null;
@@ -99,7 +99,7 @@ export class ValidationService {
     addressValidationObject.isCityValid.isValid = city != "" && city != null;
     addressValidationObject.isCityValid.validationMessage = (addressValidationObject.isCityValid.isValid ? "" : "Campo obrigatório");
     
-    addressValidationObject.isIslandValid.isValid = island != "" && island != null;
+    addressValidationObject.isIslandValid.isValid = islandId >= 0 && islandId != null;
     addressValidationObject.isIslandValid.validationMessage = (addressValidationObject.isIslandValid.isValid ? "" : "Campo obrigatório");
   
     addressValidationObject.isValid = (
@@ -118,7 +118,7 @@ export class ValidationService {
     customerValidationObject.isNameValid.isValid = name != "" && name != null;
     customerValidationObject.isNameValid.validationMessage = (customerValidationObject.isNameValid.isValid ? "" : "Campo obrigatório");
 
-    customerValidationObject.isAddressValid = this.validateAddress(address.street, address.parish, address.city, address.island).isValid;
+    customerValidationObject.isAddressValid = this.validateAddress(address.street, address.parish, address.city, address.islandId).isValid;
   
     customerValidationObject.isValid = (
       customerValidationObject.isNameValid.isValid &&
@@ -199,7 +199,7 @@ export class ValidationService {
     propertyValidationObject.isCustomerValid.isValid = customerId > 0;
     propertyValidationObject.isCustomerValid.validationMessage = (propertyValidationObject.isCustomerValid.isValid ? "" : "Campo obrigatório");
 
-    propertyValidationObject.isAddressValid = this.validateAddress(address.street, address.parish, address.city, address.island).isValid;
+    propertyValidationObject.isAddressValid = this.validateAddress(address.street, address.parish, address.city, address.islandId).isValid;
     
     propertyValidationObject.isValid = (
       propertyValidationObject.isReferenceValid.isValid &&

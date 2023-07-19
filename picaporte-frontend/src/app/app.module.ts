@@ -32,7 +32,6 @@ import { PropertyDetailComponent } from './property-components/property-detail/p
 import { PropertyCaracteristicsComponent } from './property-components/property-caracteristics/property-caracteristics.component';
 import { PropertyDocumentsComponent } from './property-components/property-documents/property-documents.component';
 import { PropertyImagesComponent } from './property-components/property-images/property-images.component';
-import { PropertyObservationhistoryComponent } from './property-components/property-observationhistory/property-observationhistory.component';
 import { DashboardComponent } from './dashboard-components/dashboard/dashboard.component';
 import { SpinnerComponent } from './utiity-components/spinner/spinner.component';
 import { PropertyOnlineComponent } from './property-components/property-online/property-online.component';
@@ -74,7 +73,6 @@ import { environment } from 'src/environments/environment';
     PropertyCaracteristicsComponent,
     PropertyDocumentsComponent,
     PropertyImagesComponent,
-    PropertyObservationhistoryComponent,
     DashboardComponent,
     SpinnerComponent,
     PropertyOnlineComponent,

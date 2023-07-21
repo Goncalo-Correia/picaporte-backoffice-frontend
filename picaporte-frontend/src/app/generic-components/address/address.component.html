@@ -68,7 +68,7 @@
       </ng-template>
     </div>
     <div class="col-6 mb-3">
-      <label for="propertyStatus" class="form-label fw-bold">Ilha</label>
+      <label for="propertyStatus" class="form-label fw-bold required">Ilha</label>
       <div *ngIf="isEditable; else islandRead" class="dropdown">
         <button class="w-100 btn btn-warning dropdown-toggle" type="button" id="propertyStatus"
           data-bs-toggle="dropdown" aria-expanded="false">
@@ -82,6 +82,7 @@
             <a class="dropdown-item" (click)="onClick_selectIsland(island)">{{island.label}}</a>
           </li>
         </ul>
+        <div *ngIf="!addressValidationObject.isIslandValid.isValid" class="invalid-message">{{addressValidationObject.isIslandValid.validationMessage}}</div>
       </div>
       <ng-template #islandRead>
         <div *ngIf="address.islandId != null && address.islandId >= 0; else islandNull">

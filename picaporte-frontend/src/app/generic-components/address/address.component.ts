@@ -50,6 +50,7 @@ export class AddressComponent implements OnInit {
   onClick_selectIsland(island: Static_Island) {
     this.address.island = island;
     this.address.islandId = island.id;
+    this.addressValidationObject.isIslandValid.isValid = true;
     this.triggerEvent_updateAddress();
   }
 

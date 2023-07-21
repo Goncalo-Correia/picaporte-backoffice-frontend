@@ -22,6 +22,8 @@ import { Static_PropertyLocationType } from 'src/app/models/static/static-proper
 import { ExportStructure } from 'src/app/structures/export-structure';
 import { QueriesExportService } from 'src/app/api-service/queries-export/queries-export.service';
 import { DOCUMENT } from '@angular/common';
+import { StaticIslandService } from 'src/app/api-service/static_island/static-island.service';
+import { Static_Island } from 'src/app/models/static/static-island.model';
 
 @Component({
   selector: 'app-property-dashboard',
@@ -45,6 +47,7 @@ export class PropertyDashboardComponent implements OnInit {
   typologyFilterLabel: string = "Tipologia";
   conditionStatusFilterLabel: string = "Estado";
   amenetieTypeFilterLabel: string = "Caraterísticas";
+  islandFilterLabel: string = "Ilha";
 
   hasPrevious: boolean = true;
   hasNext: boolean = true;
@@ -64,6 +67,7 @@ export class PropertyDashboardComponent implements OnInit {
     public staticAmenetieTypeService: StaticAmenetieTypeService,
     public router: Router,
     private authenticationService: AuthenticationService,
+    private staticIslandService: StaticIslandService,
     @Inject(DOCUMENT) private document: Document
     ) {
     this.dashboardKpis = new Array<DashboardKpiStructure>();
@@ -78,6 +82,11 @@ export class PropertyDashboardComponent implements OnInit {
     this.get_Kpis();
     this.get_propertyDashboardStructure();
     this.initFilterOptions();
+  }
+
+  onClick_selectIslandFilter(islandId: number, label: string) {
+    this.propertyDashboardSearchAndFilterStructure.islandId = islandId;
+    this.islandFilterLabel = label;
   }
 
   onClick_selectStatusFilter(propertyStatusId: number, label: string) {
@@ -134,11 +143,13 @@ export class PropertyDashboardComponent implements OnInit {
     this.propertyDashboardSearchAndFilterStructure.amenetieTypeIds = new Array<number>();
     this.propertyDashboardSearchAndFilterStructure.propertyLocationTypeId = 0;
     this.propertyDashboardSearchAndFilterStructure.isOnline = false;
+    this.propertyDashboardSearchAndFilterStructure.islandId = 0;
     this.statusFilterLabel = "Estado de venda";
     this.propertyLocationTypeFilterLabel = "Localização";
     this.typologyFilterLabel = "Tipologia";
     this.conditionStatusFilterLabel = "Estado";
     this.amenetieTypeFilterLabel = "Características";
+    this.islandFilterLabel = "Ilha";
     this.get_propertyDashboardStructure();
   }
 
@@ -254,6 +265,16 @@ export class PropertyDashboardComponent implements OnInit {
     this.getPropertyTypologies();
     this.getPropertyConditionStatus();
     this.getAmenetieTypes();
+    this.getIslands();
+  }
+
+  private getIslands() {
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+      this.staticIslandService.GetAll_Islands(resolve)
+      .subscribe(data => {
+        this.propertyDashboardFilters.islands = <Static_Island[]>data;
+      });
+    });
   }
 
   private getPropertyStatus() {

@@ -37,6 +37,7 @@
       [hasFilters]="true"
       [hasSelectedFilter]="propertyDashboardSearchAndFilterStructure.propertyStatusId != 0 && propertyDashboardSearchAndFilterStructure.propertyStatusId != null ||
       propertyDashboardSearchAndFilterStructure.propertyTypologyId != 0 && propertyDashboardSearchAndFilterStructure.propertyTypologyId != null ||
+      propertyDashboardSearchAndFilterStructure.islandId != 0 && propertyDashboardSearchAndFilterStructure.islandId != null ||
       propertyDashboardSearchAndFilterStructure.propertyConditionStatusId != 0 && propertyDashboardSearchAndFilterStructure.propertyConditionStatusId != null ||
       propertyDashboardSearchAndFilterStructure.amenetieTypeIds.length != 0 && propertyDashboardSearchAndFilterStructure.amenetieTypeIds != null ||
       propertyDashboardSearchAndFilterStructure.isOnline"
@@ -101,6 +102,16 @@
             <ul class="dropdown-menu dropdown-menu-dark w-100">
               <li *ngFor="let propertyDashboardFilterLocationType of propertyDashboardFilters.locationTypes" (click)="onClick_selectPropertyLocationTypeFilter(propertyDashboardFilterLocationType.id, propertyDashboardFilterLocationType.label)" class="cursor-pointer">
                 <div class="dropdown-item">{{propertyDashboardFilterLocationType.label}}</div>
+              </li>
+            </ul>
+          </div>
+          <div class="dropdown col-3 px-3">
+            <button class="btn btn-secondary dropdown-toggle w-100" [ngClass]="{'btn-success': propertyDashboardSearchAndFilterStructure.islandId != 0 && propertyDashboardSearchAndFilterStructure.islandId != null}" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {{islandFilterLabel}}
+            </button>
+            <ul class="dropdown-menu dropdown-menu-dark w-100">
+              <li *ngFor="let island of propertyDashboardFilters.islands" (click)="onClick_selectIslandFilter(island.id, island.label)" class="cursor-pointer">
+                <div class="dropdown-item">{{island.label}}</div>
               </li>
             </ul>
           </div>

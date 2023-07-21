@@ -7,6 +7,7 @@ export class PropertyDashboardSearchAndFilterStructure {
     propertyLocationTypeId: number = 0;
     propertyTypologyId: number = 0;
     propertyConditionStatusId: number = 0;
+    islandId: number = 0;
     isOnline: boolean = false;
     amenetieTypeIds: Array<number> = new Array<number>();
 }

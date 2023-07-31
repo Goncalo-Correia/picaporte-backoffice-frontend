@@ -15,6 +15,13 @@ export class CommaToDotDirective {
     value = value.replace(/,/g, '.');
     value = value.replace(/[^0-9.]/g, '');
     value = value.replace(/(\..*)\./g, '$1');
+    
+    // Removes leading dots and convert remaining dots to spaces
+    value = value.replace(/^\./g, '').replace(/\./g, ' ');
+    
+    // Add spaces every three digits
+    value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+
     this.control.control?.setValue(value);
   }
 }

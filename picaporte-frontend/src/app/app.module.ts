@@ -109,7 +109,7 @@ import { environment } from 'src/environments/environment';
       //domain: 'REDACTED_AUTH0_DOMAIN_OLD',
       //clientId: 'REDACTED_AUTH0_CLIENT_ID_OLD',
       authorizationParams: {
-        redirect_uri: environment.redirectUri
+        redirect_uri: window.location.origin
       }
     }),
   ],

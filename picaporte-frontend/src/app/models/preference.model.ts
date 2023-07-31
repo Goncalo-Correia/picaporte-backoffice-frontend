@@ -13,6 +13,7 @@ export class Preference {
     public maxLivingArea: number = 0;
     public minTotalArea: number = 0;
     public maxTotalArea: number = 0;
+    public comment: string = "";
     
     public propertyStatusId: number = 0;
     public propertyLocationTypeId: number = 0;

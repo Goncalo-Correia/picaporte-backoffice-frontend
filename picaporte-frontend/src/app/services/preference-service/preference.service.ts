@@ -19,6 +19,7 @@ export class PreferenceService {
     this.preferenceStructure.preference.maxPrice = preferenceStructure.preference.maxPrice;
     this.preferenceStructure.preference.numBathrooms = preferenceStructure.preference.numBathrooms;
     this.preferenceStructure.preference.constructionYear = preferenceStructure.preference.constructionYear;
+    this.preferenceStructure.preference.comment = preferenceStructure.preference.comment;
 
     this.preferenceStructure.preference.propertyStatusId = preferenceStructure.preference.propertyStatusId;
     this.preferenceStructure.preference.propertyLocationTypeId = preferenceStructure.preference.propertyLocationTypeId;
@@ -29,9 +30,7 @@ export class PreferenceService {
     this.preferenceStructure.preference.propertyLocationType = preferenceStructure.preference.propertyLocationType;
     this.preferenceStructure.preference.propertyConditionStatus = preferenceStructure.preference.propertyConditionStatus;
     this.preferenceStructure.preference.energyCertificate = preferenceStructure.preference.energyCertificate;
-
-    //this.preferenceStructure.preference.ameneties = preferenceStructure.preference.ameneties;
-
+    
     this.preferenceStructure.propertyTypes = preferenceStructure.propertyTypes;
     this.preferenceStructure.propertyTypologies = preferenceStructure.propertyTypologies;
     this.preferenceStructure.ameneties = preferenceStructure.ameneties;

@@ -28,7 +28,7 @@ export class UserSubMenuFactory {
     getUserSubmenus(): Array<UserSubMenu> {
         this.userSubMenus.push({
             enum_userSubMenu: Enum_UserSubMenu.DETAILS,
-            label: "Dados do cliente",
+            label: "Dados do utilizador",
             description: "Detalhes gerais e morada"
         });
         this.userSubMenus.push({

@@ -22,13 +22,16 @@
         <div class="mb-2 col-6">
           <label class="fw-bold">Preço</label>
           <div class="d-flex align-items-center gap-3">
-            <div *ngIf="preference.preference.minPrice != null && preference.preference.minPrice != 0; else minPriceNull">{{preference.preference.minPrice}}
+            <div
+              *ngIf="preference.preference.minPrice != null && preference.preference.minPrice != 0; else minPriceNull">
+              {{preference.preference.minPrice}}
             </div>
             <ng-template #minPriceNull>
               <div>-</div>
             </ng-template>
             <div> / </div>
-            <div *ngIf="preference.preference.maxPrice!= null && preference.preference.maxPrice!= 0; else maxPriceNull">{{preference.preference.maxPrice}}</div>
+            <div *ngIf="preference.preference.maxPrice!= null && preference.preference.maxPrice!= 0; else maxPriceNull">
+              {{preference.preference.maxPrice}}</div>
             <ng-template #maxPriceNull>
               <div>-</div>
             </ng-template>
@@ -36,7 +39,8 @@
         </div>
         <div class="mb-2 col-6">
           <label class="fw-bold">Ano de construção</label>
-          <div *ngIf="preference.preference.constructionYear != null && preference.preference.constructionYear != 0; else constructionYearNull">
+          <div
+            *ngIf="preference.preference.constructionYear != null && preference.preference.constructionYear != 0; else constructionYearNull">
             {{preference.preference.constructionYear}}</div>
           <ng-template #constructionYearNull>
             <div>-</div>
@@ -45,13 +49,17 @@
         <div class="mb-2 col-6">
           <label class="fw-bold">Área total</label>
           <div class="d-flex align-items-center gap-3">
-            <div *ngIf="preference.preference.minLivingArea != null && preference.preference.minLivingArea != 0; else minLivingAreaNull">{{preference.preference.minLivingArea}}
+            <div
+              *ngIf="preference.preference.minLivingArea != null && preference.preference.minLivingArea != 0; else minLivingAreaNull">
+              {{preference.preference.minLivingArea}}
             </div>
             <ng-template #minLivingAreaNull>
               <div>-</div>
             </ng-template>
             <div> / </div>
-            <div *ngIf="preference.preference.maxLivingArea!= null && preference.preference.maxLivingArea!= 0; else maxLivingAreaNull">{{preference.preference.maxLivingArea}}</div>
+            <div
+              *ngIf="preference.preference.maxLivingArea!= null && preference.preference.maxLivingArea!= 0; else maxLivingAreaNull">
+              {{preference.preference.maxLivingArea}}</div>
             <ng-template #maxLivingAreaNull>
               <div>-</div>
             </ng-template>
@@ -60,13 +68,17 @@
         <div class="mb-2 col-6">
           <label class="fw-bold">Área bruta</label>
           <div class="d-flex align-items-center gap-3">
-            <div *ngIf="preference.preference.minTotalArea != null && preference.preference.minTotalArea != 0; else minTotalAreaNull">{{preference.preference.minTotalArea}}
+            <div
+              *ngIf="preference.preference.minTotalArea != null && preference.preference.minTotalArea != 0; else minTotalAreaNull">
+              {{preference.preference.minTotalArea}}
             </div>
             <ng-template #minTotalAreaNull>
               <div>-</div>
             </ng-template>
             <div> / </div>
-            <div *ngIf="preference.preference.maxTotalArea!= null && preference.preference.maxTotalArea!= 0; else maxTotalAreaNull">{{preference.preference.maxTotalArea}}</div>
+            <div
+              *ngIf="preference.preference.maxTotalArea!= null && preference.preference.maxTotalArea!= 0; else maxTotalAreaNull">
+              {{preference.preference.maxTotalArea}}</div>
             <ng-template #maxTotalAreaNull>
               <div>-</div>
             </ng-template>
@@ -74,7 +86,8 @@
         </div>
         <div class="mb-2 col-6">
           <label class="fw-bold">Casas de banho</label>
-          <div *ngIf="preference.preference.numBathrooms!= null && preference.preference.numBathrooms!= 0; else numBathroomsNull">
+          <div
+            *ngIf="preference.preference.numBathrooms!= null && preference.preference.numBathrooms!= 0; else numBathroomsNull">
             {{preference.preference.numBathrooms}}</div>
           <ng-template #numBathroomsNull>
             <div>-</div>
@@ -87,16 +100,18 @@
       <div class="row">
         <div class="mb-2 col-6">
           <label class="fw-bold">Estado de venda</label>
-          <div *ngIf="preference.preference.propertyStatus?.label != null && preference.preference.propertyStatus?.label != ''; else propertyStatusNull">
-            {{preference.preference.propertyStatus?.label}}</div>
+          <div
+            *ngIf="preference.preference.propertyStatus?.label != null && preference.preference.propertyStatus?.label != ''; else propertyStatusNull">
+            {{preference.preference.propertyStatus.label}}</div>
           <ng-template #propertyStatusNull>
             <div>-</div>
           </ng-template>
         </div>
         <div class="mb-2 col-6">
           <label class="fw-bold">Estado do imóvel</label>
-          <div *ngIf="preference.preference.propertyConditionStatus?.label != null && preference.preference.propertyConditionStatus?.label != ''; else propertyConditionStatusNull">
-            {{preference.preference.propertyConditionStatus?.label}}</div>
+          <div
+            *ngIf="preference.preference.propertyConditionStatus?.label != null && preference.preference.propertyConditionStatus?.label != ''; else propertyConditionStatusNull">
+            {{preference.preference.propertyConditionStatus.label}}</div>
           <ng-template #propertyConditionStatusNull>
             <div>-</div>
           </ng-template>
@@ -105,16 +120,18 @@
       <div class="row">
         <div class="mb-2 col-6">
           <label class="fw-bold">Eficiência energética</label>
-          <div *ngIf="preference.preference.energyCertificate?.label != null && preference.preference.energyCertificate?.label != ''; else energyCertificateNull">
-            {{preference.preference.energyCertificate?.label}}</div>
+          <div
+            *ngIf="preference.preference.energyCertificate?.label != null && preference.preference.energyCertificate?.label != ''; else energyCertificateNull">
+            {{preference.preference.energyCertificate.label}}</div>
           <ng-template #energyCertificateNull>
             <div>-</div>
           </ng-template>
         </div>
         <div class="mb-2 col-6">
           <label class="fw-bold">Localização</label>
-          <div *ngIf="preference.preference.propertyLocationType?.label != null && preference.preference.propertyLocationType?.label != ''; else propertyLocationTypeNull">
-            {{preference.preference.propertyLocationType?.label}}</div>
+          <div
+            *ngIf="preference.preference.propertyLocationType?.label != null && preference.preference.propertyLocationType?.label != ''; else propertyLocationTypeNull">
+            {{preference.preference.propertyLocationType.label}}</div>
           <ng-template #propertyLocationTypeNull>
             <div>-</div>
           </ng-template>
@@ -147,8 +164,8 @@
       <div class="row">
         <div class="break-line my-3"></div>
       </div>
-      <div>
-        <label class="fw-bold">Características:</label>
+      <div class="mb-2">
+        <label class="fw-bold">Características</label>
         <div *ngIf="preference.ameneties.length > 0; else amenetiesNull" class="row">
           <div *ngFor="let amenetieType of preference.ameneties" class="col-auto d-flex align-items-center gap-3">
             <div>{{amenetieType.label}}</div>
@@ -159,19 +176,32 @@
           <div>-</div>
         </ng-template>
       </div>
+      <div class="row">
+        <div class="col-12">
+          <label class="fw-bold">Comentário</label>
+          <div *ngIf="preference.preference.comment != null && preference.preference.comment != ''; else commentNull">
+            {{preference.preference.comment}}</div>
+          <ng-template #commentNull>
+            <div>-</div>
+          </ng-template>
+        </div>
+      </div>
     </div>
     <div *ngIf="!isEditable" class="mb-3 bg-white rounded p-4 h-100">
       <div class="row">
         <div class="mb-2 col-6">
           <label class="fw-bold">Preço</label>
           <div class="d-flex align-items-center gap-3">
-            <div *ngIf="preference.preference.minPrice != null && preference.preference.minPrice != 0; else minPriceNull">{{preference.preference.minPrice}}
+            <div
+              *ngIf="preference.preference.minPrice != null && preference.preference.minPrice != 0; else minPriceNull">
+              {{preference.preference.minPrice}}
             </div>
             <ng-template #minPriceNull>
               <div>-</div>
             </ng-template>
             <div> / </div>
-            <div *ngIf="preference.preference.maxPrice!= null && preference.preference.maxPrice!= 0; else maxPriceNull">{{preference.preference.maxPrice}}</div>
+            <div *ngIf="preference.preference.maxPrice!= null && preference.preference.maxPrice!= 0; else maxPriceNull">
+              {{preference.preference.maxPrice}}</div>
             <ng-template #maxPriceNull>
               <div>-</div>
             </ng-template>
@@ -179,7 +209,8 @@
         </div>
         <div class="mb-2 col-6">
           <label class="fw-bold">Ano de construção</label>
-          <div *ngIf="preference.preference.constructionYear != null && preference.preference.constructionYear != 0; else constructionYearNull">
+          <div
+            *ngIf="preference.preference.constructionYear != null && preference.preference.constructionYear != 0; else constructionYearNull">
             {{preference.preference.constructionYear}}</div>
           <ng-template #constructionYearNull>
             <div>-</div>
@@ -188,13 +219,17 @@
         <div class="mb-2 col-6">
           <label class="fw-bold">Área total</label>
           <div class="d-flex align-items-center gap-3">
-            <div *ngIf="preference.preference.minLivingArea != null && preference.preference.minLivingArea != 0; else minLivingAreaNull">{{preference.preference.minLivingArea}}
+            <div
+              *ngIf="preference.preference.minLivingArea != null && preference.preference.minLivingArea != 0; else minLivingAreaNull">
+              {{preference.preference.minLivingArea}}
             </div>
             <ng-template #minLivingAreaNull>
               <div>-</div>
             </ng-template>
             <div> / </div>
-            <div *ngIf="preference.preference.maxLivingArea!= null && preference.preference.maxLivingArea!= 0; else maxLivingAreaNull">{{preference.preference.maxLivingArea}}</div>
+            <div
+              *ngIf="preference.preference.maxLivingArea!= null && preference.preference.maxLivingArea!= 0; else maxLivingAreaNull">
+              {{preference.preference.maxLivingArea}}</div>
             <ng-template #maxLivingAreaNull>
               <div>-</div>
             </ng-template>
@@ -203,13 +238,17 @@
         <div class="mb-2 col-6">
           <label class="fw-bold">Área bruta</label>
           <div class="d-flex align-items-center gap-3">
-            <div *ngIf="preference.preference.minTotalArea != null && preference.preference.minTotalArea != 0; else minTotalAreaNull">{{preference.preference.minTotalArea}}
+            <div
+              *ngIf="preference.preference.minTotalArea != null && preference.preference.minTotalArea != 0; else minTotalAreaNull">
+              {{preference.preference.minTotalArea}}
             </div>
             <ng-template #minTotalAreaNull>
               <div>-</div>
             </ng-template>
             <div> / </div>
-            <div *ngIf="preference.preference.maxTotalArea!= null && preference.preference.maxTotalArea!= 0; else maxTotalAreaNull">{{preference.preference.maxTotalArea}}</div>
+            <div
+              *ngIf="preference.preference.maxTotalArea!= null && preference.preference.maxTotalArea!= 0; else maxTotalAreaNull">
+              {{preference.preference.maxTotalArea}}</div>
             <ng-template #maxTotalAreaNull>
               <div>-</div>
             </ng-template>
@@ -217,7 +256,8 @@
         </div>
         <div class="mb-2 col-6">
           <label class="fw-bold">Casas de banho</label>
-          <div *ngIf="preference.preference.numBathrooms!= null && preference.preference.numBathrooms!= 0; else numBathroomsNull">
+          <div
+            *ngIf="preference.preference.numBathrooms!= null && preference.preference.numBathrooms!= 0; else numBathroomsNull">
             {{preference.preference.numBathrooms}}</div>
           <ng-template #numBathroomsNull>
             <div>-</div>
@@ -230,16 +270,18 @@
       <div class="row">
         <div class="mb-2 col-6">
           <label class="fw-bold">Estado de venda</label>
-          <div *ngIf="preference.preference.propertyStatus?.label != null && preference.preference.propertyStatus?.label != ''; else propertyStatusNull">
-            {{preference.preference.propertyStatus?.label}}</div>
+          <div
+            *ngIf="preference.preference.propertyStatus?.label != null && preference.preference.propertyStatus?.label != ''; else propertyStatusNull">
+            {{preference.preference.propertyStatus.label}}</div>
           <ng-template #propertyStatusNull>
             <div>-</div>
           </ng-template>
         </div>
         <div class="mb-2 col-6">
           <label class="fw-bold">Estado do imóvel</label>
-          <div *ngIf="preference.preference.propertyConditionStatus?.label != null && preference.preference.propertyConditionStatus?.label != ''; else propertyConditionStatusNull">
-            {{preference.preference.propertyConditionStatus?.label}}</div>
+          <div
+            *ngIf="preference.preference.propertyConditionStatus?.label != null && preference.preference.propertyConditionStatus?.label != ''; else propertyConditionStatusNull">
+            {{preference.preference.propertyConditionStatus.label}}</div>
           <ng-template #propertyConditionStatusNull>
             <div>-</div>
           </ng-template>
@@ -248,16 +290,18 @@
       <div class="row">
         <div class="mb-2 col-6">
           <label class="fw-bold">Eficiência energética</label>
-          <div *ngIf="preference.preference.energyCertificate?.label != null && preference.preference.energyCertificate?.label != ''; else energyCertificateNull">
-            {{preference.preference.energyCertificate?.label}}</div>
+          <div
+            *ngIf="preference.preference.energyCertificate?.label != null && preference.preference.energyCertificate?.label != ''; else energyCertificateNull">
+            {{preference.preference.energyCertificate.label}}</div>
           <ng-template #energyCertificateNull>
             <div>-</div>
           </ng-template>
         </div>
         <div class="mb-2 col-6">
           <label class="fw-bold">Localização</label>
-          <div *ngIf="preference.preference.propertyLocationType?.label != null && preference.preference.propertyLocationType?.label != ''; else propertyLocationTypeNull">
-            {{preference.preference.propertyLocationType?.label}}</div>
+          <div
+            *ngIf="preference.preference.propertyLocationType?.label != null && preference.preference.propertyLocationType?.label != ''; else propertyLocationTypeNull">
+            {{preference.preference.propertyLocationType.label}}</div>
           <ng-template #propertyLocationTypeNull>
             <div>-</div>
           </ng-template>
@@ -290,8 +334,8 @@
       <div class="row">
         <div class="break-line my-3"></div>
       </div>
-      <div>
-        <label class="fw-bold">Características:</label>
+      <div class="mb-2">
+        <label class="fw-bold">Características</label>
         <div *ngIf="preference.ameneties.length > 0; else amenetiesNull" class="row">
           <div *ngFor="let amenetieType of preference.ameneties" class="col-auto d-flex align-items-center gap-2">
             <div>{{amenetieType.label}}</div>
@@ -301,6 +345,16 @@
         <ng-template #amenetiesNull>
           <div>-</div>
         </ng-template>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <label class="fw-bold">Comentário</label>
+          <div *ngIf="preference.preference.comment != null && preference.preference.comment != ''; else commentNull">
+            {{preference.preference.comment}}</div>
+          <ng-template #commentNull>
+            <div>-</div>
+          </ng-template>
+        </div>
       </div>
     </div>
   </div>
@@ -323,10 +377,10 @@
                   <div class="col-6">
                     <label for="firstName" class="form-label fw-bold">Preço</label>
                     <div class="input-group">
-                      <input appCommaToDot type="text" class="form-control" id="firstName" name="firstName" placeholder="Mínimo"
-                        [(ngModel)]="selectedPreferenceStructure.preference.minPrice">
-                      <input appCommaToDot type="text" class="form-control" id="lastName" name="lastName" placeholder="Máximo"
-                        [(ngModel)]="selectedPreferenceStructure.preference.maxPrice">
+                      <input appCommaToDot type="text" class="form-control" id="firstName" name="firstName"
+                        placeholder="Mínimo" [(ngModel)]="selectedPreferenceStructure.preference.minPrice">
+                      <input appCommaToDot type="text" class="form-control" id="lastName" name="lastName"
+                        placeholder="Máximo" [(ngModel)]="selectedPreferenceStructure.preference.maxPrice">
                     </div>
                   </div>
                   <div class="col-3">
@@ -346,18 +400,22 @@
                       <div class="col-6">
                         <div class="fw-bold mb-1">Área Total</div>
                         <div class="input-group mb-3">
-                          <input name="livingAreaMin" appCommaToDot type="text" class="form-control" placeholder="Mínimo ㎡" aria-label="Mínimo"
+                          <input name="livingAreaMin" appCommaToDot type="text" class="form-control"
+                            placeholder="Mínimo ㎡" aria-label="Mínimo"
                             [(ngModel)]="selectedPreferenceStructure.preference.minLivingArea">
-                          <input name="livingAreaMax" appCommaToDot type="text" class="form-control" placeholder="Máximo ㎡" aria-label="Máximo"
+                          <input name="livingAreaMax" appCommaToDot type="text" class="form-control"
+                            placeholder="Máximo ㎡" aria-label="Máximo"
                             [(ngModel)]="selectedPreferenceStructure.preference.maxLivingArea">
                         </div>
                       </div>
                       <div class="col-6">
                         <div class="fw-bold mb-1">Área Bruta</div>
                         <div class="input-group">
-                          <input name="totalAreaMin" appCommaToDot type="text" class="form-control" placeholder="Mínimo ㎡" aria-label="Mínimo"
+                          <input name="totalAreaMin" appCommaToDot type="text" class="form-control"
+                            placeholder="Mínimo ㎡" aria-label="Mínimo"
                             [(ngModel)]="selectedPreferenceStructure.preference.minTotalArea">
-                          <input name="totalAreaMax" appCommaToDot type="text" class="form-control" placeholder="Máximo ㎡" aria-label="Máximo"
+                          <input name="totalAreaMax" appCommaToDot type="text" class="form-control"
+                            placeholder="Máximo ㎡" aria-label="Máximo"
                             [(ngModel)]="selectedPreferenceStructure.preference.maxTotalArea">
                         </div>
                       </div>
@@ -437,14 +495,16 @@
                       </button>
                       <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="propertyTypology">
                         <li class="d-flex align-items-center justify-content-between gap-3 fs-7 p-3 fw-bold">
-                          <div (click)="onClick_selectAllTypologies($event)" class="cursor-pointer">Seleccionar todos</div>
+                          <div (click)="onClick_selectAllTypologies($event)" class="cursor-pointer">Seleccionar todos
+                          </div>
                           <div (click)="onClick_clearTypologies($event)" class="cursor-pointer">Limpar</div>
                         </li>
                         <li *ngFor="let typology of staticPropertyTypologies; index as i"
                           (click)="onClick_selectPropertyTypology(i, $event)"
                           class="cursor-pointer d-flex align-items-center justify-content-between gap-3 px-3 py-2">
                           <div>{{typology.propertyTypology.label}}</div>
-                          <input class="form-check-input" type="checkbox" [name]="typology.propertyTypology.label" [(ngModel)]="typology.isSelected">
+                          <input class="form-check-input" type="checkbox" [name]="typology.propertyTypology.label"
+                            [(ngModel)]="typology.isSelected">
                         </li>
                       </ul>
                     </div>
@@ -465,7 +525,8 @@
                           (click)="onClick_selectPropertyType(i, $event)"
                           class="cursor-pointer d-flex align-items-center justify-content-between gap-3 p-3">
                           <div>{{type.propertyType.label}}</div>
-                          <input class="form-check-input" type="checkbox" [name]="type.propertyType.label" [(ngModel)]="type.isSelected">
+                          <input class="form-check-input" type="checkbox" [name]="type.propertyType.label"
+                            [(ngModel)]="type.isSelected">
                         </li>
                       </ul>
                     </div>
@@ -475,26 +536,33 @@
               <div class="col-12">
                 <div class="break-line my-4"></div>
               </div>
-              <div class="col-12">
+              <div class="col-12 mb-3">
                 <div class="accordion accordion-flush" id="accordionFlushExample">
                   <div class="accordion-item">
                     <h2 class="accordion-header">
-                      <button class="accordion-button p-3 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                      <button class="accordion-button py-3 px-0 collapsed fw-bold" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false"
+                        aria-controls="flush-collapseOne">
                         Características
                       </button>
                     </h2>
-                    <div id="flush-collapseOne" class="accordion-collapse p-3 collapse" data-bs-parent="#accordionFlushExample">
+                    <div id="flush-collapseOne" class="accordion-collapse p-3 collapse"
+                      data-bs-parent="#accordionFlushExample">
                       <div class="row">
-                        <div class="col-12 bg-white d-flex align-items-center justify-content-between fs-7 py-2 color-primary fw-bold">
-                          <div (click)="onClick_selectAllAmeneties($event)" class="cursor-pointer">Seleccionar todos</div>
+                        <div
+                          class="col-12 bg-white d-flex align-items-center justify-content-between fs-7 py-2 color-primary fw-bold">
+                          <div (click)="onClick_selectAllAmeneties($event)" class="cursor-pointer">Seleccionar todos
+                          </div>
                           <div (click)="onClick_clearAmenneties($event)" class="cursor-pointer">Limpar</div>
                         </div>
-                        <div *ngFor="let amenetieStructure of amenetieTypeStructureList; let i = index" class="col-3 fs-7 mb-2">
+                        <div *ngFor="let amenetieStructure of amenetieTypeStructureList; let i = index"
+                          class="col-3 fs-7 mb-2">
                           <div class="bg-white rounded py-2">
                             <div class="d-flex align-items-center gap-2">
                               <div>
                                 <input class="form-check-input cursor-pointer" type="checkbox"
-                                  [checked]="amenetieStructure.isSelected" id="amenetie.id" (change)="onChange_checkbox(i)">
+                                  [checked]="amenetieStructure.isSelected" id="amenetie.id"
+                                  (change)="onChange_checkbox(i)">
                               </div>
                               <div [className]="amenetieStructure.amenetieType.icon + ' fa-lg color-primary'"></div>
                               <div>{{amenetieStructure.amenetieType.label}}</div>
@@ -504,6 +572,13 @@
                       </div>
                     </div>
                   </div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="comment" class="form-label fw-bold">Comentário</label>
+                <div class="input-group">
+                  <textarea type="text" class="form-control" id="comment" name="comment" rows="3"
+                    [(ngModel)]="selectedPreferenceStructure.preference.comment"></textarea>
                 </div>
               </div>
             </div>

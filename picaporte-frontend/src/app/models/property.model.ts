@@ -47,4 +47,8 @@ export class Property {
     public ameneties: Array<Static_AmenetieType> = new Array<Static_AmenetieType>();
     public documents: Array<Document> = new Array<Document>();
     public images: Array<Image> = new Array<Image>();
+
+    public formattedPrice: string = "";
+    public formattedLivingArea: string = "";
+    public formattedTotalConstructionArea: string = "";
 }

@@ -87,12 +87,15 @@ export class PropertyComponent implements OnInit {
     this.propertyValidationObject = new PropertyValidationObject();
     this.propertyValidationObject = this.validationService.validateProperty(
       this.propertyStructure.property.reference,
-      this.propertyStructure.property.price,
+      this.propertyStructure.property.formattedPrice,
       this.propertyStructure.property.customerId,
       this.propertyStructure.property.address
     )
     if (this.propertyValidationObject.isValid) {
       this.isEditable = false;
+      this.propertyStructure.property.price = parseInt(this.propertyStructure.property.price.toString().replace(" ", ""));
+      this.propertyStructure.property.livingArea = parseFloat(this.propertyStructure.property.livingArea.toString().replace(" ", ""));
+      this.propertyStructure.property.totalConstructionArea = parseFloat(this.propertyStructure.property.totalConstructionArea.toString().replace(" ", ""));
       this.submit_property();
     } else {
       this.onClick_selectSubMenu(Enum_PropertySubMenu.DETAILS);
@@ -186,6 +189,9 @@ export class PropertyComponent implements OnInit {
 
   private submit_property() {
     this.isLoading = true;
+    this.propertyStructure.property.price = this.unformatNumberFromSpaces(this.propertyStructure.property.formattedPrice);
+    this.propertyStructure.property.livingArea = this.unformatNumberFromSpaces(this.propertyStructure.property.formattedLivingArea);
+    this.propertyStructure.property.totalConstructionArea = this.unformatNumberFromSpaces(this.propertyStructure.property.formattedTotalConstructionArea);
     if (this.propertyStructure.property.id == 0 || this.propertyStructure.property.id == null) {
       this.authenticationService.authorizeUser().then((resolve: any) => {
         this.queries_propertyService.Post_PropertyStructure(this.propertyStructure, resolve)
@@ -225,6 +231,9 @@ export class PropertyComponent implements OnInit {
           )
           .subscribe(data => {
             this.propertyStructure = <PropertyStructure>data;
+            this.propertyStructure.property.formattedPrice = this.formatNumberWithSpaces(this.propertyStructure.property.price);
+            this.propertyStructure.property.formattedLivingArea = this.formatNumberWithSpaces(this.propertyStructure.property.livingArea);
+            this.propertyStructure.property.formattedTotalConstructionArea = this.formatNumberWithSpaces(this.propertyStructure.property.totalConstructionArea);
             this.isDataFetched = true;
             this.isLoading = false;
           });
@@ -246,10 +255,8 @@ export class PropertyComponent implements OnInit {
             amenetieTypes.forEach(element => {
               var amenetieTypeStructure: AmenetieTypeStructure = new AmenetieTypeStructure();
               amenetieTypeStructure.amenetieType = element;
-
               this.propertyStructure.ameneties.push(amenetieTypeStructure);
             });
-
             this.isDataFetched = true;
             this.isLoading = false;
             this.isEditable = true;
@@ -295,4 +302,21 @@ export class PropertyComponent implements OnInit {
     this.isOnActivityLogMenu = this.selectedPropertySubMenu == Enum_PropertySubMenu.HISTORY;
   }
 
+  private formatNumberWithSpaces(number: number): string {
+    let chunks = [];
+    if (number != null) {
+      let reversedStr = number.toString().split('').reverse().join('');
+      
+      for (let i = 0, length = reversedStr.length; i < length; i += 3) {
+        chunks.push(reversedStr.substr(i, 3));
+      }
+    
+    } 
+    return chunks.join(' ').split('').reverse().join('');
+  }
+
+  private unformatNumberFromSpaces(formattedStr: string): number {
+    const numStr = formattedStr.replace(/\s+/g, '');  // Remove all spaces
+    return parseInt(numStr, 10);  // Parse the cleaned-up string back to an integer
+  }
 }

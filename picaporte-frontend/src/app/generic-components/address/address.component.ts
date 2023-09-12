@@ -30,27 +30,13 @@ export class AddressComponent implements OnInit {
   ngOnInit(): void {
     this.get_islands();
   }
-
-  onFocus_street() {
-    this.addressValidationObject.isStreetValid.isValid = true;
-  }
- 
-  onFocus_parish() {
-    this.addressValidationObject.isParishValid.isValid = true;
-  }
-
-  onFocus_city() {
-    this.addressValidationObject.isCityValid.isValid = true;
-  }
-
-  onFocus_island() {
-    this.addressValidationObject.isIslandValid.isValid = true;
+  onFocus_zipCode() {
+    this.addressValidationObject.isZipCodeValid.isValid = true;
   }
 
   onClick_selectIsland(island: Static_Island) {
     this.address.island = island;
     this.address.islandId = island.id;
-    this.addressValidationObject.isIslandValid.isValid = true;
     this.triggerEvent_updateAddress();
   }
 

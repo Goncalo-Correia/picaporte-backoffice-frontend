@@ -19,13 +19,13 @@
     <div class="col-6 mb-3">
       <label for="price" class="form-label fw-bold required">Preço</label>
       <input appCommaToDot *ngIf="isEditable; else priceRead" type="text" class="form-control" id="price" name="price"
-        [ngClass]="{'invalid-input' : !propertyValidationObject.isPriceValid.isValid}" [(ngModel)]="property.price"
+        [ngClass]="{'invalid-input' : !propertyValidationObject.isPriceValid.isValid}" [(ngModel)]="property.formattedPrice"
         (change)="triggerEvent_updatePropertyDetails()" (focus)="onFocus_price()">
       <div *ngIf="!propertyValidationObject.isPriceValid.isValid" class="invalid-message">
         {{propertyValidationObject.isPriceValid.validationMessage}}</div>
       <ng-template #priceRead>
         <div *ngIf="property.price != null && property.price != 0; else priceNull">
-          {{property.price}}
+          {{property.formattedPrice}}
         </div>
         <ng-template #priceNull>
           <div>Sob consulta</div>
@@ -95,10 +95,10 @@
     <div class="col-6 mb-3">
       <label for="totalarea" class="form-label fw-bold">Área total</label>
       <input appCommaToDot *ngIf="isEditable; else livingAreaRead" type="text" class="form-control" id="totalarea" name="totalarea"
-        [(ngModel)]="property.livingArea" (change)="triggerEvent_updatePropertyDetails()">
+        [(ngModel)]="property.formattedLivingArea" (change)="triggerEvent_updatePropertyDetails()">
       <ng-template #livingAreaRead>
         <div *ngIf="property.livingArea!= null && property.livingArea!= 0; else livingAreaNull">
-          {{property.livingArea}}
+          {{property.formattedLivingArea}}
         </div>
         <ng-template #livingAreaNull>
           <div>-</div>
@@ -108,10 +108,10 @@
     <div class="col-6 mb-3">
       <label for="livingarea" class="form-label fw-bold">Área bruta</label>
       <input appCommaToDot *ngIf="isEditable; else totalAreaRead" type="text" class="form-control" id="livingarea" name="livingarea"
-        [(ngModel)]="property.totalConstructionArea" (change)="triggerEvent_updatePropertyDetails()">
+        [(ngModel)]="property.formattedTotalConstructionArea" (change)="triggerEvent_updatePropertyDetails()">
       <ng-template #totalAreaRead>
         <div *ngIf="property.totalConstructionArea != null && property.totalConstructionArea != 0; else totalAreaNull">
-          {{property.totalConstructionArea}}
+          {{property.formattedTotalConstructionArea}}
         </div>
         <ng-template #totalAreaNull>
           <div>-</div>

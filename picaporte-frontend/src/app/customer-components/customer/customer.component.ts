@@ -77,17 +77,10 @@ export class CustomerComponent implements OnInit {
     this.customerValidationObject = new CustomerValidationObject();
     this.customerValidationObject = this.validationService.validateCustomer(
       this.customerStructure.customer.firstName,
-      this.customerStructure.customer.email,
-      this.customerStructure.customer.phoneNumber,
-      this.customerStructure.customer.cc,
-      this.customerStructure.customer.nif,
       this.customerStructure.customer.address);
     this.addressValidationObject = new AddressValidationObject();
     this.addressValidationObject = this.validationService.validateAddress(
-      this.customerStructure.customer.address.street,
-      this.customerStructure.customer.address.parish,
-      this.customerStructure.customer.address.city,
-      this.customerStructure.customer.address.islandId
+      this.customerStructure.customer.address.zipCode
     );
     if (this.customerValidationObject.isValid) {
       this.submit_customer();

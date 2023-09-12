@@ -14,10 +14,7 @@ export class UserValidationObject {
 }
 
 export class AddressValidationObject {
-  isStreetValid: ValidationObject = new ValidationObject();
-  isParishValid: ValidationObject = new ValidationObject();
-  isCityValid: ValidationObject = new ValidationObject();
-  isIslandValid: ValidationObject = new ValidationObject();
+  isZipCodeValid: ValidationObject = new ValidationObject();
   isValid: boolean = false;
 }
 
@@ -87,38 +84,33 @@ export class ValidationService {
     return userValidationObject;
   }
 
-  validateAddress(street: string, parish: string, city: string, islandId: number): AddressValidationObject {
+  validateAddress(zipcode: string): AddressValidationObject {
     let addressValidationObject: AddressValidationObject = new AddressValidationObject();
     
-    addressValidationObject.isStreetValid.isValid = street != "" && street != null;
-    addressValidationObject.isStreetValid.validationMessage = (addressValidationObject.isStreetValid.isValid ? "" : "Campo obrigatório");
-    
-    addressValidationObject.isParishValid.isValid = parish != "" && parish != null;
-    addressValidationObject.isParishValid.validationMessage = (addressValidationObject.isParishValid.isValid ? "" : "Campo obrigatório");
-    
-    addressValidationObject.isCityValid.isValid = city != "" && city != null;
-    addressValidationObject.isCityValid.validationMessage = (addressValidationObject.isCityValid.isValid ? "" : "Campo obrigatório");
-    
-    addressValidationObject.isIslandValid.isValid = islandId >= 0 && islandId != null;
-    addressValidationObject.isIslandValid.validationMessage = (addressValidationObject.isIslandValid.isValid ? "" : "Campo obrigatório");
+    if (zipcode !== "") {
+      // This regular expression validates the format as "1111-111"
+      const zipCodeRegex = /^[0-9]{4}-[0-9]{3}$/;
+      addressValidationObject.isZipCodeValid.isValid = zipCodeRegex.test(zipcode);
+      addressValidationObject.isZipCodeValid.validationMessage = 
+        (addressValidationObject.isZipCodeValid.isValid ? "" : "Código postal inválido");
+    } else {
+      addressValidationObject.isZipCodeValid.isValid = true;
+    }
   
     addressValidationObject.isValid = (
-      addressValidationObject.isStreetValid.isValid &&
-      addressValidationObject.isParishValid.isValid &&
-      addressValidationObject.isCityValid.isValid &&
-      addressValidationObject.isIslandValid.isValid
+      addressValidationObject.isZipCodeValid.isValid
     )
   
     return addressValidationObject;
   }
 
-  validateCustomer(name: string, email: string, phoneNumber: string, cc: string, nif: string, address: Address): CustomerValidationObject {
+  validateCustomer(name: string, address: Address): CustomerValidationObject {
     let customerValidationObject: CustomerValidationObject = new CustomerValidationObject();
     
     customerValidationObject.isNameValid.isValid = name != "" && name != null;
     customerValidationObject.isNameValid.validationMessage = (customerValidationObject.isNameValid.isValid ? "" : "Campo obrigatório");
 
-    customerValidationObject.isAddressValid = this.validateAddress(address.street, address.parish, address.city, address.islandId).isValid;
+    customerValidationObject.isAddressValid = this.validateAddress(address.zipCode).isValid;
   
     customerValidationObject.isValid = (
       customerValidationObject.isNameValid.isValid &&
@@ -187,19 +179,20 @@ export class ValidationService {
     return imageValidationObject;
   }
 
-  validateProperty(reference: string, price: number, customerId: number, address: Address): PropertyValidationObject {
+  validateProperty(reference: string, price: string, customerId: number, address: Address): PropertyValidationObject {
     let propertyValidationObject: PropertyValidationObject = new PropertyValidationObject();
     
     propertyValidationObject.isReferenceValid.isValid = reference != "" && reference != null;
     propertyValidationObject.isReferenceValid.validationMessage = (propertyValidationObject.isReferenceValid.isValid ? "" : "Campo obrigatório");
     
-    propertyValidationObject.isPriceValid.isValid = price != null && !isNaN(price) && price > 0;
+    const parsedPrice = parseFloat(price); // Parsing the string to float
+    propertyValidationObject.isPriceValid.isValid = !isNaN(parsedPrice) && parsedPrice > 0;
     propertyValidationObject.isPriceValid.validationMessage = (propertyValidationObject.isPriceValid.isValid ? "" : "Campo obrigatório e deve ser maior que 0");
 
     propertyValidationObject.isCustomerValid.isValid = customerId > 0;
     propertyValidationObject.isCustomerValid.validationMessage = (propertyValidationObject.isCustomerValid.isValid ? "" : "Campo obrigatório");
 
-    propertyValidationObject.isAddressValid = this.validateAddress(address.street, address.parish, address.city, address.islandId).isValid;
+    propertyValidationObject.isAddressValid = this.validateAddress(address.zipCode).isValid;
     
     propertyValidationObject.isValid = (
       propertyValidationObject.isReferenceValid.isValid &&

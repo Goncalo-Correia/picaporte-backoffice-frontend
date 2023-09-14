@@ -54,7 +54,7 @@ import { RecommendedPropertiesComponent } from './property-components/recommende
 import { CommaToDotDirective } from './generic-components/comma-to-dot.directive';
 import { TasksComponent } from './router-components/tasks/tasks.component';
 import { TaskComponent } from './property-components/property/task/task.component';
-import { environment } from 'src/environments/environment';
+import { BackupService } from './api-service/backup/backup.service';
 
 @NgModule({
   declarations: [
@@ -120,7 +120,8 @@ import { environment } from 'src/environments/environment';
   providers: [
     QueriesCustomerService,
     {provide: LOCALE_ID, useValue: 'pt'},
-    DatePipe
+    DatePipe,
+    BackupService
   ],
   bootstrap: [AppComponent]
 })

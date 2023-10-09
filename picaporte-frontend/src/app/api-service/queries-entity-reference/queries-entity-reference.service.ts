@@ -1,10 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, retry, throwError } from 'rxjs';
+import { Enum_EntityType } from 'src/app/models/enum/entity-type.enum';
 import { DashboardKpiStructure } from 'src/app/structures/dashboard-structures/dashboard-kpi.structure';
 import { EntityReferenceDashboardStructure } from 'src/app/structures/dashboard-structures/entity-reference/entity-reference-dashboard.structure';
 import { EntityReferenceSearchAndFilterStructure } from 'src/app/structures/dashboard-structures/entity-reference/entity-reference-search-and-filter.structure';
-import { SearchAndFilterStructure } from 'src/app/structures/dashboard-structures/search-and-filter.structure';
 import { apiEndpoints, environment } from 'src/environments/environment';
 
 @Injectable({
@@ -31,6 +31,12 @@ export class QueriesEntityReferenceService {
       return this.http
         .get<DashboardKpiStructure[]>(this.baseurl + apiEndpoints.queries_entityReference.kpi, httpOptions)
         .pipe(retry(1), catchError(this.errorHandl));
+    }
+
+    Delete_EntityReference(id: number, entityTypeId: Enum_EntityType, httpOptions: { headers: HttpHeaders }) {
+      return this.http
+      .post(this.baseurl + apiEndpoints.queries_entityReference.delete + id + "/" + <number>entityTypeId, httpOptions)
+      .pipe(retry(1), catchError(this.errorHandl));
     }
     
     // Error handling

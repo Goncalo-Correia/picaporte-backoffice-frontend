@@ -16,6 +16,8 @@ import { Enum_PropertySubMenu, PropertySubMenu, PropertySubMenuFactory } from 's
 import { PropertyValidationObject, ValidationService } from 'src/app/services/validation-service/validation.service';
 import { Static_DocumentType } from 'src/app/models/static/static-documenttype.model';
 import { StaticDocumentTypeService } from 'src/app/api-service/static-document-type/static-document-type.service';
+import { QueriesEntityReferenceService } from 'src/app/api-service/queries-entity-reference/queries-entity-reference.service';
+import { Enum_EntityType } from 'src/app/models/enum/entity-type.enum';
 
 @Component({
   selector: 'app-property',
@@ -54,6 +56,7 @@ export class PropertyComponent implements OnInit {
 
   constructor(
     public queries_propertyService: QueriesPropertyService,
+    private queries_entityReference: QueriesEntityReferenceService,
     private activeRoute: ActivatedRoute,
     public amentieTypeService: StaticAmenetieTypeService,
     private authenticationService: AuthenticationService,
@@ -187,12 +190,26 @@ export class PropertyComponent implements OnInit {
 
   }
 
+  onClick_deleteProperty() {
+    this.authenticationService.refreshHttpOptions().then((resolve: any) => {
+      this.queries_entityReference.Delete_EntityReference(this.propertyId, Enum_EntityType.PROPERTY, resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          this.router.navigateByUrl("Imoveis");
+        });
+    });
+  }
+
   private submit_property() {
     this.isLoading = true;
     this.propertyStructure.property.price = this.unformatNumberFromSpaces(this.propertyStructure.property.formattedPrice);
     this.propertyStructure.property.livingArea = this.unformatNumberFromSpaces(this.propertyStructure.property.formattedLivingArea);
     this.propertyStructure.property.totalConstructionArea = this.unformatNumberFromSpaces(this.propertyStructure.property.formattedTotalConstructionArea);
-    console.log((this.propertyStructure));
     
     if (this.propertyStructure.property.id == 0 || this.propertyStructure.property.id == null) {
       this.authenticationService.authorizeUser().then((resolve: any) => {

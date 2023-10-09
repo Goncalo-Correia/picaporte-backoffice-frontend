@@ -1,9 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError } from 'rxjs';
+import { QueriesEntityReferenceService } from 'src/app/api-service/queries-entity-reference/queries-entity-reference.service';
 import { QueriesUserService } from 'src/app/api-service/queries-user/queries-user.service';
 import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
 import { MessageComponent } from 'src/app/generic-components/message/message.component';
+import { Enum_EntityType } from 'src/app/models/enum/entity-type.enum';
 import { User } from 'src/app/models/user.model';
 import { UserValidationObject, ValidationService } from 'src/app/services/validation-service/validation.service';
 import { UserStructure } from 'src/app/structures/main-structures/user.structure';
@@ -37,6 +39,7 @@ export class UserComponent implements OnInit {
 
   constructor(
     public queries_userService: QueriesUserService,
+    private queries_entityReference: QueriesEntityReferenceService,
     private activeRoute: ActivatedRoute,
     private authenticationService: AuthenticationService,
     private validationService: ValidationService,
@@ -96,6 +99,21 @@ export class UserComponent implements OnInit {
 
   eventHandler_updateUserPreferences(data: Array<PreferenceStructure>) {
     this.userStructure.preferences = [...data];
+  }
+
+  onClick_deleteUser() {
+    this.authenticationService.refreshHttpOptions().then((resolve: any) => {
+      this.queries_entityReference.Delete_EntityReference(this.userId, Enum_EntityType.USER, resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          this.router.navigateByUrl("Utilizadores");
+        });
+    });
   }
   
   private get_userStructure() {

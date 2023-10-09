@@ -20,7 +20,8 @@ export const apiEndpoints = {
   },
   queries_entityReference: {
     searchAndFilter: "api/Queries_EntityReference/SearchAndFilter",
-    kpi: "api/Queries_EntityReference/Kpi"
+    kpi: "api/Queries_EntityReference/Kpi",
+    delete: "api/Queries_EntityReference/Delete/"
   },
   queries_customer: {
     get: "api/Queries_Customers/",

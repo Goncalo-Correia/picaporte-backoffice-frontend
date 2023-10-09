@@ -1,11 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { catchError } from 'rxjs';
 import { QueriesCustomerService } from 'src/app/api-service/queries-customer/queries-customer.service';
+import { QueriesEntityReferenceService } from 'src/app/api-service/queries-entity-reference/queries-entity-reference.service';
 import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
 import { MessageComponent } from 'src/app/generic-components/message/message.component';
 import { Address } from 'src/app/models/address.model';
 import { Customer } from 'src/app/models/customer.model';
+import { Enum_EntityType } from 'src/app/models/enum/entity-type.enum';
 import { AddressValidationObject, CustomerValidationObject, UserValidationObject, ValidationService } from 'src/app/services/validation-service/validation.service';
 import { CustomerStructure } from 'src/app/structures/main-structures/customer.structure';
 import { PreferenceStructure } from 'src/app/structures/preference.structure';
@@ -42,9 +44,11 @@ export class CustomerComponent implements OnInit {
 
   constructor(
     public queries_customerService: QueriesCustomerService, 
+    private queries_entityReference: QueriesEntityReferenceService,
     private activeRoute: ActivatedRoute,
     private authenticationService: AuthenticationService,
-    private validationService: ValidationService
+    private validationService: ValidationService,
+    private router: Router
     ) { 
     this.customerStructure = new CustomerStructure();
     this.customerSubmenus = new Array<CustomerSubMenu>();
@@ -110,6 +114,21 @@ export class CustomerComponent implements OnInit {
     this.customerStructure.preferences = [...data];
   }
   
+  onClick_deleteCustomer() {
+    this.authenticationService.refreshHttpOptions().then((resolve: any) => {
+      this.queries_entityReference.Delete_EntityReference(this.customerId, Enum_EntityType.CUSTOMER, resolve)
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          this.router.navigateByUrl("Clientes");
+        });
+    });
+  }
+
   private get_customerStructure() {
     this.isLoading = true;
     this.isDataFetched = false;

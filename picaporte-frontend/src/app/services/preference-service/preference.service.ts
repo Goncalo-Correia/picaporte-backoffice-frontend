@@ -17,6 +17,10 @@ export class PreferenceService {
     this.preferenceStructure.preference.id = preferenceStructure.preference.id;
     this.preferenceStructure.preference.minPrice = preferenceStructure.preference.minPrice;
     this.preferenceStructure.preference.maxPrice = preferenceStructure.preference.maxPrice;
+    this.preferenceStructure.preference.minLivingArea = preferenceStructure.preference.minLivingArea;
+    this.preferenceStructure.preference.maxLivingArea = preferenceStructure.preference.maxLivingArea;
+    this.preferenceStructure.preference.minTotalArea = preferenceStructure.preference.minTotalArea;
+    this.preferenceStructure.preference.maxTotalArea = preferenceStructure.preference.maxTotalArea;
     this.preferenceStructure.preference.numBathrooms = preferenceStructure.preference.numBathrooms;
     this.preferenceStructure.preference.constructionYear = preferenceStructure.preference.constructionYear;
     this.preferenceStructure.preference.comment = preferenceStructure.preference.comment;

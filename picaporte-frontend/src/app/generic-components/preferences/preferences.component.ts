@@ -189,12 +189,12 @@ export class CustomerPreferencesComponent implements OnInit {
     if (this.isEditable) {
       this.selectedRowNumber = rowNumber;
       this.selectedPreferenceStructure = this.preferenceService.mapNewPreferenceStructure(this.preferences[rowNumber]);
-      this.formattedMinPrice = this.formatNumber(this.selectedPreferenceStructure.preference.minPrice.toString());
-      this.formattedMaxPrice = this.formatNumber(this.selectedPreferenceStructure.preference.maxPrice.toString());
-      this.formattedMinLivingArea = this.formatNumber(this.selectedPreferenceStructure.preference.minLivingArea.toString());
-      this.formattedMaxLivingArea = this.formatNumber(this.selectedPreferenceStructure.preference.maxLivingArea.toString());
-      this.formattedMinTotalArea = this.formatNumber(this.selectedPreferenceStructure.preference.minTotalArea.toString());
-      this.formattedMaxTotalArea = this.formatNumber(this.selectedPreferenceStructure.preference.maxTotalArea.toString());
+      this.formattedMinPrice = this.formatNumber(this.selectedPreferenceStructure.preference.minPrice);
+      this.formattedMaxPrice = this.formatNumber(this.selectedPreferenceStructure.preference.maxPrice);
+      this.formattedMinLivingArea = this.formatNumber(this.selectedPreferenceStructure.preference.minLivingArea);
+      this.formattedMaxLivingArea = this.formatNumber(this.selectedPreferenceStructure.preference.maxLivingArea);
+      this.formattedMinTotalArea = this.formatNumber(this.selectedPreferenceStructure.preference.minTotalArea);
+      this.formattedMaxTotalArea = this.formatNumber(this.selectedPreferenceStructure.preference.maxTotalArea);
       this.initAmenetieTypes();
       this.initPropertyTypes();
       this.initPropertyTypologies();
@@ -225,12 +225,13 @@ export class CustomerPreferencesComponent implements OnInit {
     this.buildPropertyTypes();
     this.buildPropertyTypologies();
 
-    this.selectedPreferenceStructure.preference.minPrice = Number(this.formattedMinPrice.replace(" ", ""));
-    this.selectedPreferenceStructure.preference.maxPrice = Number(this.formattedMaxPrice.replace(" ", ""));
-    this.selectedPreferenceStructure.preference.minLivingArea = Number(this.formattedMinLivingArea.replace(" ", ""));
-    this.selectedPreferenceStructure.preference.maxLivingArea = Number(this.formattedMaxLivingArea.replace(" ", ""));
-    this.selectedPreferenceStructure.preference.minTotalArea = Number(this.formattedMinTotalArea.replace(" ", ""));
-    this.selectedPreferenceStructure.preference.maxTotalArea = Number(this.formattedMaxTotalArea.replace(" ", ""));
+    this.selectedPreferenceStructure.preference.minPrice = Number(this.formattedMinPrice.replace(/[^0-9.]/g, ''));
+    this.selectedPreferenceStructure.preference.maxPrice = Number(this.formattedMaxPrice.replace(/[^0-9.]/g, ''));
+    this.selectedPreferenceStructure.preference.minLivingArea = Number(this.formattedMinLivingArea.replace(/[^0-9.]/g, ''));
+    this.selectedPreferenceStructure.preference.maxLivingArea = Number(this.formattedMaxLivingArea.replace(/[^0-9.]/g, ''));
+    this.selectedPreferenceStructure.preference.minTotalArea = Number(this.formattedMinTotalArea.replace(/[^0-9.]/g, ''));
+    this.selectedPreferenceStructure.preference.maxTotalArea = Number(this.formattedMaxTotalArea.replace(/[^0-9.]/g, ''));
+    console.log(this.formattedMinPrice.replace(/[^0-9.]/g, ''))
 
     if (this.selectedRowNumber == -1) {
       this.preferences.push(this.selectedPreferenceStructure);
@@ -255,8 +256,8 @@ export class CustomerPreferencesComponent implements OnInit {
     this.event_updatePreferences.emit(this.preferences);
   }
 
-  formatNumber(number: string) {
-    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  formatNumber(value: number) {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   }
 
   private buildPropertyTypes() {

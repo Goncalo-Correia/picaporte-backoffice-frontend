@@ -51,7 +51,7 @@ import { DatePipe, registerLocaleData } from '@angular/common';
 import { GoogleMapComponent } from './generic-components/google-map/google-map.component';
 import { DateFormatComponent } from './generic-components/date-format/date-format.component';
 import { RecommendedPropertiesComponent } from './property-components/recommended-properties/recommended-properties.component';
-import { CommaToDotDirective } from './generic-components/comma-to-dot.directive';
+import { CommaToDotDirective } from './directives/comma-to-dot-directive/comma-to-dot.directive';
 import { TasksComponent } from './router-components/tasks/tasks.component';
 import { TaskComponent } from './property-components/property/task/task.component';
 import { BackupService } from './api-service/backup/backup.service';

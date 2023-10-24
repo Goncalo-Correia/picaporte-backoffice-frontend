@@ -94,7 +94,7 @@
   <div class="row">
     <div class="col-6 mb-3">
       <label for="totalarea" class="form-label fw-bold">Área total</label>
-      <input appCommaToDot *ngIf="isEditable; else livingAreaRead" type="text" class="form-control" id="totalarea" name="totalarea"
+      <input *ngIf="isEditable; else livingAreaRead" type="text" appFixed3 class="form-control" id="totalarea" name="totalarea"
         [(ngModel)]="property.formattedLivingArea" (change)="triggerEvent_updatePropertyDetails()">
       <ng-template #livingAreaRead>
         <div *ngIf="property.livingArea!= null && property.livingArea!= 0; else livingAreaNull">
@@ -107,7 +107,7 @@
     </div>
     <div class="col-6 mb-3">
       <label for="livingarea" class="form-label fw-bold">Área bruta</label>
-      <input appCommaToDot *ngIf="isEditable; else totalAreaRead" type="text" class="form-control" id="livingarea" name="livingarea"
+      <input *ngIf="isEditable; else totalAreaRead" type="text" appFixed3 class="form-control" id="livingarea" name="livingarea"
         [(ngModel)]="property.formattedTotalConstructionArea" (change)="triggerEvent_updatePropertyDetails()">
       <ng-template #totalAreaRead>
         <div *ngIf="property.totalConstructionArea != null && property.totalConstructionArea != 0; else totalAreaNull">

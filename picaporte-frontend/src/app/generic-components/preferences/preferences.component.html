@@ -24,14 +24,14 @@
           <div class="d-flex align-items-center gap-3">
             <div
               *ngIf="preference.preference.minPrice != null && preference.preference.minPrice != 0; else minPriceNull">
-              {{formatNumber(preference.preference.minPrice.toString())}}
+              {{formatNumber(preference.preference.minPrice)}}
             </div>
             <ng-template #minPriceNull>
               <div>-</div>
             </ng-template>
             <div> / </div>
             <div *ngIf="preference.preference.maxPrice!= null && preference.preference.maxPrice!= 0; else maxPriceNull">
-              {{formatNumber(preference.preference.maxPrice.toString())}}</div>
+              {{formatNumber(preference.preference.maxPrice)}}</div>
             <ng-template #maxPriceNull>
               <div>-</div>
             </ng-template>
@@ -51,7 +51,7 @@
           <div class="d-flex align-items-center gap-3">
             <div
               *ngIf="preference.preference.minLivingArea != null && preference.preference.minLivingArea != 0; else minLivingAreaNull">
-              {{formatNumber(preference.preference.minLivingArea.toString())}}
+              {{formatNumber(preference.preference.minLivingArea)}}
             </div>
             <ng-template #minLivingAreaNull>
               <div>-</div>
@@ -59,7 +59,7 @@
             <div> / </div>
             <div
               *ngIf="preference.preference.maxLivingArea!= null && preference.preference.maxLivingArea!= 0; else maxLivingAreaNull">
-              {{formatNumber(preference.preference.maxLivingArea.toString())}}</div>
+              {{formatNumber(preference.preference.maxLivingArea)}}</div>
             <ng-template #maxLivingAreaNull>
               <div>-</div>
             </ng-template>
@@ -70,7 +70,7 @@
           <div class="d-flex align-items-center gap-3">
             <div
               *ngIf="preference.preference.minTotalArea != null && preference.preference.minTotalArea != 0; else minTotalAreaNull">
-              {{formatNumber(preference.preference.minTotalArea.toString())}}
+              {{formatNumber(preference.preference.minTotalArea)}}
             </div>
             <ng-template #minTotalAreaNull>
               <div>-</div>
@@ -78,7 +78,7 @@
             <div> / </div>
             <div
               *ngIf="preference.preference.maxTotalArea!= null && preference.preference.maxTotalArea!= 0; else maxTotalAreaNull">
-              {{formatNumber(preference.preference.maxTotalArea.toString())}}</div>
+              {{formatNumber(preference.preference.maxTotalArea)}}</div>
             <ng-template #maxTotalAreaNull>
               <div>-</div>
             </ng-template>
@@ -194,14 +194,14 @@
           <div class="d-flex align-items-center gap-3">
             <div
               *ngIf="preference.preference.minPrice != null && preference.preference.minPrice != 0; else minPriceNull">
-              {{formatNumber(preference.preference.minPrice.toString())}}
+              {{formatNumber(preference.preference.minPrice)}}
             </div>
             <ng-template #minPriceNull>
               <div>-</div>
             </ng-template>
             <div> / </div>
             <div *ngIf="preference.preference.maxPrice!= null && preference.preference.maxPrice!= 0; else maxPriceNull">
-              {{formatNumber(preference.preference.maxPrice.toString())}}</div>
+              {{formatNumber(preference.preference.maxPrice)}}</div>
             <ng-template #maxPriceNull>
               <div>-</div>
             </ng-template>
@@ -221,7 +221,7 @@
           <div class="d-flex align-items-center gap-3">
             <div
               *ngIf="preference.preference.minLivingArea != null && preference.preference.minLivingArea != 0; else minLivingAreaNull">
-              {{formatNumber(preference.preference.minLivingArea.toString())}}
+              {{formatNumber(preference.preference.minLivingArea)}}
             </div>
             <ng-template #minLivingAreaNull>
               <div>-</div>
@@ -229,7 +229,7 @@
             <div> / </div>
             <div
               *ngIf="preference.preference.maxLivingArea!= null && preference.preference.maxLivingArea!= 0; else maxLivingAreaNull">
-              {{formatNumber(preference.preference.maxLivingArea.toString())}}</div>
+              {{formatNumber(preference.preference.maxLivingArea)}}</div>
             <ng-template #maxLivingAreaNull>
               <div>-</div>
             </ng-template>
@@ -240,7 +240,7 @@
           <div class="d-flex align-items-center gap-3">
             <div
               *ngIf="preference.preference.minTotalArea != null && preference.preference.minTotalArea != 0; else minTotalAreaNull">
-              {{formatNumber(preference.preference.minTotalArea.toString())}}
+              {{formatNumber(preference.preference.minTotalArea)}}
             </div>
             <ng-template #minTotalAreaNull>
               <div>-</div>
@@ -248,7 +248,7 @@
             <div> / </div>
             <div
               *ngIf="preference.preference.maxTotalArea!= null && preference.preference.maxTotalArea!= 0; else maxTotalAreaNull">
-              {{formatNumber(preference.preference.maxTotalArea.toString())}}</div>
+              {{formatNumber(preference.preference.maxTotalArea)}}</div>
             <ng-template #maxTotalAreaNull>
               <div>-</div>
             </ng-template>

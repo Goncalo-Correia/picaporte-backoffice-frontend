@@ -169,7 +169,7 @@
         <div *ngIf="preference.ameneties.length > 0; else amenetiesNull" class="row">
           <div *ngFor="let amenetieType of preference.ameneties" class="col-auto d-flex align-items-center gap-3">
             <div>{{amenetieType.label}}</div>
-            <div [className]="amenetieType.icon + ' fa-lg color-primary'"></div>
+            <div [innerHtml]="amenetieType.icon"></div>
           </div>
         </div>
         <ng-template #amenetiesNull>
@@ -339,7 +339,7 @@
         <div *ngIf="preference.ameneties.length > 0; else amenetiesNull" class="row">
           <div *ngFor="let amenetieType of preference.ameneties" class="col-auto d-flex align-items-center gap-2">
             <div>{{amenetieType.label}}</div>
-            <div [className]="amenetieType.icon + ' fa-lg color-primary'"></div>
+            <div [innerHtml]="amenetieType.icon"></div>
           </div>
         </div>
         <ng-template #amenetiesNull>
@@ -564,7 +564,7 @@
                                   [checked]="amenetieStructure.isSelected" id="amenetie.id"
                                   (change)="onChange_checkbox(i)">
                               </div>
-                              <div [className]="amenetieStructure.amenetieType.icon + ' fa-lg color-primary'"></div>
+                              <div [innerHtml]="amenetieStructure.amenetieType.icon"></div>
                               <div>{{amenetieStructure.amenetieType.label}}</div>
                             </div>
                           </div>

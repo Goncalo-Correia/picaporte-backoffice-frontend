@@ -47,10 +47,7 @@
         <div class="mb-3">
             <app-auth0 [isOpen]="isOpen"></app-auth0>
         </div>
-        <div *ngIf="isOpen" class="mb-3 text-center">
-            <button class="btn btn-danger" (click)="onClick_downloadBackup()">Download backup</button>
-        </div>
-        <div (click)="onClick_toggle()">
+<div (click)="onClick_toggle()">
             <div *ngIf="isOpen; else closed">
                 <i class="fa-solid fa-chevrons-left"></i>
             </div>

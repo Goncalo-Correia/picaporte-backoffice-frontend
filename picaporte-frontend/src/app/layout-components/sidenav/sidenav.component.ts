@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { BackupService } from 'src/app/api-service/backup/backup.service';
 import { NotificationService } from 'src/app/api-service/notification/notification.service';
 import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
 
@@ -14,8 +13,7 @@ export class SidenavComponent implements OnInit {
 
   constructor(
     private authenticationService: AuthenticationService,
-    private notificationService: NotificationService,
-    private backupService: BackupService
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit(): void {
@@ -26,16 +24,10 @@ export class SidenavComponent implements OnInit {
   }
 
   onClick_sendNewsletter() {
-    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => {
       this.notificationService.Send_Newsletter(resolve).subscribe(()=> {
-        
-      });
-    });
-  }
 
-  onClick_downloadBackup() {
-    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.backupService.DownloadBackup(resolve);
+      });
     });
   }
 }

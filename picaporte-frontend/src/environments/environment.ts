@@ -15,9 +15,6 @@ export const environment = {
 };
 
 export const apiEndpoints = {
-  backup: {
-    download: "api/Backup/downloadBackup"
-  },
   queries_entityReference: {
     searchAndFilter: "api/Queries_EntityReference/SearchAndFilter",
     kpi: "api/Queries_EntityReference/Kpi",

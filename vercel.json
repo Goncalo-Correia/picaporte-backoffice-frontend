@@ -1,0 +1,5 @@
+{
+  "buildCommand": "cd picaporte-frontend && npm install && npm run build",
+  "outputDirectory": "picaporte-frontend/dist/picaporte-frontend",
+  "installCommand": "echo 'install handled in buildCommand'"
+}

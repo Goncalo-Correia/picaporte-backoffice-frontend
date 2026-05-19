@@ -17,7 +17,7 @@ export class TaskComponent implements OnInit {
 
   @ViewChild(MessageComponent) messageComponent!: MessageComponent;
   
-  @Input() recordId: number = 0;
+  @Input() recordId: string = "";
 
   isDataFetched: boolean = false;
 

@@ -3,8 +3,8 @@ import { PreferenceStructure } from "../preference.structure";
 
 export class UserStructure {
     user: User = new User();
-    customerId: number = 0;
+    customerId: string = "";
     customerName: string = "";
     preferences: Array<PreferenceStructure> = new Array<PreferenceStructure>();
-    entityReferenceId: number = 0;
+    entityReferenceId: string = "";
 }

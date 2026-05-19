@@ -5,3 +5,5 @@ export class ToDoStructure {
     toDo: ToDo = new ToDo();
     toDoItems: Array<ToDoItem> = new Array<ToDoItem>();
 }
+
+export { ToDoItem as ToDoItemDto };

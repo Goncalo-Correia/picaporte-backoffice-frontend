@@ -104,7 +104,7 @@
             <div class="dropdown">
               <button class="w-100 btn btn-secondary dropdown-toggle" type="button" id="propertyType"
                 data-bs-toggle="dropdown" aria-expanded="false">
-                {{selectedRenting.customer.id != 0 ? selectedRenting.customer.firstName : selectedCustomerLabel}}
+                {{selectedRenting.customer.id != '' ? selectedRenting.customer.firstName : selectedCustomerLabel}}
               </button>
               <ul class="dropdown-menu" aria-labelledby="propertyType">
                 <li *ngFor="let customer of customerList">

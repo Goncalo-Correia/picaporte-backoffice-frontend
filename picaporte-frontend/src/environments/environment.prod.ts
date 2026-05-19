@@ -3,9 +3,15 @@ export const environment = {
   mapboxAccessToken: "REDACTED_MAPBOX_TOKEN",
   apiKey: "REDACTED_API_KEY",
   //apiUrl: "https://picaporte.website/rest/",
-  //redirectUri: "https://picaporte-backoffice.site/"
-  apiUrl: "https://picaportebackoffice.online/rest/",
-  redirectUri: "https://picaportebackoffice.online/"
+  //apiUrl: "https://picaportebackoffice.online/rest/",
+  apiUrl: "https://picaporte-api.onrender.com/",
+  auth0: {
+    // Swap for a dedicated prod tenant/app when ready
+    domain: 'REDACTED_AUTH0_DOMAIN',
+    clientId: 'REDACTED_AUTH0_CLIENT_ID',
+    audience: 'https://picaporte-api',
+    redirectUri: window.location.origin + '/callback'
+  }
 };
 
 export const apiEndpoints = {
@@ -133,9 +139,6 @@ export const apiEndpoints = {
     get: "api/Static_RentingActionType/isActive/",
     updateAll: "api/Static_RentingActionType/updateAll",
     base: "api/Static_RentingActionType/"
-  },
-  user: {
-    authotize: "api/Users/authorize"
   },
   notification: {
     newsletter: "api/Notification/Newsletter"

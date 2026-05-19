@@ -1,0 +1,25 @@
+<div class="denied-container">
+  <img class="denied-logo" src="assets/images/picaporte_logo.png" alt="Picaporte">
+
+  <div class="denied-card">
+    <div class="denied-icon">
+      <i class="fa-solid fa-ban"></i>
+    </div>
+
+    <h2 class="denied-title">Access denied</h2>
+
+    <p class="denied-message">
+      Your account does not have admin access. Contact your administrator.
+    </p>
+
+    <div *ngIf="user$ | async as user" class="denied-user">
+      <i class="fa-solid fa-user-circle"></i>
+      {{ user.email }}
+    </div>
+
+    <button class="btn btn-outline-secondary denied-btn" (click)="logout()">
+      <i class="fa-solid fa-right-from-bracket me-2"></i>
+      Sign out
+    </button>
+  </div>
+</div>

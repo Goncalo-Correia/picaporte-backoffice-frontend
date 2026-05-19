@@ -4,7 +4,7 @@ import { IAlbum, Lightbox, LightboxConfig } from 'ngx-lightbox';
 declare let $: any;
 import 'bootstrap';
 import { apiEndpoints, environment } from 'src/environments/environment';
-import { Image } from 'src/app/models/image.model';
+import { ImageDto } from 'src/app/models/image-dto.model';
 import { ImageValidationObject, ValidationService } from 'src/app/services/validation-service/validation.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
@@ -14,22 +14,22 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
   styleUrls: ['./property-images.component.css']
 })
 export class PropertyImagesComponent implements OnInit, OnChanges {
-  
-  @Input() mainImage: Image = new Image();
-  @Input() otherImages: Array<Image> = new Array<Image>();
+
+  @Input() mainImage: ImageDto = new ImageDto();
+  @Input() otherImages: Array<ImageDto> = new Array<ImageDto>();
   @Input() isEditable: boolean = false;
   @Input() videoUrl: string = "";
   videoSafeUrl: SafeResourceUrl | undefined;
 
-  @Output() event_updateMainImage = new EventEmitter<Image>();
-  @Output() event_updateOtherImages = new EventEmitter<Array<Image>>();
+  @Output() event_updateMainImage = new EventEmitter<ImageDto>();
+  @Output() event_updateOtherImages = new EventEmitter<Array<ImageDto>>();
   @Output() event_updateVideoUrl = new EventEmitter<string>();
 
   url: string = environment.apiUrl + apiEndpoints.image.binary;
 
   lightboxImages: Array<IAlbum>;
-  selectedImageStructure: Image = new Image();
-  multipleImageStructure: Array<Image> = new Array<Image>();
+  selectedImageStructure: ImageDto = new ImageDto();
+  multipleImageStructure: Array<ImageDto> = new Array<ImageDto>();
   selectedFiles: FileList | null = null;
   selectedRowNumber: number = -1;
   isMainImage: boolean = false;
@@ -38,19 +38,19 @@ export class PropertyImagesComponent implements OnInit, OnChanges {
   otherImagesIsEmpty: boolean = false;
 
   constructor(
-    public imageService: ImageService, 
+    public imageService: ImageService,
     private _lightbox: Lightbox,
     @Inject(LightboxConfig) private lightboxConfig: LightboxConfig,
     private validationService: ValidationService,
     private sanitizer: DomSanitizer
-    ) { 
+    ) {
     this.lightboxImages = new Array<IAlbum>();
     this.lightboxConfig.centerVertically = true;
   }
   ngOnInit(): void {
     this.videoSafeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(`https://www.youtube.com/embed/${this.videoUrl}`);
   }
-  
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['videoUrl'] && !changes['videoUrl'].isFirstChange()) {
       this.videoSafeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(`https://www.youtube.com/embed/${this.videoUrl}`);
@@ -73,13 +73,13 @@ export class PropertyImagesComponent implements OnInit, OnChanges {
   onChange_files(event: any) {
     if (event.target.files) {
       for (let i = 0; i < event.target.files.length; i++) {
-        let imageStructure: Image = new Image();
+        let imageStructure: ImageDto = new ImageDto();
         this.getBase64(event.target.files[i], imageStructure, true, this.multipleImageStructure);
       }
     }
   }
 
-  private getBase64(file: any, imageStructure: Image, isBulk: boolean, multipleImages: Array<Image>) {
+  private getBase64(file: any, imageStructure: ImageDto, isBulk: boolean, multipleImages: Array<ImageDto>) {
     var reader = new FileReader();
     reader.onload = function () {
       file.binary = (reader.result);
@@ -98,31 +98,31 @@ export class PropertyImagesComponent implements OnInit, OnChanges {
 
   onClick_editMainImage() {
     this.isMainImage = true;
-    this.selectedImageStructure = new Image();
+    this.selectedImageStructure = new ImageDto();
     this.selectedImageStructure = this.imageService.mapNewImageStructure(this.mainImage);
   }
 
   onClick_editOtherImage(index: number) {
     this.isMainImage = false;
     this.selectedRowNumber = index;
-    
+
     if (index >= 0) {
-      this.selectedImageStructure = new Image();
+      this.selectedImageStructure = new ImageDto();
       this.selectedImageStructure = this.imageService.mapNewImageStructure(this.otherImages[index]);
     } else {
-      this.selectedImageStructure = new Image();
+      this.selectedImageStructure = new ImageDto();
     }
   }
 
   onClick_showMainImageLightbox() {
     this.lightboxImages = new Array<IAlbum>();
-    let url = this.url + (this.mainImage.id == 0 ? this.mainImage.content : this.mainImage.filename) + "/true";
+    let url = this.url + (this.mainImage.id === "" ? this.mainImage.content : this.mainImage.filename) + "/true";
     this.lightboxImages.push({
       src: url,
       caption: this.mainImage.title,
       thumb: ""
     });
-    
+
     this._lightbox.open(this.lightboxImages, 0);
   }
 
@@ -148,7 +148,7 @@ export class PropertyImagesComponent implements OnInit, OnChanges {
 
   onClick_submit() {
     this.imageValidationObject = new ImageValidationObject();
-    this.imageValidationObject = this.validationService.validateImage(this.selectedImageStructure.title, (this.selectedImageStructure.id == 0 ? this.selectedImageStructure.content : this.selectedImageStructure.filename));
+    this.imageValidationObject = this.validationService.validateImage(this.selectedImageStructure.title, (this.selectedImageStructure.id === "" ? this.selectedImageStructure.content : this.selectedImageStructure.filename));
     if (this.imageValidationObject.isValid) {
       if (this.isMainImage) {
         this.mainImage = this.imageService.mapNewImageStructure(this.selectedImageStructure);
@@ -197,7 +197,7 @@ export class PropertyImagesComponent implements OnInit, OnChanges {
   private buildLightboxImages() {
     this.lightboxImages = new Array<IAlbum>();
     this.otherImages.forEach(element => {
-      let url = this.url + (element.id == 0 ? element.content : element.filename) + "/true";
+      let url = this.url + (element.id === "" ? element.content : element.filename) + "/true";
       this.lightboxImages.push({
         src: url,
         caption: element.title,

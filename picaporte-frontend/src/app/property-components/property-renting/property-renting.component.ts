@@ -21,7 +21,7 @@ export class PropertyRentingComponent implements OnInit {
   
   @ViewChild(MessageComponent) messageComponent!: MessageComponent;
   
-  @Input() propertyId: number = 0;
+  @Input() propertyId: string = "";
 
   isDataFetched: boolean = false;
 
@@ -209,7 +209,7 @@ export class PropertyRentingComponent implements OnInit {
   }
 
   private post_Renting() {
-    this.authenticationService.authorizeUser().then((resolve:any) => { 
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
       this.rentingService.Post_Renting(this.selectedRenting, resolve)
       .pipe(
         catchError(err => {
@@ -226,7 +226,7 @@ export class PropertyRentingComponent implements OnInit {
 
   private put_Renting() {
     if (this.selectedRenting.id != null) {
-      this.authenticationService.authorizeUser().then((resolve:any) => { 
+      this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
         this.rentingService.Put_Renting(this.selectedRenting.id, this.selectedRenting, resolve)
         .pipe(
           catchError(err => {
@@ -244,7 +244,7 @@ export class PropertyRentingComponent implements OnInit {
 
   private delete_Renting() {
     if (this.selectedRenting.id != null) {
-      this.authenticationService.authorizeUser().then((resolve:any) => { 
+      this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
         this.rentingService.Delete_Renting(this.toDeleteRenting.id, resolve)
         .pipe(
           catchError(err => {
@@ -268,3 +268,4 @@ export enum Enum_RentingEvent {
   CLOSE_CONTRACT,
   OBSERVATION
 }
+

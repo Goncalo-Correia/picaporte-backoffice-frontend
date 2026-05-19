@@ -18,14 +18,14 @@ export class QueriesUserService {
     constructor(private http: HttpClient) {}
     
     // GET
-    Get_UserStructure(id: number, httpOptions: { headers: HttpHeaders }): Observable<UserStructure> {
+    Get_UserStructure(id: string, httpOptions: { headers: HttpHeaders }): Observable<UserStructure> {
       return this.http
         .get<UserStructure>(this.baseurl + apiEndpoints.queries_user.get + id, httpOptions)
         .pipe(retry(1), catchError(this.errorHandl));
     }
 
     // PUT
-    Put_UserStructure(id: number, data: UserStructure, httpOptions: { headers: HttpHeaders }): Observable<UserStructure> {
+    Put_UserStructure(id: string, data: UserStructure, httpOptions: { headers: HttpHeaders }): Observable<UserStructure> {
       return this.http
         .put<UserStructure>(
           this.baseurl + apiEndpoints.queries_user.put + id,

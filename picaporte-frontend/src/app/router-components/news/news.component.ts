@@ -5,7 +5,7 @@ import { catchError } from 'rxjs';
 import { NewsService } from 'src/app/api-service/news/news.service';
 import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
 import { MessageComponent } from 'src/app/generic-components/message/message.component';
-import { Image } from 'src/app/models/image.model';
+import { ImageDto } from 'src/app/models/image-dto.model';
 import { News } from 'src/app/models/news.model';
 import { NewsValidationObject, ValidationService } from 'src/app/services/validation-service/validation.service';
 import { apiEndpoints, environment } from 'src/environments/environment';
@@ -70,7 +70,7 @@ export class NewsComponent implements OnInit {
     this.getBase64(file, event, this.selectedNews.image);
   }
 
-  private getBase64(file: any, event: any, imageStructure: Image) {
+  private getBase64(file: any, event: any, imageStructure: ImageDto) {
     var reader = new FileReader();
     reader.onload = function () {
       event.target.files[0].binary = (reader.result);
@@ -121,7 +121,7 @@ export class NewsComponent implements OnInit {
     if (this.newsValidationObject.isValid) {
       this.isDataFetched = false;
       this.isOnListView = true;
-      if(this.selectedNews.id == 0) {
+      if(this.selectedNews.id === "") {
         this.post_news();
       } else {
         this.put_news();
@@ -164,7 +164,7 @@ export class NewsComponent implements OnInit {
   }
 
   private post_news() {
-    this.authenticationService.authorizeUser().then((resolve:any) => { 
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
       this.newsService.Post_News(this.selectedNews, resolve)
       .pipe(
         catchError(err => {
@@ -179,7 +179,7 @@ export class NewsComponent implements OnInit {
   }
 
   private approve_news() {
-    this.authenticationService.authorizeUser().then((resolve:any) => { 
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
       this.newsService.Approve_News(this.selectedNews, resolve)
       .pipe(
         catchError(err => {
@@ -195,7 +195,7 @@ export class NewsComponent implements OnInit {
   }
 
   private put_news() {
-    this.authenticationService.authorizeUser().then((resolve:any) => { 
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
       this.newsService.Put_News(this.selectedNews.id, this.selectedNews, resolve)
       .pipe(
         catchError(err => {
@@ -210,7 +210,7 @@ export class NewsComponent implements OnInit {
   }
 
   private delete_news() {
-    this.authenticationService.authorizeUser().then((resolve:any) => { 
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
       this.newsService.Delete_News(this.selectedNews.id, resolve)
       .pipe(
         catchError(err => {
@@ -224,3 +224,4 @@ export class NewsComponent implements OnInit {
     });
   }
 }
+

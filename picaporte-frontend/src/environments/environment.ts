@@ -6,12 +6,16 @@ export const environment = {
   production: false,
   apiKey: "REDACTED_API_KEY",
   mapboxAccessToken: "REDACTED_MAPBOX_TOKEN",
-  //apiUrl: "https://localhost:7036/",
-  //redirectUri: "http://localhost:59701/",
   //apiUrl: "https://picaporte.website/rest/",
-  //redirectUri: "https://picaporte-backoffice.site/"
-  apiUrl: "https://picaportebackoffice.online/rest/",
-  redirectUri: "https://picaportebackoffice.online/"
+  //apiUrl: "https://picaportebackoffice.online/rest/",
+  apiUrl: "https://localhost:32783/",
+  auth0: {
+    domain: 'REDACTED_AUTH0_DOMAIN',
+    clientId: 'REDACTED_AUTH0_CLIENT_ID',
+    audience: 'https://picaporte-api',
+    // Dev tenant — update for a separate prod app if needed
+    redirectUri: window.location.origin + '/callback'
+  }
 };
 
 export const apiEndpoints = {
@@ -139,9 +143,6 @@ export const apiEndpoints = {
     get: "api/Static_RentingActionType/isActive/",
     updateAll: "api/Static_RentingActionType/updateAll",
     base: "api/Static_RentingActionType/"
-  },
-  user: {
-    authotize: "api/Users/authorize"
   },
   notification: {
     newsletter: "api/Notification/Newsletter"

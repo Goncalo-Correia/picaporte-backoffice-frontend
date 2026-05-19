@@ -20,7 +20,7 @@ import { Enum_UserSubMenu, UserSubMenu, UserSubMenuFactory } from 'src/app/subme
 export class UserComponent implements OnInit {
 
   @ViewChild(MessageComponent) messageComponent!: MessageComponent;
-  userId: number = 0;
+  userId: string = "";
   
   isEditable: boolean = false;
   isLoading: boolean = false;
@@ -53,7 +53,7 @@ export class UserComponent implements OnInit {
   ngOnInit(): void {
     this.getActiveRoute();
     this.get_userSubmenus();
-    if (this.userId != 0) {
+    if (this.userId !== "") {
       this.get_userStructure();
     } else {
       this.isDataFetched = true;
@@ -66,9 +66,9 @@ export class UserComponent implements OnInit {
 
   onClick_cancel() {
     this.isEditable = false;
-    if (this.userId != 0) {
+    if (this.userId !== "") {
       this.get_userStructure();
-    }  
+    }
   }
 
   onClick_submit() {
@@ -119,7 +119,7 @@ export class UserComponent implements OnInit {
   private get_userStructure() {
     this.isLoading = true;
     this.isDataFetched = false;
-    if (this.userId != 0 && this.userId != null) {
+    if (this.userId !== "" && this.userId != null) {
       this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
         this.queries_userService.Get_UserStructure(this.userId, resolve)
         .pipe(
@@ -148,8 +148,8 @@ export class UserComponent implements OnInit {
   private submit_user() {
     this.isLoading = true;
 
-    if (this.userStructure.user.id == 0 || this.userStructure.user.id == null) {
-      this.authenticationService.authorizeUser().then((resolve:any) => { 
+    if (this.userStructure.user.id === "" || this.userStructure.user.id == null) {
+      this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
         this.queries_userService.Post_UserStructure(this.userStructure, resolve)
         .pipe(
           catchError(err => {
@@ -164,7 +164,7 @@ export class UserComponent implements OnInit {
         });
       });
     } else {
-      this.authenticationService.authorizeUser().then((resolve:any) => { 
+      this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
         this.queries_userService.Put_UserStructure(this.userId, this.userStructure, resolve)
         .pipe(
           catchError(err => {
@@ -181,7 +181,7 @@ export class UserComponent implements OnInit {
 
   private getActiveRoute() {
     this.activeRoute.paramMap.subscribe(res => {
-      this.userId = <number><unknown>res.get('id');
+      this.userId = res.get('id') ?? "";
     });  
   }
 
@@ -191,3 +191,4 @@ export class UserComponent implements OnInit {
     this.isOnActivityLogMenu = this.selectedUserSubMenu == Enum_UserSubMenu.HISTORY;
   }
 }
+

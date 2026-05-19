@@ -1,5 +1,5 @@
 export class PropertyDashboardStructure {
-    id: number = 0;
+    id: string = "";
     reference: string = "";
     customerName: string = "";
     customerEmail: string = "";
@@ -8,7 +8,7 @@ export class PropertyDashboardStructure {
     propertyStatusLabel: string = "";
     propertyConditionStatusLabel: string = "";
     propertyLocationTypeLabel: string = "";
-    lastModifiedOn: Date = new Date();
+    lastModifiedOn: Date | null = null;
     lastModifiedBy: string = "";
     mainImageFilename: string = "";
     isSelected: boolean = false;

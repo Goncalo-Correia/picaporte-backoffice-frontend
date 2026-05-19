@@ -19,14 +19,14 @@ export class QueriesCustomerService {
   constructor(private http: HttpClient) { }
 
   // GET
-  Get_CustomerStructure(id: number, httpOptions: { headers: HttpHeaders }): Observable<CustomerStructure> {
+  Get_CustomerStructure(id: string, httpOptions: { headers: HttpHeaders }): Observable<CustomerStructure> {
     return this.http
       .get<CustomerStructure>(this.baseurl + apiEndpoints.queries_customer.get + id, httpOptions)
       .pipe(retry(1), catchError(this.errorHandl));
   }
 
   // PUT
-  Put_CustomerStructure(id: number, data: CustomerStructure, httpOptions: { headers: HttpHeaders }): Observable<CustomerStructure> {
+  Put_CustomerStructure(id: string, data: CustomerStructure, httpOptions: { headers: HttpHeaders }): Observable<CustomerStructure> {
 
     return this.http
       .put<CustomerStructure>(

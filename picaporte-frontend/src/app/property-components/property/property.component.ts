@@ -6,8 +6,8 @@ import { StaticAmenetieTypeService } from 'src/app/api-service/static-amenetie-t
 import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
 import { MessageComponent } from 'src/app/generic-components/message/message.component';
 import { Address } from 'src/app/models/address.model';
-import { Image } from 'src/app/models/image.model';
-import { Document } from 'src/app/models/document.model';
+import { ImageDto } from 'src/app/models/image-dto.model';
+import { DocumentDto } from 'src/app/models/document-dto.model';
 import { Property } from 'src/app/models/property.model';
 import { Static_AmenetieType } from 'src/app/models/static/static-amenetieType.model';
 import { AmenetieTypeStructure } from 'src/app/structures/amenetie-type.structure';
@@ -28,7 +28,7 @@ export class PropertyComponent implements OnInit {
 
   @ViewChild(MessageComponent) messageComponent!: MessageComponent;
 
-  propertyId: number = 0;
+  propertyId: string = "";
 
   isEditable: boolean = false;
   isLoading: boolean = false;
@@ -96,7 +96,7 @@ export class PropertyComponent implements OnInit {
     )
     if (this.propertyValidationObject.isValid) {
       this.isEditable = false;
-      this.propertyStructure.property.price = parseInt(this.propertyStructure.property.price.toString().replace(" ", ""));
+      this.propertyStructure.property.price = parseInt(this.propertyStructure.property.price!.toString().replace(" ", ""));
       this.propertyStructure.property.livingArea = this.propertyStructure.property.livingArea != null ? parseInt(this.propertyStructure.property.livingArea.toString().replace(" ", "")) : this.propertyStructure.property.livingArea;
       this.propertyStructure.property.totalConstructionArea = this.propertyStructure.property.totalConstructionArea != null ? parseInt(this.propertyStructure.property.totalConstructionArea.toString().replace(" ", "")) : this.propertyStructure.property.totalConstructionArea;
       this.submit_property();
@@ -121,7 +121,7 @@ export class PropertyComponent implements OnInit {
 
   onClick_confirmDocumentRequest() {
     this.isLoading = true;
-    this.authenticationService.authorizeUser().then((resolve: any) => {
+    this.authenticationService.refreshHttpOptions().then((resolve: any) => {
       this.queries_propertyService.Post_RequestDocument(this.selectedDocumentType.id, this.propertyId, resolve)
       .pipe(
         catchError(err => {
@@ -158,23 +158,23 @@ export class PropertyComponent implements OnInit {
     this.propertyStructure.ameneties = data;
   }
 
-  eventHandler_updateMainPropertyDocuments(data: Array<Document>) {
+  eventHandler_updateMainPropertyDocuments(data: Array<DocumentDto>) {
     this.propertyStructure.mainDocuments = data;
   }
 
-  eventHandler_updateCertificatePropertyDocuments(data: Array<Document>) {
+  eventHandler_updateCertificatePropertyDocuments(data: Array<DocumentDto>) {
     this.propertyStructure.certificateDocuments = data;
   }
 
-  eventHandler_updateOtherPropertyDocuments(data: Array<Document>) {
+  eventHandler_updateOtherPropertyDocuments(data: Array<DocumentDto>) {
     this.propertyStructure.otherDocuments = data;
   }
 
-  eventHandler_updatePropertyMainImage(data: Image) {
-    this.propertyStructure.property.mainImage = data;
+  eventHandler_updatePropertyMainImage(data: ImageDto) {
+    this.propertyStructure.mainImage = data;
   }
 
-  eventHandler_updatePropertyOtherImages(data: Array<Image>) {
+  eventHandler_updatePropertyOtherImages(data: Array<ImageDto>) {
     this.propertyStructure.images = data;
   }
 
@@ -211,8 +211,8 @@ export class PropertyComponent implements OnInit {
     this.propertyStructure.property.livingArea = this.unformatNumberFromSpaces(this.propertyStructure.property.formattedLivingArea);
     this.propertyStructure.property.totalConstructionArea = this.unformatNumberFromSpaces(this.propertyStructure.property.formattedTotalConstructionArea);
     
-    if (this.propertyStructure.property.id == 0 || this.propertyStructure.property.id == null) {
-      this.authenticationService.authorizeUser().then((resolve: any) => {
+    if (this.propertyStructure.property.id === "" || this.propertyStructure.property.id == null) {
+      this.authenticationService.refreshHttpOptions().then((resolve: any) => {
         this.queries_propertyService.Post_PropertyStructure(this.propertyStructure, resolve)
           .pipe(
             catchError(err => {
@@ -227,7 +227,7 @@ export class PropertyComponent implements OnInit {
           });
       });
     } else {
-      this.authenticationService.authorizeUser().then((resolve: any) => {
+      this.authenticationService.refreshHttpOptions().then((resolve: any) => {
         this.queries_propertyService.Put_PropertyStructure(this.propertyId, this.propertyStructure, resolve)
           .subscribe(data => {
             this.get_propertyStructure();
@@ -239,7 +239,7 @@ export class PropertyComponent implements OnInit {
 
   private get_propertyStructure() {
     this.isLoading = true;
-    if (this.propertyId != 0 && this.propertyId != null) {
+    if (this.propertyId !== "" && this.propertyId != null) {
       this.authenticationService.refreshHttpOptions().then((resolve: any) => {
         this.queries_propertyService.Get_PropertyStructure(this.propertyId, resolve)
           .pipe(
@@ -250,9 +250,9 @@ export class PropertyComponent implements OnInit {
           )
           .subscribe(data => {
             this.propertyStructure = <PropertyStructure>data;
-            this.propertyStructure.property.formattedPrice = this.formatNumberWithSpaces(this.propertyStructure.property.price);
-            this.propertyStructure.property.formattedLivingArea = this.formatNumberWithSpaces(this.propertyStructure.property.livingArea);
-            this.propertyStructure.property.formattedTotalConstructionArea = this.formatNumberWithSpaces(this.propertyStructure.property.totalConstructionArea);
+            this.propertyStructure.property.formattedPrice = this.formatNumberWithSpaces(this.propertyStructure.property.price ?? 0);
+            this.propertyStructure.property.formattedLivingArea = this.formatNumberWithSpaces(this.propertyStructure.property.livingArea ?? 0);
+            this.propertyStructure.property.formattedTotalConstructionArea = this.formatNumberWithSpaces(this.propertyStructure.property.totalConstructionArea ?? 0);
             this.isDataFetched = true;
             this.isLoading = false;
           });
@@ -306,7 +306,7 @@ export class PropertyComponent implements OnInit {
 
   private getActiveRoute() {
     this.activeRoute.paramMap.subscribe(res => {
-      this.propertyId = <number><unknown>res.get('id');
+      this.propertyId = res.get('id') ?? "";
     });
   }
 
@@ -339,3 +339,4 @@ export class PropertyComponent implements OnInit {
     return parseInt(numStr, 10);  // Parse the cleaned-up string back to an integer
   }
 }
+

@@ -3,7 +3,7 @@ import { catchError } from 'rxjs';
 import { StaticDocumentTypeService } from 'src/app/api-service/static-document-type/static-document-type.service';
 import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
 import { MessageComponent } from 'src/app/generic-components/message/message.component';
-import { Document } from 'src/app/models/document.model';
+import { DocumentDto } from 'src/app/models/document-dto.model';
 import { Static_DocumentType } from 'src/app/models/static/static-documenttype.model';
 import { DocumentService } from 'src/app/services/document-service/document.service';
 import { DocumentValidationObject, ValidationService } from 'src/app/services/validation-service/validation.service';
@@ -20,23 +20,23 @@ export class PropertyDocumentsComponent implements OnInit {
   url: string = environment.apiUrl + apiEndpoints.image.binary;
 
   @ViewChild(MessageComponent) messageComponent!: MessageComponent;
-  
-  @Input() mainDocuments: Array<Document> = new Array<Document>();
-  @Input() certificateDocuments: Array<Document> = new Array<Document>();
-  @Input() otherDocuments: Array<Document> = new Array<Document>();
+
+  @Input() mainDocuments: Array<DocumentDto> = new Array<DocumentDto>();
+  @Input() certificateDocuments: Array<DocumentDto> = new Array<DocumentDto>();
+  @Input() otherDocuments: Array<DocumentDto> = new Array<DocumentDto>();
   @Input() isEditable: boolean = false;
 
-  @Output() event_updateMainPropertyDocuments = new EventEmitter<Array<Document>>();
-  @Output() event_updateCertificatePropertyDocuments = new EventEmitter<Array<Document>>();
-  @Output() event_updateOtherPropertyDocuments = new EventEmitter<Array<Document>>();
+  @Output() event_updateMainPropertyDocuments = new EventEmitter<Array<DocumentDto>>();
+  @Output() event_updateCertificatePropertyDocuments = new EventEmitter<Array<DocumentDto>>();
+  @Output() event_updateOtherPropertyDocuments = new EventEmitter<Array<DocumentDto>>();
 
-  selectedDocumentStructure: Document = new Document();
+  selectedDocumentStructure: DocumentDto = new DocumentDto();
   selectedDocumentTypeLabel: string = "Nenhum tipo seleccionado";
   selectedRowNumber: number = -1;
   private isMainDocument: boolean = false;
   allMainDocumentsToBeDeleted: boolean = false;
   private isCertificateDocument: boolean = false;
-  allCertificateDocumentsToBeDeleted: boolean = false; 
+  allCertificateDocumentsToBeDeleted: boolean = false;
   private isOtherDocument: boolean = false;
   allOtherDocumentsToBeDeleted: boolean = false;
   documentValidationObject: DocumentValidationObject = new DocumentValidationObject();
@@ -44,7 +44,7 @@ export class PropertyDocumentsComponent implements OnInit {
   availableDocumentTypes: Array<Static_DocumentType> = new Array<Static_DocumentType>();
 
   constructor(
-    public documentTypeService: StaticDocumentTypeService, 
+    public documentTypeService: StaticDocumentTypeService,
     public documentService: DocumentService,
     private authenticationService: AuthenticationService,
     private validationService: ValidationService
@@ -73,8 +73,8 @@ export class PropertyDocumentsComponent implements OnInit {
     this.isCertificateDocument = false;
     this.isOtherDocument = false;
     this.buildDocumentTypes(true, false, false);
-    this.selectedDocumentStructure = new Document();
-    
+    this.selectedDocumentStructure = new DocumentDto();
+
   }
 
   onClick_addNewCertificateDocument() {
@@ -84,7 +84,7 @@ export class PropertyDocumentsComponent implements OnInit {
     this.isCertificateDocument = true;
     this.isOtherDocument = false;
     this.buildDocumentTypes(false, true, false);
-    this.selectedDocumentStructure = new Document();
+    this.selectedDocumentStructure = new DocumentDto();
   }
 
   onClick_addNewOtherDocument() {
@@ -94,7 +94,7 @@ export class PropertyDocumentsComponent implements OnInit {
     this.isCertificateDocument = false;
     this.isOtherDocument = true;
     this.buildDocumentTypes(false, false, true);
-    this.selectedDocumentStructure = new Document();
+    this.selectedDocumentStructure = new DocumentDto();
   }
 
   onClick_selectDocumentType(documentType: Static_DocumentType, documentTypeLabel: string) {
@@ -106,10 +106,10 @@ export class PropertyDocumentsComponent implements OnInit {
 
   onChange_file(event: any) {
       var file = event.target.files[0];
-      this.getBase64(file, event, this.selectedDocumentStructure);   
+      this.getBase64(file, event, this.selectedDocumentStructure);
   }
 
-  private getBase64(file: any, event: any, documentStructure: Document) {
+  private getBase64(file: any, event: any, documentStructure: DocumentDto) {
     var reader = new FileReader();
     reader.onload = function () {
       event.target.files[0].binary = (reader.result);
@@ -122,7 +122,7 @@ export class PropertyDocumentsComponent implements OnInit {
     };
  }
 
-  
+
   onClick_editMainDocuments(index: number) {
     this.selectedRowNumber = index;
     this.isMainDocument = true;
@@ -133,7 +133,7 @@ export class PropertyDocumentsComponent implements OnInit {
       this.selectedDocumentTypeLabel = this.selectedDocumentStructure.documentType.label;
     }
   }
-  
+
   onClick_editCertificateDocuments(index: number) {
     this.selectedRowNumber = index;
     this.isMainDocument = false;
@@ -173,14 +173,14 @@ export class PropertyDocumentsComponent implements OnInit {
     this.isMainDocument = false;
     this.isCertificateDocument = false;
     this.isOtherDocument = false;
-    this.selectedDocumentTypeLabel = "Nenhum tipo seleccionado"; 
+    this.selectedDocumentTypeLabel = "Nenhum tipo seleccionado";
   }
 
   onClick_close() {
     this.isMainDocument = false;
     this.isCertificateDocument = false;
     this.isOtherDocument = false;
-    this.selectedDocumentTypeLabel = "Nenhum tipo seleccionado"; 
+    this.selectedDocumentTypeLabel = "Nenhum tipo seleccionado";
   }
 
   onClick_submit() {
@@ -190,7 +190,7 @@ export class PropertyDocumentsComponent implements OnInit {
     if (this.documentValidationObject.isValid) {
       if (this.isMainDocument) {
         if (this.selectedRowNumber > -1) {
-          
+
           this.mainDocuments[this.selectedRowNumber] = this.selectedDocumentStructure;
         } else {
           this.mainDocuments.push(this.selectedDocumentStructure);
@@ -237,7 +237,7 @@ export class PropertyDocumentsComponent implements OnInit {
   }
 
   private get_documentTypes() {
-    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => {
       this.documentTypeService.GetAll_DocumentTypes(true, resolve)
       .pipe(
         catchError(err => {
@@ -255,7 +255,7 @@ export class PropertyDocumentsComponent implements OnInit {
     if (isMainDocument) {
       var localAvailableDocumentTypes = this.documentTypes.filter(prop => prop.isPrimary == true && prop.isCertificate == false);
       this.availableDocumentTypes = new Array<Static_DocumentType>();
-      
+
       for (let index = 0; index < localAvailableDocumentTypes.length; index++) {
         if (this.mainDocuments.filter(prop => prop.documentTypeId == localAvailableDocumentTypes[index].id && !prop.isToDelete).length == 0) {
           this.availableDocumentTypes.push(localAvailableDocumentTypes[index]);
@@ -265,7 +265,7 @@ export class PropertyDocumentsComponent implements OnInit {
     if (isCertificateDocument) {
       var localAvailableDocumentTypes = this.documentTypes.filter(prop => prop.isPrimary == false && prop.isCertificate == true);
       this.availableDocumentTypes = new Array<Static_DocumentType>();
-      
+
       for (let index = 0; index < localAvailableDocumentTypes.length; index++) {
         if (this.certificateDocuments.filter(prop => prop.documentTypeId == localAvailableDocumentTypes[index].id && !prop.isToDelete).length == 0) {
           this.availableDocumentTypes.push(localAvailableDocumentTypes[index]);
@@ -275,7 +275,7 @@ export class PropertyDocumentsComponent implements OnInit {
     if (isOtherDocument) {
       var localAvailableDocumentTypes = this.documentTypes.filter(prop => prop.isPrimary == false && prop.isCertificate == false);
       this.availableDocumentTypes = new Array<Static_DocumentType>();
-      
+
       for (let index = 0; index < localAvailableDocumentTypes.length; index++) {
         if (this.otherDocuments.filter(prop => prop.documentTypeId == localAvailableDocumentTypes[index].id && !prop.isToDelete).length == 0) {
           this.availableDocumentTypes.push(localAvailableDocumentTypes[index]);
@@ -285,4 +285,3 @@ export class PropertyDocumentsComponent implements OnInit {
   }
 
 }
-

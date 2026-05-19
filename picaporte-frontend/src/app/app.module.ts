@@ -1,6 +1,6 @@
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule, DomSanitizer  } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import localePt from '@angular/common/locales/pt';
 registerLocaleData(localePt);
@@ -13,8 +13,12 @@ import { DragulaModule } from 'ng2-dragula';
 import { LightboxModule } from 'ngx-lightbox';
 import { CKEditorModule } from 'ckeditor4-angular';
 
-// Import the module from the SDK
-import { AuthModule } from '@auth0/auth0-angular';
+import { AuthModule, AuthHttpInterceptor } from '@auth0/auth0-angular';
+import { ErrorInterceptor } from './interceptors/auth.interceptor';
+import { CallbackComponent } from './callback/callback.component';
+import { LoginComponent } from './login/login.component';
+import { AccessDeniedComponent } from './access-denied/access-denied.component';
+import { environment } from 'src/environments/environment';
 
 import { Auth0ServiceComponent } from './services/auth0-service/auth0-service.component';
 import { SidenavComponent } from './layout-components/sidenav/sidenav.component';
@@ -92,7 +96,10 @@ import { TaskComponent } from './property-components/property/task/task.componen
     RecommendedPropertiesComponent,
     CommaToDotDirective,
     TasksComponent,
-    TaskComponent
+    TaskComponent,
+    LoginComponent,
+    AccessDeniedComponent,
+    CallbackComponent
   ],
   imports: [
     BrowserModule,
@@ -103,12 +110,20 @@ import { TaskComponent } from './property-components/property/task/task.componen
     CKEditorModule,
     DragulaModule.forRoot(),
     AuthModule.forRoot({
-      domain: 'REDACTED_AUTH0_DOMAIN',
-      clientId: 'REDACTED_AUTH0_CLIENT_ID',
-      //domain: 'REDACTED_AUTH0_DOMAIN_OLD',
-      //clientId: 'REDACTED_AUTH0_CLIENT_ID_OLD',
-      authorizationParams: {
-        redirect_uri: window.location.origin
+      domain: environment.auth0.domain,
+      clientId: environment.auth0.clientId,
+      redirectUri: environment.auth0.redirectUri,
+      audience: environment.auth0.audience,
+      errorPath: '/forbidden',
+      httpInterceptor: {
+        allowedList: [
+          {
+            uri: `${environment.apiUrl}api/*`,
+            tokenOptions: {
+              audience: environment.auth0.audience
+            }
+          }
+        ]
       }
     }),
   ],
@@ -119,7 +134,9 @@ import { TaskComponent } from './property-components/property/task/task.componen
   providers: [
     QueriesCustomerService,
     {provide: LOCALE_ID, useValue: 'pt'},
-    DatePipe
+    DatePipe,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

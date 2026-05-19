@@ -22,7 +22,7 @@ export class CustomerComponent implements OnInit {
 
   @ViewChild(MessageComponent) messageComponent!: MessageComponent;
   
-  customerId: number = 0;
+  customerId: string = "";
 
   isEditable: boolean = false;
   isLoading: boolean = false;
@@ -58,7 +58,7 @@ export class CustomerComponent implements OnInit {
   ngOnInit(): void {
     this.getActiveRoute();
     this.get_customerSubmenus();
-    if (this.customerId != 0) {
+    if (this.customerId !== "") {
       this.get_customerStructure();
     } else {
       this.isDataFetched = true;
@@ -71,9 +71,9 @@ export class CustomerComponent implements OnInit {
 
   onClick_cancel() {
     this.isEditable = false;
-    if (this.customerId != 0) {
+    if (this.customerId !== "") {
       this.get_customerStructure();
-    }  
+    }
   }
 
   onClick_submit() {
@@ -132,7 +132,7 @@ export class CustomerComponent implements OnInit {
   private get_customerStructure() {
     this.isLoading = true;
     this.isDataFetched = false;
-    if (this.customerId != 0 && this.customerId != null) {
+    if (this.customerId !== "" && this.customerId != null) {
       this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
         this.queries_customerService.Get_CustomerStructure(this.customerId, resolve)
         .pipe(
@@ -161,8 +161,8 @@ export class CustomerComponent implements OnInit {
   private submit_customer() {
     this.isLoading = true;
 
-    if (this.customerStructure.customer.id == 0 || this.customerStructure.customer.id == null) {
-      this.authenticationService.authorizeUser().then((resolve:any) => {
+    if (this.customerStructure.customer.id === "" || this.customerStructure.customer.id == null) {
+      this.authenticationService.refreshHttpOptions().then((resolve:any) => {
         this.queries_customerService.Post_CustomerStructure(this.customerStructure, resolve)
         .pipe(
           catchError(err => {
@@ -177,7 +177,7 @@ export class CustomerComponent implements OnInit {
         });
       });
     } else {
-      this.authenticationService.authorizeUser().then((resolve:any) => { 
+      this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
         this.queries_customerService.Put_CustomerStructure(this.customerId, this.customerStructure, resolve)
         .pipe(
           catchError(err => {
@@ -194,7 +194,7 @@ export class CustomerComponent implements OnInit {
 
   private getActiveRoute() {
     this.activeRoute.paramMap.subscribe(res => {
-      this.customerId = <number><unknown>res.get('id');
+      this.customerId = res.get('id') ?? "";
     });  
   }
 
@@ -206,3 +206,4 @@ export class CustomerComponent implements OnInit {
     this.isOnActivityLogMenu = this.selectedCustomerSubMenu == Enum_CustomerSubMenu.HISTORY;
   }
 }
+

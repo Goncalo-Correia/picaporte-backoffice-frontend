@@ -41,7 +41,7 @@ export class ToDoService {
     }
 
   // DELETE
-  Delete_ToDo(id: number, httpOptions: { headers: HttpHeaders }): Observable<ToDoStructure> {
+  Delete_ToDo(id: string, httpOptions: { headers: HttpHeaders }): Observable<ToDoStructure> {
     return this.http
       .delete<ToDoStructure>(
         this.baseurl + apiEndpoints.toDos.delete + id,
@@ -50,7 +50,7 @@ export class ToDoService {
   }
 
     // DELETE
-    Delete_ToDoItem(id: number, httpOptions: { headers: HttpHeaders }) {
+    Delete_ToDoItem(id: string, httpOptions: { headers: HttpHeaders }) {
       return this.http
         .delete(
           this.baseurl + apiEndpoints.toDos.deleteItem + id,

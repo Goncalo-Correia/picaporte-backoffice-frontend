@@ -1,9 +1,14 @@
 import { Static_EntityType } from "./static/static-entity-type.model";
 
 export class EntityReference {
-    id: number = 0;
-    recordId: number = 0;
+    id: string = "";
+    recordId: string = "";
     name: string = "";
-    entityTypeId: number = 0;
+    lastModifiedOn: Date | null = null;
+    lastModifiedByUserId: string | null = null;
+    createdOn: Date = new Date();
+    createdByUserId: string | null = null;
+    isActive: boolean = false;
+    entityTypeId: number | null = null;
     entityType: Static_EntityType = new Static_EntityType();
 }

@@ -4,21 +4,21 @@ import { Static_PropertyLocationType } from "./static/static-propertylocationtyp
 import { Static_PropertyStatus } from "./static/static-propertystatus.model";
 
 export class Preference {
-    public id: number = 0;
-    public minPrice: number = 0;
-    public maxPrice: number = 0;
-    public numBathrooms: number = 0;
-    public constructionYear: number = 0;
-    public minLivingArea: number = 0;
-    public maxLivingArea: number = 0;
-    public minTotalArea: number = 0;
-    public maxTotalArea: number = 0;
+    public id: string = "";
+    public minPrice: number | null = null;
+    public maxPrice: number | null = null;
+    public numBathrooms: number | null = null;
+    public constructionYear: number | null = null;
+    public minLivingArea: number | null = null;
+    public maxLivingArea: number | null = null;
+    public minTotalArea: number | null = null;
+    public maxTotalArea: number | null = null;
     public comment: string = "";
-    
-    public propertyStatusId: number = 0;
-    public propertyLocationTypeId: number = 0;
-    public propertyConditionStatusId: number = 0;
-    public energyCertificateId: number = 0;
+
+    public propertyStatusId: number | null = null;
+    public propertyLocationTypeId: number | null = null;
+    public propertyConditionStatusId: number | null = null;
+    public energyCertificateId: number | null = null;
 
     public propertyStatus: Static_PropertyStatus = new Static_PropertyStatus();
     public propertyLocationType: Static_PropertyLocationType = new Static_PropertyLocationType();

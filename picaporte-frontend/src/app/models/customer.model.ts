@@ -1,21 +1,17 @@
 import { Address } from "./address.model";
-import { Preference } from "./preference.model";
 import { User } from "./user.model";
-import { Property } from "./property.model";
 
 export class Customer {
-    public id: number = 0;
+    public id: string = "";
     public firstName: string = "";
     public phoneNumber: string = "";
     public email: string = "";
     public cc: string = "";
     public nif: string = "";
 
-    public addressId: number = 0;
-    public userId: number = 0;
+    public addressId: string | null = null;
+    public userId: string | null = null;
 
     public address: Address = new Address();
     public user: User = new User();
-    public preferences: Array<Preference> = new Array<Preference>();
-    public properties: Array<Property> = new Array<Property>();
 }

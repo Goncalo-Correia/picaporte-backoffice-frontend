@@ -1,9 +1,9 @@
 export class ToDoItem {
-    id: number = 0;
+    id: string = "";
     label: string = "";
     description: string = "";
     isChecked: boolean = false;
     order: number = 0;
     isToDelete: boolean = false;
-    toDoId: number = 0;
+    toDoId: string | null = null;
 }

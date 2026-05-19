@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"D:\\\\Repos\\\\picaporte-backoffice-frontend\" -Force)",
+      "Bash(Select-Object Name, Mode)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(git rm *)",
+      "Bash(npm install *)",
+      "Bash(Remove-Item package-lock.json -Force)",
+      "Bash(Remove-Item node_modules/@fortawesome -Recurse -Force)",
+      "Bash(Get-ChildItem -Path \"D:\\\\Repos\\\\picaporte-backoffice-frontend\\\\picaporte-frontend\\\\src\\\\app\" -Directory)",
+      "Bash(Select-Object Name)",
+      "Bash(Get-Content \"D:\\\\Repos\\\\picaporte-backoffice-frontend\\\\picaporte-frontend\\\\node_modules\\\\@auth0\\\\auth0-angular\\\\package.json\")",
+      "Bash(Select-String '\"version\"')",
+      "Bash(Select-Object -First 1)",
+      "Bash(node -e \"console.log\\(require\\('./picaporte-frontend/node_modules/@auth0/auth0-angular/package.json'\\).version\\)\")",
+      "Bash(python3 -c \"import sys,json; print\\(json.load\\(sys.stdin\\)['version']\\)\")",
+      "Bash(npx ng *)",
+      "Bash(npx tsc *)"
+    ]
+  }
+}

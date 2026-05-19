@@ -42,7 +42,7 @@ export class NewsService {
 
 
   // PUT
-  Put_News(id: number, data: News, httpOptions: { headers: HttpHeaders }): Observable<News> {
+  Put_News(id: string, data: News, httpOptions: { headers: HttpHeaders }): Observable<News> {
     return this.http
       .put<News>(
         this.baseurl + apiEndpoints.news.put + id,
@@ -53,7 +53,7 @@ export class NewsService {
   }
 
   // PUT
-  Delete_News(id: number, httpOptions: { headers: HttpHeaders }): Observable<News> {
+  Delete_News(id: string, httpOptions: { headers: HttpHeaders }): Observable<News> {
     return this.http
       .delete<News>(
         this.baseurl + apiEndpoints.news.delete + id,

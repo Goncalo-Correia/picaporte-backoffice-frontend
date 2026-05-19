@@ -16,7 +16,7 @@ export class QueriesTaskService {
   baseurl = environment.apiUrl;
   constructor(private http: HttpClient) { }
 
-  GetTasksByRecordId(recordId: number, entityTypeId: Enum_EntityType, httpOptions: { headers: HttpHeaders }): Observable<Array<Task>> {
+  GetTasksByRecordId(recordId: string, entityTypeId: Enum_EntityType, httpOptions: { headers: HttpHeaders }): Observable<Array<Task>> {
     return this.http
       .get<Array<Task>>(
         this.baseurl + apiEndpoints.queries_task.getByRecordId + recordId + "/" + entityTypeId,
@@ -32,7 +32,7 @@ export class QueriesTaskService {
       );
   }
 
-  Allocate(taskId: number, userEmail: string | undefined, httpOptions: { headers: HttpHeaders }): Observable<Task> {
+  Allocate(taskId: string, userEmail: string | undefined, httpOptions: { headers: HttpHeaders }): Observable<Task> {
     return this.http
       .post<Task>(
         this.baseurl + apiEndpoints.queries_task.allocate + taskId + "/" + userEmail,

@@ -1,42 +1,43 @@
 import { Address } from "./address.model";
 import { Customer } from "./customer.model";
-import { Image } from "./image.model";
-import { Static_AmenetieType } from "./static/static-amenetieType.model";
+import { ImageDto } from "./image-dto.model";
+import { PropertyAmenetieType } from "./property-amenitie-type.model";
+import { PropertyDocument } from "./property-document.model";
+import { PropertyImage } from "./property-image.model";
 import { Static_EnergyCertificate } from "./static/static-energycertificate.model";
 import { Static_PropertyConditionStatus } from "./static/static-propertyconditionstatus.model";
 import { Static_PropertyLocationType } from "./static/static-propertylocationtype.model";
 import { Static_PropertyStatus } from "./static/static-propertystatus.model";
 import { Static_PropertyType } from "./static/static-propertytype.model";
 import { Static_PropertyTypology } from "./static/static-propertytypology.model";
-import { User } from "./user.model";
 
 export class Property {
-    public id: number = 0;
+    public id: string = "";
     public reference: string = "";
     public description: string = "";
     public prompt: string = "";
     public isOnline: boolean = false;
-    public price: number = 0;
-    public bathrooms: number = 0;
-    public totalConstructionArea: number = 0;
-    public livingArea: number = 0;
+    public price: number | null = null;
+    public bathrooms: number | null = null;
+    public totalConstructionArea: number | null = null;
+    public livingArea: number | null = null;
     public hasTermiteCertificate: boolean = false;
-    public constructionYear: number = 0;
+    public constructionYear: number | null = null;
     public videoUrl: string = "";
-    
-    public addressId: number = 0;
-    public customerId: number = 0;
-    public mainImageId: number = 0;
-    public propertyTypeId: number = 0;
-    public propertyStatusId: number = 0;
-    public propertyLocationTypeId: number = 0;
-    public propertyConditionStatusId: number = 0;
-    public propertyTypologyId: number = 0;
-    public energyCertificateId: number = 0;
+
+    public addressId: string | null = null;
+    public customerId: string | null = null;
+    public mainImageId: string | null = null;
+    public propertyTypeId: number | null = null;
+    public propertyStatusId: number | null = null;
+    public propertyLocationTypeId: number | null = null;
+    public propertyConditionStatusId: number | null = null;
+    public propertyTypologyId: number | null = null;
+    public energyCertificateId: number | null = null;
 
     public address: Address = new Address();
     public customer: Customer = new Customer();
-    public mainImage: Image = new Image();
+    public mainImage: ImageDto = new ImageDto();
     public propertyType: Static_PropertyType = new Static_PropertyType();
     public propertyLocationType: Static_PropertyLocationType = new Static_PropertyLocationType();
     public propertyStatus: Static_PropertyStatus = new Static_PropertyStatus();
@@ -44,9 +45,9 @@ export class Property {
     public propertyTypology: Static_PropertyTypology = new Static_PropertyTypology();
     public energyCertificate: Static_EnergyCertificate = new Static_EnergyCertificate();
 
-    public ameneties: Array<Static_AmenetieType> = new Array<Static_AmenetieType>();
-    public documents: Array<Document> = new Array<Document>();
-    public images: Array<Image> = new Array<Image>();
+    public propertyAmenetieTypes: Array<PropertyAmenetieType> = new Array<PropertyAmenetieType>();
+    public propertyDocuments: Array<PropertyDocument> = new Array<PropertyDocument>();
+    public propertyImages: Array<PropertyImage> = new Array<PropertyImage>();
 
     public formattedPrice: string = "";
     public formattedLivingArea: string = "";

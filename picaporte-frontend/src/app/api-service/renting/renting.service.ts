@@ -15,7 +15,7 @@ export class RentingService {
   constructor(private http: HttpClient) {}
 
   // GET ALL
-  GetRentingsByPropertyId(propertyId: number, httpOptions: { headers: HttpHeaders }): Observable<Renting[]> {
+  GetRentingsByPropertyId(propertyId: string, httpOptions: { headers: HttpHeaders }): Observable<Renting[]> {
     return this.http
       .get<Renting[]>(this.baseurl + apiEndpoints.renting.getRentingsByPropertyId + propertyId, httpOptions)
       .pipe(retry(1), catchError(this.errorHandl));
@@ -33,7 +33,7 @@ export class RentingService {
   }
 
   // PUT
-  Put_Renting(id: number, data: Renting, httpOptions: { headers: HttpHeaders }): Observable<Renting> {
+  Put_Renting(id: string, data: Renting, httpOptions: { headers: HttpHeaders }): Observable<Renting> {
     return this.http
       .put<Renting>(
         this.baseurl + apiEndpoints.renting.put + id,
@@ -43,7 +43,7 @@ export class RentingService {
   }
 
   // PUT
-  Delete_Renting(id: number, httpOptions: { headers: HttpHeaders }): Observable<Renting> {
+  Delete_Renting(id: string, httpOptions: { headers: HttpHeaders }): Observable<Renting> {
     return this.http
       .delete<Renting>(
         this.baseurl + apiEndpoints.renting.delete + id,

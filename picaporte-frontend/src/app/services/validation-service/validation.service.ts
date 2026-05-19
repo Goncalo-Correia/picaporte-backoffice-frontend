@@ -179,7 +179,7 @@ export class ValidationService {
     return imageValidationObject;
   }
 
-  validateProperty(reference: string, price: string, customerId: number, address: Address): PropertyValidationObject {
+  validateProperty(reference: string, price: string, customerId: string | null, address: Address): PropertyValidationObject {
     let propertyValidationObject: PropertyValidationObject = new PropertyValidationObject();
     
     propertyValidationObject.isReferenceValid.isValid = reference != "" && reference != null;
@@ -189,7 +189,7 @@ export class ValidationService {
     propertyValidationObject.isPriceValid.isValid = !isNaN(parsedPrice) && parsedPrice > 0;
     propertyValidationObject.isPriceValid.validationMessage = (propertyValidationObject.isPriceValid.isValid ? "" : "Campo obrigatório e deve ser maior que 0");
 
-    propertyValidationObject.isCustomerValid.isValid = customerId > 0;
+    propertyValidationObject.isCustomerValid.isValid = customerId != null && customerId !== "";
     propertyValidationObject.isCustomerValid.validationMessage = (propertyValidationObject.isCustomerValid.isValid ? "" : "Campo obrigatório");
 
     propertyValidationObject.isAddressValid = this.validateAddress(address.zipCode).isValid;
@@ -204,13 +204,13 @@ export class ValidationService {
     return propertyValidationObject;
   }
 
-  validateRenting(title: string, customerId: number, comment: string): RentingValidationObject {
+  validateRenting(title: string, customerId: string | null, comment: string): RentingValidationObject {
     let rentingValidationObject: RentingValidationObject = new RentingValidationObject();
     
     rentingValidationObject.isTitleValid.isValid = title != "" && title != null;
     rentingValidationObject.isTitleValid.validationMessage = (rentingValidationObject.isTitleValid.isValid ? "" : "Campo obrigatório");
 
-    rentingValidationObject.isCustomerValid.isValid = customerId != 0 && customerId != null;
+    rentingValidationObject.isCustomerValid.isValid = customerId != null && customerId !== "";
     rentingValidationObject.isCustomerValid.validationMessage = (rentingValidationObject.isCustomerValid.isValid ? "" : "Campo obrigatório");
 
     rentingValidationObject.isCommentValid.isValid = comment != "" && comment != null;

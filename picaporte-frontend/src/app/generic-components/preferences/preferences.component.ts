@@ -189,12 +189,12 @@ export class CustomerPreferencesComponent implements OnInit {
     if (this.isEditable) {
       this.selectedRowNumber = rowNumber;
       this.selectedPreferenceStructure = this.preferenceService.mapNewPreferenceStructure(this.preferences[rowNumber]);
-      this.formattedMinPrice = this.formatNumber(this.selectedPreferenceStructure.preference.minPrice);
-      this.formattedMaxPrice = this.formatNumber(this.selectedPreferenceStructure.preference.maxPrice);
-      this.formattedMinLivingArea = this.formatNumber(this.selectedPreferenceStructure.preference.minLivingArea);
-      this.formattedMaxLivingArea = this.formatNumber(this.selectedPreferenceStructure.preference.maxLivingArea);
-      this.formattedMinTotalArea = this.formatNumber(this.selectedPreferenceStructure.preference.minTotalArea);
-      this.formattedMaxTotalArea = this.formatNumber(this.selectedPreferenceStructure.preference.maxTotalArea);
+      this.formattedMinPrice = this.formatNumber(this.selectedPreferenceStructure.preference.minPrice ?? 0);
+      this.formattedMaxPrice = this.formatNumber(this.selectedPreferenceStructure.preference.maxPrice ?? 0);
+      this.formattedMinLivingArea = this.formatNumber(this.selectedPreferenceStructure.preference.minLivingArea ?? 0);
+      this.formattedMaxLivingArea = this.formatNumber(this.selectedPreferenceStructure.preference.maxLivingArea ?? 0);
+      this.formattedMinTotalArea = this.formatNumber(this.selectedPreferenceStructure.preference.minTotalArea ?? 0);
+      this.formattedMaxTotalArea = this.formatNumber(this.selectedPreferenceStructure.preference.maxTotalArea ?? 0);
       this.initAmenetieTypes();
       this.initPropertyTypes();
       this.initPropertyTypologies();

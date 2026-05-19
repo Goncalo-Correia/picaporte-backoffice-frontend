@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
-import { environment } from 'src/environments/environment';
-import { AuthenticationService } from './authentication-service/authentication.service';
+import { filter, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -10,23 +10,20 @@ import { AuthenticationService } from './authentication-service/authentication.s
 })
 export class AppComponent implements OnInit {
   title = 'picaporte-frontend';
-  showSplashScreen = true;
-  redirectUri = environment.redirectUri;
+  isLoading = true;
 
-  constructor(public auth: AuthService, public authenticationService: AuthenticationService) {}
-  async ngOnInit() {
-    await this.auth.isLoading$.subscribe((isLoading) => {
-      if (!isLoading) {
-        this.auth.isAuthenticated$.subscribe((authenticated) => {
-          if (authenticated) {
-            this.authenticationService.authorizeUser().then(data => {
-              this.showSplashScreen = false;
-            });
-          } else {
-            this.auth.loginWithRedirect();
-          }
-        });
-      }      
-    })
+  constructor(public auth: AuthService, private router: Router) {}
+
+  isAccessDeniedRoute(): boolean {
+    return this.router.url === '/access-denied' || this.router.url === '/forbidden';
+  }
+
+  ngOnInit(): void {
+    this.auth.isLoading$.pipe(
+      filter(loading => !loading),
+      take(1)
+    ).subscribe(() => {
+      this.isLoading = false;
+    });
   }
 }

@@ -110,7 +110,7 @@
   </div> 
   <div *ngIf="!isCustomer" class="row">
     <div class="col-12">
-      <app-google-map [latitude]="address.latitude" [longitude]="address.longitude" (latitudeEvent)="eventHandler_latitude($event)" (logitudeEvent)="eventHandler_longitude($event)"></app-google-map>
+      <app-google-map [latitude]="address.latitude ?? 0" [longitude]="address.longitude ?? 0" (latitudeEvent)="eventHandler_latitude($event)" (logitudeEvent)="eventHandler_longitude($event)"></app-google-map>
     </div>
   </div>
 </form>

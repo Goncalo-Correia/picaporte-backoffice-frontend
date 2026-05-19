@@ -10,7 +10,7 @@ import { UserValidationObject } from 'src/app/services/validation-service/valida
 export class UserDetailComponent implements OnInit {
 
   @Input() user: User = new User();
-  @Input() customerId: number = 0;
+  @Input() customerId: string = "";
   @Input() customerName: string = "";
   @Input() isEditable: boolean = false;
   @Input() userValidationObject: UserValidationObject = new UserValidationObject();

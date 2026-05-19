@@ -1,5 +1,5 @@
 export class UserDashboardStructure {
-    id: number = 0;
+    id: string = "";
     name: string = "";
     email: string = "";
     isAdmin: boolean = false;

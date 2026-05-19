@@ -169,7 +169,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
   private saveData() {
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_STATUS) {
       if (this.selectedStaticDataStructure.id == 0) {
-        this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
           this.staticPropertyStatusService.Post_PropertyStatus(this.selectedStaticDataStructure, resolve)
           .pipe(
             catchError(err => {
@@ -182,7 +182,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
           });
         });
       } else {
-        this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
           this.staticPropertyStatusService.Put_PropertyStatus(this.selectedStaticDataStructure, resolve)
           .pipe(
             catchError(err => {
@@ -198,7 +198,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_TYPE) {
       if (this.selectedStaticDataStructure.id == 0) {
-        this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
           this.staticPropertyTypeService.Post_PropertyType(this.selectedStaticDataStructure, resolve)
           .pipe(
             catchError(err => {
@@ -211,7 +211,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
           });
         });
       } else {
-        this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
           this.staticPropertyTypeService.Put_PropertyType(this.selectedStaticDataStructure, resolve)
           .pipe(
             catchError(err => {
@@ -227,7 +227,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_CONDITION_STATUS) {
       if (this.selectedStaticDataStructure.id == 0) {
-        this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
           this.staticPropertyConditionStatusService.Post_PropertyConditionStatus(this.selectedStaticDataStructure, resolve)
           .pipe(
             catchError(err => {
@@ -240,7 +240,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
           });
         });
       } else {
-        this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
           this.staticPropertyConditionStatusService.Put_PropertyConditionStatus(this.selectedStaticDataStructure, resolve)
           .pipe(
             catchError(err => {
@@ -256,7 +256,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_TYPOLOGY) {
       if (this.selectedStaticDataStructure.id == 0) {
-        this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
           this.staticPropertyTypologyService.Post_PropertyTypologies(this.selectedStaticDataStructure, resolve)
           .pipe(
             catchError(err => {
@@ -269,7 +269,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
           });
         });
       } else {
-        this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
           this.staticPropertyTypologyService.Put_PropertyTypology(this.selectedStaticDataStructure, resolve)
           .pipe(
             catchError(err => {
@@ -285,7 +285,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_ENERGY_CERTIFICATE) {
       if (this.selectedStaticDataStructure.id == 0) {
-        this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
           this.staticEnergyCertificateService.Post_EnergyCertificate(this.selectedStaticDataStructure, resolve)
           .pipe(
             catchError(err => {
@@ -298,7 +298,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
           });
         });
       } else {
-        this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
           this.staticEnergyCertificateService.Put_EnergyCertificate(this.selectedStaticDataStructure, resolve)
           .pipe(
             catchError(err => {
@@ -314,7 +314,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.AMENETIE_TYPE) {
       if (this.selectedStaticDataStructure.id == 0) {
-        this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
           this.staticAmenetieTypeService.Post_AmenetieType(this.selectedStaticDataStructure, resolve)
           .pipe(
             catchError(err => {
@@ -327,7 +327,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
           });
         });
       } else {
-        this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
           this.staticAmenetieTypeService.Put_AmenetieType(this.selectedStaticDataStructure, resolve)
           .pipe(
             catchError(err => {
@@ -343,7 +343,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.DOCUMENT_STATUS) {
       if (this.selectedStaticDataStructure.id == 0) {
-        this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
           this.staticDocumentStatusService.Post_DocumentStatus(this.selectedStaticDataStructure, resolve)
           .pipe(
             catchError(err => {
@@ -356,7 +356,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
           });
         });
       } else {
-        this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
           this.staticDocumentStatusService.Put_DocumentStatus(this.selectedStaticDataStructure, resolve)
           .pipe(
             catchError(err => {
@@ -372,7 +372,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.DOCUMENT_TYPE) {
       if (this.selectedStaticDataStructure.id == 0) {
-        this.authenticationService.authorizeUser().then((resolve:any) => { 
+        this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
           
           this.staticDocumentTypeService.Post_DocumentType(this.selectedStaticDataStructure, resolve)
           .pipe(
@@ -386,7 +386,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
             });
           });
         } else {
-          this.authenticationService.authorizeUser().then((resolve:any) => { 
+          this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
           console.log(this.selectedStaticDataStructure);
           this.staticDocumentTypeService.Put_DocumentType(this.selectedStaticDataStructure, resolve)
           .pipe(
@@ -405,7 +405,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
 
   private deleteData() {
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_STATUS) {
-      this.authenticationService.authorizeUser().then((resolve:any) => { 
+      this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
         this.staticPropertyStatusService.Delete_PropertyStatus(this.selectedStaticDataStructure.id, resolve)
         .pipe(
           catchError(err => {
@@ -419,7 +419,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_TYPE) {
-      this.authenticationService.authorizeUser().then((resolve:any) => { 
+      this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
         this.staticPropertyTypeService.Delete_PropertyType(this.selectedStaticDataStructure.id, resolve)
         .pipe(
           catchError(err => {
@@ -433,7 +433,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_CONDITION_STATUS) {
-      this.authenticationService.authorizeUser().then((resolve:any) => { 
+      this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
         this.staticPropertyConditionStatusService.Delete_PropertyConditionStatus(this.selectedStaticDataStructure.id, resolve)
         .pipe(
           catchError(err => {
@@ -447,7 +447,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_TYPOLOGY) {
-      this.authenticationService.authorizeUser().then((resolve:any) => { 
+      this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
         this.staticPropertyTypologyService.Delete_PropertyTypology(this.selectedStaticDataStructure.id, resolve)
         .pipe(
           catchError(err => {
@@ -461,7 +461,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_ENERGY_CERTIFICATE) {
-      this.authenticationService.authorizeUser().then((resolve:any) => { 
+      this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
         this.staticEnergyCertificateService.Delete_EnergyCertificate(this.selectedStaticDataStructure.id, resolve)
         .pipe(
           catchError(err => {
@@ -475,7 +475,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.AMENETIE_TYPE) {
-      this.authenticationService.authorizeUser().then((resolve:any) => { 
+      this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
         this.staticAmenetieTypeService.Delete_AmenetieType(this.selectedStaticDataStructure.id, resolve)
         .pipe(
           catchError(err => {
@@ -489,7 +489,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.DOCUMENT_STATUS) {
-      this.authenticationService.authorizeUser().then((resolve:any) => { 
+      this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
         this.staticDocumentStatusService.Delete_DocumentStatus(this.selectedStaticDataStructure.id, resolve)
         .pipe(
           catchError(err => {
@@ -503,7 +503,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.DOCUMENT_TYPE) {
-      this.authenticationService.authorizeUser().then((resolve:any) => { 
+      this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
         this.staticDocumentTypeService.Delete_DocumentType(this.selectedStaticDataStructure.id, resolve)
         .pipe(
           catchError(err => {
@@ -520,7 +520,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
 
   private fetchData() {
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_STATUS) {
-      this.authenticationService.authorizeUser().then((resolve:any) => { 
+      this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
         this.staticPropertyStatusService.GetAll_PropertyStatuses(false, resolve)
         .pipe(
           catchError(err => {
@@ -535,7 +535,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_TYPE) {
-      this.authenticationService.authorizeUser().then((resolve:any) => { 
+      this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
         this.staticPropertyTypeService.GetAll_PropertyTypes(false, resolve)
         .pipe(
           catchError(err => {
@@ -550,7 +550,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_CONDITION_STATUS) {
-      this.authenticationService.authorizeUser().then((resolve:any) => { 
+      this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
         this.staticPropertyConditionStatusService.GetAll_PropertyConditionStatuses(false, resolve)
         .pipe(
           catchError(err => {
@@ -565,7 +565,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_TYPOLOGY) {
-      this.authenticationService.authorizeUser().then((resolve:any) => { 
+      this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
         this.staticPropertyTypologyService.GetAll_PropertyTypology(false, resolve)
         .pipe(
           catchError(err => {
@@ -580,7 +580,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_ENERGY_CERTIFICATE) {
-      this.authenticationService.authorizeUser().then((resolve:any) => { 
+      this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
         this.staticEnergyCertificateService.GetAll_EnergyCertificates(false, resolve)
         .pipe(
           catchError(err => {
@@ -595,7 +595,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.AMENETIE_TYPE) {
-      this.authenticationService.authorizeUser().then((resolve:any) => { 
+      this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
         this.staticAmenetieTypeService.GetAll_AmenetieTypes(false, resolve)
         .pipe(
           catchError(err => {
@@ -610,7 +610,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.DOCUMENT_STATUS) {
-      this.authenticationService.authorizeUser().then((resolve:any) => { 
+      this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
         this.staticDocumentStatusService.GetAll_DocumentStatus(false, resolve)
         .pipe(
           catchError(err => {
@@ -625,7 +625,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.DOCUMENT_TYPE) {
-      this.authenticationService.authorizeUser().then((resolve:any) => { 
+      this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
         this.staticDocumentTypeService.GetAll_DocumentTypes(false, resolve)
         .pipe(
           catchError(err => {
@@ -650,7 +650,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
 
   private saveItemData(item: Array<StaticDataStructure>) {
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_STATUS) {
-      this.authenticationService.authorizeUser().then((resolve:any) => { 
+      this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
         this.staticPropertyStatusService.Put_PropertyStatuses(item, resolve)
         .pipe(
           catchError(err => {
@@ -664,7 +664,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_TYPE) {
-      this.authenticationService.authorizeUser().then((resolve:any) => { 
+      this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
         this.staticPropertyTypeService.Put_PropertyTypes(item, resolve)
         .pipe(
           catchError(err => {
@@ -678,7 +678,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_CONDITION_STATUS) {
-      this.authenticationService.authorizeUser().then((resolve:any) => { 
+      this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
         this.staticPropertyConditionStatusService.Put_PropertyConditionStatuses(item, resolve)
         .pipe(
           catchError(err => {
@@ -692,7 +692,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_TYPOLOGY) {
-      this.authenticationService.authorizeUser().then((resolve:any) => { 
+      this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
         this.staticPropertyTypologyService.Put_PropertyTypologies(item, resolve)
         .pipe(
           catchError(err => {
@@ -706,7 +706,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.PROPERTY_ENERGY_CERTIFICATE) {
-      this.authenticationService.authorizeUser().then((resolve:any) => { 
+      this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
         this.staticEnergyCertificateService.Put_EnergyCertificates(item, resolve)
         .pipe(
           catchError(err => {
@@ -720,7 +720,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.AMENETIE_TYPE) {
-      this.authenticationService.authorizeUser().then((resolve:any) => { 
+      this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
         this.staticAmenetieTypeService.Put_AmenetieTypes(item, resolve)
         .pipe(
           catchError(err => {
@@ -734,7 +734,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.DOCUMENT_STATUS) {
-      this.authenticationService.authorizeUser().then((resolve:any) => { 
+      this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
         this.staticDocumentStatusService.Put_DocumentStatuses(item, resolve)
         .pipe(
           catchError(err => {
@@ -748,7 +748,7 @@ export class StaticDataComponent implements OnInit, OnDestroy {
       });
     }
     if (this.selectedStaticDataEnum == Enum_StaticData.DOCUMENT_TYPE) {
-      this.authenticationService.authorizeUser().then((resolve:any) => { 
+      this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
         this.staticDocumentTypeService.Put_DocumentTypes(item, resolve)
         .pipe(
           catchError(err => {
@@ -775,3 +775,4 @@ export enum Enum_StaticData {
   DOCUMENT_STATUS,
   DOCUMENT_TYPE
 }
+

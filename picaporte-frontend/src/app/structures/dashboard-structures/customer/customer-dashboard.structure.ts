@@ -1,5 +1,5 @@
  export class CustomerDashboardStructure {
-   id: number = 0;
+   id: string = "";
    customerName: string = "";
    countOfProperties: number = 0;
    countOfPreferences: number = 0;

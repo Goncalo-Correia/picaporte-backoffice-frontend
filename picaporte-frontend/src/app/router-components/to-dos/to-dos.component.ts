@@ -77,7 +77,7 @@ export class ToDosComponent implements OnInit {
   }
 
   onClick_close() {
-    if (this.selectedToDo.toDo.id != 0) {
+    if (this.selectedToDo.toDo.id != '') {
       this.selectedToDo.toDo = this.toDoStructureList[this.selectedToDoIndex].toDo;
     } else {
       this.selectedToDoIndex = -1;
@@ -132,7 +132,7 @@ export class ToDosComponent implements OnInit {
   }
 
   private post_checkToDoItem(index: number) {
-    this.authenticationService.authorizeUser().then((resolve:any) => { 
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
       this.toDoService.Post_ToDoItem(this.selectedToDo.toDoItems[index], resolve)
       .pipe(
         catchError(err => {
@@ -147,7 +147,7 @@ export class ToDosComponent implements OnInit {
   }
 
   private post_toDoItem() {
-    this.authenticationService.authorizeUser().then((resolve:any) => { 
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
       this.toDoService.Post_ToDoItem(this.selectedToDoItem, resolve)
       .pipe(
         catchError(err => {
@@ -168,7 +168,7 @@ export class ToDosComponent implements OnInit {
   }
 
   private post_toDos() {
-    this.authenticationService.authorizeUser().then((resolve:any) => { 
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
       this.toDoService.Post_ToDos(this.selectedToDo, resolve)
       .pipe(
         catchError(err => {
@@ -183,7 +183,7 @@ export class ToDosComponent implements OnInit {
   }
 
   private delete_toDo() {
-    this.authenticationService.authorizeUser().then((resolve:any) => { 
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
       this.toDoService.Delete_ToDo(this.selectedToDo.toDo.id, resolve)
       .pipe(
         catchError(err => {
@@ -199,8 +199,8 @@ export class ToDosComponent implements OnInit {
     });
   }
 
-  private delete_toDoItem(id: number) {
-    this.authenticationService.authorizeUser().then((resolve:any) => { 
+  private delete_toDoItem(id: string) {
+    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
       this.toDoService.Delete_ToDoItem(id, resolve)
       .pipe(
         catchError(err => {
@@ -213,3 +213,4 @@ export class ToDosComponent implements OnInit {
     });
   }
 }
+

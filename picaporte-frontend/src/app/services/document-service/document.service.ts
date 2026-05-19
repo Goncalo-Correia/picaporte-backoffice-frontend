@@ -1,36 +1,31 @@
 import { Injectable } from '@angular/core';
-import { Document } from 'src/app/models/document.model';
+import { DocumentDto } from 'src/app/models/document-dto.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DocumentService {
-  documentStructure: Document = new Document();
-  documentStructureArray: Set<Document> = new Set<Document>();
+  documentStructure: DocumentDto = new DocumentDto();
+  documentStructureArray: Set<DocumentDto> = new Set<DocumentDto>();
 
   constructor() { }
 
-  mapNewDocumentStructure(documentStructure: Document): Document {
-    this.documentStructure = new Document();
+  mapNewDocumentStructure(documentStructure: DocumentDto): DocumentDto {
+    this.documentStructure = new DocumentDto();
 
     this.documentStructure.id = documentStructure.id;
     this.documentStructure.documentName = documentStructure.documentName;
     this.documentStructure.filename = documentStructure.filename;
+    this.documentStructure.mimeType = documentStructure.mimeType;
     this.documentStructure.content = documentStructure.content;
     this.documentStructure.isToDelete = documentStructure.isToDelete;
-
-    this.documentStructure.requestedOn = documentStructure.requestedOn;
-    this.documentStructure.requestedUserId = documentStructure.documentTypeId;
     this.documentStructure.uploadedOn = documentStructure.uploadedOn;
-    this.documentStructure.uploadedUserId = documentStructure.documentTypeId;
 
     this.documentStructure.documentTypeId = documentStructure.documentTypeId;
-    this.documentStructure.documentStatusId = documentStructure.documentTypeId;
+    this.documentStructure.documentStatusId = documentStructure.documentStatusId;
 
     this.documentStructure.documentType = documentStructure.documentType;
     this.documentStructure.documentStatus = documentStructure.documentStatus;
-    this.documentStructure.uploadedByUser = documentStructure.uploadedByUser;
-    this.documentStructure.createdByUser = documentStructure.createdByUser;
 
     return this.documentStructure;
   }

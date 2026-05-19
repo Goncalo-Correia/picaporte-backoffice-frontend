@@ -17,13 +17,13 @@ export class QueriesPropertyService {
   constructor(private http: HttpClient) { }
 
   // GET
-  Get_PropertyStructure(id: number, httpOptions: { headers: HttpHeaders }): Observable<PropertyStructure> {
+  Get_PropertyStructure(id: string, httpOptions: { headers: HttpHeaders }): Observable<PropertyStructure> {
     return this.http
       .get<PropertyStructure>(this.baseurl + apiEndpoints.queries_property.get + id);
   }
 
   // PUT
-  Put_PropertyStructure(id: number, data: PropertyStructure, httpOptions: { headers: HttpHeaders }): Observable<PropertyStructure> {
+  Put_PropertyStructure(id: string, data: PropertyStructure, httpOptions: { headers: HttpHeaders }): Observable<PropertyStructure> {
     return this.http
       .put<PropertyStructure>(
         this.baseurl + apiEndpoints.queries_property.put + id,
@@ -57,7 +57,7 @@ export class QueriesPropertyService {
       .get<DashboardKpiStructure[]>(this.baseurl + apiEndpoints.queries_property.kpi, httpOptions);
   }
 
-  Post_RequestDocument(documentTypeId: number, propertyId: number, httpOptions: { headers: HttpHeaders }) {
+  Post_RequestDocument(documentTypeId: number, propertyId: string, httpOptions: { headers: HttpHeaders }) {
     return this.http
       .post(
         this.baseurl + apiEndpoints.document.requestDocument + documentTypeId + "/" + propertyId,

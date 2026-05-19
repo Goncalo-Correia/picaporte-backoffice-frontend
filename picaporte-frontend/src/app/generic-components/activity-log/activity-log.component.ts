@@ -12,7 +12,7 @@ import { MessageComponent } from '../message/message.component';
 })
 export class ActivityLogComponent implements OnInit {
 
-  @Input() entityReferenceId: number = 0;
+  @Input() entityReferenceId: string = "";
 
   @ViewChild(MessageComponent) messageComponent!: MessageComponent;
   @ViewChild('timelineWrapper') timelineWrapper!: ElementRef;

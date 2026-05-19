@@ -8,7 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class DateFormatComponent implements OnInit {
 
-  @Input() date: Date = new Date();
+  @Input() date: Date | null = null;
   @Input() showTime: boolean = true;
 
   constructor(private datePipe: DatePipe) { }

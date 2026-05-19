@@ -33,7 +33,7 @@ export class QueriesEntityReferenceService {
         .pipe(retry(1), catchError(this.errorHandl));
     }
 
-    Delete_EntityReference(id: number, entityTypeId: Enum_EntityType, httpOptions: { headers: HttpHeaders }) {
+    Delete_EntityReference(id: string, entityTypeId: Enum_EntityType, httpOptions: { headers: HttpHeaders }) {
       return this.http
       .post(this.baseurl + apiEndpoints.queries_entityReference.delete + id + "/" + <number>entityTypeId, httpOptions)
       .pipe(retry(1), catchError(this.errorHandl));

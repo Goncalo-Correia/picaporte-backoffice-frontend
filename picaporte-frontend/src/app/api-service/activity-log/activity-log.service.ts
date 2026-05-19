@@ -14,7 +14,7 @@ export class ActivityLogService {
    constructor(private http: HttpClient) {}
 
    // GET ALL
-   GetActivityLogs(entityReferenceId: number, httpOptions: { headers: HttpHeaders }): Observable<ActivityLogStructure[]> {
+   GetActivityLogs(entityReferenceId: string, httpOptions: { headers: HttpHeaders }): Observable<ActivityLogStructure[]> {
      return this.http
        .get<ActivityLogStructure[]>(this.baseurl + apiEndpoints.activityLog.get + entityReferenceId, httpOptions)
    }

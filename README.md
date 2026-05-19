@@ -2,6 +2,20 @@
 
 Angular backoffice application for managing Picaporte operational data such as properties, customers, users, tasks, news, static data, and related assets. The UI is protected with Auth0 and communicates with the Picaporte API through authenticated HTTP requests.
 
+## Table of Contents
+
+- [Overview](#overview)
+- [Repository Layout](#repository-layout)
+- [Main Features](#main-features)
+- [Local Development](#local-development)
+- [Runtime Configuration](#runtime-configuration)
+- [Application Structure](#application-structure)
+- [Routing Summary](#routing-summary)
+- [Authentication Flow](#authentication-flow)
+- [API Integration](#api-integration)
+- [Deployment Notes](#deployment-notes)
+- [Maintenance Notes](#maintenance-notes)
+
 ## Overview
 
 - Framework: Angular 13

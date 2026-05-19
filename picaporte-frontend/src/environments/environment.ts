@@ -6,8 +6,6 @@ export const environment = {
   production: false,
   apiKey: "REDACTED_API_KEY",
   mapboxAccessToken: "REDACTED_MAPBOX_TOKEN",
-  //apiUrl: "https://picaporte.website/rest/",
-  //apiUrl: "https://picaportebackoffice.online/rest/",
   apiUrl: "https://localhost:32769/",
   auth0: {
     domain: 'REDACTED_AUTH0_DOMAIN',

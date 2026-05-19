@@ -72,7 +72,6 @@ export class PropertyComponent implements OnInit {
   ngOnInit(): void {
     this.getActiveRoute();
     this.get_propertySubmenus();
-    this.get_propertyStructure();
   }
 
   onClick_edit() {
@@ -240,6 +239,8 @@ export class PropertyComponent implements OnInit {
   private get_propertyStructure() {
     this.isLoading = true;
     if (this.propertyId !== "" && this.propertyId != null) {
+      this.isEditable = false;
+      this.get_propertySubmenus();
       this.authenticationService.refreshHttpOptions().then((resolve: any) => {
         this.queries_propertyService.Get_PropertyStructure(this.propertyId, resolve)
           .pipe(
@@ -259,6 +260,10 @@ export class PropertyComponent implements OnInit {
       });
     } else {
       this.propertyStructure = new PropertyStructure();
+      this.selectedPropertySubMenu = Enum_PropertySubMenu.DETAILS;
+      this.checkSelectedSubMenu();
+      this.isEditable = true;
+      this.get_propertySubmenus();
 
       this.authenticationService.refreshHttpOptions().then((resolve: any) => {
         this.amentieTypeService.GetAll_AmenetieTypes(true, resolve)
@@ -278,7 +283,6 @@ export class PropertyComponent implements OnInit {
             });
             this.isDataFetched = true;
             this.isLoading = false;
-            this.isEditable = true;
           });
       });
     }
@@ -307,6 +311,7 @@ export class PropertyComponent implements OnInit {
   private getActiveRoute() {
     this.activeRoute.paramMap.subscribe(res => {
       this.propertyId = res.get('id') ?? "";
+      this.get_propertyStructure();
     });
   }
 

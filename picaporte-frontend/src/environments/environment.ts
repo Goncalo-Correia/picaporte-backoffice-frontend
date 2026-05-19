@@ -8,7 +8,7 @@ export const environment = {
   mapboxAccessToken: "REDACTED_MAPBOX_TOKEN",
   //apiUrl: "https://picaporte.website/rest/",
   //apiUrl: "https://picaportebackoffice.online/rest/",
-  apiUrl: "https://localhost:32783/",
+  apiUrl: "https://localhost:32769/",
   auth0: {
     domain: 'REDACTED_AUTH0_DOMAIN',
     clientId: 'REDACTED_AUTH0_CLIENT_ID',

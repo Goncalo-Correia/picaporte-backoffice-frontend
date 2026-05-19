@@ -10,10 +10,10 @@ export class Task {
     userId: string | null = null;
     completedOn: Date | null = null;
     createdOn: Date | null = null;
-    comment: string = "";
+    comment: string | null = null;
     taskType: Static_TaskType = new Static_TaskType();
     taskStatus: Static_TaskStatus = new Static_TaskStatus();
     user: User = new User();
     entityId: string | null = null;
-    entityTypeLabel: string = "";
+    entityTypeLabel: string | null = null;
 }

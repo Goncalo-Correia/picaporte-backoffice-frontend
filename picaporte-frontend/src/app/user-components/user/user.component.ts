@@ -53,11 +53,6 @@ export class UserComponent implements OnInit {
   ngOnInit(): void {
     this.getActiveRoute();
     this.get_userSubmenus();
-    if (this.userId !== "") {
-      this.get_userStructure();
-    } else {
-      this.isDataFetched = true;
-    }
   }
 
   onClick_edit() {
@@ -120,6 +115,7 @@ export class UserComponent implements OnInit {
     this.isLoading = true;
     this.isDataFetched = false;
     if (this.userId !== "" && this.userId != null) {
+      this.isEditable = false;
       this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
         this.queries_userService.Get_UserStructure(this.userId, resolve)
         .pipe(
@@ -135,9 +131,12 @@ export class UserComponent implements OnInit {
         });
       });
     } else {
+      this.userStructure = new UserStructure();
+      this.selectedUserSubMenu = Enum_UserSubMenu.DETAILS;
+      this.checkSelectedSubMenu();
+      this.isEditable = true;
       this.isDataFetched = true;
       this.isLoading = false;
-      this.isEditable = true;
     }
   }
 
@@ -182,6 +181,7 @@ export class UserComponent implements OnInit {
   private getActiveRoute() {
     this.activeRoute.paramMap.subscribe(res => {
       this.userId = res.get('id') ?? "";
+      this.get_userStructure();
     });  
   }
 

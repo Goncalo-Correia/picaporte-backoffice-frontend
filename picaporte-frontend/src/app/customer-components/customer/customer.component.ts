@@ -58,11 +58,6 @@ export class CustomerComponent implements OnInit {
   ngOnInit(): void {
     this.getActiveRoute();
     this.get_customerSubmenus();
-    if (this.customerId !== "") {
-      this.get_customerStructure();
-    } else {
-      this.isDataFetched = true;
-    }
   }
 
   onClick_edit() {
@@ -133,6 +128,7 @@ export class CustomerComponent implements OnInit {
     this.isLoading = true;
     this.isDataFetched = false;
     if (this.customerId !== "" && this.customerId != null) {
+      this.isEditable = false;
       this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
         this.queries_customerService.Get_CustomerStructure(this.customerId, resolve)
         .pipe(
@@ -148,9 +144,12 @@ export class CustomerComponent implements OnInit {
         });
       });
     } else {
+      this.customerStructure = new CustomerStructure();
+      this.selectedCustomerSubMenu = Enum_CustomerSubMenu.DETAILS;
+      this.checkSelectedSubMenu();
+      this.isEditable = true;
       this.isDataFetched = true;
       this.isLoading = false;
-      this.isEditable = true;
     }
   }
 
@@ -195,6 +194,7 @@ export class CustomerComponent implements OnInit {
   private getActiveRoute() {
     this.activeRoute.paramMap.subscribe(res => {
       this.customerId = res.get('id') ?? "";
+      this.get_customerStructure();
     });  
   }
 

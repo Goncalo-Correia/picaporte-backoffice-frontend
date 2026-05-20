@@ -1,37 +1,37 @@
+import { DOCUMENT } from '@angular/common';
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { QueriesCustomerService } from 'src/app/api-service/queries-customer/queries-customer.service';
-import { CustomerDashboardFilterStructure } from 'src/app/structures/dashboard-structures/customer/customer-dashboard-filters.structure';
-import { CustomerDashboardStructure } from 'src/app/structures/dashboard-structures/customer/customer-dashboard.structure';
-import { CustomerDashboardSearchAndFilterStructure } from 'src/app/structures/dashboard-structures/customer/customer-dashboard-search-and-filter.structure';
-import { DashboardKpiStructure } from 'src/app/structures/dashboard-structures/dashboard-kpi.structure';
-import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
-import { catchError } from 'rxjs';
-import { MessageComponent } from 'src/app/generic-components/message/message.component';
-import { StaticAmenetieTypeService } from 'src/app/api-service/static-amenetie-type/static-amenetie-type-service.service';
-import { Static_AmenetieType } from 'src/app/models/static/static-amenetieType.model';
-import { DOCUMENT } from '@angular/common';
 import { QueriesExportService } from 'src/app/api-service/queries-export/queries-export.service';
+import { StaticAmenetieTypeService } from 'src/app/api-service/static-amenetie-type/static-amenetie-type-service.service';
+import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
+import { BaseDashboardComponent } from 'src/app/dashboard-components/shared/base-dashboard.component';
+import { MessageComponent } from 'src/app/generic-components/message/message.component';
+import { Static_AmenetieType } from 'src/app/models/static/static-amenetieType.model';
 import { ExportStructure } from 'src/app/structures/export-structure';
+import { CustomerDashboardFilterStructure } from 'src/app/structures/dashboard-structures/customer/customer-dashboard-filters.structure';
+import { CustomerDashboardSearchAndFilterStructure } from 'src/app/structures/dashboard-structures/customer/customer-dashboard-search-and-filter.structure';
+import { CustomerDashboardStructure } from 'src/app/structures/dashboard-structures/customer/customer-dashboard.structure';
+import { DashboardKpiStructure } from 'src/app/structures/dashboard-structures/dashboard-kpi.structure';
 
 @Component({
   selector: 'app-customer-dashboard',
   templateUrl: './customer-dashboard.component.html',
   styleUrls: ['./customer-dashboard.component.css']
 })
-export class CustomerDashboardComponent implements OnInit {
+export class CustomerDashboardComponent extends BaseDashboardComponent implements OnInit {
 
-  @ViewChild(MessageComponent) messageComponent!: MessageComponent;
-  
-  dashboardKpis: Array<DashboardKpiStructure>;
-  placeholderDashboardKpi: DashboardKpiStructure;
+  @ViewChild(MessageComponent) override messageComponent!: MessageComponent;
 
-  customerDashboardStructureArray: CustomerDashboardStructure[];
-  customerSearchAndFilterStructure: CustomerDashboardSearchAndFilterStructure;
+  dashboardKpis: DashboardKpiStructure[] = [];
+  placeholderDashboardKpi: DashboardKpiStructure = new DashboardKpiStructure();
+
+  customerDashboardStructureArray: CustomerDashboardStructure[] = [];
+  customerSearchAndFilterStructure: CustomerDashboardSearchAndFilterStructure = new CustomerDashboardSearchAndFilterStructure();
   hasPrevious: boolean = true;
   hasNext: boolean = true;
 
-  customerDashboardFilters: CustomerDashboardFilterStructure;
+  customerDashboardFilters: CustomerDashboardFilterStructure = new CustomerDashboardFilterStructure();
 
   isDataFetched: boolean = false;
   isKpiDataFetched: boolean = false;
@@ -42,15 +42,11 @@ export class CustomerDashboardComponent implements OnInit {
     public queries_customerService: QueriesCustomerService,
     private queries_export: QueriesExportService,
     public router: Router,
-    private authenticationService: AuthenticationService,
+    authenticationService: AuthenticationService,
     private staticAmenetieTypeService: StaticAmenetieTypeService,
     @Inject(DOCUMENT) private document: Document
-    ) {
-    this.dashboardKpis = new Array<DashboardKpiStructure>();
-    this.placeholderDashboardKpi = new DashboardKpiStructure();
-    this.customerDashboardStructureArray = new Array<CustomerDashboardStructure>();
-    this.customerSearchAndFilterStructure = new CustomerDashboardSearchAndFilterStructure();
-    this.customerDashboardFilters = new CustomerDashboardFilterStructure();
+  ) {
+    super(authenticationService);
   }
 
   ngOnInit(): void {
@@ -61,16 +57,16 @@ export class CustomerDashboardComponent implements OnInit {
 
   onClick_selectAllTypes(event: MouseEvent) {
     event.stopPropagation();
-    this.customerDashboardFilters.amenetieTypes.forEach(element => {
+    this.customerDashboardFilters.amenetieTypes.forEach((element) => {
       element.isSelected = true;
-    })
+    });
   }
 
   onClick_clearTypes(event: MouseEvent) {
     event.stopPropagation();
-    this.customerDashboardFilters.amenetieTypes.forEach(element => {
+    this.customerDashboardFilters.amenetieTypes.forEach((element) => {
       element.isSelected = false;
-    })
+    });
   }
 
   onClick_selectAmenetieTypeFilter(index: number, event: MouseEvent) {
@@ -79,18 +75,19 @@ export class CustomerDashboardComponent implements OnInit {
   }
 
   onClick_confirmFilter() {
-    this.customerSearchAndFilterStructure.amenetieTypeIds = new Array<number>();
-    this.customerDashboardFilters.amenetieTypes.filter(prop => prop.isSelected).forEach(element => {
-      this.customerSearchAndFilterStructure.amenetieTypeIds.push(element.id);
-    });
+    this.customerSearchAndFilterStructure.amenetieTypeIds = this.customerDashboardFilters.amenetieTypes
+      .filter((element) => element.isSelected)
+      .map((element) => element.id);
+    this.resetToFirstPage(this.customerSearchAndFilterStructure.searchAndFilterStructure);
     this.get_customerDashboardStructure();
   }
 
   onClick_clearFilter() {
-    this.customerSearchAndFilterStructure.amenetieTypeIds = new Array<number>();
-    this.customerDashboardFilters.amenetieTypes.forEach(element => {
+    this.customerSearchAndFilterStructure.amenetieTypeIds = [];
+    this.customerDashboardFilters.amenetieTypes.forEach((element) => {
       element.isSelected = false;
-    })
+    });
+    this.resetToFirstPage(this.customerSearchAndFilterStructure.searchAndFilterStructure);
     this.get_customerDashboardStructure();
   }
 
@@ -99,126 +96,107 @@ export class CustomerDashboardComponent implements OnInit {
   }
 
   onClick_copy() {
-    const textToCopy = this.document.getElementById('exportDiv')?.innerText;
-    if (textToCopy != null) {
-      navigator.clipboard.writeText(textToCopy).then(function() {
-        console.log('Copying to clipboard was successful!');
-      }, function(err) {
-        console.error('Could not copy text: ', err);
-      });
-    }
+    this.copyElementText(this.document, 'exportDiv');
   }
 
   eventHandler_dashboardKpiClicked(index: number) {
-    if (index == 0 && this.customerSearchAndFilterStructure.customersWithUser) {
+    let didChange = false;
+
+    if (index === 0 && this.customerSearchAndFilterStructure.customersWithUser) {
       this.customerSearchAndFilterStructure.customersWithUser = false;
-      this.get_customerDashboardStructure();
-    } 
-    if (index == 1 && !this.customerSearchAndFilterStructure.customersWithUser) {
+      didChange = true;
+    }
+
+    if (index === 1 && !this.customerSearchAndFilterStructure.customersWithUser) {
       this.customerSearchAndFilterStructure.customersWithUser = true;
+      didChange = true;
+    }
+
+    if (didChange) {
+      this.resetToFirstPage(this.customerSearchAndFilterStructure.searchAndFilterStructure);
       this.get_customerDashboardStructure();
     }
   }
 
   eventHandler_searchTextChanged(searchText: string) {
     this.customerSearchAndFilterStructure.searchAndFilterStructure.searchText = searchText;
+    this.resetToFirstPage(this.customerSearchAndFilterStructure.searchAndFilterStructure);
     this.get_customerDashboardStructure();
   }
 
   eventHandler_buttonClicked() {
-    // ADD NAVIGATION TO NEW PROPERTY
-    this.router.navigate(["/","Cliente"]);
+    this.router.navigate(['/', 'Cliente']);
   }
 
   get_customerDashboardStructure() {
     this.isDataFetched = false;
-    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.queries_customerService.Post_SearchAndFilter_CustomerStructure(this.customerSearchAndFilterStructure, resolve)
-      .pipe(
-        catchError(err => {
-          this.messageComponent.showMessage(err.error);
-          return err;
-        })
-      )
-      .subscribe(data => {
-        this.customerDashboardStructureArray = <CustomerDashboardStructure[]>data;
+    this.runAuthenticatedRequest(
+      (httpOptions) => this.queries_customerService.Post_SearchAndFilter_CustomerStructure(this.customerSearchAndFilterStructure, httpOptions),
+      (data) => {
+        this.customerDashboardStructureArray = data as CustomerDashboardStructure[];
         this.isDataFetched = true;
-        this.hasPreviousPage();
-        this.hasNextPage();
-      });
-    });
+        this.updatePaginationFlags();
+      },
+      () => {
+        this.customerDashboardStructureArray = [];
+        this.isDataFetched = true;
+        this.updatePaginationFlags();
+      }
+    );
   }
 
   get_export() {
-    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.queries_export.ExportCustomer(this.customerSearchAndFilterStructure, resolve)
-      .pipe(
-        catchError(err => {
-          this.messageComponent.showMessage(err.error);
-          return err;
-        })
-      )
-      .subscribe(data => {
-        this.exportStructure = <ExportStructure>data;
-      });
-    });
+    this.runAuthenticatedRequest(
+      (httpOptions) => this.queries_export.ExportCustomer(this.customerSearchAndFilterStructure, httpOptions),
+      (data) => {
+        this.exportStructure = data as ExportStructure;
+      }
+    );
   }
 
   previous() {
-    if(this.hasPrevious) {
+    if (this.hasPrevious) {
       this.customerSearchAndFilterStructure.searchAndFilterStructure.page -= 1;
-
       this.get_customerDashboardStructure();
     }
   }
 
   next() {
-    if(this.hasNext) {
+    if (this.hasNext) {
       this.customerSearchAndFilterStructure.searchAndFilterStructure.page += 1;
-
       this.get_customerDashboardStructure();
     }
   }
 
   private getFilters() {
-    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.staticAmenetieTypeService.GetAll_AmenetieTypes(true, resolve)
-      .pipe(
-        catchError(err => {
-          this.messageComponent.showMessage(err.error);
-          return err;
-        })
-      )
-      .subscribe(data => {
-        this.customerDashboardFilters.amenetieTypes = <Static_AmenetieType[]>data;
-        this.isDataFetched = true;
-        this.hasPreviousPage();
-        this.hasNextPage();
-      });
-    });
+    this.runAuthenticatedRequest(
+      (httpOptions) => this.staticAmenetieTypeService.GetAll_AmenetieTypes(true, httpOptions),
+      (data) => {
+        this.customerDashboardFilters.amenetieTypes = data as Static_AmenetieType[];
+      }
+    );
   }
 
-  private hasPreviousPage() {
-    this.hasPrevious = this.customerSearchAndFilterStructure.searchAndFilterStructure.page > 0;
-  }
-
-  private hasNextPage() {
-    this.hasNext = this.customerDashboardStructureArray.length == this.customerSearchAndFilterStructure.searchAndFilterStructure.size;
+  private updatePaginationFlags() {
+    const pagination = this.updatePagination(
+      this.customerSearchAndFilterStructure.searchAndFilterStructure,
+      this.customerDashboardStructureArray.length
+    );
+    this.hasPrevious = pagination.hasPrevious;
+    this.hasNext = pagination.hasNext;
   }
 
   private get_Kpis() {
-    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.queries_customerService.Get_Kpis(resolve)
-      .pipe(
-        catchError(err => {
-          this.messageComponent.showMessage(err.error);
-          return err;
-        })
-      )
-      .subscribe(data => {
-        this.dashboardKpis = <DashboardKpiStructure[]>data;
+    this.runAuthenticatedRequest(
+      (httpOptions) => this.queries_customerService.Get_Kpis(httpOptions),
+      (data) => {
+        this.dashboardKpis = data as DashboardKpiStructure[];
         this.isKpiDataFetched = true;
-      });
-    });
+      },
+      () => {
+        this.dashboardKpis = [];
+        this.isKpiDataFetched = true;
+      }
+    );
   }
 }

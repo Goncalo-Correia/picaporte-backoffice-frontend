@@ -1,0 +1,4 @@
+.dashboard-page .dropdown-menu {
+    max-height: 18rem;
+    overflow-y: auto;
+}

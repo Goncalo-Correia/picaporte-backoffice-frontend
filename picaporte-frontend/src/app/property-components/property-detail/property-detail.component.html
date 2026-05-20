@@ -130,7 +130,7 @@
         <ul class="dropdown-menu" aria-labelledby="propertyType">
           <li *ngFor="let customer of customers">
             <a class="dropdown-item"
-              (click)="onClick_selectCustomer(customer, customer.firstName)">{{customer.firstName}}</a>
+              (click)="onClick_selectCustomer(customer, getCustomerDisplayName(customer))">{{getCustomerDisplayName(customer)}}</a>
           </li>
         </ul>
       </div>

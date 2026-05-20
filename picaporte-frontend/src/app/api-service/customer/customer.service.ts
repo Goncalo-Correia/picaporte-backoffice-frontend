@@ -1,8 +1,12 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, retry, throwError } from 'rxjs';
+import { catchError, map, Observable, retry, throwError } from 'rxjs';
 import { Customer } from 'src/app/models/customer.model';
 import { apiEndpoints, environment } from 'src/environments/environment';
+
+interface PagedResponse<T> {
+  items?: T[];
+}
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +20,22 @@ export class CustomerService {
    // GET ALL
    GetAll_Customers(httpOptions: { headers: HttpHeaders }): Observable<Customer[]> {
      return this.http
-       .get<Customer[]>(this.baseurl + apiEndpoints.customer.getAll, httpOptions)
-       .pipe(retry(1), catchError(this.errorHandl));
+       .get<Customer[] | PagedResponse<Customer>>(this.baseurl + apiEndpoints.customer.getAll, httpOptions)
+       .pipe(
+        retry(1),
+        map((response) => {
+          if (Array.isArray(response)) {
+            return response;
+          }
+
+          if (Array.isArray(response?.items)) {
+            return response.items;
+          }
+
+          return [];
+        }),
+        catchError(this.errorHandl)
+      );
    }
 
    // Error handling

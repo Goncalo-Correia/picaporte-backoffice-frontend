@@ -114,6 +114,7 @@ export class UserComponent implements OnInit {
   private get_userStructure() {
     this.isLoading = true;
     this.isDataFetched = false;
+    this.get_userSubmenus();
     if (this.userId !== "" && this.userId != null) {
       this.isEditable = false;
       this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
@@ -141,7 +142,11 @@ export class UserComponent implements OnInit {
   }
 
   private get_userSubmenus() {
-    this.userSubmenus = this.userSubmenuFactory.getUserSubmenus();
+    this.userSubmenus = this.userSubmenuFactory.getUserSubmenus(this.hasRecordId());
+  }
+
+  private hasRecordId(): boolean {
+    return this.userId !== "" && this.userId != null;
   }
 
   private submit_user() {

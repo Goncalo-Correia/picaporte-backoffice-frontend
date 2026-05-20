@@ -28,10 +28,6 @@
             <i class="fa-solid fa-clipboard-list"></i>
             <div *ngIf="isOpen" class="me-5">To Do</div>
         </div>
-        <div routerLink="/Links" routerLinkActive="active-link" [ngClass]="!isOpen ? 'justify-content-center' : ''" class="d-flex align-items-center p-3 gap-3 fs-5 fw-bold sidenav-item">
-            <i class="fa-solid fa-link"></i>
-            <div *ngIf="isOpen" class="me-5">Links</div>
-        </div>
         <div routerLink="/GestaoDeDados" routerLinkActive="active-link" [ngClass]="!isOpen ? 'justify-content-center' : ''" class="d-flex align-items-center p-3 gap-3 fs-5 fw-bold sidenav-item">
             <i class="fa-solid fa-database"></i>
             <div *ngIf="isOpen" class="me-5">Gestão de dados</div>

@@ -19,7 +19,7 @@ export class QueriesPropertyService {
   // GET
   Get_PropertyStructure(id: string, httpOptions: { headers: HttpHeaders }): Observable<PropertyStructure> {
     return this.http
-      .get<PropertyStructure>(this.baseurl + apiEndpoints.queries_property.get + id);
+      .get<PropertyStructure>(this.baseurl + apiEndpoints.queries_property.get + id, httpOptions);
   }
 
   // PUT

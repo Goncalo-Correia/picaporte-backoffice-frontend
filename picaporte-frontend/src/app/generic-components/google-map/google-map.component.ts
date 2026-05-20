@@ -17,6 +17,7 @@ export class GoogleMapComponent implements OnInit {
   @ViewChild('mapContainer', { static: false }) gmap!: ElementRef;
   map!: google.maps.Map;
   marker!: google.maps.Marker;
+  isMapAvailable: boolean = true;
 
   constructor() { }
 
@@ -25,146 +26,77 @@ export class GoogleMapComponent implements OnInit {
   }
 
   initializeMap(): void {
+    if (!this.isGoogleMapsReady()) {
+      this.isMapAvailable = false;
+      return;
+    }
+
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position: GeolocationPosition) => {
-          let currentPosition;
-          if (this.latitude == 0 && this.longitude == 0) {
-            currentPosition = new google.maps.LatLng(
-              position.coords.latitude,
-              position.coords.longitude
-            );
-          } else {
-            currentPosition = new google.maps.LatLng(
-              this.latitude,
-              this.longitude
-            );
-          }
+          const currentPosition = this.latitude == 0 && this.longitude == 0
+            ? new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
+            : new google.maps.LatLng(this.latitude, this.longitude);
 
-          const mapOptions: google.maps.MapOptions = {
-            center: currentPosition,
-            zoom: 12,
-            mapTypeId: google.maps.MapTypeId.ROADMAP,
-          };
-
-          this.map = new google.maps.Map(this.gmap.nativeElement, mapOptions);
-
-          if (this.latitude != 0 && this.longitude != 0) {
-            const markerPosition = new google.maps.LatLng(
-              this.latitude,
-              this.longitude
-            );
-            this.marker = new google.maps.Marker({
-              position: markerPosition,
-              map: this.map,
-              title: 'Marcador'
-            });
-          } else {
-            this.marker = new google.maps.Marker({
-              position: currentPosition,
-              map: this.map,
-              title: 'Marcador'
-            });
-          }
-    
-          this.map.addListener('click', event => {
-            this.marker.setPosition(event.latLng);
-            this.latitudeEvent.emit(event.latLng.lat());
-            this.logitudeEvent.emit(event.latLng.lng());
-          });
+          this.renderMap(currentPosition);
         },
         () => {
-          // Handle geolocation error (e.g., user denied permission)
           console.error('Error obtaining user location.');
 
-          let defaultPosition;
-          if (this.latitude != 0 && this.longitude != 0) {
-            defaultPosition = new google.maps.LatLng(
-              this.latitude,
-              this.longitude
-            );
-          } else {
-            defaultPosition = new google.maps.LatLng(38.652997388, -27.218665792);
-          }
+          const defaultPosition = this.latitude != 0 && this.longitude != 0
+            ? new google.maps.LatLng(this.latitude, this.longitude)
+            : new google.maps.LatLng(38.652997388, -27.218665792);
 
-          const mapOptions: google.maps.MapOptions = {
-            center: defaultPosition,
-            zoom: 12,
-            mapTypeId: google.maps.MapTypeId.ROADMAP,
-          };
-
-          this.map = new google.maps.Map(this.gmap.nativeElement, mapOptions);
-
-          if (this.latitude != 0 && this.longitude != 0) {
-            const markerPosition = new google.maps.LatLng(
-              this.latitude,
-              this.longitude
-            );
-            this.marker = new google.maps.Marker({
-              position: markerPosition,
-              map: this.map,
-              title: 'Marcador'
-            });
-          } else {
-            this.marker = new google.maps.Marker({
-              position: defaultPosition,
-              map: this.map,
-              title: 'Marcador'
-            });
-          }
-    
-          this.map.addListener('click', event => {
-            this.marker.setPosition(event.latLng);
-            this.latitudeEvent.emit(event.latLng.lat());
-            this.logitudeEvent.emit(event.latLng.lng());
-          });
+          this.renderMap(defaultPosition);
         }
       );
     } else {
-      // Geolocation API is not supported by the browser
       console.error('Geolocation API not supported.');
 
-      let defaultPosition;
-      if (this.latitude != 0 && this.longitude != 0) {
-        defaultPosition = new google.maps.LatLng(
-          this.latitude,
-          this.longitude
-        );
-      } else {
-        defaultPosition = new google.maps.LatLng(38.652997388, -27.218665792);
-      }
+      const defaultPosition = this.latitude != 0 && this.longitude != 0
+        ? new google.maps.LatLng(this.latitude, this.longitude)
+        : new google.maps.LatLng(38.652997388, -27.218665792);
 
+      this.renderMap(defaultPosition);
+    }
+  }
+
+  private isGoogleMapsReady(): boolean {
+    return typeof google !== 'undefined'
+      && !!google.maps
+      && typeof google.maps.Map === 'function'
+      && typeof google.maps.Marker === 'function'
+      && typeof google.maps.LatLng === 'function';
+  }
+
+  private renderMap(position: google.maps.LatLng): void {
+    try {
       const mapOptions: google.maps.MapOptions = {
-        center: defaultPosition,
+        center: position,
         zoom: 12,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
       };
 
       this.map = new google.maps.Map(this.gmap.nativeElement, mapOptions);
 
-      if (this.latitude != 0 && this.longitude != 0) {
-        const markerPosition = new google.maps.LatLng(
-          this.latitude,
-          this.longitude
-        );
-        this.marker = new google.maps.Marker({
-          position: markerPosition,
-          map: this.map,
-          title: 'Marcador'
-        });
-      } else {
-        this.marker = new google.maps.Marker({
-          position: defaultPosition,
-          map: this.map,
-          title: 'Marcador'
-        });
-      }
+      this.marker = new google.maps.Marker({
+        position,
+        map: this.map,
+        title: 'Marcador'
+      });
 
-      this.map.addListener('click', event => {
+      this.map.addListener('click', (event: google.maps.MapMouseEvent) => {
+        if (!event.latLng) {
+          return;
+        }
+
         this.marker.setPosition(event.latLng);
         this.latitudeEvent.emit(event.latLng.lat());
         this.logitudeEvent.emit(event.latLng.lng());
       });
+    } catch (error) {
+      console.error('Failed to initialize Google Maps.', error);
+      this.isMapAvailable = false;
     }
   }
 }

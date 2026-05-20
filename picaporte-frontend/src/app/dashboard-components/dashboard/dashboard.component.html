@@ -1,92 +1,89 @@
-<div class="px-5 py-3 w-100">
+<div class="dashboard-page px-3 px-lg-5 py-3 w-100">
   <div class="text-center mb-4">
     <img src="/assets/images/picaporte_logo.png" alt="" style="height: 100px;">
   </div>
   <div class="col-12 mb-3">
-    <div *ngIf="isKpiDataFetched else kpiElseBlock" class="row">
-      <div *ngFor="let dashboardKpi of dashboardKpis" class="col-4 p-2">
-        <app-dashboard-kpi 
-          [dashboardKpiStructure]="dashboardKpi" 
+    <div *ngIf="isKpiDataFetched else kpiElseBlock" class="row g-2">
+      <div *ngFor="let dashboardKpi of dashboardKpis" class="col-12 col-md-6 col-xl-4">
+        <app-dashboard-kpi
+          [dashboardKpiStructure]="dashboardKpi"
           [isSelected]="entityReferenceSearchAndFilterStructure.entityTypeId == dashboardKpi.id"
           [isPlaceholder]="false"
-          (dashboardKpiClicked)="eventHandler_dashboardKpiClicked($event)"
-        >
+          (dashboardKpiClicked)="eventHandler_dashboardKpiClicked($event)">
         </app-dashboard-kpi>
       </div>
     </div>
     <ng-template #kpiElseBlock>
-      <div class="row">
-        <div *ngFor="let number of [0,1,2,3,4,5]" class="col-4 p-2">
-          <app-dashboard-kpi 
-            [dashboardKpiStructure]="placeholderDashboardKpi" 
+      <div class="row g-2">
+        <div *ngFor="let number of [0,1,2]" class="col-12 col-md-6 col-xl-4">
+          <app-dashboard-kpi
+            [dashboardKpiStructure]="placeholderDashboardKpi"
             [isSelected]="false"
             [isPlaceholder]="true"
-            (dashboardKpiClicked)="eventHandler_dashboardKpiClicked($event)"
-          >
+            (dashboardKpiClicked)="eventHandler_dashboardKpiClicked($event)">
           </app-dashboard-kpi>
         </div>
       </div>
     </ng-template>
   </div>
-  <app-search-and-filter-bar 
+  <app-search-and-filter-bar
     [searchText]="entityReferenceSearchAndFilterStructure.searchAndFilterStructure.searchText"
     [buttonLabel]="''"
     [showButton]="false"
-    [placeholder]="'Pesquise por um cliente, imóvel ou utilizador'"
+    [placeholder]="'Pesquise por um cliente, im&#243;vel ou utilizador'"
     [hasFilters]="false"
     [hasSelectedFilter]="(entityReferenceSearchAndFilterStructure.entityTypeId!= 0 && entityReferenceSearchAndFilterStructure.entityTypeId != null)"
     (searchTextChanged)="eventHandler_searchTextChanged($event)"
-    (buttonClicked)="eventHandler_buttonClicked()"
-  >
+    (buttonClicked)="eventHandler_buttonClicked()">
   </app-search-and-filter-bar>
-  <div>
-    <table class="table">
+  <div class="table-responsive dashboard-table mt-3">
+    <table class="table align-middle mb-0">
       <thead>
         <tr>
-          <th scope="col">Nome / Referência</th>
+          <th scope="col">Nome / Refer&#234;ncia</th>
           <th scope="col">Tipo</th>
           <th scope="col">Atualizado em</th>
           <th scope="col">Atualizado por</th>
         </tr>
       </thead>
       <tbody *ngIf="isDataFetched; else elseBlock">
-          <tr *ngFor="let item of entityReferenceList" class="table-row">
-              <td scope="row">
-                <span *ngIf="item.type == 'Cliente'" [routerLink]="['/Cliente/', item.recordId]" class="col cursor-pointer color-primary fw-bold">{{item.name}}</span>
-                <span *ngIf="item.type == 'Imóvel'" [routerLink]="['/Imovel/', item.recordId]" class="col cursor-pointer color-primary fw-bold">{{item.name}}</span>
-                <span *ngIf="item.type == 'Utilizador'" [routerLink]="['/Utilizador/', item.recordId]" class="col cursor-pointer color-primary fw-bold">{{item.name}}</span>
-              </td>
-              <td><span class="col">{{item.type}}</span></td>
-              <td><span class="col"><app-date-format [date]="item.lastModifiedOn"></app-date-format></span></td>
-              <td><span class="col">{{item.lastModifiedBy}}</span></td>
-          </tr>
+        <tr *ngFor="let item of entityReferenceList" class="table-row">
+          <td scope="row">
+            <a *ngIf="item.type == 'Cliente'" [routerLink]="['/Cliente/', item.recordId]" class="color-primary fw-bold text-decoration-none">{{item.name}}</a>
+            <a *ngIf="item.type == propertyEntityType" [routerLink]="['/Imovel/', item.recordId]" class="color-primary fw-bold text-decoration-none">{{item.name}}</a>
+            <a *ngIf="item.type == 'Utilizador'" [routerLink]="['/Utilizador/', item.recordId]" class="color-primary fw-bold text-decoration-none">{{item.name}}</a>
+          </td>
+          <td><span class="col">{{item.type}}</span></td>
+          <td><span class="col"><app-date-format [date]="item.lastModifiedOn"></app-date-format></span></td>
+          <td><span class="col">{{item.lastModifiedBy}}</span></td>
+        </tr>
       </tbody>
       <ng-template #elseBlock>
         <tbody>
           <tr *ngFor="let number of [0,1,2]" class="placeholder-glow table-row">
-              <td scope="row"><span class="placeholder col-4"></span></td>
-              <td><span class="placeholder col-2"></span></td>
-              <td><span class="placeholder col-2"></span></td>
-              <td><span class="placeholder col-2"></span></td>
+            <td scope="row"><span class="placeholder col-4"></span></td>
+            <td><span class="placeholder col-2"></span></td>
+            <td><span class="placeholder col-2"></span></td>
+            <td><span class="placeholder col-2"></span></td>
           </tr>
         </tbody>
       </ng-template>
     </table>
-    </div>
+  </div>
   <div *ngIf="entityReferenceList.length == 0 && isDataFetched" class="w-100 p-4 text-center rounded bg-white">
-    Não foram encontrados dados
+    N&#227;o foram encontrados dados
   </div>
   <div *ngIf="isDataFetched">
-      <nav>
-          <ul class="pagination justify-content-end">
-            <li *ngIf="hasPrevious" class="page-item" (click)="previous()">
-              <a class="page-link color-primary">Anterior</a>
-            </li>
-            <li *ngIf="hasNext" class="page-item" (click)="next()">
-              <a class="page-link color-primary">Seguinte</a>
-            </li>
-          </ul>
-        </nav>
+    <nav>
+      <ul class="pagination justify-content-end">
+        <li *ngIf="hasPrevious" class="page-item">
+          <button type="button" class="page-link color-primary" (click)="previous()">Anterior</button>
+        </li>
+        <li *ngIf="hasNext" class="page-item">
+          <button type="button" class="page-link color-primary" (click)="next()">Seguinte</button>
+        </li>
+      </ul>
+    </nav>
   </div>
 </div>
 <app-message></app-message>

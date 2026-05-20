@@ -1,7 +1,24 @@
 .dashboard-kpi {
     border: 2px solid white;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+button.dashboard-kpi {
+    cursor: pointer;
+}
+
+button.dashboard-kpi:hover,
+button.dashboard-kpi:focus-visible {
+    border-color: #198754;
+    box-shadow: 0 0 0 0.2rem rgba(25, 135, 84, 0.15);
+    outline: none;
 }
 
 .dashboard-kpi-selected {
     border: 2px solid #198754;
+}
+
+.dashboard-kpi-count {
+    font-size: 1.5rem;
+    line-height: 1.1;
 }

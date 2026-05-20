@@ -1,81 +1,74 @@
+import { DOCUMENT } from '@angular/common';
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
-import { Route, Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { QueriesExportService } from 'src/app/api-service/queries-export/queries-export.service';
 import { QueriesPropertyService } from 'src/app/api-service/queries-property/queries-property.service';
-import { DashboardKpiStructure } from 'src/app/structures/dashboard-structures/dashboard-kpi.structure';
-import { PropertyDashboardSearchAndFilterStructure } from 'src/app/structures/dashboard-structures/property/property-dashboard-search-and-filter.structure';
-import { PropertyDashboardStructure } from 'src/app/structures/dashboard-structures/property/property-dashboard.structure';
-import { SearchAndFilterStructure } from 'src/app/structures/dashboard-structures/search-and-filter.structure';
-import { PropertyDashboardFilterStructure } from 'src/app/structures/dashboard-structures/property/property-dashboard-filter.structure';
+import { StaticAmenetieTypeService } from 'src/app/api-service/static-amenetie-type/static-amenetie-type-service.service';
+import { StaticPropertyConditionStatusService } from 'src/app/api-service/static-property-condition-status/property-condition-status.service';
+import { StaticIslandService } from 'src/app/api-service/static_island/static-island.service';
+import { StaticPropertyLocationTypeService } from 'src/app/api-service/static-property-location-type/property-location-type.service';
 import { StaticPropertyStatusService } from 'src/app/api-service/static-property-status/static-property-status.service';
 import { StaticPropertyTypologyService } from 'src/app/api-service/static-property-typology/static-property-typology.service';
-import { StaticPropertyConditionStatusService } from 'src/app/api-service/static-property-condition-status/property-condition-status.service';
+import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
+import { BaseDashboardComponent } from 'src/app/dashboard-components/shared/base-dashboard.component';
+import { MessageComponent } from 'src/app/generic-components/message/message.component';
+import { Static_AmenetieType } from 'src/app/models/static/static-amenetieType.model';
+import { Static_Island } from 'src/app/models/static/static-island.model';
+import { Static_PropertyConditionStatus } from 'src/app/models/static/static-propertyconditionstatus.model';
+import { Static_PropertyLocationType } from 'src/app/models/static/static-propertylocationtype.model';
 import { Static_PropertyStatus } from 'src/app/models/static/static-propertystatus.model';
 import { Static_PropertyTypology } from 'src/app/models/static/static-propertytypology.model';
-import { Static_PropertyConditionStatus } from 'src/app/models/static/static-propertyconditionstatus.model';
-import { StaticAmenetieTypeService } from 'src/app/api-service/static-amenetie-type/static-amenetie-type-service.service';
-import { Static_AmenetieType } from 'src/app/models/static/static-amenetieType.model';
-import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
-import { catchError } from 'rxjs';
-import { MessageComponent } from 'src/app/generic-components/message/message.component';
-import { StaticPropertyLocationTypeService } from 'src/app/api-service/static-property-location-type/property-location-type.service';
-import { Static_PropertyLocationType } from 'src/app/models/static/static-propertylocationtype.model';
 import { ExportStructure } from 'src/app/structures/export-structure';
-import { QueriesExportService } from 'src/app/api-service/queries-export/queries-export.service';
-import { DOCUMENT } from '@angular/common';
-import { StaticIslandService } from 'src/app/api-service/static_island/static-island.service';
-import { Static_Island } from 'src/app/models/static/static-island.model';
+import { DashboardKpiStructure } from 'src/app/structures/dashboard-structures/dashboard-kpi.structure';
+import { PropertyDashboardFilterStructure } from 'src/app/structures/dashboard-structures/property/property-dashboard-filter.structure';
+import { PropertyDashboardSearchAndFilterStructure } from 'src/app/structures/dashboard-structures/property/property-dashboard-search-and-filter.structure';
+import { PropertyDashboardStructure } from 'src/app/structures/dashboard-structures/property/property-dashboard.structure';
 
 @Component({
   selector: 'app-property-dashboard',
   templateUrl: './property-dashboard.component.html',
   styleUrls: ['./property-dashboard.component.css']
 })
-export class PropertyDashboardComponent implements OnInit {
+export class PropertyDashboardComponent extends BaseDashboardComponent implements OnInit {
 
-  @ViewChild(MessageComponent) messageComponent!: MessageComponent;
-  
-  dashboardKpis: Array<DashboardKpiStructure>;
-  placeholderDashboardKpi: DashboardKpiStructure;
+  @ViewChild(MessageComponent) override messageComponent!: MessageComponent;
 
-  propertyDashboardStructureArray: PropertyDashboardStructure[];
-  propertyDashboardSearchAndFilterStructure: PropertyDashboardSearchAndFilterStructure;
-  next_searchAndFilterStructure: SearchAndFilterStructure;
+  dashboardKpis: DashboardKpiStructure[] = [];
+  placeholderDashboardKpi: DashboardKpiStructure = new DashboardKpiStructure();
 
-  propertyDashboardFilters: PropertyDashboardFilterStructure;
-  statusFilterLabel: string = "Estado de venda";
-  propertyLocationTypeFilterLabel: string = "Localização";
-  typologyFilterLabel: string = "Tipologia";
-  conditionStatusFilterLabel: string = "Estado";
-  amenetieTypeFilterLabel: string = "Caraterísticas";
-  islandFilterLabel: string = "Ilha";
+  propertyDashboardStructureArray: PropertyDashboardStructure[] = [];
+  propertyDashboardSearchAndFilterStructure: PropertyDashboardSearchAndFilterStructure = new PropertyDashboardSearchAndFilterStructure();
+
+  propertyDashboardFilters: PropertyDashboardFilterStructure = new PropertyDashboardFilterStructure();
+  statusFilterLabel: string = 'Estado de venda';
+  propertyLocationTypeFilterLabel: string = 'Localiza\u00E7\u00E3o';
+  typologyFilterLabel: string = 'Tipologia';
+  conditionStatusFilterLabel: string = 'Estado';
+  amenetieTypeFilterLabel: string = 'Carater\u00EDsticas';
+  islandFilterLabel: string = 'Ilha';
 
   hasPrevious: boolean = true;
   hasNext: boolean = true;
-  
+
   isDataFetched: boolean = false;
   isKpiDataFetched: boolean = false;
 
   exportStructure: ExportStructure = new ExportStructure();
 
   constructor(
-    public queries_propertyService: QueriesPropertyService, 
+    public queries_propertyService: QueriesPropertyService,
     private queries_export: QueriesExportService,
-    public staticPropertyStatusService: StaticPropertyStatusService, 
-    public staticPropertyLocationTypeService: StaticPropertyLocationTypeService, 
+    public staticPropertyStatusService: StaticPropertyStatusService,
+    public staticPropertyLocationTypeService: StaticPropertyLocationTypeService,
     public staticPropertyTypologyService: StaticPropertyTypologyService,
     public staticPropertyConditionStatusService: StaticPropertyConditionStatusService,
     public staticAmenetieTypeService: StaticAmenetieTypeService,
     public router: Router,
-    private authenticationService: AuthenticationService,
+    authenticationService: AuthenticationService,
     private staticIslandService: StaticIslandService,
     @Inject(DOCUMENT) private document: Document
-    ) {
-    this.dashboardKpis = new Array<DashboardKpiStructure>();
-    this.placeholderDashboardKpi = new DashboardKpiStructure();
-    this.propertyDashboardFilters = new PropertyDashboardFilterStructure();
-    this.propertyDashboardStructureArray = new Array<PropertyDashboardStructure>();
-    this.propertyDashboardSearchAndFilterStructure = new PropertyDashboardSearchAndFilterStructure();
-    this.next_searchAndFilterStructure = new SearchAndFilterStructure();
+  ) {
+    super(authenticationService);
   }
 
   ngOnInit(): void {
@@ -106,16 +99,16 @@ export class PropertyDashboardComponent implements OnInit {
 
   onClick_selectAllTypes(event: MouseEvent) {
     event.stopPropagation();
-    this.propertyDashboardFilters.amenetieTypes.forEach(element => {
+    this.propertyDashboardFilters.amenetieTypes.forEach((element) => {
       element.isSelected = true;
-    })
+    });
   }
 
   onClick_clearTypes(event: MouseEvent) {
     event.stopPropagation();
-    this.propertyDashboardFilters.amenetieTypes.forEach(element => {
+    this.propertyDashboardFilters.amenetieTypes.forEach((element) => {
       element.isSelected = false;
-    })
+    });
   }
 
   onClick_selectAmenetieTypeFilter(index: number, event: MouseEvent) {
@@ -129,10 +122,10 @@ export class PropertyDashboardComponent implements OnInit {
   }
 
   onClick_confirmFilter() {
-    this.propertyDashboardSearchAndFilterStructure.amenetieTypeIds = new Array<number>();
-    this.propertyDashboardFilters.amenetieTypes.filter(prop => prop.isSelected).forEach(element => {
-      this.propertyDashboardSearchAndFilterStructure.amenetieTypeIds.push(element.id);
-    });
+    this.propertyDashboardSearchAndFilterStructure.amenetieTypeIds = this.propertyDashboardFilters.amenetieTypes
+      .filter((element) => element.isSelected)
+      .map((element) => element.id);
+    this.resetToFirstPage(this.propertyDashboardSearchAndFilterStructure.searchAndFilter);
     this.get_propertyDashboardStructure();
   }
 
@@ -140,16 +133,20 @@ export class PropertyDashboardComponent implements OnInit {
     this.propertyDashboardSearchAndFilterStructure.propertyStatusId = 0;
     this.propertyDashboardSearchAndFilterStructure.propertyTypologyId = 0;
     this.propertyDashboardSearchAndFilterStructure.propertyConditionStatusId = 0;
-    this.propertyDashboardSearchAndFilterStructure.amenetieTypeIds = new Array<number>();
+    this.propertyDashboardSearchAndFilterStructure.amenetieTypeIds = [];
     this.propertyDashboardSearchAndFilterStructure.propertyLocationTypeId = 0;
     this.propertyDashboardSearchAndFilterStructure.isOnline = false;
     this.propertyDashboardSearchAndFilterStructure.islandId = 0;
-    this.statusFilterLabel = "Estado de venda";
-    this.propertyLocationTypeFilterLabel = "Localização";
-    this.typologyFilterLabel = "Tipologia";
-    this.conditionStatusFilterLabel = "Estado";
-    this.amenetieTypeFilterLabel = "Características";
-    this.islandFilterLabel = "Ilha";
+    this.statusFilterLabel = 'Estado de venda';
+    this.propertyLocationTypeFilterLabel = 'Localiza\u00E7\u00E3o';
+    this.typologyFilterLabel = 'Tipologia';
+    this.conditionStatusFilterLabel = 'Estado';
+    this.amenetieTypeFilterLabel = 'Caracter\u00EDsticas';
+    this.islandFilterLabel = 'Ilha';
+    this.propertyDashboardFilters.amenetieTypes.forEach((element) => {
+      element.isSelected = false;
+    });
+    this.resetToFirstPage(this.propertyDashboardSearchAndFilterStructure.searchAndFilter);
     this.get_propertyDashboardStructure();
   }
 
@@ -158,105 +155,91 @@ export class PropertyDashboardComponent implements OnInit {
   }
 
   onClick_copy() {
-    const textToCopy = this.document.getElementById('exportDiv')?.innerText;
-    if (textToCopy != null) {
-      navigator.clipboard.writeText(textToCopy).then(function() {
-        console.log('Copying to clipboard was successful!');
-      }, function(err) {
-        console.error('Could not copy text: ', err);
-      });
-    }
+    this.copyElementText(this.document, 'exportDiv');
   }
 
   eventHandler_dashboardKpiClicked(clickedPropertyTypeId: number) {
     if (this.propertyDashboardSearchAndFilterStructure.propertyTypeId != clickedPropertyTypeId) {
       this.propertyDashboardSearchAndFilterStructure.propertyTypeId = clickedPropertyTypeId;
-      this.get_propertyDashboardStructure();
+    } else {
+      this.propertyDashboardSearchAndFilterStructure.propertyTypeId = 0;
     }
+
+    this.resetToFirstPage(this.propertyDashboardSearchAndFilterStructure.searchAndFilter);
+    this.get_propertyDashboardStructure();
   }
 
   eventHandler_searchTextChanged(searchText: string) {
     this.propertyDashboardSearchAndFilterStructure.searchAndFilter.searchText = searchText;
+    this.resetToFirstPage(this.propertyDashboardSearchAndFilterStructure.searchAndFilter);
     this.get_propertyDashboardStructure();
   }
 
   eventHandler_buttonClicked() {
-    // ADD NAVIGATION TO NEW PROPERTY
-    this.router.navigate(["/","Imovel"]);
+    this.router.navigate(['/', 'Imovel']);
   }
 
   get_propertyDashboardStructure() {
     this.isDataFetched = false;
-    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.queries_propertyService.Post_SearchAndFilter_PropertyStructure(this.propertyDashboardSearchAndFilterStructure, resolve)
-      .pipe(
-        catchError(err => {
-          this.messageComponent.showMessage(err.error);
-          return err;
-        })
-      )
-      .subscribe(data => {
-        this.propertyDashboardStructureArray = <PropertyDashboardStructure[]>data;
+    this.runAuthenticatedRequest(
+      (httpOptions) => this.queries_propertyService.Post_SearchAndFilter_PropertyStructure(this.propertyDashboardSearchAndFilterStructure, httpOptions),
+      (data) => {
+        this.propertyDashboardStructureArray = data as PropertyDashboardStructure[];
         this.isDataFetched = true;
-        this.hasPreviousPage();
-        this.hasNextPage();
-      });
-    });
+        this.updatePaginationFlags();
+      },
+      () => {
+        this.propertyDashboardStructureArray = [];
+        this.isDataFetched = true;
+        this.updatePaginationFlags();
+      }
+    );
   }
 
   get_export() {
-    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.queries_export.ExportProperty(this.propertyDashboardSearchAndFilterStructure, resolve)
-      .pipe(
-        catchError(err => {
-          this.messageComponent.showMessage(err.error);
-          return err;
-        })
-      )
-      .subscribe(data => {
-        this.exportStructure = <ExportStructure>data;
-      });
-    });
+    this.runAuthenticatedRequest(
+      (httpOptions) => this.queries_export.ExportProperty(this.propertyDashboardSearchAndFilterStructure, httpOptions),
+      (data) => {
+        this.exportStructure = data as ExportStructure;
+      }
+    );
   }
 
   previous() {
-    if(this.hasPrevious) {
+    if (this.hasPrevious) {
       this.propertyDashboardSearchAndFilterStructure.searchAndFilter.page -= 1;
-
       this.get_propertyDashboardStructure();
     }
   }
 
   next() {
-    if(this.hasNext) {
+    if (this.hasNext) {
       this.propertyDashboardSearchAndFilterStructure.searchAndFilter.page += 1;
-
       this.get_propertyDashboardStructure();
     }
   }
 
-  private hasPreviousPage() {
-    this.hasPrevious = this.propertyDashboardSearchAndFilterStructure.searchAndFilter.page > 0;
-  }
-
-  private hasNextPage() {
-    this.hasNext = this.propertyDashboardStructureArray.length == this.propertyDashboardSearchAndFilterStructure.searchAndFilter.size;
+  private updatePaginationFlags() {
+    const pagination = this.updatePagination(
+      this.propertyDashboardSearchAndFilterStructure.searchAndFilter,
+      this.propertyDashboardStructureArray.length
+    );
+    this.hasPrevious = pagination.hasPrevious;
+    this.hasNext = pagination.hasNext;
   }
 
   private get_Kpis() {
-    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.queries_propertyService.Get_Kpis(resolve)
-      .pipe(
-        catchError(err => {
-          this.messageComponent.showMessage(err.error);
-          return err;
-        })
-      )
-      .subscribe(data => {
-        this.dashboardKpis = <DashboardKpiStructure[]>data;
+    this.runAuthenticatedRequest(
+      (httpOptions) => this.queries_propertyService.Get_Kpis(httpOptions),
+      (data) => {
+        this.dashboardKpis = data as DashboardKpiStructure[];
         this.isKpiDataFetched = true;
-      });
-    });
+      },
+      () => {
+        this.dashboardKpis = [];
+        this.isKpiDataFetched = true;
+      }
+    );
   }
 
   private initFilterOptions() {
@@ -269,86 +252,56 @@ export class PropertyDashboardComponent implements OnInit {
   }
 
   private getIslands() {
-    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.staticIslandService.GetAll_Islands(resolve)
-      .subscribe(data => {
-        this.propertyDashboardFilters.islands = <Static_Island[]>data;
-      });
-    });
+    this.runAuthenticatedRequest(
+      (httpOptions) => this.staticIslandService.GetAll_Islands(httpOptions),
+      (data) => {
+        this.propertyDashboardFilters.islands = data as Static_Island[];
+      }
+    );
   }
 
   private getPropertyStatus() {
-    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.staticPropertyStatusService.GetAll_PropertyStatuses(true, resolve)
-      .pipe(
-        catchError(err => {
-          this.messageComponent.showMessage(err.error);
-          return err;
-        })
-      )
-      .subscribe(data => {
-        this.propertyDashboardFilters.statuses = <Static_PropertyStatus[]>data;
-      });
-    });
+    this.runAuthenticatedRequest(
+      (httpOptions) => this.staticPropertyStatusService.GetAll_PropertyStatuses(true, httpOptions),
+      (data) => {
+        this.propertyDashboardFilters.statuses = data as Static_PropertyStatus[];
+      }
+    );
   }
 
   private getPropertyLocationTypes() {
-    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.staticPropertyLocationTypeService.GetAll_PropertyLocationTypes(true, resolve)
-      .pipe(
-        catchError(err => {
-          this.messageComponent.showMessage(err.error);
-          return err;
-        })
-      )
-      .subscribe(data => {
-        this.propertyDashboardFilters.locationTypes = <Static_PropertyLocationType[]>data;
-      });
-    });
+    this.runAuthenticatedRequest(
+      (httpOptions) => this.staticPropertyLocationTypeService.GetAll_PropertyLocationTypes(true, httpOptions),
+      (data) => {
+        this.propertyDashboardFilters.locationTypes = data as Static_PropertyLocationType[];
+      }
+    );
   }
 
   private getPropertyTypologies() {
-    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.staticPropertyTypologyService.GetAll_PropertyTypology(true, resolve)
-      .pipe(
-        catchError(err => {
-          this.messageComponent.showMessage(err.error);
-          return err;
-        })
-      )
-      .subscribe(data => {
-        this.propertyDashboardFilters.tipologies = <Static_PropertyTypology[]>data;
-      });
-    });
+    this.runAuthenticatedRequest(
+      (httpOptions) => this.staticPropertyTypologyService.GetAll_PropertyTypology(true, httpOptions),
+      (data) => {
+        this.propertyDashboardFilters.tipologies = data as Static_PropertyTypology[];
+      }
+    );
   }
 
   private getPropertyConditionStatus() {
-    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.staticPropertyConditionStatusService.GetAll_PropertyConditionStatuses(true, resolve)
-      .pipe(
-        catchError(err => {
-          this.messageComponent.showMessage(err.error);
-          return err;
-        })
-      )
-      .subscribe(data => {
-        this.propertyDashboardFilters.conditionStatuses = <Static_PropertyConditionStatus[]>data;
-      });
-    });
+    this.runAuthenticatedRequest(
+      (httpOptions) => this.staticPropertyConditionStatusService.GetAll_PropertyConditionStatuses(true, httpOptions),
+      (data) => {
+        this.propertyDashboardFilters.conditionStatuses = data as Static_PropertyConditionStatus[];
+      }
+    );
   }
 
   private getAmenetieTypes() {
-    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.staticAmenetieTypeService.GetAll_AmenetieTypes(true, resolve)
-      .pipe(
-        catchError(err => {
-          this.messageComponent.showMessage(err.error);
-          return err;
-        })
-      )
-      .subscribe(data => {
-        this.propertyDashboardFilters.amenetieTypes = <Static_AmenetieType[]>data;
-      });
-    });
+    this.runAuthenticatedRequest(
+      (httpOptions) => this.staticAmenetieTypeService.GetAll_AmenetieTypes(true, httpOptions),
+      (data) => {
+        this.propertyDashboardFilters.amenetieTypes = data as Static_AmenetieType[];
+      }
+    );
   }
 }

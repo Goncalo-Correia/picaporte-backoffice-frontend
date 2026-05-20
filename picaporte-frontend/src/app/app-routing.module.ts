@@ -7,7 +7,6 @@ import { DashboardComponent } from './dashboard-components/dashboard/dashboard.c
 import { PropertyDashboardComponent } from './dashboard-components/property-dashboard/property-dashboard.component';
 import { UserDashboardComponent } from './dashboard-components/user-dashboard/user-dashboard.component';
 import { PropertyComponent } from './property-components/property/property.component';
-import { LinksComponent } from './router-components/links/links.component';
 import { NewsComponent } from './router-components/news/news.component';
 import { StaticDataComponent } from './router-components/static-data/static-data.component';
 import { TasksComponent } from './router-components/tasks/tasks.component';
@@ -35,7 +34,6 @@ const routes: Routes = [
   { path: 'Tarefas', component: TasksComponent, canActivate: [AuthGuard] },
   { path: 'Noticias', component: NewsComponent, canActivate: [AuthGuard] },
   { path: 'ToDos', component: ToDosComponent, canActivate: [AuthGuard] },
-  { path: 'Links', component: LinksComponent, canActivate: [AuthGuard] },
   { path: 'GestaoDeDados', component: StaticDataComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: '' }
 ];

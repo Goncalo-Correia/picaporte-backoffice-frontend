@@ -1,39 +1,37 @@
-<div class="px-5 py-3 w-100">
+<div class="dashboard-page px-3 px-lg-5 py-3 w-100">
   <div class="text-center mb-4">
     <img src="/assets/images/picaporte_logo.png" alt="" style="height: 100px;">
   </div>
   <div class="col-12 mb-3">
-    <div *ngIf="isKpiDataFetched else kpiElseBlock" class="row">
-      <div *ngFor="let dashboardKpi of dashboardKpis" class="col-2 p-2">
-        <app-dashboard-kpi 
-          [dashboardKpiStructure]="dashboardKpi" 
+    <div *ngIf="isKpiDataFetched else kpiElseBlock" class="row g-2">
+      <div *ngFor="let dashboardKpi of dashboardKpis" class="col-12 col-sm-6 col-xl-2">
+        <app-dashboard-kpi
+          [dashboardKpiStructure]="dashboardKpi"
           [isSelected]="propertyDashboardSearchAndFilterStructure.propertyTypeId == dashboardKpi.id"
           [isPlaceholder]="false"
-          (dashboardKpiClicked)="eventHandler_dashboardKpiClicked($event)"
-        >
+          (dashboardKpiClicked)="eventHandler_dashboardKpiClicked($event)">
         </app-dashboard-kpi>
       </div>
     </div>
     <ng-template #kpiElseBlock>
-      <div class="row">
-        <div *ngFor="let number of [0,1,2,3,4,5]" class="col-2 p-2">
-          <app-dashboard-kpi 
-            [dashboardKpiStructure]="placeholderDashboardKpi" 
+      <div class="row g-2">
+        <div *ngFor="let number of [0,1,2,3,4,5]" class="col-12 col-sm-6 col-xl-2">
+          <app-dashboard-kpi
+            [dashboardKpiStructure]="placeholderDashboardKpi"
             [isSelected]="false"
             [isPlaceholder]="true"
-            (dashboardKpiClicked)="eventHandler_dashboardKpiClicked($event)"
-          >
+            (dashboardKpiClicked)="eventHandler_dashboardKpiClicked($event)">
           </app-dashboard-kpi>
         </div>
       </div>
     </ng-template>
   </div>
   <div>
-    <app-search-and-filter-bar 
+    <app-search-and-filter-bar
       [searchText]="propertyDashboardSearchAndFilterStructure.searchAndFilter.searchText"
-      [buttonLabel]="'Novo imóvel'"
+      [buttonLabel]="'Novo im&#243;vel'"
       [showButton]="true"
-      [placeholder]="'Pesquise por um imóvel'"
+      [placeholder]="'Pesquise por um im&#243;vel'"
       [hasFilters]="true"
       [hasSelectedFilter]="propertyDashboardSearchAndFilterStructure.propertyStatusId != 0 && propertyDashboardSearchAndFilterStructure.propertyStatusId != null ||
       propertyDashboardSearchAndFilterStructure.propertyTypologyId != 0 && propertyDashboardSearchAndFilterStructure.propertyTypologyId != null ||
@@ -42,48 +40,47 @@
       propertyDashboardSearchAndFilterStructure.amenetieTypeIds.length != 0 && propertyDashboardSearchAndFilterStructure.amenetieTypeIds != null ||
       propertyDashboardSearchAndFilterStructure.isOnline"
       (searchTextChanged)="eventHandler_searchTextChanged($event)"
-      (buttonClicked)="eventHandler_buttonClicked()"
-    >
+      (buttonClicked)="eventHandler_buttonClicked()">
       <div>
-        <div class="row mb-3">
-          <div class="dropdown col-3 px-3">
+        <div class="row g-3 mb-3">
+          <div class="dropdown col-12 col-md-6 col-xl-3">
             <button class="btn btn-secondary dropdown-toggle w-100" [ngClass]="{'btn-success': propertyDashboardSearchAndFilterStructure.propertyStatusId != 0 && propertyDashboardSearchAndFilterStructure.propertyStatusId != null}" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               {{statusFilterLabel}}
             </button>
             <ul class="dropdown-menu dropdown-menu-dark w-100">
-              <li *ngFor="let propertyDashboardFilterStatuses of propertyDashboardFilters.statuses" (click)="onClick_selectStatusFilter(propertyDashboardFilterStatuses.id, propertyDashboardFilterStatuses.label)" class="cursor-pointer">
-                <div class="dropdown-item">{{propertyDashboardFilterStatuses.label}}</div>
+              <li *ngFor="let propertyDashboardFilterStatuses of propertyDashboardFilters.statuses">
+                <button type="button" class="dropdown-item" (click)="onClick_selectStatusFilter(propertyDashboardFilterStatuses.id, propertyDashboardFilterStatuses.label)">{{propertyDashboardFilterStatuses.label}}</button>
               </li>
             </ul>
           </div>
-          <div class="dropdown col-3 px-3">
+          <div class="dropdown col-12 col-md-6 col-xl-3">
             <button class="btn btn-secondary dropdown-toggle w-100" [ngClass]="{'btn-success': propertyDashboardSearchAndFilterStructure.propertyTypologyId != 0 && propertyDashboardSearchAndFilterStructure.propertyTypologyId != null}" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               {{typologyFilterLabel}}
             </button>
             <ul class="dropdown-menu dropdown-menu-dark w-100">
-              <li *ngFor="let propertyDashboardFilterTypologies of propertyDashboardFilters.tipologies" (click)="onClick_selectTypologyFilter(propertyDashboardFilterTypologies.id, propertyDashboardFilterTypologies.label)" class="cursor-pointer">
-                <div class="dropdown-item">{{propertyDashboardFilterTypologies.label}}</div>
+              <li *ngFor="let propertyDashboardFilterTypologies of propertyDashboardFilters.tipologies">
+                <button type="button" class="dropdown-item" (click)="onClick_selectTypologyFilter(propertyDashboardFilterTypologies.id, propertyDashboardFilterTypologies.label)">{{propertyDashboardFilterTypologies.label}}</button>
               </li>
             </ul>
           </div>
-          <div class="dropdown col-3 px-3">
+          <div class="dropdown col-12 col-md-6 col-xl-3">
             <button class="btn btn-secondary dropdown-toggle w-100" [ngClass]="{'btn-success': propertyDashboardSearchAndFilterStructure.propertyConditionStatusId != 0 && propertyDashboardSearchAndFilterStructure.propertyConditionStatusId != null}" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               {{conditionStatusFilterLabel}}
             </button>
             <ul class="dropdown-menu dropdown-menu-dark w-100">
-              <li *ngFor="let propertyDashboardFilterConditionStatuses of propertyDashboardFilters.statuses" (click)="onClick_selectConditionStatusFilter(propertyDashboardFilterConditionStatuses.id, propertyDashboardFilterConditionStatuses.label)" class="cursor-pointer">
-                <div class="dropdown-item">{{propertyDashboardFilterConditionStatuses.label}}</div>
+              <li *ngFor="let propertyDashboardFilterConditionStatuses of propertyDashboardFilters.conditionStatuses">
+                <button type="button" class="dropdown-item" (click)="onClick_selectConditionStatusFilter(propertyDashboardFilterConditionStatuses.id, propertyDashboardFilterConditionStatuses.label)">{{propertyDashboardFilterConditionStatuses.label}}</button>
               </li>
             </ul>
           </div>
-          <div class="dropdown col-3 px-3">
+          <div class="dropdown col-12 col-md-6 col-xl-3">
             <button class="btn btn-secondary dropdown-toggle w-100" [ngClass]="{'btn-success': propertyDashboardSearchAndFilterStructure.amenetieTypeIds.length != 0 && propertyDashboardSearchAndFilterStructure.amenetieTypeIds != null}" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               {{amenetieTypeFilterLabel}}
             </button>
             <ul class="dropdown-menu dropdown-menu-dark scrollable-dropdown-menu w-100">
               <li class="d-flex align-items-center justify-content-between fs-7 p-3 fw-bold">
-                <div (click)="onClick_selectAllTypes($event)" class="cursor-pointer">Seleccionar todos</div>
-                <div (click)="onClick_clearTypes($event)" class="cursor-pointer">Limpar</div>
+                <button type="button" class="btn btn-link p-0 text-reset text-decoration-none" (click)="onClick_selectAllTypes($event)">Seleccionar todos</button>
+                <button type="button" class="btn btn-link p-0 text-reset text-decoration-none" (click)="onClick_clearTypes($event)">Limpar</button>
               </li>
               <li *ngFor="let propertyDashboardFilterAmenetieType of propertyDashboardFilters.amenetieTypes; index as i"
                 (click)="onClick_selectAmenetieTypeFilter(i, $event)"
@@ -94,32 +91,32 @@
             </ul>
           </div>
         </div>
-        <div class="row mb-3">
-          <div class="dropdown col-3 px-3">
+        <div class="row g-3 mb-3">
+          <div class="dropdown col-12 col-md-6 col-xl-3">
             <button class="btn btn-secondary dropdown-toggle w-100" [ngClass]="{'btn-success': propertyDashboardSearchAndFilterStructure.propertyLocationTypeId != 0 && propertyDashboardSearchAndFilterStructure.propertyLocationTypeId != null}" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               {{propertyLocationTypeFilterLabel}}
             </button>
             <ul class="dropdown-menu dropdown-menu-dark w-100">
-              <li *ngFor="let propertyDashboardFilterLocationType of propertyDashboardFilters.locationTypes" (click)="onClick_selectPropertyLocationTypeFilter(propertyDashboardFilterLocationType.id, propertyDashboardFilterLocationType.label)" class="cursor-pointer">
-                <div class="dropdown-item">{{propertyDashboardFilterLocationType.label}}</div>
+              <li *ngFor="let propertyDashboardFilterLocationType of propertyDashboardFilters.locationTypes">
+                <button type="button" class="dropdown-item" (click)="onClick_selectPropertyLocationTypeFilter(propertyDashboardFilterLocationType.id, propertyDashboardFilterLocationType.label)">{{propertyDashboardFilterLocationType.label}}</button>
               </li>
             </ul>
           </div>
-          <div class="dropdown col-3 px-3">
+          <div class="dropdown col-12 col-md-6 col-xl-3">
             <button class="btn btn-secondary dropdown-toggle w-100" [ngClass]="{'btn-success': propertyDashboardSearchAndFilterStructure.islandId != 0 && propertyDashboardSearchAndFilterStructure.islandId != null}" type="button" data-bs-toggle="dropdown" aria-expanded="false">
               {{islandFilterLabel}}
             </button>
             <ul class="dropdown-menu dropdown-menu-dark w-100">
-              <li *ngFor="let island of propertyDashboardFilters.islands" (click)="onClick_selectIslandFilter(island.id, island.label)" class="cursor-pointer">
-                <div class="dropdown-item">{{island.label}}</div>
+              <li *ngFor="let island of propertyDashboardFilters.islands">
+                <button type="button" class="dropdown-item" (click)="onClick_selectIslandFilter(island.id, island.label)">{{island.label}}</button>
               </li>
             </ul>
           </div>
-          <div class="col-3 px-3">
+          <div class="col-12 col-md-6 col-xl-3">
             <div class="form-check d-flex align-items-center gap-3">
               <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" [(ngModel)]="propertyDashboardSearchAndFilterStructure.isOnline">
               <label class="form-check-label" for="flexCheckDefault">
-                Imóveis online
+                Im&#243;veis online
               </label>
             </div>
           </div>
@@ -135,35 +132,32 @@
       </div>
     </app-search-and-filter-bar>
   </div>
-  <div>
-    <table class="table">
+  <div class="table-responsive dashboard-table mt-3">
+    <table class="table align-middle mb-0">
       <thead>
         <tr>
-          <th scope="col">Referência</th>
+          <th scope="col">Refer&#234;ncia</th>
           <th scope="col">Cliente</th>
           <th scope="col">Contatos</th>
-          <th scope="col">Estado do imóvel</th>
-          <th scope="col">Tipo do imóvel</th>
-          <th scope="col">Localização</th>
+          <th scope="col">Estado do im&#243;vel</th>
+          <th scope="col">Tipo do im&#243;vel</th>
+          <th scope="col">Localiza&#231;&#227;o</th>
           <th scope="col">Atualizado</th>
         </tr>
       </thead>
       <tbody *ngIf="isDataFetched; else elseBlock">
         <tr *ngFor="let property of propertyDashboardStructureArray" class="table-row">
-          <td scope="row"><span [routerLink]="['/Imovel/', property.id]"
-              class="col cursor-pointer color-primary fw-bold">{{property.reference}}</span></td>
+          <td scope="row"><a [routerLink]="['/Imovel/', property.id]" class="color-primary fw-bold text-decoration-none">{{property.reference}}</a></td>
           <td><span class="col">{{property.customerName}}</span></td>
           <td><span class="col fs-7">
             <div class="mb-1">{{property.customerEmail}}</div>
             <div>{{property.customerContact}}</div>
           </span></td>
-          <td><span class="col">{{property.propertyStatusLabel != "" && property.propertyStatusLabel != null ? property.propertyStatusLabel : "-"}}</span></td>
-          <td><span class="col">{{property.propertyTypeLabel != "" && property.propertyTypeLabel != null ? property.propertyTypeLabel : "-"}}</span></td>
-          <td><span class="col">{{property.propertyLocationTypeLabel != "" && property.propertyLocationTypeLabel != null ? property.propertyLocationTypeLabel : "-"}}</span></td>
+          <td><span class="col">{{property.propertyStatusLabel != '' && property.propertyStatusLabel != null ? property.propertyStatusLabel : '-'}}</span></td>
+          <td><span class="col">{{property.propertyTypeLabel != '' && property.propertyTypeLabel != null ? property.propertyTypeLabel : '-'}}</span></td>
+          <td><span class="col">{{property.propertyLocationTypeLabel != '' && property.propertyLocationTypeLabel != null ? property.propertyLocationTypeLabel : '-'}}</span></td>
           <td><span class="col">
-            <div>
-              {{property.lastModifiedBy}}
-            </div>
+            <div>{{property.lastModifiedBy}}</div>
             <app-date-format [date]="property.lastModifiedOn"></app-date-format>
           </span></td>
         </tr>
@@ -183,9 +177,8 @@
       </ng-template>
     </table>
   </div>
-  <div *ngIf="propertyDashboardStructureArray.length == 0 && isDataFetched"
-    class="w-100 p-4 text-center rounded bg-white">
-    Não foram encontrados imóveis
+  <div *ngIf="propertyDashboardStructureArray.length == 0 && isDataFetched" class="mb-3 w-100 p-4 text-center rounded bg-white">
+    N&#227;o foram encontrados im&#243;veis
   </div>
   <div class="row">
     <div class="col-auto">
@@ -194,11 +187,11 @@
     <div *ngIf="isDataFetched" class="col">
       <nav>
         <ul class="pagination justify-content-end">
-          <li *ngIf="hasPrevious" class="page-item" (click)="previous()">
-            <a class="page-link color-primary">Anterior</a>
+          <li *ngIf="hasPrevious" class="page-item">
+            <button type="button" class="page-link color-primary" (click)="previous()">Anterior</button>
           </li>
-          <li *ngIf="hasNext" class="page-item" (click)="next()">
-            <a class="page-link color-primary">Seguinte</a>
+          <li *ngIf="hasNext" class="page-item">
+            <button type="button" class="page-link color-primary" (click)="next()">Seguinte</button>
           </li>
         </ul>
       </nav>
@@ -206,13 +199,12 @@
   </div>
 </div>
 
-<!-- Modal -->
 <div class="modal" id="exportModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
   aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="staticBackdropLabel">Lista de utilizadores</h5>
+        <h5 class="modal-title" id="staticBackdropLabel">Lista de emails</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -225,7 +217,7 @@
       <div class="modal-footer">
         <div class="d-flex justify-content-between w-100">
           <div>
-            <button type="submit" class="btn btn-success" (click)="onClick_copy()">Copiar</button>
+            <button type="button" class="btn btn-success" (click)="onClick_copy()">Copiar</button>
           </div>
         </div>
       </div>

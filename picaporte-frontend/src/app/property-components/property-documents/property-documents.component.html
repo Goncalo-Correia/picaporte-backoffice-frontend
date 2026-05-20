@@ -27,7 +27,7 @@
             <tbody *ngIf="!isEditable">
               <tr *ngFor="let documentStructure of mainDocuments; index as i" class="table-row">
                 <td *ngIf="!documentStructure.isToDelete" scope="row" class="fw-bold color-secondary">
-                  <a [href]="url + documentStructure.filename + '/false'" target="_blank">{{documentStructure.documentName != null ? documentStructure.documentName : "-"}}</a>
+                  <a href="" (click)="onClick_openDocument(documentStructure); $event.preventDefault()">{{documentStructure.documentName != null ? documentStructure.documentName : "-"}}</a>
                 </td>
                 <td *ngIf="!documentStructure.isToDelete">{{documentStructure.documentType.label}}</td>
                 <td *ngIf="!documentStructure.isToDelete">{{documentStructure.documentStatus.label}}</td>
@@ -69,7 +69,7 @@
             <tbody *ngIf="!isEditable">
               <tr *ngFor="let documentStructure of certificateDocuments; index as i" class="table-row">
                   <td *ngIf="!documentStructure.isToDelete"  scope="row" class="fw-bold color-secondary">
-                    <a [href]="url + documentStructure.filename + '/false'" target="_blank">{{documentStructure.documentName != null ? documentStructure.documentName : "-"}}</a>
+                    <a href="" (click)="onClick_openDocument(documentStructure); $event.preventDefault()">{{documentStructure.documentName != null ? documentStructure.documentName : "-"}}</a>
                   </td>
                   <td *ngIf="!documentStructure.isToDelete">{{documentStructure.documentType.label}}</td>
                   <td *ngIf="!documentStructure.isToDelete">{{documentStructure.documentStatus.label}}</td>
@@ -110,7 +110,7 @@
             <tbody *ngIf="!isEditable">
               <tr *ngFor="let documentStructure of otherDocuments; index as i" class="table-row">
                   <td *ngIf="!documentStructure.isToDelete"  scope="row" class="fw-bold color-secondary">
-                    <a [href]="url + documentStructure.filename + '/false'" target="_blank">{{documentStructure.documentName != null ? documentStructure.documentName : "-"}}</a>
+                    <a href="" (click)="onClick_openDocument(documentStructure); $event.preventDefault()">{{documentStructure.documentName != null ? documentStructure.documentName : "-"}}</a>
                   </td>
                   <td *ngIf="!documentStructure.isToDelete">{{documentStructure.documentType.label}}</td>
                   <td *ngIf="!documentStructure.isToDelete">{{documentStructure.documentStatus.label}}</td>

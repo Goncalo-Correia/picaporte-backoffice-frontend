@@ -28,12 +28,18 @@ export class CustomerSubMenuFactory {
         this.customerSubMenus = new Array<CustomerSubMenu>();
     }
 
-    getCustomerSubmenus(): Array<CustomerSubMenu> {
+    getCustomerSubmenus(hasRecordId: boolean): Array<CustomerSubMenu> {
+        this.customerSubMenus = new Array<CustomerSubMenu>();
         this.customerSubMenus.push({
             enum_customerSubMenu: Enum_CustomerSubMenu.DETAILS,
             label: "Dados do cliente",
             description: "Detalhes gerais e morada"
         });
+
+        if (!hasRecordId) {
+            return this.customerSubMenus;
+        }
+
         this.customerSubMenus.push({
             enum_customerSubMenu: Enum_CustomerSubMenu.PREFERENCES,
             label: "Preferências",

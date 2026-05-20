@@ -30,13 +30,18 @@ export class PropertySubMenuFactory {
         this.propertySubMenus = new Array<PropertySubMenu>();
     }
 
-    getPropertySubmenus(isEditable: boolean): Array<PropertySubMenu> {
+    getPropertySubmenus(isEditable: boolean, hasRecordId: boolean): Array<PropertySubMenu> {
         this.propertySubMenus = new Array<PropertySubMenu>();
         this.propertySubMenus.push({
             enum_propertySubMenu: Enum_PropertySubMenu.DETAILS,
             label: "Dados do imóvel",
             description: "Detalhes gerais e morada"
         });
+
+        if (!hasRecordId) {
+            return this.propertySubMenus;
+        }
+
         this.propertySubMenus.push({
             enum_propertySubMenu: Enum_PropertySubMenu.TASKS,
             label: "Tarefas",
@@ -46,7 +51,7 @@ export class PropertySubMenuFactory {
             enum_propertySubMenu: Enum_PropertySubMenu.CARACTERISTICS,
             label: "Características",
             description: "Listagem de características de imóvel"
-        });~
+        });
         this.propertySubMenus.push({
             enum_propertySubMenu: Enum_PropertySubMenu.DOCUMENTS,
             label: "Documentos",
@@ -67,7 +72,7 @@ export class PropertySubMenuFactory {
                 enum_propertySubMenu: Enum_PropertySubMenu.RENTING_OBSERVATIONS,
                 label: "Arrendamento e observações",
                 description: "Especificações de arrendamento e observações"
-        });
+            });
         }
         this.propertySubMenus.push({
             enum_propertySubMenu: Enum_PropertySubMenu.HISTORY,

@@ -1,16 +1,16 @@
 <div class="search-and-filter" [ngClass]="{'open': showFilters}">
     <div class="d-flex">
         <div class="col d-flex align-items-center p-0">
-            <div *ngIf="hasFilters" class="bg-white filters d-flex align-items-center gap-3 p-3 cursor-pointer" (click)="onClick_openCloseFilters()">
+            <button *ngIf="hasFilters" type="button" class="bg-white filters d-flex align-items-center gap-3 p-3" (click)="onClick_openCloseFilters()" [attr.aria-expanded]="showFilters">
                 <i class="fa-solid fa-filter" [ngClass]="{'text-success': hasSelectedFilter}"></i>
                 <div>Filtros</div>
-            </div>
+            </button>
             <div class="input-group h-100">
-                <input type="text" class="form-control" [ngClass]="{'filter-hidden': !hasFilters, 'button-hidden': !showButton}" placeholder={{placeholder}} aria-describedby="button-addon2" [(ngModel)]="searchText" (change)="onChange()">
+                <input type="search" class="form-control" [ngClass]="{'filter-hidden': !hasFilters, 'button-hidden': !showButton}" [attr.placeholder]="placeholder" aria-label="Pesquisar" [(ngModel)]="searchText" (input)="onChange()">
             </div>
         </div>
         <div *ngIf="showButton" class="col-auto d-flex justify-content-end p-0">
-            <button class="btn btn-picaporte-secondary h-100" (click)="onClick_button()">{{buttonLabel}}</button>
+            <button type="button" class="btn btn-picaporte-secondary h-100" (click)="onClick_button()">{{buttonLabel}}</button>
         </div>
     </div>
     <div *ngIf="showFilters" class="d-flex filters-placeholder p-3">

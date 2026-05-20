@@ -1,8 +1,14 @@
-<div *ngIf="!isPlaceholder" class="bg-white p-3 rounded cursor-pointer h-100 dashboard-kpi" [ngClass]="{'dashboard-kpi-selected': isSelected}" (click)="onClick()">
-    <div class="fw-bold mb-2">{{dashboardKpiStructure.label}}</div>
-    <div>{{dashboardKpiStructure.count}}</div>
-</div>
-<div *ngIf="isPlaceholder" class="bg-white p-3 rounded cursor-pointer h-100 dashboard-kpi" [ngClass]="{'dashboard-kpi-selected': isSelected}" (click)="onClick()">
+<button
+    *ngIf="!isPlaceholder"
+    type="button"
+    class="bg-white p-3 rounded h-100 w-100 dashboard-kpi text-start"
+    [ngClass]="{'dashboard-kpi-selected': isSelected}"
+    [attr.aria-pressed]="isSelected"
+    (click)="onClick()">
+    <span class="d-block fw-bold mb-2">{{dashboardKpiStructure.label}}</span>
+    <span class="d-block dashboard-kpi-count">{{dashboardKpiStructure.count}}</span>
+</button>
+<div *ngIf="isPlaceholder" class="bg-white p-3 rounded h-100 dashboard-kpi" aria-hidden="true">
     <span class="placeholder mb-2 w-100"></span>
     <span class="placeholder w-100"></span>
 </div>

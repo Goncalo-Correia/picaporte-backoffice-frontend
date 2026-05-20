@@ -8,7 +8,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class SearchAndFilterBarComponent implements OnInit {
 
   showFilters: boolean = false;
-  timeout: any;
+  timeout: ReturnType<typeof setTimeout> | undefined;
   
   constructor() { }
 
@@ -26,7 +26,13 @@ export class SearchAndFilterBarComponent implements OnInit {
   }
 
   onChange() {
-    this.searchTextChanged.emit(this.searchText);
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+
+    this.timeout = setTimeout(() => {
+      this.searchTextChanged.emit(this.searchText);
+    }, 250);
   }
 
   onClick_button() {

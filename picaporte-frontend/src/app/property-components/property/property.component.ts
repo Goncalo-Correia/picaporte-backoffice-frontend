@@ -95,9 +95,6 @@ export class PropertyComponent implements OnInit {
     )
     if (this.propertyValidationObject.isValid) {
       this.isEditable = false;
-      this.propertyStructure.property.price = parseInt(this.propertyStructure.property.price!.toString().replace(" ", ""));
-      this.propertyStructure.property.livingArea = this.propertyStructure.property.livingArea != null ? parseInt(this.propertyStructure.property.livingArea.toString().replace(" ", "")) : this.propertyStructure.property.livingArea;
-      this.propertyStructure.property.totalConstructionArea = this.propertyStructure.property.totalConstructionArea != null ? parseInt(this.propertyStructure.property.totalConstructionArea.toString().replace(" ", "")) : this.propertyStructure.property.totalConstructionArea;
       this.submit_property();
     } else {
       this.onClick_selectSubMenu(Enum_PropertySubMenu.DETAILS);
@@ -250,7 +247,7 @@ export class PropertyComponent implements OnInit {
             })
           )
           .subscribe(data => {
-            this.propertyStructure = <PropertyStructure>data;
+            this.propertyStructure = this.normalizePropertyStructure(data);
             this.propertyStructure.property.formattedPrice = this.formatNumberWithSpaces(this.propertyStructure.property.price ?? 0);
             this.propertyStructure.property.formattedLivingArea = this.formatNumberWithSpaces(this.propertyStructure.property.livingArea ?? 0);
             this.propertyStructure.property.formattedTotalConstructionArea = this.formatNumberWithSpaces(this.propertyStructure.property.totalConstructionArea ?? 0);
@@ -290,7 +287,37 @@ export class PropertyComponent implements OnInit {
 
   private get_propertySubmenus() {
     this.propertySubmenus = new Array<PropertySubMenu>();
-    this.propertySubmenus = this.propertySubmenuFactory.getPropertySubmenus(this.isEditable);
+    this.propertySubmenus = this.propertySubmenuFactory.getPropertySubmenus(this.isEditable, this.hasRecordId());
+  }
+
+  private hasRecordId(): boolean {
+    return this.propertyId !== "" && this.propertyId != null;
+  }
+
+  private normalizePropertyStructure(data: unknown): PropertyStructure {
+    const normalizedStructure = Object.assign(new PropertyStructure(), data as Partial<PropertyStructure>);
+
+    normalizedStructure.property = Object.assign(new Property(), normalizedStructure.property);
+    normalizedStructure.property.address = Object.assign(new Address(), normalizedStructure.property.address);
+    normalizedStructure.property.mainImage = Object.assign(new ImageDto(), normalizedStructure.property.mainImage);
+
+    normalizedStructure.mainImage = Object.assign(new ImageDto(), normalizedStructure.mainImage);
+    normalizedStructure.mainDocuments = this.coerceArray<DocumentDto>(normalizedStructure.mainDocuments);
+    normalizedStructure.certificateDocuments = this.coerceArray<DocumentDto>(normalizedStructure.certificateDocuments);
+    normalizedStructure.otherDocuments = this.coerceArray<DocumentDto>(normalizedStructure.otherDocuments);
+    normalizedStructure.images = this.coerceArray<ImageDto>(normalizedStructure.images);
+    normalizedStructure.ameneties = this.coerceArray<AmenetieTypeStructure>(normalizedStructure.ameneties);
+    normalizedStructure.recommendedProperties = this.coerceArray<Property>(normalizedStructure.recommendedProperties);
+
+    return normalizedStructure;
+  }
+
+  private coerceArray<T>(value: unknown): T[] {
+    if (Array.isArray(value)) {
+      return value;
+    }
+
+    return [];
   }
 
   private get_documentTypes() {
@@ -303,7 +330,7 @@ export class PropertyComponent implements OnInit {
         })
       )
       .subscribe(data => {
-        this.documentTypes = <Static_DocumentType[]>data;
+        this.documentTypes = this.coerceArray<Static_DocumentType>(data);
       });
     });
   }
@@ -339,9 +366,18 @@ export class PropertyComponent implements OnInit {
     return chunks.join(' ').split('').reverse().join('');
   }
 
-  private unformatNumberFromSpaces(formattedStr: string): number {
-    const numStr = formattedStr.replace(/\s+/g, '');  // Remove all spaces
-    return parseInt(numStr, 10);  // Parse the cleaned-up string back to an integer
+  private unformatNumberFromSpaces(formattedStr: string | null | undefined): number | null {
+    if (formattedStr == null) {
+      return null;
+    }
+
+    const numStr = formattedStr.replace(/\s+/g, '').trim();
+    if (numStr === '') {
+      return null;
+    }
+
+    const parsedNumber = parseInt(numStr, 10);
+    return Number.isNaN(parsedNumber) ? null : parsedNumber;
   }
 }
 

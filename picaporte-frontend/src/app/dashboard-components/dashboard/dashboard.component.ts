@@ -1,29 +1,28 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError } from 'rxjs';
 import { QueriesEntityReferenceService } from 'src/app/api-service/queries-entity-reference/queries-entity-reference.service';
 import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
+import { BaseDashboardComponent } from 'src/app/dashboard-components/shared/base-dashboard.component';
 import { MessageComponent } from 'src/app/generic-components/message/message.component';
 import { DashboardKpiStructure } from 'src/app/structures/dashboard-structures/dashboard-kpi.structure';
 import { EntityReferenceDashboardStructure } from 'src/app/structures/dashboard-structures/entity-reference/entity-reference-dashboard.structure';
 import { EntityReferenceSearchAndFilterStructure } from 'src/app/structures/dashboard-structures/entity-reference/entity-reference-search-and-filter.structure';
-import { SearchAndFilterStructure } from 'src/app/structures/dashboard-structures/search-and-filter.structure';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent extends BaseDashboardComponent implements OnInit {
+  readonly propertyEntityType = 'Im\u00F3vel';
 
-  @ViewChild(MessageComponent) messageComponent!: MessageComponent;
-  
-  dashboardKpis: Array<DashboardKpiStructure>;
-  placeholderDashboardKpi: DashboardKpiStructure;
+  @ViewChild(MessageComponent) override messageComponent!: MessageComponent;
 
-  entityReferenceList: Array<EntityReferenceDashboardStructure>;
-  entityReferenceSearchAndFilterStructure: EntityReferenceSearchAndFilterStructure;
-  next_searchAndFilterStructure: SearchAndFilterStructure;
+  dashboardKpis: DashboardKpiStructure[] = [];
+  placeholderDashboardKpi: DashboardKpiStructure = new DashboardKpiStructure();
+
+  entityReferenceList: EntityReferenceDashboardStructure[] = [];
+  entityReferenceSearchAndFilterStructure: EntityReferenceSearchAndFilterStructure = new EntityReferenceSearchAndFilterStructure();
   hasPrevious: boolean = true;
   hasNext: boolean = true;
 
@@ -33,14 +32,10 @@ export class DashboardComponent implements OnInit {
   constructor(
     public queries_entityReferenceService: QueriesEntityReferenceService,
     public router: Router,
-    private authenticationService: AuthenticationService
-    ) {
-    this.dashboardKpis = new Array<DashboardKpiStructure>();
-    this.placeholderDashboardKpi = new DashboardKpiStructure();
-    this.entityReferenceList = new Array<EntityReferenceDashboardStructure>();
-    this.entityReferenceSearchAndFilterStructure = new EntityReferenceSearchAndFilterStructure();
-    this.next_searchAndFilterStructure = new SearchAndFilterStructure();
-   }
+    authenticationService: AuthenticationService
+  ) {
+    super(authenticationService);
+  }
 
   ngOnInit(): void {
     this.get_Kpis();
@@ -53,74 +48,72 @@ export class DashboardComponent implements OnInit {
     } else {
       this.entityReferenceSearchAndFilterStructure.entityTypeId = undefined;
     }
+
+    this.resetToFirstPage(this.entityReferenceSearchAndFilterStructure.searchAndFilterStructure);
     this.get_dashboardStructure();
   }
 
   eventHandler_searchTextChanged(searchText: string) {
     this.entityReferenceSearchAndFilterStructure.searchAndFilterStructure.searchText = searchText;
+    this.resetToFirstPage(this.entityReferenceSearchAndFilterStructure.searchAndFilterStructure);
     this.get_dashboardStructure();
   }
 
   eventHandler_buttonClicked() {
-    // DUMMY
+    // Dashboard search has no action button.
   }
 
   get_dashboardStructure() {
     this.isDataFetched = false;
-    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.queries_entityReferenceService.Post_SearchAndFilter_EntityReferenceStructure(this.entityReferenceSearchAndFilterStructure, resolve)
-      .pipe(
-        catchError(err => {
-          this.messageComponent.showMessage(err.error);
-          return err;
-        })
-      )
-      .subscribe(data => {
-        this.entityReferenceList = <EntityReferenceDashboardStructure[]>data;
+    this.runAuthenticatedRequest(
+      (httpOptions) => this.queries_entityReferenceService.Post_SearchAndFilter_EntityReferenceStructure(this.entityReferenceSearchAndFilterStructure, httpOptions),
+      (data) => {
+        this.entityReferenceList = data as EntityReferenceDashboardStructure[];
         this.isDataFetched = true;
-        this.hasPreviousPage();
-        this.hasNextPage();
-      });
-    });
+        this.updatePaginationFlags();
+      },
+      () => {
+        this.entityReferenceList = [];
+        this.isDataFetched = true;
+        this.updatePaginationFlags();
+      }
+    );
   }
 
   previous() {
-    if(this.hasPrevious) {
+    if (this.hasPrevious) {
       this.entityReferenceSearchAndFilterStructure.searchAndFilterStructure.page -= 1;
-
       this.get_dashboardStructure();
     }
   }
 
   next() {
-    if(this.hasNext) {
+    if (this.hasNext) {
       this.entityReferenceSearchAndFilterStructure.searchAndFilterStructure.page += 1;
-
       this.get_dashboardStructure();
     }
   }
 
-  private hasPreviousPage() {
-    this.hasPrevious = this.entityReferenceSearchAndFilterStructure.searchAndFilterStructure.page > 0;
-  }
-
-  private hasNextPage() {
-    this.hasNext = this.entityReferenceList.length == this.entityReferenceSearchAndFilterStructure.searchAndFilterStructure.size;
+  private updatePaginationFlags() {
+    const pagination = this.updatePagination(
+      this.entityReferenceSearchAndFilterStructure.searchAndFilterStructure,
+      this.entityReferenceList.length
+    );
+    this.hasPrevious = pagination.hasPrevious;
+    this.hasNext = pagination.hasNext;
   }
 
   private get_Kpis() {
-    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.queries_entityReferenceService.Get_Kpis(resolve)
-      .pipe(
-        catchError(err => {
-          this.messageComponent.showMessage(err.error);
-          return err;
-        })
-      )
-      .subscribe(data => {
-        this.dashboardKpis = <DashboardKpiStructure[]>data;
+    this.runAuthenticatedRequest(
+      (httpOptions) => this.queries_entityReferenceService.Get_Kpis(httpOptions),
+      (data) => {
+        this.dashboardKpis = data as DashboardKpiStructure[];
         this.isKpiDataFetched = true;
-      });
-    });
+      },
+      () => {
+        this.dashboardKpis = [];
+        this.isKpiDataFetched = true;
+      }
+    );
   }
 }

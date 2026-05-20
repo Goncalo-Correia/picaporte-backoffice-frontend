@@ -1,10 +1,10 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError } from 'rxjs';
 import { QueriesExportService } from 'src/app/api-service/queries-export/queries-export.service';
 import { QueriesUserService } from 'src/app/api-service/queries-user/queries-user.service';
 import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
+import { BaseDashboardComponent } from 'src/app/dashboard-components/shared/base-dashboard.component';
 import { MessageComponent } from 'src/app/generic-components/message/message.component';
 import { DashboardKpiStructure } from 'src/app/structures/dashboard-structures/dashboard-kpi.structure';
 import { UserDashboardSearchAndFilterStructure } from 'src/app/structures/dashboard-structures/user/user-dashboard-search-and-filter.structure';
@@ -16,16 +16,15 @@ import { ExportStructure } from 'src/app/structures/export-structure';
   templateUrl: './user-dashboard.component.html',
   styleUrls: ['./user-dashboard.component.css']
 })
+export class UserDashboardComponent extends BaseDashboardComponent implements OnInit {
 
-export class UserDashboardComponent implements OnInit {
+  @ViewChild(MessageComponent) override messageComponent!: MessageComponent;
 
-  @ViewChild(MessageComponent) messageComponent!: MessageComponent;
-  
-  dashboardKpis: Array<DashboardKpiStructure>;
-  placeholderDashboardKpi: DashboardKpiStructure;
+  dashboardKpis: DashboardKpiStructure[] = [];
+  placeholderDashboardKpi: DashboardKpiStructure = new DashboardKpiStructure();
 
-  userDashboardStructureArray: Array<UserDashboardStructure>;
-  userSearchAndFilterStructure: UserDashboardSearchAndFilterStructure;
+  userDashboardStructureArray: UserDashboardStructure[] = [];
+  userSearchAndFilterStructure: UserDashboardSearchAndFilterStructure = new UserDashboardSearchAndFilterStructure();
   hasPrevious: boolean = true;
   hasNext: boolean = true;
 
@@ -35,16 +34,13 @@ export class UserDashboardComponent implements OnInit {
   exportStructure: ExportStructure = new ExportStructure();
 
   constructor(
-    public queries_userService: QueriesUserService, 
+    public queries_userService: QueriesUserService,
     private queries_export: QueriesExportService,
     public router: Router,
-    private authenticationService: AuthenticationService,
+    authenticationService: AuthenticationService,
     @Inject(DOCUMENT) private document: Document
-    ) { 
-    this.dashboardKpis = new Array<DashboardKpiStructure>();
-    this.placeholderDashboardKpi = new DashboardKpiStructure();
-    this.userDashboardStructureArray = new Array<UserDashboardStructure>();
-    this.userSearchAndFilterStructure = new UserDashboardSearchAndFilterStructure();
+  ) {
+    super(authenticationService);
   }
 
   ngOnInit(): void {
@@ -53,19 +49,28 @@ export class UserDashboardComponent implements OnInit {
   }
 
   eventHandler_dashboardKpiClicked(index: number) {
-    if (index == 0 && this.userSearchAndFilterStructure.hasAdminFilter) {
+    let didChange = false;
+
+    if (index === 0 && this.userSearchAndFilterStructure.hasAdminFilter) {
       this.userSearchAndFilterStructure.isAdmin = false;
       this.userSearchAndFilterStructure.hasAdminFilter = false;
-      this.get_userDashboardStructure();
+      didChange = true;
     }
-    if (index == 1 && ((this.userSearchAndFilterStructure.isAdmin && this.userSearchAndFilterStructure.hasAdminFilter) || (!this.userSearchAndFilterStructure.hasAdminFilter))) {
+
+    if (index === 1 && ((this.userSearchAndFilterStructure.isAdmin && this.userSearchAndFilterStructure.hasAdminFilter) || !this.userSearchAndFilterStructure.hasAdminFilter)) {
       this.userSearchAndFilterStructure.isAdmin = false;
       this.userSearchAndFilterStructure.hasAdminFilter = true;
-      this.get_userDashboardStructure();
-    } 
-    if (index == 2 && ((!this.userSearchAndFilterStructure.isAdmin && this.userSearchAndFilterStructure.hasAdminFilter) || (!this.userSearchAndFilterStructure.hasAdminFilter))) {
+      didChange = true;
+    }
+
+    if (index === 2 && ((!this.userSearchAndFilterStructure.isAdmin && this.userSearchAndFilterStructure.hasAdminFilter) || !this.userSearchAndFilterStructure.hasAdminFilter)) {
       this.userSearchAndFilterStructure.isAdmin = true;
       this.userSearchAndFilterStructure.hasAdminFilter = true;
+      didChange = true;
+    }
+
+    if (didChange) {
+      this.resetToFirstPage(this.userSearchAndFilterStructure.searchAndFilterStructure);
       this.get_userDashboardStructure();
     }
   }
@@ -75,97 +80,79 @@ export class UserDashboardComponent implements OnInit {
   }
 
   onClick_copy() {
-    const textToCopy = this.document.getElementById('exportDiv')?.innerText;
-    if (textToCopy != null) {
-      navigator.clipboard.writeText(textToCopy).then(function() {
-        console.log('Copying to clipboard was successful!');
-      }, function(err) {
-        console.error('Could not copy text: ', err);
-      });
-    }
+    this.copyElementText(this.document, 'exportDiv');
   }
 
   eventHandler_searchTextChanged(searchText: string) {
     this.userSearchAndFilterStructure.searchAndFilterStructure.searchText = searchText;
+    this.resetToFirstPage(this.userSearchAndFilterStructure.searchAndFilterStructure);
     this.get_userDashboardStructure();
   }
 
   eventHandler_buttonClicked() {
-    // ADD NAVIGATION TO NEW PROPERTY
-    this.router.navigate(["/","Utilizador"]);
+    this.router.navigate(['/', 'Utilizador']);
   }
 
   get_userDashboardStructure() {
     this.isDataFetched = false;
-    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.queries_userService.Post_SearchAndFilter_UserStructure(this.userSearchAndFilterStructure, resolve)
-      .pipe(
-        catchError(err => {
-          this.messageComponent.showMessage(err.error);
-          return err;
-        })
-      )
-      .subscribe(data => {
-        this.userDashboardStructureArray = <UserDashboardStructure[]>data;
+    this.runAuthenticatedRequest(
+      (httpOptions) => this.queries_userService.Post_SearchAndFilter_UserStructure(this.userSearchAndFilterStructure, httpOptions),
+      (data) => {
+        this.userDashboardStructureArray = data as UserDashboardStructure[];
         this.isDataFetched = true;
-        this.hasPreviousPage();
-        this.hasNextPage();
-      }); 
-    });
+        this.updatePaginationFlags();
+      },
+      () => {
+        this.userDashboardStructureArray = [];
+        this.isDataFetched = true;
+        this.updatePaginationFlags();
+      }
+    );
   }
 
   get_export() {
-    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.queries_export.ExportUsers(this.userSearchAndFilterStructure, resolve)
-      .pipe(
-        catchError(err => {
-          this.messageComponent.showMessage(err.error);
-          return err;
-        })
-      )
-      .subscribe(data => {
-        this.exportStructure = <ExportStructure>data;
-      });
-    });
+    this.runAuthenticatedRequest(
+      (httpOptions) => this.queries_export.ExportUsers(this.userSearchAndFilterStructure, httpOptions),
+      (data) => {
+        this.exportStructure = data as ExportStructure;
+      }
+    );
   }
 
   previous() {
-    if(this.hasPrevious) {
+    if (this.hasPrevious) {
       this.userSearchAndFilterStructure.searchAndFilterStructure.page -= 1;
-
       this.get_userDashboardStructure();
     }
   }
 
   next() {
-    if(this.hasNext) {
+    if (this.hasNext) {
       this.userSearchAndFilterStructure.searchAndFilterStructure.page += 1;
-
       this.get_userDashboardStructure();
     }
   }
 
-  private hasPreviousPage() {
-    this.hasPrevious = this.userSearchAndFilterStructure.searchAndFilterStructure.page > 0;
-  }
-
-  private hasNextPage() {
-    this.hasNext = this.userDashboardStructureArray.length == this.userSearchAndFilterStructure.searchAndFilterStructure.size;
+  private updatePaginationFlags() {
+    const pagination = this.updatePagination(
+      this.userSearchAndFilterStructure.searchAndFilterStructure,
+      this.userDashboardStructureArray.length
+    );
+    this.hasPrevious = pagination.hasPrevious;
+    this.hasNext = pagination.hasNext;
   }
 
   private get_Kpis() {
-    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.queries_userService.Get_Kpis(resolve)
-      .pipe(
-        catchError(err => {
-          this.messageComponent.showMessage(err.error);
-          return err;
-        })
-      )
-      .subscribe(data => {
-        this.dashboardKpis = <DashboardKpiStructure[]>data;
+    this.runAuthenticatedRequest(
+      (httpOptions) => this.queries_userService.Get_Kpis(httpOptions),
+      (data) => {
+        this.dashboardKpis = data as DashboardKpiStructure[];
         this.isKpiDataFetched = true;
-      });
-    });
+      },
+      () => {
+        this.dashboardKpis = [];
+        this.isKpiDataFetched = true;
+      }
+    );
   }
 }

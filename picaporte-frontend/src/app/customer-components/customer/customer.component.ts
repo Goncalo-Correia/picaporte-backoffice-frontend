@@ -127,6 +127,7 @@ export class CustomerComponent implements OnInit {
   private get_customerStructure() {
     this.isLoading = true;
     this.isDataFetched = false;
+    this.get_customerSubmenus();
     if (this.customerId !== "" && this.customerId != null) {
       this.isEditable = false;
       this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
@@ -154,7 +155,11 @@ export class CustomerComponent implements OnInit {
   }
 
   private get_customerSubmenus() {
-    this.customerSubmenus = this.customerSubmenuFactory.getCustomerSubmenus();
+    this.customerSubmenus = this.customerSubmenuFactory.getCustomerSubmenus(this.hasRecordId());
+  }
+
+  private hasRecordId(): boolean {
+    return this.customerId !== "" && this.customerId != null;
   }
 
   private submit_customer() {

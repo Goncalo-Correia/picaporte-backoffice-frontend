@@ -2,8 +2,6 @@ export const environment = {
   production: true,
   mapboxAccessToken: "REDACTED_MAPBOX_TOKEN",
   apiKey: "REDACTED_API_KEY",
-  //apiUrl: "https://picaporte.website/rest/",
-  //apiUrl: "https://picaportebackoffice.online/rest/",
   apiUrl: "https://picaporte-api.onrender.com/",
   auth0: {
     // Swap for a dedicated prod tenant/app when ready

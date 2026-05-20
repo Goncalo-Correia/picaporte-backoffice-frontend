@@ -57,7 +57,7 @@ export class PropertyDetailComponent implements OnInit {
   ngOnInit(): void {
     this.get_Customers();
     if (this.property.customerId != null && this.property.customerId != '') {
-      this.selectedCustomerName = this.property.customer?.firstName;
+      this.selectedCustomerName = this.getCustomerDisplayName(this.property.customer);
     }
     this.get_staticPropertyTypes();
     this.get_staticPropertyStatuses();
@@ -133,9 +133,25 @@ export class PropertyDetailComponent implements OnInit {
         })
       )
       .subscribe(data => {
-        this.customers = <Customer[]>data;
+        this.customers = this.coerceArray<Customer>(data);
       });
     });
+  }
+
+  getCustomerDisplayName(customer: Customer | null | undefined): string {
+    if (customer == null) {
+      return "Nenhum cliente associado";
+    }
+
+    if (customer.customerName != null && customer.customerName.trim() !== '') {
+      return customer.customerName;
+    }
+
+    if (customer.firstName != null && customer.firstName.trim() !== '') {
+      return customer.firstName;
+    }
+
+    return "Nenhum cliente associado";
   }
 
   private get_staticPropertyTypes() {
@@ -148,7 +164,7 @@ export class PropertyDetailComponent implements OnInit {
         })
       )
       .subscribe(data => {
-        this.staticPropertyTypes = <Static_PropertyType[]>data;
+        this.staticPropertyTypes = this.coerceArray<Static_PropertyType>(data);
         this.staticPropertyTypes.push(new Static_PropertyType());
       });
     });
@@ -164,7 +180,7 @@ export class PropertyDetailComponent implements OnInit {
         })
       )
       .subscribe(data => {
-        this.staticPropertyStatuses = <Static_PropertyStatus[]>data;
+        this.staticPropertyStatuses = this.coerceArray<Static_PropertyStatus>(data);
         this.staticPropertyStatuses.push(new Static_PropertyStatus());
       });
     });
@@ -180,7 +196,7 @@ export class PropertyDetailComponent implements OnInit {
         })
       )
       .subscribe(data => {
-        this.staticPropertyTypologies = <Static_PropertyTypology[]>data;
+        this.staticPropertyTypologies = this.coerceArray<Static_PropertyTypology>(data);
         this.staticPropertyTypologies.push(new Static_PropertyTypology());
       });
     });
@@ -196,7 +212,7 @@ export class PropertyDetailComponent implements OnInit {
         })
       )
       .subscribe(data => {
-        this.staticPropertyConditionStatuses = <Static_PropertyConditionStatus[]>data;
+        this.staticPropertyConditionStatuses = this.coerceArray<Static_PropertyConditionStatus>(data);
         this.staticPropertyConditionStatuses.push(new Static_PropertyConditionStatus());
       });
     });
@@ -212,7 +228,7 @@ export class PropertyDetailComponent implements OnInit {
         })
       )
       .subscribe(data => {
-        this.staticEnergyCertificates = <Static_EnergyCertificate[]>data;
+        this.staticEnergyCertificates = this.coerceArray<Static_EnergyCertificate>(data);
         this.staticEnergyCertificates.push(new Static_EnergyCertificate());
       });
     });
@@ -229,9 +245,17 @@ export class PropertyDetailComponent implements OnInit {
         })
       )
       .subscribe(data => {
-        this.staticPropertyLocationTypes = <Static_PropertyLocationType[]>data;
+        this.staticPropertyLocationTypes = this.coerceArray<Static_PropertyLocationType>(data);
         this.staticPropertyLocationTypes.push(new Static_PropertyLocationType());
       });
     });
+  }
+
+  private coerceArray<T>(value: unknown): T[] {
+    if (Array.isArray(value)) {
+      return value;
+    }
+
+    return [];
   }
 }

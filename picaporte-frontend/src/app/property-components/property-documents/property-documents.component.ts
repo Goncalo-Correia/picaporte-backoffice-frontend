@@ -1,5 +1,6 @@
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { catchError } from 'rxjs';
+import { catchError, throwError } from 'rxjs';
 import { StaticDocumentTypeService } from 'src/app/api-service/static-document-type/static-document-type.service';
 import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
 import { MessageComponent } from 'src/app/generic-components/message/message.component';
@@ -17,7 +18,7 @@ declare let $: any;
 })
 export class PropertyDocumentsComponent implements OnInit {
 
-  url: string = environment.apiUrl + apiEndpoints.image.binary;
+  documentBinaryUrl: string = environment.apiUrl + apiEndpoints.image.binary;
 
   @ViewChild(MessageComponent) messageComponent!: MessageComponent;
 
@@ -44,6 +45,7 @@ export class PropertyDocumentsComponent implements OnInit {
   availableDocumentTypes: Array<Static_DocumentType> = new Array<Static_DocumentType>();
 
   constructor(
+    private http: HttpClient,
     public documentTypeService: StaticDocumentTypeService,
     public documentService: DocumentService,
     private authenticationService: AuthenticationService,
@@ -220,6 +222,34 @@ export class PropertyDocumentsComponent implements OnInit {
     this.closeModal();
   }
 
+  onClick_openDocument(documentStructure: DocumentDto) {
+    if (!documentStructure.filename) {
+      this.messageComponent.showMessage("Documento indisponível");
+      return;
+    }
+
+    this.authenticationService.refreshHttpOptions().then((resolve: any) => {
+      this.http
+        .get(
+          `${this.documentBinaryUrl}${encodeURIComponent(documentStructure.filename)}/false`,
+          {
+            headers: resolve.headers,
+            observe: 'response',
+            responseType: 'blob'
+          }
+        )
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage("Erro ao abrir documento");
+            return throwError(() => err);
+          })
+        )
+        .subscribe(response => {
+          this.openDocumentResponse(response, documentStructure);
+        });
+    });
+  }
+
   triggerEvent_updateMainPropertyDocuments() {
     this.event_updateMainPropertyDocuments.emit(this.mainDocuments);
   }
@@ -234,6 +264,27 @@ export class PropertyDocumentsComponent implements OnInit {
 
   private closeModal(): void {
     $('#staticBackdrop').modal('hide');
+  }
+
+  private openDocumentResponse(response: HttpResponse<Blob>, documentStructure: DocumentDto) {
+    const binaryContent = response.body;
+    if (binaryContent == null) {
+      this.messageComponent.showMessage("Documento indisponível");
+      return;
+    }
+
+    const mimeType = binaryContent.type || documentStructure.mimeType || 'application/octet-stream';
+    const blob = new Blob([binaryContent], { type: mimeType });
+    const objectUrl = window.URL.createObjectURL(blob);
+    const tempLink = document.createElement('a');
+
+    tempLink.href = objectUrl;
+    tempLink.target = '_blank';
+    tempLink.rel = 'noopener';
+    tempLink.download = documentStructure.filename;
+    tempLink.click();
+
+    window.setTimeout(() => window.URL.revokeObjectURL(objectUrl), 1000);
   }
 
   private get_documentTypes() {

@@ -58,8 +58,16 @@ export class AddressComponent implements OnInit {
     this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
       this.staticIslandService.GetAll_Islands(resolve)
       .subscribe(data => {
-        this.islands = <Static_Island[]>data;
+        this.islands = this.coerceArray<Static_Island>(data);
       });
     });
+  }
+
+  private coerceArray<T>(value: unknown): T[] {
+    if (Array.isArray(value)) {
+      return value;
+    }
+
+    return [];
   }
 }

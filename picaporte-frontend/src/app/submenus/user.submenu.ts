@@ -25,12 +25,18 @@ export class UserSubMenuFactory {
         this.userSubMenus = new Array<UserSubMenu>();
     }
 
-    getUserSubmenus(): Array<UserSubMenu> {
+    getUserSubmenus(hasRecordId: boolean): Array<UserSubMenu> {
+        this.userSubMenus = new Array<UserSubMenu>();
         this.userSubMenus.push({
             enum_userSubMenu: Enum_UserSubMenu.DETAILS,
             label: "Dados do utilizador",
             description: "Detalhes gerais e morada"
         });
+
+        if (!hasRecordId) {
+            return this.userSubMenus;
+        }
+
         this.userSubMenus.push({
             enum_userSubMenu: Enum_UserSubMenu.PREFERENCES,
             label: "Preferências",

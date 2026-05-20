@@ -3,6 +3,7 @@ import { User } from "./user.model";
 
 export class Customer {
     public id: string = "";
+    public customerName: string = "";
     public firstName: string = "";
     public phoneNumber: string = "";
     public email: string = "";

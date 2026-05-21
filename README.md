@@ -209,8 +209,9 @@ Runtime configuration lives in:
 Important notes:
 
 - Secrets are intentionally not committed
-- `environment.secrets.ts` is expected locally and is gitignored
-- Source comments reference an `environment.secrets.example.ts` workflow, but that example file is not currently present in the repository
+- `environment.secrets.ts` is gitignored and may exist locally
+- `npm run build`, `npm run start`, and `npm run watch` now auto-generate `environment.secrets.ts` when it is missing
+- The generated file reads these public build-time variables when available: `NG_APP_API_KEY`, `NG_APP_MAPBOX_ACCESS_TOKEN`, `NG_APP_AUTH0_DOMAIN`, `NG_APP_AUTH0_CLIENT_ID`, `NG_APP_AUTH0_AUDIENCE`, and optional `NG_APP_AUTH0_REDIRECT_URI`
 - Auth0 settings, API keys, and similar sensitive values are merged into the exported `environment` object through `...secrets`
 
 Typical config values include:
@@ -266,6 +267,7 @@ The current `package.json` does not define a `test` script. If automated tests a
 - The build output directory is `picaporte-frontend/dist/picaporte-frontend`
 - `vercel.json` at the repository root contains frontend deployment configuration
 - The Angular `build` target defaults to the `production` configuration
+- On Vercel, add the `NG_APP_*` variables above so the prebuild step can generate `src/environments/environment.secrets.ts` during the build
 
 ## Maintenance Notes
 

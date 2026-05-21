@@ -2,6 +2,9 @@
   "name": "picaporte-frontend",
   "version": "0.0.0",
   "scripts": {
+    "prestart": "node scripts/generate-environment-secrets.js",
+    "prebuild": "node scripts/generate-environment-secrets.js",
+    "prewatch": "node scripts/generate-environment-secrets.js",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",

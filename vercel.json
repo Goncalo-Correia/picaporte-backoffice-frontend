@@ -1,5 +1,11 @@
 {
   "buildCommand": "cd picaporte-frontend && npm install && npm run build",
-  "outputDirectory": "picaporte-frontend/dist/picaporte-frontend",
-  "installCommand": "echo 'install handled in buildCommand'"
+  "outputDirectory": "picaporte-frontend/dist/picaporte-frontend/browser",
+  "installCommand": "echo 'install handled in buildCommand'",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
 }

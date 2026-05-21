@@ -1,6 +1,6 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+﻿import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, retry, throwError } from 'rxjs';
+import { catchError, Observable, of, retry, throwError } from 'rxjs';
 import { Static_DocumentType } from 'src/app/models/static/static-documenttype.model';
 import { apiEndpoints, environment } from 'src/environments/environment';
 
@@ -17,7 +17,7 @@ export class StaticDocumentTypeService {
   GetAll_DocumentTypes(isActive: boolean, httpOptions: { headers: HttpHeaders }): Observable<Static_DocumentType[]> {
     return this.http
       .get<Static_DocumentType[]>(this.baseurl + apiEndpoints.static_documentTypes.get + isActive, httpOptions)
-      .pipe(retry(1), catchError(this.errorHandl));
+      .pipe(retry({ count: 1, delay: (err: any) => err.status === 0 ? of(true) : throwError(() => err) }), catchError(this.errorHandl));
   }
 
   // POST
@@ -28,7 +28,7 @@ export class StaticDocumentTypeService {
         JSON.stringify(data),
         httpOptions
       )
-      .pipe(retry(1), catchError(this.errorHandl));
+      .pipe(retry({ count: 1, delay: (err: any) => err.status === 0 ? of(true) : throwError(() => err) }), catchError(this.errorHandl));
   }
 
   // PUT
@@ -39,7 +39,7 @@ export class StaticDocumentTypeService {
         JSON.stringify(data),
         httpOptions
       )
-      .pipe(retry(1), catchError(this.errorHandl));
+      .pipe(retry({ count: 1, delay: (err: any) => err.status === 0 ? of(true) : throwError(() => err) }), catchError(this.errorHandl));
   }
 
   Put_DocumentTypes(data: Array<Static_DocumentType>, httpOptions: { headers: HttpHeaders }): Observable<Static_DocumentType> {
@@ -49,7 +49,7 @@ export class StaticDocumentTypeService {
         JSON.stringify(data),
         httpOptions
       )
-      .pipe(retry(1), catchError(this.errorHandl));
+      .pipe(retry({ count: 1, delay: (err: any) => err.status === 0 ? of(true) : throwError(() => err) }), catchError(this.errorHandl));
   }
 
   // DELETE
@@ -59,7 +59,7 @@ export class StaticDocumentTypeService {
         this.baseurl + apiEndpoints.static_documentTypes.base + data,
         httpOptions
       )
-      .pipe(retry(1), catchError(this.errorHandl));
+      .pipe(retry({ count: 1, delay: (err: any) => err.status === 0 ? of(true) : throwError(() => err) }), catchError(this.errorHandl));
   }
 
   // Error handling
@@ -78,3 +78,4 @@ export class StaticDocumentTypeService {
     });
   }
 }
+

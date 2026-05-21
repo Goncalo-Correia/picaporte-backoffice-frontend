@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Inject, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { IAlbum, Lightbox, LightboxConfig } from 'ngx-lightbox';
+import { LightboxService } from 'src/app/shared/lightbox/lightbox.service';
 import { catchError } from 'rxjs';
 import { QueriesPropertyService } from 'src/app/api-service/queries-property/queries-property.service';
 import { StaticAmenetieTypeService } from 'src/app/api-service/static-amenetie-type/static-amenetie-type-service.service';
@@ -43,8 +43,6 @@ export class RecommendedPropertiesComponent implements OnInit {
   propertyDashboardSearchAndFilterStructure: PropertyDashboardSearchAndFilterStructure = new PropertyDashboardSearchAndFilterStructure();
   next_searchAndFilterStructure: SearchAndFilterStructure = new SearchAndFilterStructure();
 
-  lightboxImages: Array<IAlbum> = new Array<IAlbum>();
-
   propertyDashboardFilters: PropertyDashboardFilterStructure = new PropertyDashboardFilterStructure();
   statusFilterLabel: string = "Estado de venda";
   propertyLocationTypeFilterLabel: string = "Localização";
@@ -58,8 +56,7 @@ export class RecommendedPropertiesComponent implements OnInit {
   isDataFetched: boolean = false;
 
   constructor(
-    private _lightbox: Lightbox,
-    @Inject(LightboxConfig) private lightboxConfig: LightboxConfig,
+    private lightboxService: LightboxService,
     public queries_propertyService: QueriesPropertyService, 
     public staticPropertyStatusService: StaticPropertyStatusService, 
     public staticPropertyLocationTypeService: StaticPropertyLocationTypeService, 
@@ -68,9 +65,7 @@ export class RecommendedPropertiesComponent implements OnInit {
     public staticAmenetieTypeService: StaticAmenetieTypeService,
     public router: Router,
     private authenticationService: AuthenticationService
-  ) {
-    this.lightboxConfig.centerVertically = true;
-  }
+  ) {}
 
   ngOnInit(): void {
     this.get_propertyDashboardStructure();
@@ -125,15 +120,8 @@ export class RecommendedPropertiesComponent implements OnInit {
   }
 
   onClick_showMainImageLightbox(index: number) {
-    this.lightboxImages = new Array<IAlbum>();
-    let url = this.url + this.propertyDashboardStructureArray[index].mainImageFilename + "/true";
-    this.lightboxImages.push({
-      src: url,
-      caption: this.propertyDashboardStructureArray[index].reference,
-      thumb: ""
-    });
-    
-    this._lightbox.open(this.lightboxImages, 0);
+    const url = this.url + this.propertyDashboardStructureArray[index].mainImageFilename + "/true";
+    this.lightboxService.open([{ src: url, caption: this.propertyDashboardStructureArray[index].reference }], 0);
   }
 
   triggerEvent_updateRecommendedProperties() {

@@ -35,7 +35,7 @@ export class TaskComponent implements OnInit {
 
   ngOnInit(): void {
     this.get_TaskByRecordId();
-    this.authService.getUser().subscribe(user => {
+    this.authService.user$.subscribe((user: any) => {
       this.userEmail = user?.email;
     })
   }
@@ -68,7 +68,7 @@ export class TaskComponent implements OnInit {
 
   private allocateTask() {
     this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
-      this.authService.getUser().subscribe(user => {
+      this.authService.user$.subscribe((user: any) => {
         this.queriesTaskService.Allocate(this.tasks[this.allocateTaskIndex].id, user?.email, resolve)
         .pipe(
           catchError(err => {

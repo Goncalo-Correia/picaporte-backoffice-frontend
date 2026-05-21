@@ -49,9 +49,10 @@
       <tbody *ngIf="isDataFetched; else elseBlock">
         <tr *ngFor="let item of entityReferenceList" class="table-row">
           <td scope="row">
-            <a *ngIf="item.type == 'Cliente'" [routerLink]="['/Cliente/', item.recordId]" class="color-primary fw-bold text-decoration-none">{{item.name}}</a>
-            <a *ngIf="item.type == propertyEntityType" [routerLink]="['/Imovel/', item.recordId]" class="color-primary fw-bold text-decoration-none">{{item.name}}</a>
-            <a *ngIf="item.type == 'Utilizador'" [routerLink]="['/Utilizador/', item.recordId]" class="color-primary fw-bold text-decoration-none">{{item.name}}</a>
+            <a *ngIf="getEntityRoute(item) as route; else plainEntityName" [routerLink]="route" class="color-primary fw-bold text-decoration-none">{{item.name}}</a>
+            <ng-template #plainEntityName>
+              <span class="fw-bold">{{item.name}}</span>
+            </ng-template>
           </td>
           <td><span class="col">{{item.type}}</span></td>
           <td><span class="col"><app-date-format [date]="item.lastModifiedOn"></app-date-format></span></td>

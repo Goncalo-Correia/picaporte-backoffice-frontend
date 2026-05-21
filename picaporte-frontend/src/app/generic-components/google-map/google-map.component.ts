@@ -1,11 +1,11 @@
 import { Component, OnInit, ViewChild, ElementRef, EventEmitter, Input, Output } from '@angular/core';
 
-declare var google: any; // Add this line to declare the 'google' variable
+declare var google: any;
 
 @Component({
   selector: 'app-google-map',
   templateUrl: './google-map.component.html',
-  styleUrls: ['./google-map.component.css'],
+  styleUrls: ['./google-map.component.css']
 })
 export class GoogleMapComponent implements OnInit {
 
@@ -15,11 +15,11 @@ export class GoogleMapComponent implements OnInit {
   @Output() logitudeEvent = new EventEmitter<number>();
 
   @ViewChild('mapContainer', { static: false }) gmap!: ElementRef;
-  map!: google.maps.Map;
-  marker!: google.maps.Marker;
+  map: any;
+  marker: any;
   isMapAvailable: boolean = true;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit(): void {
     this.initializeMap();
@@ -37,26 +37,19 @@ export class GoogleMapComponent implements OnInit {
           const currentPosition = this.latitude == 0 && this.longitude == 0
             ? new google.maps.LatLng(position.coords.latitude, position.coords.longitude)
             : new google.maps.LatLng(this.latitude, this.longitude);
-
           this.renderMap(currentPosition);
         },
         () => {
-          console.error('Error obtaining user location.');
-
           const defaultPosition = this.latitude != 0 && this.longitude != 0
             ? new google.maps.LatLng(this.latitude, this.longitude)
             : new google.maps.LatLng(38.652997388, -27.218665792);
-
           this.renderMap(defaultPosition);
         }
       );
     } else {
-      console.error('Geolocation API not supported.');
-
       const defaultPosition = this.latitude != 0 && this.longitude != 0
         ? new google.maps.LatLng(this.latitude, this.longitude)
         : new google.maps.LatLng(38.652997388, -27.218665792);
-
       this.renderMap(defaultPosition);
     }
   }
@@ -69,12 +62,12 @@ export class GoogleMapComponent implements OnInit {
       && typeof google.maps.LatLng === 'function';
   }
 
-  private renderMap(position: google.maps.LatLng): void {
+  private renderMap(position: any): void {
     try {
-      const mapOptions: google.maps.MapOptions = {
+      const mapOptions = {
         center: position,
         zoom: 12,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
       };
 
       this.map = new google.maps.Map(this.gmap.nativeElement, mapOptions);
@@ -85,11 +78,8 @@ export class GoogleMapComponent implements OnInit {
         title: 'Marcador'
       });
 
-      this.map.addListener('click', (event: google.maps.MapMouseEvent) => {
-        if (!event.latLng) {
-          return;
-        }
-
+      this.map.addListener('click', (event: any) => {
+        if (!event.latLng) return;
         this.marker.setPosition(event.latLng);
         this.latitudeEvent.emit(event.latLng.lat());
         this.logitudeEvent.emit(event.latLng.lng());

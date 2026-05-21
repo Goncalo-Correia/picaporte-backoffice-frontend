@@ -1,17 +1,13 @@
 import { LOCALE_ID, NgModule } from '@angular/core';
-import { BrowserModule, DomSanitizer  } from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { DatePipe, registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 registerLocaleData(localePt);
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
-//Imported components
-import { DragulaModule } from 'ng2-dragula';
-import { LightboxModule } from 'ngx-lightbox';
-import { CKEditorModule } from 'ckeditor4-angular';
 
 import { AuthModule, AuthHttpInterceptor } from '@auth0/auth0-angular';
 import { ErrorInterceptor } from './interceptors/auth.interceptor';
@@ -22,81 +18,19 @@ import { environment } from 'src/environments/environment';
 
 import { Auth0ServiceComponent } from './services/auth0-service/auth0-service.component';
 import { SidenavComponent } from './layout-components/sidenav/sidenav.component';
-import { CustomerComponent } from './customer-components/customer/customer.component';
-import { CustomerPropertiesComponent } from './customer-components/customer-properties/customer-properties.component';
-import { CustomerPreferencesComponent } from './generic-components/preferences/preferences.component';
-import { CustomerDashboardComponent } from './dashboard-components/customer-dashboard/customer-dashboard.component';
-import { QueriesCustomerService } from './api-service/queries-customer/queries-customer.service';
-import { CustomerDetailComponent } from './customer-components/customer-detail/customer-detail.component';
-import { AddressComponent } from './generic-components/address/address.component';
-import { RouterModule } from '@angular/router';
-import { PropertyDashboardComponent } from './dashboard-components/property-dashboard/property-dashboard.component';
-import { PropertyComponent } from './property-components/property/property.component';
-import { PropertyDetailComponent } from './property-components/property-detail/property-detail.component';
-import { PropertyCaracteristicsComponent } from './property-components/property-caracteristics/property-caracteristics.component';
-import { PropertyDocumentsComponent } from './property-components/property-documents/property-documents.component';
-import { PropertyImagesComponent } from './property-components/property-images/property-images.component';
 import { DashboardComponent } from './dashboard-components/dashboard/dashboard.component';
-import { SpinnerComponent } from './utiity-components/spinner/spinner.component';
-import { PropertyOnlineComponent } from './property-components/property-online/property-online.component';
 import { Auth0Component } from './auth0/auth0.component';
-import { PropertyRentingComponent } from './property-components/property-renting/property-renting.component';
-import { StaticDataComponent } from './router-components/static-data/static-data.component';
-import { DashboardKpiComponent } from './generic-components/dashboard-kpi/dashboard-kpi.component';
-import { SearchAndFilterBarComponent } from './generic-components/search-and-filter-bar/search-and-filter-bar.component';
-import { ActivityLogComponent } from './generic-components/activity-log/activity-log.component';
-import { UserComponent } from './user-components/user/user.component';
-import { UserDashboardComponent } from './dashboard-components/user-dashboard/user-dashboard.component';
-import { UserDetailComponent } from './user-components/user-detail/user-detail.component';
-import { NewsComponent } from './router-components/news/news.component';
-import { ToDosComponent } from './router-components/to-dos/to-dos.component';
-import { MessageComponent } from './generic-components/message/message.component';
-import { DatePipe, registerLocaleData } from '@angular/common';
-import { GoogleMapComponent } from './generic-components/google-map/google-map.component';
-import { DateFormatComponent } from './generic-components/date-format/date-format.component';
-import { RecommendedPropertiesComponent } from './property-components/recommended-properties/recommended-properties.component';
-import { CommaToDotDirective } from './directives/comma-to-dot-directive/comma-to-dot.directive';
-import { TasksComponent } from './router-components/tasks/tasks.component';
-import { TaskComponent } from './property-components/property/task/task.component';
+
+import { RouterModule } from '@angular/router';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     Auth0ServiceComponent,
     SidenavComponent,
-    CustomerComponent,
-    CustomerPropertiesComponent,
-    CustomerPreferencesComponent,
-    CustomerDashboardComponent,
-    CustomerDetailComponent,
-    AddressComponent,
-    PropertyDashboardComponent,
-    PropertyComponent,
-    PropertyDetailComponent,
-    PropertyCaracteristicsComponent,
-    PropertyDocumentsComponent,
-    PropertyImagesComponent,
     DashboardComponent,
-    SpinnerComponent,
-    PropertyOnlineComponent,
     Auth0Component,
-    PropertyRentingComponent,
-    StaticDataComponent,
-    DashboardKpiComponent,
-    SearchAndFilterBarComponent,
-    ActivityLogComponent,
-    UserComponent,
-    UserDashboardComponent,
-    UserDetailComponent,
-    NewsComponent,
-    ToDosComponent,
-    MessageComponent,
-    GoogleMapComponent,
-    DateFormatComponent,
-    RecommendedPropertiesComponent,
-    CommaToDotDirective,
-    TasksComponent,
-    TaskComponent,
     LoginComponent,
     AccessDeniedComponent,
     CallbackComponent
@@ -106,38 +40,36 @@ import { TaskComponent } from './property-components/property/task/task.componen
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
-    LightboxModule,
-    CKEditorModule,
-    DragulaModule.forRoot(),
+    SharedModule,
     AuthModule.forRoot({
       domain: environment.auth0.domain,
       clientId: environment.auth0.clientId,
-      redirectUri: environment.auth0.redirectUri,
-      audience: environment.auth0.audience,
+      authorizationParams: {
+        redirect_uri: environment.auth0.redirectUri,
+        audience: environment.auth0.audience
+      },
       errorPath: '/forbidden',
       httpInterceptor: {
         allowedList: [
           {
             uri: `${environment.apiUrl}api/*`,
             tokenOptions: {
-              audience: environment.auth0.audience
+              authorizationParams: {
+                audience: environment.auth0.audience
+              }
             }
           }
         ]
       }
-    }),
+    })
   ],
-  exports: [
-    RouterModule,
-    NewsComponent
-  ],
+  exports: [RouterModule],
   providers: [
-    QueriesCustomerService,
-    {provide: LOCALE_ID, useValue: 'pt'},
+    { provide: LOCALE_ID, useValue: 'pt' },
     DatePipe,
     { provide: HTTP_INTERCEPTORS, useClass: AuthHttpInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

@@ -1,6 +1,6 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+﻿import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, retry, throwError } from 'rxjs';
+import { catchError, Observable, of, retry, throwError } from 'rxjs';
 import { Static_PropertyLocationType } from 'src/app/models/static/static-propertylocationtype.model';
 import { apiEndpoints, environment } from 'src/environments/environment';
 
@@ -17,7 +17,7 @@ export class StaticPropertyLocationTypeService {
   GetAll_PropertyLocationTypes(isActive: boolean, httpOptions: { headers: HttpHeaders }): Observable<Static_PropertyLocationType[]> {
     return this.http
       .get<Static_PropertyLocationType[]>(this.baseurl + apiEndpoints.static_propertyLocationType.get + isActive, httpOptions)
-      .pipe(retry(1), catchError(this.errorHandl));
+      .pipe(retry({ count: 1, delay: (err: any) => err.status === 0 ? of(true) : throwError(() => err) }), catchError(this.errorHandl));
   }
 
   // POST
@@ -28,7 +28,7 @@ export class StaticPropertyLocationTypeService {
         JSON.stringify(data),
         httpOptions
       )
-      .pipe(retry(1), catchError(this.errorHandl));
+      .pipe(retry({ count: 1, delay: (err: any) => err.status === 0 ? of(true) : throwError(() => err) }), catchError(this.errorHandl));
   }
 
   // PUT
@@ -39,7 +39,7 @@ export class StaticPropertyLocationTypeService {
         JSON.stringify(data),
         httpOptions
       )
-      .pipe(retry(1), catchError(this.errorHandl));
+      .pipe(retry({ count: 1, delay: (err: any) => err.status === 0 ? of(true) : throwError(() => err) }), catchError(this.errorHandl));
   }
 
   Put_AmenetieTypes(data: Array<Static_PropertyLocationType>, httpOptions: { headers: HttpHeaders }): Observable<Static_PropertyLocationType> {
@@ -49,7 +49,7 @@ export class StaticPropertyLocationTypeService {
         JSON.stringify(data),
         httpOptions
       )
-      .pipe(retry(1), catchError(this.errorHandl));
+      .pipe(retry({ count: 1, delay: (err: any) => err.status === 0 ? of(true) : throwError(() => err) }), catchError(this.errorHandl));
   }
 
   // DELETE
@@ -59,7 +59,7 @@ export class StaticPropertyLocationTypeService {
         this.baseurl + apiEndpoints.static_propertyLocationType.base + data,
         httpOptions
       )
-      .pipe(retry(1), catchError(this.errorHandl));
+      .pipe(retry({ count: 1, delay: (err: any) => err.status === 0 ? of(true) : throwError(() => err) }), catchError(this.errorHandl));
   }
 
   // Error handling
@@ -78,3 +78,4 @@ export class StaticPropertyLocationTypeService {
     });
   }
 }
+

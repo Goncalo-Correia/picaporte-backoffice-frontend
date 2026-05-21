@@ -1,4 +1,5 @@
-import { Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { StaticAmenetieTypeService } from 'src/app/api-service/static-amenetie-type/static-amenetie-type-service.service';
 import { StaticDocumentTypeService } from 'src/app/api-service/static-document-type/static-document-type.service';
 import { StaticEnergyCertificateService } from 'src/app/api-service/static-energy-certificate/static-energy-certificate.service';
@@ -8,8 +9,7 @@ import { StaticPropertyTypeService } from 'src/app/api-service/static-property-t
 import { StaticPropertyTypologyService } from 'src/app/api-service/static-property-typology/static-property-typology.service';
 import { StaticDocumentStatusService } from 'src/app/api-service/static-document-status/static-document-status.service';
 import { StaticDataStructure } from 'src/app/structures/static-data.structure';
-import { DragulaService } from 'ng2-dragula';
-import { catchError, Subscription } from 'rxjs';
+import { catchError } from 'rxjs';
 import { MessageComponent } from 'src/app/generic-components/message/message.component';
 import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
 
@@ -18,11 +18,10 @@ import { AuthenticationService } from 'src/app/authentication-service/authentica
   templateUrl: './static-data.component.html',
   styleUrls: ['./static-data.component.css']
 })
-export class StaticDataComponent implements OnInit, OnDestroy {
+export class StaticDataComponent implements OnInit {
 
   @ViewChild(MessageComponent) messageComponent!: MessageComponent;
-  
-  subscription = new Subscription();
+
   isDataFetched: boolean = false;
   isEditable: boolean = false;
   isToDelete: boolean = false;
@@ -42,23 +41,16 @@ export class StaticDataComponent implements OnInit, OnDestroy {
     private staticAmenetieTypeService: StaticAmenetieTypeService,
     private staticDocumentStatusService: StaticDocumentStatusService,
     private staticDocumentTypeService: StaticDocumentTypeService,
-    private dragulaService: DragulaService,
     private authenticationService: AuthenticationService
-  ) {
-    dragulaService.createGroup("STATIC_DATA", {});
-
-    this.subscription.add(this.dragulaService.drop("STATIC_DATA").subscribe(() => {
-      this.hasSortChanges = true;
-    }));
-  }
+  ) {}
 
   ngOnInit(): void {
     this.fetchData();
   }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-    this.dragulaService.destroy("STATIC_DATA");
+  onDrop(event: CdkDragDrop<StaticDataStructure[]>) {
+    moveItemInArray(this.staticDataStructureList, event.previousIndex, event.currentIndex);
+    this.hasSortChanges = true;
   }
 
   onClick_selectStaticDataType(staticDataType: Enum_StaticData) {

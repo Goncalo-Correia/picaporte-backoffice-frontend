@@ -1,6 +1,6 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+﻿import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, retry, throwError } from 'rxjs';
+import { catchError, Observable, of, retry, throwError } from 'rxjs';
 import { News } from 'src/app/models/news.model';
 import { apiEndpoints, environment } from 'src/environments/environment';
 
@@ -17,7 +17,7 @@ export class NewsService {
   Get_News(httpOptions: { headers: HttpHeaders }): Observable<News[]> {
     return this.http
       .get<News[]>(this.baseurl + apiEndpoints.news.get, httpOptions)
-      .pipe(retry(1), catchError(this.errorHandl));
+      .pipe(retry({ count: 1, delay: (err: any) => err.status === 0 ? of(true) : throwError(() => err) }), catchError(this.errorHandl));
   }
 
   // POST
@@ -28,7 +28,7 @@ export class NewsService {
         JSON.stringify(data),
         httpOptions
       )
-      .pipe(retry(1), catchError(this.errorHandl));
+      .pipe(retry({ count: 1, delay: (err: any) => err.status === 0 ? of(true) : throwError(() => err) }), catchError(this.errorHandl));
   }
 
   Approve_News(data: News, httpOptions: { headers: HttpHeaders }): Observable<News> {
@@ -49,7 +49,7 @@ export class NewsService {
           JSON.stringify(data),
           httpOptions
         )
-      .pipe(retry(1), catchError(this.errorHandl));
+      .pipe(retry({ count: 1, delay: (err: any) => err.status === 0 ? of(true) : throwError(() => err) }), catchError(this.errorHandl));
   }
 
   // PUT
@@ -59,7 +59,7 @@ export class NewsService {
         this.baseurl + apiEndpoints.news.delete + id,
         httpOptions
       )
-      .pipe(retry(1), catchError(this.errorHandl));
+      .pipe(retry({ count: 1, delay: (err: any) => err.status === 0 ? of(true) : throwError(() => err) }), catchError(this.errorHandl));
   }
 
   // Error handling
@@ -77,3 +77,4 @@ export class NewsService {
     });
   }
 }
+

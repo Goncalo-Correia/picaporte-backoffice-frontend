@@ -285,7 +285,6 @@ a, a:hover {
 }
 
 /* LIGHTBOX */
-.lightboxOverlay {
-    width: 100% !important;
-    height: 100% !important;
+.lb-backdrop {
+    background: rgba(0, 0, 0, 0.85);
 }

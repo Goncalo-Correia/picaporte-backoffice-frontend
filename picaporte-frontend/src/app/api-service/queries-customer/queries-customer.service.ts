@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 import { CustomerDashboardStructure } from 'src/app/structures/dashboard-structures/customer/customer-dashboard.structure';
 import { apiEndpoints, environment } from 'src/environments/environment';
@@ -22,7 +22,7 @@ export class QueriesCustomerService {
   Get_CustomerStructure(id: string, httpOptions: { headers: HttpHeaders }): Observable<CustomerStructure> {
     return this.http
       .get<CustomerStructure>(this.baseurl + apiEndpoints.queries_customer.get + id, httpOptions)
-      .pipe(retry(1), catchError(this.errorHandl));
+      .pipe(retry({ count: 1, delay: (err: any) => err.status === 0 ? of(true) : throwError(() => err) }), catchError(this.errorHandl));
   }
 
   // PUT
@@ -34,7 +34,7 @@ export class QueriesCustomerService {
         JSON.stringify(data),
         httpOptions
       )
-      .pipe(retry(1), catchError(this.errorHandl));
+      .pipe(retry({ count: 1, delay: (err: any) => err.status === 0 ? of(true) : throwError(() => err) }), catchError(this.errorHandl));
   }
 
   // POST
@@ -47,7 +47,7 @@ export class QueriesCustomerService {
         JSON.stringify(data),
         httpOptions
       )
-      .pipe(retry(1), catchError(this.errorHandl));
+      .pipe(retry({ count: 1, delay: (err: any) => err.status === 0 ? of(true) : throwError(() => err) }), catchError(this.errorHandl));
   }
 
   // POST
@@ -58,13 +58,13 @@ export class QueriesCustomerService {
         JSON.stringify(data),
         httpOptions
       )
-      .pipe(retry(1), catchError(this.errorHandl));
+      .pipe(retry({ count: 1, delay: (err: any) => err.status === 0 ? of(true) : throwError(() => err) }), catchError(this.errorHandl));
   }
 
   Get_Kpis(httpOptions: { headers: HttpHeaders }) {
     return this.http
       .get<DashboardKpiStructure[]>(this.baseurl + apiEndpoints.queries_customer.kpi, httpOptions)
-      .pipe(retry(1), catchError(this.errorHandl));
+      .pipe(retry({ count: 1, delay: (err: any) => err.status === 0 ? of(true) : throwError(() => err) }), catchError(this.errorHandl));
   }
 
   // Error handling

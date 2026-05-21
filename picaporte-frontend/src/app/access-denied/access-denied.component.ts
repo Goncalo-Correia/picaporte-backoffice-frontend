@@ -12,6 +12,6 @@ export class AccessDeniedComponent {
   constructor(private auth: AuthService) {}
 
   logout(): void {
-    this.auth.logout({ returnTo: window.location.origin + '/login' });
+    this.auth.logout({ logoutParams: { returnTo: window.location.origin + '/login' } });
   }
 }

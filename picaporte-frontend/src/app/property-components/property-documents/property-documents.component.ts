@@ -9,7 +9,7 @@ import { Static_DocumentType } from 'src/app/models/static/static-documenttype.m
 import { DocumentService } from 'src/app/services/document-service/document.service';
 import { DocumentValidationObject, ValidationService } from 'src/app/services/validation-service/validation.service';
 import { apiEndpoints, environment } from 'src/environments/environment';
-declare let $: any;
+import { Modal } from 'bootstrap';
 
 @Component({
   selector: 'app-property-documents',
@@ -263,7 +263,8 @@ export class PropertyDocumentsComponent implements OnInit {
   }
 
   private closeModal(): void {
-    $('#staticBackdrop').modal('hide');
+    const el = document.getElementById('staticBackdrop');
+    if (el) (Modal.getInstance(el) ?? new Modal(el)).hide();
   }
 
   private openDocumentResponse(response: HttpResponse<Blob>, documentStructure: DocumentDto) {

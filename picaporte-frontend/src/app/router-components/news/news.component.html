@@ -163,8 +163,9 @@
                 </div>
                 <div class="mb-3">
                     <label for="reference" class="form-label fw-bold required">Conteúdo</label>
-                    <ckeditor 
-                    name="ckEitor-module"
+                    <ckeditor
+                    [editor]="Editor"
+                    name="ckEditor-module"
                     [ngClass]="{'invalid-input' : !newsValidationObject.isContentValid.isValid}"
                     [(ngModel)]="selectedNews.content"
                     (focus)="onFocus_content()">

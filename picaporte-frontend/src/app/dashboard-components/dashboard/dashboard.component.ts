@@ -15,6 +15,7 @@ import { EntityReferenceSearchAndFilterStructure } from 'src/app/structures/dash
 })
 export class DashboardComponent extends BaseDashboardComponent implements OnInit {
   readonly propertyEntityType = 'Im\u00F3vel';
+  readonly propertyEntityTypePlural = 'Im\u00F3veis';
 
   @ViewChild(MessageComponent) override messageComponent!: MessageComponent;
 
@@ -91,6 +92,22 @@ export class DashboardComponent extends BaseDashboardComponent implements OnInit
     if (this.hasNext) {
       this.entityReferenceSearchAndFilterStructure.searchAndFilterStructure.page += 1;
       this.get_dashboardStructure();
+    }
+  }
+
+  getEntityRoute(item: EntityReferenceDashboardStructure): string[] | null {
+    switch (item.type) {
+      case 'Cliente':
+      case 'Clientes':
+        return ['/Cliente/', item.recordId];
+      case this.propertyEntityType:
+      case this.propertyEntityTypePlural:
+        return ['/Imovel/', item.recordId];
+      case 'Utilizador':
+      case 'Utilizadores':
+        return ['/Utilizador/', item.recordId];
+      default:
+        return null;
     }
   }
 

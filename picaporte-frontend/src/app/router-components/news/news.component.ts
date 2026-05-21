@@ -1,7 +1,8 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ViewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AuthService } from '@auth0/auth0-angular';
-import { CKEditorModule } from 'ckeditor4-angular';
 import { catchError } from 'rxjs';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { NewsService } from 'src/app/api-service/news/news.service';
 import { AuthenticationService } from 'src/app/authentication-service/authentication.service';
 import { MessageComponent } from 'src/app/generic-components/message/message.component';
@@ -17,12 +18,13 @@ import { apiEndpoints, environment } from 'src/environments/environment';
 })
 export class NewsComponent implements OnInit {
 
-  url: string = environment.apiUrl + apiEndpoints.image.binary
-  
-  @ViewChild(MessageComponent) messageComponent!: MessageComponent;
-  
-  isDataFetched: boolean = false;
+  url: string = environment.apiUrl + apiEndpoints.image.binary;
 
+  @ViewChild(MessageComponent) messageComponent!: MessageComponent;
+
+  public Editor = ClassicEditor;
+
+  isDataFetched: boolean = false;
   isOnListView: boolean = true;
 
   news: Array<News>;
@@ -32,7 +34,9 @@ export class NewsComponent implements OnInit {
   selectedNewsIndex: number = -1;
   newsValidationObject: NewsValidationObject = new NewsValidationObject();
 
-  userEmail: string | undefined = "";
+  userEmail: string | undefined = '';
+
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     private newsService: NewsService,
@@ -48,9 +52,11 @@ export class NewsComponent implements OnInit {
 
   ngOnInit(): void {
     this.get_news();
-    this.authService.getUser().subscribe(user => {
-      this.userEmail = user?.email;
-    })
+    this.authService.user$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((user: any) => {
+        this.userEmail = user?.email;
+      });
   }
 
   onFocus_file() {
@@ -81,7 +87,7 @@ export class NewsComponent implements OnInit {
     reader.onerror = function (error) {
       console.log('Error: ', error);
     };
- }
+  }
 
   onClick_addNew() {
     this.selectedNews = new News();
@@ -117,11 +123,17 @@ export class NewsComponent implements OnInit {
 
   onClick_submit() {
     this.newsValidationObject = new NewsValidationObject();
-    this.newsValidationObject = this.validationService.validateNews(this.selectedNews.image.content == "" || this.selectedNews.image.content == null ? this.selectedNews.image.filename : this.selectedNews.image.content, this.selectedNews.title, this.selectedNews.content);
+    this.newsValidationObject = this.validationService.validateNews(
+      this.selectedNews.image.content == '' || this.selectedNews.image.content == null
+        ? this.selectedNews.image.filename
+        : this.selectedNews.image.content,
+      this.selectedNews.title,
+      this.selectedNews.content
+    );
     if (this.newsValidationObject.isValid) {
       this.isDataFetched = false;
       this.isOnListView = true;
-      if(this.selectedNews.id === "") {
+      if (this.selectedNews.id === '') {
         this.post_news();
       } else {
         this.put_news();
@@ -139,89 +151,88 @@ export class NewsComponent implements OnInit {
     this.selectedNews = this.approvalNews[index];
     this.selectedNews.isApproved = isApproved;
     this.selectedNews.isOnline = isApproved;
-    this.approve_news()
+    this.approve_news();
   }
 
   private get_news() {
     this.isDataFetched = false;
     this.isOnListView = true;
-    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+    this.authenticationService.refreshHttpOptions().then((resolve: any) => {
       this.newsService.Get_News(resolve)
-      .pipe(
-        catchError(err => {
-          this.messageComponent.showMessage(err.error);
-          return err;
-        })
-      )
-      .subscribe(data => {
-        var tempNews = <News[]>data;
-        this.news = tempNews.filter(prop => prop.isOnline == false);
-        this.approvalNews = tempNews.filter(prop => prop.isOnline == true && prop.isApproved == false);
-        this.onlineNews = tempNews.filter(prop => prop.isOnline == true && prop.isApproved == true);
-        this.isDataFetched = true;
-      });
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(data => {
+          var tempNews = <News[]>data;
+          this.news = tempNews.filter(prop => prop.isOnline == false);
+          this.approvalNews = tempNews.filter(prop => prop.isOnline == true && prop.isApproved == false);
+          this.onlineNews = tempNews.filter(prop => prop.isOnline == true && prop.isApproved == true);
+          this.isDataFetched = true;
+        });
     });
   }
 
   private post_news() {
-    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+    this.authenticationService.refreshHttpOptions().then((resolve: any) => {
       this.newsService.Post_News(this.selectedNews, resolve)
-      .pipe(
-        catchError(err => {
-          this.messageComponent.showMessage(err.error);
-          return err;
-        })
-      )
-      .subscribe(() => {
-        this.get_news();
-      });
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(() => {
+          this.get_news();
+        });
     });
   }
 
   private approve_news() {
-    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+    this.authenticationService.refreshHttpOptions().then((resolve: any) => {
       this.newsService.Approve_News(this.selectedNews, resolve)
-      .pipe(
-        catchError(err => {
-          this.messageComponent.showMessage(err.error);
-          return err;
-        })
-      )
-      .subscribe(() => {
-        this.get_news();
-        this.selectedNews = new News();
-      });
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(() => {
+          this.get_news();
+          this.selectedNews = new News();
+        });
     });
   }
 
   private put_news() {
-    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+    this.authenticationService.refreshHttpOptions().then((resolve: any) => {
       this.newsService.Put_News(this.selectedNews.id, this.selectedNews, resolve)
-      .pipe(
-        catchError(err => {
-          this.messageComponent.showMessage(err.error);
-          return err;
-        })
-      )
-      .subscribe(() => {
-        this.get_news();
-      });
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(() => {
+          this.get_news();
+        });
     });
   }
 
   private delete_news() {
-    this.authenticationService.refreshHttpOptions().then((resolve:any) => { 
+    this.authenticationService.refreshHttpOptions().then((resolve: any) => {
       this.newsService.Delete_News(this.selectedNews.id, resolve)
-      .pipe(
-        catchError(err => {
-          this.messageComponent.showMessage(err.error);
-          return err;
-        })
-      )
-      .subscribe(() => {
-        this.get_news();
-      });
+        .pipe(
+          catchError(err => {
+            this.messageComponent.showMessage(err.error);
+            return err;
+          })
+        )
+        .subscribe(() => {
+          this.get_news();
+        });
     });
   }
 }
-

@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, map, Observable, retry, throwError } from 'rxjs';
+import { catchError, map, Observable, of, retry, throwError } from 'rxjs';
 import { Customer } from 'src/app/models/customer.model';
 import { apiEndpoints, environment } from 'src/environments/environment';
 
@@ -22,7 +22,7 @@ export class CustomerService {
      return this.http
        .get<Customer[] | PagedResponse<Customer>>(this.baseurl + apiEndpoints.customer.getAll, httpOptions)
        .pipe(
-        retry(1),
+        retry({ count: 1, delay: (err: any) => err.status === 0 ? of(true) : throwError(() => err) }),
         map((response) => {
           if (Array.isArray(response)) {
             return response;

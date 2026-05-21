@@ -39,8 +39,8 @@
                 <button *ngIf="hasSortChanges" class="btn btn-success" (click)="onClick_saveOrder()">Guardar nova ordem</button>
                 <button class="btn btn-picaporte-primary" (click)="onClick_add()">Adicionar novo item</button>
             </div>
-            <div *ngIf="isDataFetched; else loadingData" [ngClass]="{'mb-3': staticDataStructureList.length != 0}" class="accordion accordion-flush" id="accordionFlushExample" dragula="STATIC_DATA" [(dragulaModel)]="staticDataStructureList" (dragulaModelChange)="staticDataStructureList = $event">
-                <div *ngFor="let staticDataItem of staticDataStructureList; index as i" class="accordion-item" [ngClass]="{'hidden-static-data': !staticDataItem.isActive && !isToDisplayRemoved}">
+            <div *ngIf="isDataFetched; else loadingData" [ngClass]="{'mb-3': staticDataStructureList.length != 0}" class="accordion accordion-flush" id="accordionFlushExample" cdkDropList (cdkDropListDropped)="onDrop($event)">
+                <div *ngFor="let staticDataItem of staticDataStructureList; index as i" cdkDrag class="accordion-item" [ngClass]="{'hidden-static-data': !staticDataItem.isActive && !isToDisplayRemoved}">
                     <div *ngIf="staticDataItem.isActive || (!staticDataItem.isActive && isToDisplayRemoved)" class="accordion-header fs-5" id="flush-headingOne" [ngClass]="{'static-data-disabled': !staticDataItem.isActive}">
                         <button class="accordion-button collapsed d-flex align-items-center gap-3" type="button" data-bs-toggle="collapse" [attr.data-bs-target]="'#flush' + i" [attr.aria-controls]="'#flush' + i" aria-expanded="false" (click)="onClick_selectStaticDataItem(staticDataItem.id, i)">
                             <div *ngIf="staticDataItem.icon != null && staticDataItem.icon != ''" [innerHtml]="staticDataItem.icon"></div>

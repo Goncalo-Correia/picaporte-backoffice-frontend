@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, retry, throwError } from 'rxjs';
+import { catchError, Observable, of, retry, throwError } from 'rxjs';
 import { News } from 'src/app/models/news.model';
 import { apiEndpoints, environment } from 'src/environments/environment';
 
@@ -17,7 +17,7 @@ export class NotificationService {
   Send_Newsletter(httpOptions: { headers: HttpHeaders }) {
     return this.http
       .post(this.baseurl + apiEndpoints.notification.newsletter, {}, httpOptions)
-      .pipe(retry(1), catchError(this.errorHandl));
+      .pipe(retry({ count: 1, delay: (err: any) => err.status === 0 ? of(true) : throwError(() => err) }), catchError(this.errorHandl));
   }
 
     // Error handling

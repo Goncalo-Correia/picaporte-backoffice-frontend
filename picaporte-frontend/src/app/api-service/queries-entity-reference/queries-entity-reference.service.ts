@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, retry, throwError } from 'rxjs';
+import { catchError, Observable, of, retry, throwError } from 'rxjs';
 import { Enum_EntityType } from 'src/app/models/enum/entity-type.enum';
 import { DashboardKpiStructure } from 'src/app/structures/dashboard-structures/dashboard-kpi.structure';
 import { EntityReferenceDashboardStructure } from 'src/app/structures/dashboard-structures/entity-reference/entity-reference-dashboard.structure';
@@ -24,19 +24,19 @@ export class QueriesEntityReferenceService {
           JSON.stringify(data),
           httpOptions
         )
-        .pipe(retry(1), catchError(this.errorHandl));
+        .pipe(retry({ count: 1, delay: (err: any) => err.status === 0 ? of(true) : throwError(() => err) }), catchError(this.errorHandl));
     }
 
     Get_Kpis(httpOptions: { headers: HttpHeaders }) {
       return this.http
         .get<DashboardKpiStructure[]>(this.baseurl + apiEndpoints.queries_entityReference.kpi, httpOptions)
-        .pipe(retry(1), catchError(this.errorHandl));
+        .pipe(retry({ count: 1, delay: (err: any) => err.status === 0 ? of(true) : throwError(() => err) }), catchError(this.errorHandl));
     }
 
     Delete_EntityReference(id: string, entityTypeId: Enum_EntityType, httpOptions: { headers: HttpHeaders }) {
       return this.http
       .post(this.baseurl + apiEndpoints.queries_entityReference.delete + id + "/" + <number>entityTypeId, httpOptions)
-      .pipe(retry(1), catchError(this.errorHandl));
+      .pipe(retry({ count: 1, delay: (err: any) => err.status === 0 ? of(true) : throwError(() => err) }), catchError(this.errorHandl));
     }
     
     // Error handling

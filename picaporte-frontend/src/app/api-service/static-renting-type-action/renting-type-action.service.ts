@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Static_RentingActionType } from 'src/app/models/static/static-rentingActionType.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, Observable, retry, throwError } from 'rxjs';
+import { catchError, Observable, of, retry, throwError } from 'rxjs';
 import { apiEndpoints, environment } from 'src/environments/environment';
 
 @Injectable({
@@ -17,7 +17,7 @@ export class StaticRentingTypeActionService {
     GetAll_RentingActionTypes(isActive: boolean, httpOptions: { headers: HttpHeaders }): Observable<Static_RentingActionType[]> {
       return this.http
         .get<Static_RentingActionType[]>(this.baseurl + apiEndpoints.static_rentingActionTypes.get + isActive, httpOptions)
-        .pipe(retry(1), catchError(this.errorHandl));
+        .pipe(retry({ count: 1, delay: (err: any) => err.status === 0 ? of(true) : throwError(() => err) }), catchError(this.errorHandl));
     }
 
     // Error handling

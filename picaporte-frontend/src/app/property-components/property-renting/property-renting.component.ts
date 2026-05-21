@@ -8,7 +8,7 @@ import { Customer } from 'src/app/models/customer.model';
 import { Renting } from 'src/app/models/renting.model';
 import { RentingValidationObject, ValidationService } from 'src/app/services/validation-service/validation.service';
 import { apiEndpoints, environment } from 'src/environments/environment';
-declare let $: any;
+import { Modal } from 'bootstrap';
 
 @Component({
   selector: 'app-property-renting',
@@ -150,7 +150,8 @@ export class PropertyRentingComponent implements OnInit {
   }
 
   private closeRentingModal(): void {
-    $('#createUpdateModal').modal('hide');
+    const el = document.getElementById('createUpdateModal');
+    if (el) (Modal.getInstance(el) ?? new Modal(el)).hide();
   }
 
   private mapRenting(inputRenting: Renting): Renting {

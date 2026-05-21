@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, retry, throwError } from 'rxjs';
+import { catchError, Observable, of, retry, throwError } from 'rxjs';
 import { Static_Island } from 'src/app/models/static/static-island.model';
 import { apiEndpoints, environment } from 'src/environments/environment';
 
@@ -17,7 +17,7 @@ export class StaticIslandService {
   GetAll_Islands(httpOptions: { headers: HttpHeaders }): Observable<Static_Island[]> {
     return this.http
       .get<Static_Island[]>(this.baseurl + apiEndpoints.static_island.get, httpOptions)
-      .pipe(retry(1), catchError(this.errorHandl));
+      .pipe(retry({ count: 1, delay: (err: any) => err.status === 0 ? of(true) : throwError(() => err) }), catchError(this.errorHandl));
   }
 
   errorHandl(error: any) {

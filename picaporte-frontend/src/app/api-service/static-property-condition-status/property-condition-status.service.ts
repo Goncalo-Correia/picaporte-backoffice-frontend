@@ -1,6 +1,6 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+﻿import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, retry, throwError } from 'rxjs';
+import { catchError, Observable, of, retry, throwError } from 'rxjs';
 import { Static_PropertyConditionStatus } from 'src/app/models/static/static-propertyconditionstatus.model';
 import { apiEndpoints, environment } from 'src/environments/environment';
 
@@ -17,7 +17,7 @@ export class StaticPropertyConditionStatusService {
   GetAll_PropertyConditionStatuses(isActive: boolean, httpOptions: { headers: HttpHeaders }): Observable<Static_PropertyConditionStatus[]> {
     return this.http
       .get<Static_PropertyConditionStatus[]>(this.baseurl + apiEndpoints.static_propertyConditionStatus.get + isActive, httpOptions)
-      .pipe(retry(1), catchError(this.errorHandl));
+      .pipe(retry({ count: 1, delay: (err: any) => err.status === 0 ? of(true) : throwError(() => err) }), catchError(this.errorHandl));
   }
 
   // POST
@@ -28,7 +28,7 @@ export class StaticPropertyConditionStatusService {
         JSON.stringify(data),
         httpOptions
       )
-      .pipe(retry(1), catchError(this.errorHandl));
+      .pipe(retry({ count: 1, delay: (err: any) => err.status === 0 ? of(true) : throwError(() => err) }), catchError(this.errorHandl));
   }
 
   // PUT
@@ -39,7 +39,7 @@ export class StaticPropertyConditionStatusService {
         JSON.stringify(data),
         httpOptions
       )
-      .pipe(retry(1), catchError(this.errorHandl));
+      .pipe(retry({ count: 1, delay: (err: any) => err.status === 0 ? of(true) : throwError(() => err) }), catchError(this.errorHandl));
   }
 
   Put_PropertyConditionStatuses(data: Array<Static_PropertyConditionStatus>, httpOptions: { headers: HttpHeaders }): Observable<Static_PropertyConditionStatus> {
@@ -49,7 +49,7 @@ export class StaticPropertyConditionStatusService {
         JSON.stringify(data),
         httpOptions
       )
-      .pipe(retry(1), catchError(this.errorHandl));
+      .pipe(retry({ count: 1, delay: (err: any) => err.status === 0 ? of(true) : throwError(() => err) }), catchError(this.errorHandl));
   }
 
   // DELETE
@@ -59,7 +59,7 @@ export class StaticPropertyConditionStatusService {
         this.baseurl + apiEndpoints.static_propertyConditionStatus.base + data,
         httpOptions
       )
-      .pipe(retry(1), catchError(this.errorHandl));
+      .pipe(retry({ count: 1, delay: (err: any) => err.status === 0 ? of(true) : throwError(() => err) }), catchError(this.errorHandl));
   }
 
   // Error handling
@@ -78,3 +78,4 @@ export class StaticPropertyConditionStatusService {
     });
   }
 }
+

@@ -18,7 +18,10 @@
       "Bash(node -e \"console.log\\(require\\('./picaporte-frontend/node_modules/@auth0/auth0-angular/package.json'\\).version\\)\")",
       "Bash(python3 -c \"import sys,json; print\\(json.load\\(sys.stdin\\)['version']\\)\")",
       "Bash(npx ng *)",
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "Bash(Get-ChildItem -Path \"D:\\\\Repos\\\\picaporte-backoffice-frontend\\\\picaporte-frontend\\\\src\" -Recurse -Filter \"*.spec.ts\")",
+      "Bash(Remove-Item -Force)",
+      "Bash(Write-Output \"Done\")"
     ]
   }
 }

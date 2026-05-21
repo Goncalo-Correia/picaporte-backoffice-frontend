@@ -1,8 +1,7 @@
-import { Component, EventEmitter, Inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ImageService } from 'src/app/services/image-service/image.service';
-import { IAlbum, Lightbox, LightboxConfig } from 'ngx-lightbox';
-declare let $: any;
-import 'bootstrap';
+import { LightboxService, LightboxImage } from 'src/app/shared/lightbox/lightbox.service';
+import { Modal } from 'bootstrap';
 import { apiEndpoints, environment } from 'src/environments/environment';
 import { ImageDto } from 'src/app/models/image-dto.model';
 import { ImageValidationObject, ValidationService } from 'src/app/services/validation-service/validation.service';
@@ -27,7 +26,6 @@ export class PropertyImagesComponent implements OnInit, OnChanges {
 
   url: string = environment.apiUrl + apiEndpoints.image.binary;
 
-  lightboxImages: Array<IAlbum>;
   selectedImageStructure: ImageDto = new ImageDto();
   multipleImageStructure: Array<ImageDto> = new Array<ImageDto>();
   selectedFiles: FileList | null = null;
@@ -39,14 +37,10 @@ export class PropertyImagesComponent implements OnInit, OnChanges {
 
   constructor(
     public imageService: ImageService,
-    private _lightbox: Lightbox,
-    @Inject(LightboxConfig) private lightboxConfig: LightboxConfig,
+    private lightboxService: LightboxService,
     private validationService: ValidationService,
     private sanitizer: DomSanitizer
-    ) {
-    this.lightboxImages = new Array<IAlbum>();
-    this.lightboxConfig.centerVertically = true;
-  }
+  ) {}
   ngOnInit(): void {
     this.videoSafeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(`https://www.youtube.com/embed/${this.videoUrl}`);
   }
@@ -115,20 +109,16 @@ export class PropertyImagesComponent implements OnInit, OnChanges {
   }
 
   onClick_showMainImageLightbox() {
-    this.lightboxImages = new Array<IAlbum>();
-    let url = this.url + (this.mainImage.id === "" ? this.mainImage.content : this.mainImage.filename) + "/true";
-    this.lightboxImages.push({
-      src: url,
-      caption: this.mainImage.title,
-      thumb: ""
-    });
-
-    this._lightbox.open(this.lightboxImages, 0);
+    const url = this.url + (this.mainImage.id === "" ? this.mainImage.content : this.mainImage.filename) + "/true";
+    this.lightboxService.open([{ src: url, caption: this.mainImage.title }], 0);
   }
 
   onClick_showOtherImageLightbox(index: number) {
-    this.buildLightboxImages();
-    this._lightbox.open(this.lightboxImages, index);
+    const images: LightboxImage[] = this.otherImages.map(img => ({
+      src: this.url + (img.id === "" ? img.content : img.filename) + "/true",
+      caption: img.title
+    }));
+    this.lightboxService.open(images, index);
   }
 
   onClick_close() {
@@ -179,11 +169,13 @@ export class PropertyImagesComponent implements OnInit, OnChanges {
   }
 
   private closeModal(): void {
-    $('#staticBackdrop').modal('hide');
+    const el = document.getElementById('staticBackdrop');
+    if (el) (Modal.getInstance(el) ?? new Modal(el)).hide();
   }
 
   private closeMultipleModal(): void {
-    $('#multipleUpload').modal('hide');
+    const el = document.getElementById('multipleUpload');
+    if (el) (Modal.getInstance(el) ?? new Modal(el)).hide();
   }
 
   private checkDeleteAllOtherImages() {
@@ -191,19 +183,8 @@ export class PropertyImagesComponent implements OnInit, OnChanges {
   }
 
   private clearFileInput() {
-    $('#file').val("");
-  }
-
-  private buildLightboxImages() {
-    this.lightboxImages = new Array<IAlbum>();
-    this.otherImages.forEach(element => {
-      let url = this.url + (element.id === "" ? element.content : element.filename) + "/true";
-      this.lightboxImages.push({
-        src: url,
-        caption: element.title,
-        thumb: ""
-      });
-    })
+    const fileInput = document.getElementById('file') as HTMLInputElement | null;
+    if (fileInput) fileInput.value = '';
   }
 
   triggerEvent_updateMainImage() {

@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, retry, throwError } from 'rxjs';
+import { catchError, Observable, of, retry, throwError } from 'rxjs';
 import { apiEndpoints, environment } from 'src/environments/environment';
 import { DashboardKpiStructure } from 'src/app/structures/dashboard-structures/dashboard-kpi.structure';
 import { UserStructure } from 'src/app/structures/main-structures/user.structure';
@@ -21,7 +21,7 @@ export class QueriesUserService {
     Get_UserStructure(id: string, httpOptions: { headers: HttpHeaders }): Observable<UserStructure> {
       return this.http
         .get<UserStructure>(this.baseurl + apiEndpoints.queries_user.get + id, httpOptions)
-        .pipe(retry(1), catchError(this.errorHandl));
+        .pipe(retry({ count: 1, delay: (err: any) => err.status === 0 ? of(true) : throwError(() => err) }), catchError(this.errorHandl));
     }
 
     // PUT
@@ -32,7 +32,7 @@ export class QueriesUserService {
             JSON.stringify(data),
             httpOptions
           )
-        .pipe(retry(1), catchError(this.errorHandl));
+        .pipe(retry({ count: 1, delay: (err: any) => err.status === 0 ? of(true) : throwError(() => err) }), catchError(this.errorHandl));
     }
     
     // POST
@@ -43,7 +43,7 @@ export class QueriesUserService {
           JSON.stringify(data),
           httpOptions
         )
-        .pipe(retry(1), catchError(this.errorHandl));
+        .pipe(retry({ count: 1, delay: (err: any) => err.status === 0 ? of(true) : throwError(() => err) }), catchError(this.errorHandl));
     }
 
     // POST
@@ -54,13 +54,13 @@ export class QueriesUserService {
           JSON.stringify(data),
           httpOptions
         )
-        .pipe(retry(1), catchError(this.errorHandl));
+        .pipe(retry({ count: 1, delay: (err: any) => err.status === 0 ? of(true) : throwError(() => err) }), catchError(this.errorHandl));
     }
 
     Get_Kpis(httpOptions: { headers: HttpHeaders }) {
       return this.http
         .get<DashboardKpiStructure[]>(this.baseurl + apiEndpoints.queries_user.kpi, httpOptions)
-        .pipe(retry(1), catchError(this.errorHandl));
+        .pipe(retry({ count: 1, delay: (err: any) => err.status === 0 ? of(true) : throwError(() => err) }), catchError(this.errorHandl));
     }
 
     // Error handling

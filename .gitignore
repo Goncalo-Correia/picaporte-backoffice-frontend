@@ -2,6 +2,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/windows,macos,linux,visualstudiocode,visualstudio,angular
 # Edit at https://www.toptal.com/developers/gitignore?templates=windows,macos,linux,visualstudiocode,visualstudio,angular
 
+### Secrets ###
+**/environment.secrets.ts
+
 ### Angular ###
 ## Angular ##
 # compiled output

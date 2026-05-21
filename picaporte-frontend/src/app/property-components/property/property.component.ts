@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, ViewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError } from 'rxjs';
 import { QueriesPropertyService } from 'src/app/api-service/queries-property/queries-property.service';
@@ -53,6 +54,7 @@ export class PropertyComponent implements OnInit {
   documentTypes: Array<Static_DocumentType> = new Array<Static_DocumentType>();
 
   private propertySubmenuFactory: PropertySubMenuFactory;
+  private destroyRef = inject(DestroyRef);
 
   constructor(
     public queries_propertyService: QueriesPropertyService,
@@ -336,10 +338,12 @@ export class PropertyComponent implements OnInit {
   }
 
   private getActiveRoute() {
-    this.activeRoute.paramMap.subscribe(res => {
-      this.propertyId = res.get('id') ?? "";
-      this.get_propertyStructure();
-    });
+    this.activeRoute.paramMap
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(res => {
+        this.propertyId = res.get('id') ?? '';
+        this.get_propertyStructure();
+      });
   }
 
   private checkSelectedSubMenu() {

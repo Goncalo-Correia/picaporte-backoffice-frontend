@@ -1,6 +1,13 @@
 import { secrets } from './environment.secrets';
 
-export const environment = {
+export const environment: {
+  production: boolean;
+  apiUrl: string;
+  apiKey: string;
+  mapboxAccessToken: string;
+  googleMapsKey: string;
+  auth0: { domain: string; clientId: string; audience: string; redirectUri: string };
+} = {
   production: true,
   apiUrl: 'https://picaporte-api.onrender.com/',
   ...secrets

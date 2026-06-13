@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, EventEmitter, Input, Output } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 declare var google: any;
 
@@ -22,7 +23,32 @@ export class GoogleMapComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    this.initializeMap();
+    this.loadGoogleMapsScript().then(() => this.initializeMap());
+  }
+
+  private loadGoogleMapsScript(): Promise<void> {
+    return new Promise((resolve) => {
+      if (this.isGoogleMapsReady()) {
+        resolve();
+        return;
+      }
+      const key = environment.googleMapsKey;
+      if (!key) {
+        this.isMapAvailable = false;
+        resolve();
+        return;
+      }
+      const script = document.createElement('script');
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${key}`;
+      script.async = true;
+      script.defer = true;
+      script.onload = () => resolve();
+      script.onerror = () => {
+        this.isMapAvailable = false;
+        resolve();
+      };
+      document.head.appendChild(script);
+    });
   }
 
   initializeMap(): void {

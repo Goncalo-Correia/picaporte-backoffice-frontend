@@ -19,6 +19,7 @@ const redirectUriValue = redirectUriEnv
 const fileContents = `export const secrets = {
   apiKey: ${toTsString(readEnv('NG_APP_API_KEY'))},
   mapboxAccessToken: ${toTsString(readEnv('NG_APP_MAPBOX_ACCESS_TOKEN'))},
+  googleMapsKey: ${toTsString(readEnv('NG_APP_GOOGLE_MAPS_KEY'))},
   auth0: {
     domain: ${toTsString(readEnv('NG_APP_AUTH0_DOMAIN'))},
     clientId: ${toTsString(readEnv('NG_APP_AUTH0_CLIENT_ID'))},
@@ -33,6 +34,7 @@ fs.writeFileSync(secretsPath, fileContents, 'utf8');
 const missingVars = [
   'NG_APP_API_KEY',
   'NG_APP_MAPBOX_ACCESS_TOKEN',
+  'NG_APP_GOOGLE_MAPS_KEY',
   'NG_APP_AUTH0_DOMAIN',
   'NG_APP_AUTH0_CLIENT_ID'
 ].filter((name) => !process.env[name]);

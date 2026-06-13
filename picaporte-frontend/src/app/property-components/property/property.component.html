@@ -70,7 +70,7 @@
         </div>
         <div *ngIf="isOnImagesSubMenu" class="row">
             <div class="col-12">
-                <app-property-images *ngIf="isDataFetched" [isEditable]="isEditable" [mainImage]="propertyStructure.property.mainImage" [otherImages]="propertyStructure.images" [videoUrl]="propertyStructure.property.videoUrl" 
+                <app-property-images *ngIf="isDataFetched" [isEditable]="isEditable" [mainImage]="propertyStructure.mainImage" [otherImages]="propertyStructure.images" [videoUrl]="propertyStructure.property.videoUrl" 
                 (event_updateMainImage)="eventHandler_updatePropertyMainImage($event)" (event_updateOtherImages)="eventHandler_updatePropertyOtherImages($event)" (event_updateVideoUrl)="eventHandler_updatePropertyVideoUrl($event)"></app-property-images>
             </div>
         </div>

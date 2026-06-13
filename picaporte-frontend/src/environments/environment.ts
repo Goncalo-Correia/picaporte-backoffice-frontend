@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   apiKey: "REDACTED_API_KEY",
   mapboxAccessToken: "REDACTED_MAPBOX_TOKEN",
-  apiUrl: "https://localhost:32769/",
+  apiUrl: "https://localhost:32771/",
   auth0: {
     domain: 'REDACTED_AUTH0_DOMAIN',
     clientId: 'REDACTED_AUTH0_CLIENT_ID',

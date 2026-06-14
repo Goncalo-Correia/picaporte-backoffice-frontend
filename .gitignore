@@ -4,6 +4,8 @@
 
 ### Secrets ###
 **/environment.secrets.ts
+.env
+.env.*
 
 ### Angular ###
 ## Angular ##

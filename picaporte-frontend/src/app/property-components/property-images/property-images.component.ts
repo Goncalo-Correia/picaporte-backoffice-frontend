@@ -109,13 +109,13 @@ export class PropertyImagesComponent implements OnInit, OnChanges {
   }
 
   onClick_showMainImageLightbox() {
-    const url = this.url + (this.mainImage.id === "" ? this.mainImage.content : this.mainImage.filename) + "/true";
+    const url = this.url + (this.mainImage.id === "" ? this.mainImage.content ?? '' : this.mainImage.filename) + "/true";
     this.lightboxService.open([{ src: url, caption: this.mainImage.title }], 0);
   }
 
   onClick_showOtherImageLightbox(index: number) {
     const images: LightboxImage[] = this.otherImages.map(img => ({
-      src: this.url + (img.id === "" ? img.content : img.filename) + "/true",
+      src: this.url + (img.id === "" ? img.content ?? '' : img.filename) + "/true",
       caption: img.title
     }));
     this.lightboxService.open(images, index);
@@ -138,7 +138,7 @@ export class PropertyImagesComponent implements OnInit, OnChanges {
 
   onClick_submit() {
     this.imageValidationObject = new ImageValidationObject();
-    this.imageValidationObject = this.validationService.validateImage(this.selectedImageStructure.title, (this.selectedImageStructure.id === "" ? this.selectedImageStructure.content : this.selectedImageStructure.filename));
+    this.imageValidationObject = this.validationService.validateImage(this.selectedImageStructure.title, (this.selectedImageStructure.id === "" ? this.selectedImageStructure.content ?? '' : this.selectedImageStructure.filename));
     if (this.imageValidationObject.isValid) {
       if (this.isMainImage) {
         this.mainImage = this.imageService.mapNewImageStructure(this.selectedImageStructure);
